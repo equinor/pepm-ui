@@ -1,0 +1,18 @@
+{
+  "short_name": "PEPM",
+  "name": "Parameter Estimation from Process Models",
+  "icons": [
+    {
+      "src": "Equinor_Diamond_Favicon_RED_32x32px.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "Equinor_Symbol_Favicon_RED_64x64px.png",
+      "type": "image/png",
+      "sizes": "64x64"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone"
+}
