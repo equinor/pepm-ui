@@ -22,7 +22,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint --fix --ext .ts,.tsx .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "pre-commit": "yarn test --watchAll=false && yarn lint"
   },
   "browserslist": {
     "production": [
