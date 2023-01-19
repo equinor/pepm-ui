@@ -21,7 +21,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint --fix --ext .ts,.tsx ."
+    "lint": "eslint --fix --ext .ts,.tsx .",
+    "prepare": "husky install",
+    "pre-commit": "yarn test --watchAll=false && yarn lint"
   },
   "browserslist": {
     "production": [
@@ -41,6 +43,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.10",
     "eslint": "^8.31.0",
-    "prettier": "^2.8.2"
+    "prettier": "^2.8.2",
+    "husky": "^8.0.0"
   }
 }
