@@ -3,10 +3,10 @@ import { Configuration, PopupRequest } from '@azure/msal-browser'
 // Config object to be passed to Msal on creation
 export const msalConfig: Configuration = {
   auth: {
-    clientId: '3fba556e-5d4a-48e3-8e1a-fd57c12cb82e',
-    authority: 'https://login.windows-ppe.net/common',
-    redirectUri: '/',
-    postLogoutRedirectUri: '/',
+    clientId: process.env.REACT_APP_AAD_CLIENT_ID as string,
+    authority: `https://login.microsoftonline.com/${process.env.REACT_APP_AAD_TENANT_ID}`,
+    redirectUri: process.env.REACT_APP_AAD_REDIRECT_URI,
+    postLogoutRedirectUri: process.env.REACT_APP_AAD_REDIRECT_URI,
   },
 }
 
