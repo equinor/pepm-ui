@@ -1,7 +1,7 @@
 version: '3.9'
 services:
   pepm-ui:
-    image: ghcr.io/equinor/pepm-ui:latest
+    image: ghcr.io/equinor/pepm-ui/pepm-ui:${IMAGE_TAG:-latest}
     build:
       target: production
       context: .
