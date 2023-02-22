@@ -1,0 +1,11 @@
+version: '3.9'
+services:
+  pepm-ui:
+    image: ghcr.io/equinor/pepm-ui:latest
+    build:
+      target: production
+      context: .
+    env_file:
+      - .env
+    ports:
+      - 3000:3000
