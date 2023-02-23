@@ -17,6 +17,9 @@ jobs:
       - name: Build Container Image
         run: IMAGE_TAG=${{inputs.IMAGE_TAG}} docker compose build
 
+      - name: Authenticate Against Container Registry
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+
       - name: Publish Container Image
         run: IMAGE_TAG=${{inputs.IMAGE_TAG}} docker compose push
 
