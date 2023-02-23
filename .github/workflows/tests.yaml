@@ -2,6 +2,8 @@ name: "CI"
 
 on:
   push:
+    branches-ignore:
+      - main # Use branch protection rule for main that require status checks to pass before merging
 
 jobs:
   build:
