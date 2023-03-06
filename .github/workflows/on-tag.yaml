@@ -1,0 +1,32 @@
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  set-tag-ref:
+    name: set-tag-ref
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Create tag ref
+        id: create-tag-ref
+        run: |
+          TAG_REF=$(echo $GITHUB_REF | cut -d / -f 3)
+          echo "tag-ref=$TAG_REF" >> $GITHUB_OUTPUT
+
+    outputs:
+      tag-ref: ${{ steps.create-tag-ref.outputs.tag-ref }}
+
+  publish-prod:
+    uses: ./.github/workflows/publish.yaml
+    with:
+      IMAGE_TAG: production
+
+  publish-tag:
+    needs: [set-tag-ref]
+    uses: ./.github/workflows/publish.yaml
+    with:
+      IMAGE_TAG: ${{ needs.set-tag-ref.outputs.tag-ref }}
