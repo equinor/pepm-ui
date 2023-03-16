@@ -1345,7 +1345,7 @@
     "@tanstack/react-virtual" "3.0.0-beta.45"
     downshift "^7.2.0"
 
-"@equinor/eds-icons@0.19.1":
+"@equinor/eds-icons@0.19.1", "@equinor/eds-icons@^0.19.1":
   version "0.19.1"
   resolved "https://registry.yarnpkg.com/@equinor/eds-icons/-/eds-icons-0.19.1.tgz#f55dcfe842513db693ad2b8e0246afcf1fca1527"
   integrity sha512-0GZqzLhJQGqAHsTmviUK9au+eRsT9z2BcJTbWWmG8EtxjWNq5dcTpeGSOv6pWNY5nfcGhLNtjOIjRlSidWMHnw==
