@@ -3,6 +3,7 @@ import {
   UnauthenticatedTemplate,
   useMsal,
 } from '@azure/msal-react'
+import { AppBar } from './components/AppBar'
 
 function App() {
   const { instance } = useMsal()
@@ -10,6 +11,7 @@ function App() {
   return (
     <div className="App">
       <AuthenticatedTemplate>
+        <AppBar title={'PEPM'} />
         <p>Authenticated</p>
         <button onClick={() => instance.logoutRedirect()}>Log out</button>
       </AuthenticatedTemplate>
