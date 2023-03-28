@@ -1,0 +1,18 @@
+@import url('https://eds-static.equinor.com/font/equinor-font.css');
+@import url('https://eds-static.equinor.com/font/equinor-mono.css');
+
+body {
+  margin: 0;
+  font-family: 'Equinor';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+}
+
+* {
+  box-sizing: inherit;
+}
+
+code {
+  font-family: 'Equinor Mono', source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace !important;
+}

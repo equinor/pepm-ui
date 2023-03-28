@@ -5,6 +5,7 @@ import { RouterProvider } from 'react-router-dom'
 import msalInstance from './auth/msalClient'
 import reportWebVitals from './reportWebVitals'
 import { router } from './router'
+import './index.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
