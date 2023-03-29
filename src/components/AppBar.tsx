@@ -23,6 +23,10 @@ const StyledTabs = styled(Tabs)`
     height: inherit;
     align-items: center;
 
+    > [aria-selected='false'] {
+      border-color: transparent;
+    }
+
     > * {
       height: inherit;
     }
