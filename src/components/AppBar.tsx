@@ -7,28 +7,18 @@ import styled from 'styled-components'
 import { theme } from '../theme'
 
 const StyledTopBar = styled(TopBar)`
-  min-height: 72px;
   height: 100%;
-  padding-bottom: 0px;
-  padding-top: 0px;
+  padding-bottom: 0;
+  padding-top: 0;
 `
 
 const StyledTabs = styled(Tabs)`
   display: flex;
-  height: inherit;
   justify-content: flex-end;
 
   > * {
-    display: flex;
-    height: inherit;
-    align-items: center;
-
     > [aria-selected='false'] {
       border-color: transparent;
-    }
-
-    > * {
-      height: inherit;
     }
   }
 `
