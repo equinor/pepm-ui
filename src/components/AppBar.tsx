@@ -1,10 +1,9 @@
-import { Icon, Tabs, TopBar } from '@equinor/eds-core-react'
+import { Button, Icon, Tabs, TopBar } from '@equinor/eds-core-react'
 import {
   account_circle as accountCircle,
   notifications,
 } from '@equinor/eds-icons'
 import styled from 'styled-components'
-import { theme } from '../theme'
 
 const StyledTopBar = styled(TopBar)`
   height: 100%;
@@ -25,9 +24,7 @@ const StyledTabs = styled(Tabs)`
 
 const Icons = styled.div`
   display: flex;
-  padding-left: 1.5em;
-  gap: 1.5em;
-  color: ${theme.light.primary.resting};
+  gap: 0.5em;
 `
 
 const NavigationTabs = () => {
@@ -50,8 +47,12 @@ const AppBar = ({ title }: { title: string }) => {
       <NavigationTabs />
       <TopBar.Actions>
         <Icons>
-          <Icon name="notifications" data={notifications} />
-          <Icon name="accountCircle" data={accountCircle} />
+          <Button variant="ghost_icon">
+            <Icon name="notifications" data={notifications} />
+          </Button>
+          <Button variant="ghost_icon">
+            <Icon name="accountCircle" data={accountCircle} />
+          </Button>
         </Icons>
       </TopBar.Actions>
     </StyledTopBar>
