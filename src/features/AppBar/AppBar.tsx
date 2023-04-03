@@ -5,41 +5,19 @@ import {
   notifications,
 } from '@equinor/eds-icons'
 import { useRef, useState } from 'react'
-import styled from 'styled-components'
 import IconButton from '../../components/IconButton'
-
-const StyledTopBar = styled(TopBar)`
-  height: 100%;
-  padding-bottom: 0;
-  padding-top: 0;
-`
-
-const StyledTabs = styled(Tabs)`
-  display: flex;
-  justify-content: flex-end;
-
-  > * {
-    > [aria-selected='false'] {
-      border-color: transparent;
-    }
-  }
-`
-
-const Icons = styled.div`
-  display: flex;
-  gap: 0.5em;
-`
+import * as Styled from './AppBar.styled'
 
 const NavigationTabs = () => {
   return (
-    <StyledTabs>
+    <Styled.Tabs>
       <Tabs.List>
         <Tabs.Tab>Add model</Tabs.Tab>
         <Tabs.Tab>Browse</Tabs.Tab>
         <Tabs.Tab>API</Tabs.Tab>
         <Tabs.Tab>About</Tabs.Tab>
       </Tabs.List>
-    </StyledTabs>
+    </Styled.Tabs>
   )
 }
 
@@ -67,11 +45,11 @@ const AppBar = ({ title }: { title: string }) => {
   }
 
   return (
-    <StyledTopBar>
+    <Styled.TopBar>
       <TopBar.Header>{title}</TopBar.Header>
       <NavigationTabs />
       <TopBar.Actions>
-        <Icons>
+        <Styled.Icons>
           <IconButton
             title={'Notifications'}
             icon={notifications}
@@ -84,7 +62,7 @@ const AppBar = ({ title }: { title: string }) => {
             onClick={toggleUserInfo}
             ref={userInfoRef}
           />
-        </Icons>
+        </Styled.Icons>
       </TopBar.Actions>
       <Menu
         open={menu.notifications.isOpen}
@@ -97,7 +75,7 @@ const AppBar = ({ title }: { title: string }) => {
           <Menu.Item>{instance.getActiveAccount()?.name}</Menu.Item>
         </Menu.Section>
       </Menu>
-    </StyledTopBar>
+    </Styled.TopBar>
   )
 }
 
