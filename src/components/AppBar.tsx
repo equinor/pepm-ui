@@ -1,11 +1,12 @@
 import { useMsal } from '@azure/msal-react'
-import { Button, Icon, Menu, Tabs, TopBar } from '@equinor/eds-core-react'
+import { Menu, Tabs, TopBar } from '@equinor/eds-core-react'
 import {
   account_circle as accountCircle,
   notifications,
 } from '@equinor/eds-icons'
 import { useRef, useState } from 'react'
 import styled from 'styled-components'
+import IconButton from './IconButton'
 
 const StyledTopBar = styled(TopBar)`
   height: 100%;
@@ -71,12 +72,18 @@ const AppBar = ({ title }: { title: string }) => {
       <NavigationTabs />
       <TopBar.Actions>
         <Icons>
-          <Button variant="ghost_icon">
-            <Icon name="notifications" data={notifications} />
-          </Button>
-          <Button variant="ghost_icon">
-            <Icon name="accountCircle" data={accountCircle} />
-          </Button>
+          <IconButton
+            title={'Notifications'}
+            icon={notifications}
+            onClick={toggleNotifications}
+            ref={notificationsRef}
+          />
+          <IconButton
+            title={'UserInfo'}
+            icon={accountCircle}
+            onClick={toggleUserInfo}
+            ref={userInfoRef}
+          />
         </Icons>
       </TopBar.Actions>
       <Menu
