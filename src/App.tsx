@@ -3,7 +3,7 @@ import {
   UnauthenticatedTemplate,
   useMsal,
 } from '@azure/msal-react'
-import { AppBar } from './components/AppBar'
+import { AppBar } from './features/AppBar/AppBar'
 
 function App() {
   const { instance } = useMsal()
