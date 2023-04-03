@@ -6,7 +6,7 @@ import {
 } from '@equinor/eds-icons'
 import { useRef, useState } from 'react'
 import styled from 'styled-components'
-import IconButton from './IconButton'
+import IconButton from '../../components/IconButton'
 
 const StyledTopBar = styled(TopBar)`
   height: 100%;
