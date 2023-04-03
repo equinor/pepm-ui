@@ -1,8 +1,10 @@
-import { Button, Icon, Tabs, TopBar } from '@equinor/eds-core-react'
+import { useMsal } from '@azure/msal-react'
+import { Button, Icon, Menu, Tabs, TopBar } from '@equinor/eds-core-react'
 import {
   account_circle as accountCircle,
   notifications,
 } from '@equinor/eds-icons'
+import { useRef, useState } from 'react'
 import styled from 'styled-components'
 
 const StyledTopBar = styled(TopBar)`
@@ -41,6 +43,28 @@ const NavigationTabs = () => {
 }
 
 const AppBar = ({ title }: { title: string }) => {
+  const { instance } = useMsal()
+  const [menu, setMenu] = useState<{
+    notifications: { isOpen: boolean }
+    userInfo: { isOpen: boolean }
+  }>({ notifications: { isOpen: false }, userInfo: { isOpen: false } })
+  const notificationsRef = useRef<HTMLButtonElement>(null)
+  const userInfoRef = useRef<HTMLButtonElement>(null)
+
+  function toggleNotifications() {
+    setMenu({
+      notifications: { isOpen: !menu.notifications.isOpen },
+      userInfo: { isOpen: false },
+    })
+  }
+
+  function toggleUserInfo() {
+    setMenu({
+      notifications: { isOpen: false },
+      userInfo: { isOpen: !menu.userInfo.isOpen },
+    })
+  }
+
   return (
     <StyledTopBar>
       <TopBar.Header>{title}</TopBar.Header>
@@ -55,6 +79,17 @@ const AppBar = ({ title }: { title: string }) => {
           </Button>
         </Icons>
       </TopBar.Actions>
+      <Menu
+        open={menu.notifications.isOpen}
+        anchorEl={notificationsRef.current}
+      >
+        <Menu.Item>Notifications (Not ready yet)</Menu.Item>
+      </Menu>
+      <Menu open={menu.userInfo.isOpen} anchorEl={userInfoRef.current}>
+        <Menu.Section title="Logged in">
+          <Menu.Item>{instance.getActiveAccount()?.name}</Menu.Item>
+        </Menu.Section>
+      </Menu>
     </StyledTopBar>
   )
 }
