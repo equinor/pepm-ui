@@ -1,10 +1,9 @@
 import { Tabs, TopBar } from '@equinor/eds-core-react'
 import styled from 'styled-components'
+import { spacings } from '../../tokens/spacings'
 
 const StyledTopBar = styled(TopBar)`
-  height: 100%;
-  padding-bottom: 0;
-  padding-top: 0;
+  column-gap: ${spacings.X_LARGE};
 `
 
 const StyledTabs = styled(Tabs)`
@@ -12,6 +11,9 @@ const StyledTabs = styled(Tabs)`
   justify-content: flex-end;
 
   > * {
+    display: flex;
+    gap: ${spacings.SMALL};
+
     > [aria-selected='false'] {
       border-color: transparent;
     }
@@ -20,6 +22,6 @@ const StyledTabs = styled(Tabs)`
 
 const Icons = styled.div`
   display: flex;
-  gap: 0.5em;
+  gap: ${spacings.SMALL};
 `
 export { StyledTopBar as TopBar, StyledTabs as Tabs, Icons }
