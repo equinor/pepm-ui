@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { AppBar } from './AppBar'
+import AppBar from './AppBar'
 
 test('renders navigation tabs', () => {
   render(<AppBar title={'Title'} />)
