@@ -67,10 +67,15 @@ const AppBar = ({ title }: { title: string }) => {
       <Menu
         open={menu.notifications.isOpen}
         anchorEl={notificationsRef.current}
+        placement="bottom-end"
       >
         <Menu.Item>Notifications (Not ready yet)</Menu.Item>
       </Menu>
-      <Menu open={menu.userInfo.isOpen} anchorEl={userInfoRef.current}>
+      <Menu
+        open={menu.userInfo.isOpen}
+        anchorEl={userInfoRef.current}
+        placement="bottom-end"
+      >
         <Menu.Section title="Logged in">
           <Menu.Item>{instance.getActiveAccount()?.name}</Menu.Item>
         </Menu.Section>
