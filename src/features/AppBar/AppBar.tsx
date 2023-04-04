@@ -5,7 +5,7 @@ import {
   notifications,
 } from '@equinor/eds-icons'
 import { useRef, useState } from 'react'
-import IconButton from '../../components/IconButton'
+import IconButton from '../../components/IconButton/IconButton'
 import * as Styled from './AppBar.styled'
 
 const NavigationTabs = () => {
