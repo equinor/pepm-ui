@@ -4,8 +4,7 @@ import {
   account_circle as accountCircle,
   notifications,
 } from '@equinor/eds-icons'
-import { useRef, useState } from 'react'
-import IconButton from '../../components/IconButton/IconButton'
+import MenuIcon from '../../components/MenuIcon/MenuIcon'
 import * as Styled from './AppBar.styled'
 
 const NavigationTabs = () => {
@@ -23,25 +22,16 @@ const NavigationTabs = () => {
 
 const AppBar = ({ title }: { title: string }) => {
   const { instance } = useMsal()
-  const [menu, setMenu] = useState<{
-    notifications: { isOpen: boolean }
-    userInfo: { isOpen: boolean }
-  }>({ notifications: { isOpen: false }, userInfo: { isOpen: false } })
-  const notificationsRef = useRef<HTMLButtonElement>(null)
-  const userInfoRef = useRef<HTMLButtonElement>(null)
 
-  function toggleNotifications() {
-    setMenu({
-      notifications: { isOpen: !menu.notifications.isOpen },
-      userInfo: { isOpen: false },
-    })
-  }
-
-  function toggleUserInfo() {
-    setMenu({
-      notifications: { isOpen: false },
-      userInfo: { isOpen: !menu.userInfo.isOpen },
-    })
+  const icons = {
+    notifications: {
+      title: 'Notifications',
+      data: notifications,
+    },
+    userInfo: {
+      title: 'UserInfo',
+      data: accountCircle,
+    },
   }
 
   return (
@@ -50,38 +40,18 @@ const AppBar = ({ title }: { title: string }) => {
       <NavigationTabs />
       <TopBar.Actions>
         <Styled.Icons>
-          <IconButton
-            title={'Notifications'}
-            icon={notifications}
-            onClick={toggleNotifications}
-            ref={notificationsRef}
-          />
-          <IconButton
-            title={'UserInfo'}
-            icon={accountCircle}
-            onClick={toggleUserInfo}
-            ref={userInfoRef}
-          />
+          <MenuIcon icon={icons.notifications}>
+            <Menu.Item>Notifications (Not ready yet)</Menu.Item>
+          </MenuIcon>
+          <MenuIcon icon={icons.userInfo}>
+            <Menu.Section title="Logged in">
+              <Menu.Item>{instance.getActiveAccount()?.name}</Menu.Item>
+            </Menu.Section>
+          </MenuIcon>
         </Styled.Icons>
       </TopBar.Actions>
-      <Menu
-        open={menu.notifications.isOpen}
-        anchorEl={notificationsRef.current}
-        placement="bottom-end"
-      >
-        <Menu.Item>Notifications (Not ready yet)</Menu.Item>
-      </Menu>
-      <Menu
-        open={menu.userInfo.isOpen}
-        anchorEl={userInfoRef.current}
-        placement="bottom-end"
-      >
-        <Menu.Section title="Logged in">
-          <Menu.Item>{instance.getActiveAccount()?.name}</Menu.Item>
-        </Menu.Section>
-      </Menu>
     </Styled.TopBar>
   )
 }
 
-export { AppBar }
+export default AppBar
