@@ -6,7 +6,7 @@ import {
 import { Outlet } from 'react-router-dom'
 import AppBar from './features/AppBar/AppBar'
 
-function App() {
+export function App() {
   const { instance } = useMsal()
 
   return (
@@ -24,5 +24,3 @@ function App() {
     </>
   )
 }
-
-export default App

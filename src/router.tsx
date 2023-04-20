@@ -1,5 +1,5 @@
 import { createBrowserRouter, NonIndexRouteObject } from 'react-router-dom'
-import App from './App'
+import { App } from './App'
 
 interface Tab extends Required<Pick<NonIndexRouteObject, 'path' | 'element'>> {
   title: string
