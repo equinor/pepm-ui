@@ -6,20 +6,22 @@ import * as Styled from './Navigation.styled'
 
 export const Navigation = () => {
   const navigate = useNavigate()
-  const [activeTab, setActiveTab] = useState<number>()
+  const [activeTab, setActiveTab] = useState<(typeof tabs)[number]>(tabs[0])
 
   function clickTab(tab: number) {
     navigate(tabs[tab].path)
-    setActiveTab(tab)
+    setActiveTab(tabs[tab])
   }
 
   return (
-    <Styled.Tabs activeTab={activeTab} onChange={clickTab}>
+    <Styled.Tabs activeTab={tabs.indexOf(activeTab)} onChange={clickTab}>
       <Tabs.List>
         {tabs.map((tab) => (
           // TODO: Ensure that default accessibility concerns are met
           // This doesn't support browser's default behaviour to "open in new tab"
-          <Tabs.Tab key={tab.title}>{tab.title}</Tabs.Tab>
+          <Tabs.Tab key={tab.title} active={tab === activeTab}>
+            {tab.title}
+          </Tabs.Tab>
         ))}
       </Tabs.List>
     </Styled.Tabs>
