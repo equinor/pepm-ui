@@ -24,3 +24,6 @@ We use [husky](https://typicode.github.io/husky/#/) to automatically run tests, 
 ```sh
 yarn pre-commit
 ```
+
+## Authentication
+Authentication is implemented with [Microsoft Oauth2 for React](https://learn.microsoft.com/en-us/azure/active-directory/develop/single-page-app-tutorial-01-register-app)
