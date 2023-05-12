@@ -8,6 +8,6 @@ services:
     volumes:
       - ./src:/code/src
     env_file:
-      - .env
+      - .env.development.local
     ports:
       - 3000:3000
