@@ -12,6 +12,10 @@ CMD ["yarn", "start"]
 FROM base AS production
 RUN yarn global add serve
 RUN yarn build
-USER $USER
+RUN deluser --remove-home node \
+    && addgroup -S node -g 1001 \
+    && adduser -S -G node -u 1001 node
+
+USER 1001
 EXPOSE 3000
 CMD ["serve", "build", "--listen", "3000"]
