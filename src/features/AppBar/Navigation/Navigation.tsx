@@ -1,25 +1,23 @@
 import { Tabs } from '@equinor/eds-core-react'
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { tabs } from '../../../router'
 import * as Styled from './Navigation.styled'
 
 export const Navigation = () => {
   const navigate = useNavigate()
-  const [activeTab, setActiveTab] = useState<(typeof tabs)[number]>(tabs[0])
+  const active = tabs.find((tab) => `/${tab.path}` === window.location.pathname)
 
   function clickTab(tab: number) {
     navigate(tabs[tab].path)
-    setActiveTab(tabs[tab])
   }
 
   return (
-    <Styled.Tabs activeTab={tabs.indexOf(activeTab)} onChange={clickTab}>
+    <Styled.Tabs activeTab={active && tabs.indexOf(active)} onChange={clickTab}>
       <Tabs.List>
         {tabs.map((tab) => (
           // TODO: Ensure that default accessibility concerns are met
           // This doesn't support browser's default behaviour to "open in new tab"
-          <Tabs.Tab key={tab.title} active={tab === activeTab}>
+          <Tabs.Tab key={tab.title} active={tab === active}>
             {tab.title}
           </Tabs.Tab>
         ))}
