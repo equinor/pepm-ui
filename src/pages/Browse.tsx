@@ -1,13 +1,12 @@
-import { useAnalogueModels } from '../hooks/useAnalogueModels'
+import { Table } from '../components/Table'
 
 export const Browse = () => {
-  const models = useAnalogueModels()
-
   return (
     <>
-      {models?.map((model) => (
+      {/* models?.map((model) => (
         <p key={model.name}>{model.name}</p>
-      ))}
+      ))*/}
+      <Table />
     </>
   )
 }
