@@ -3,6 +3,7 @@ kind: RadixApplication
 metadata:
   name: pepm
 spec:
+  build:
   environments:
     - name: dev
       build:
@@ -17,12 +18,11 @@ spec:
         - name: http
           port: 3000
       variables:
+        REACT_APP_AAD_TENANT_ID: ""
+        REACT_APP_AAD_CLIENT_ID: ""
         REACT_APP_AAD_REDIRECT_URI: ""
         REACT_APP_BACKEND_URL: ""
-      secrets:
-        - REACT_APP_AAD_CLIENT_ID
-        - REACT_APP_AAD_TENANT_ID
-        - REACT_APP_BACKEND_API_SCOPE
+        REACT_APP_BACKEND_API_SCOPE: ""
       environmentConfig:
         - environment: dev
         - environment: test
