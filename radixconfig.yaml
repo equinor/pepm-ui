@@ -1,0 +1,57 @@
+apiVersion: radix.equinor.com/v1
+kind: RadixApplication
+metadata:
+  name: pepm
+spec:
+  environments:
+    - name: dev
+      build:
+        from: main
+    - name: test
+    - name: prod
+  components:
+    - name: web
+      src: .
+      publicPort: http
+      ports:
+        - name: http
+          port: 3000
+      variables:
+        REACT_APP_AAD_REDIRECT_URI: ""
+        REACT_APP_BACKEND_URL: ""
+      secrets:
+        - REACT_APP_AAD_CLIENT_ID
+        - REACT_APP_AAD_TENANT_ID
+        - REACT_APP_BACKEND_API_SCOPE
+      environmentConfig:
+        - environment: dev
+        - environment: test
+        - environment: prod
+    - name: api
+      image: ghcr.io/equinor/pepm-core-api/pepm-api:{imageTagName}
+      publicPort: http
+      ports:
+        - name: http
+          port: 5000
+      secrets:
+        - AzureAd__ClientId
+        - AzureAd__ClientSecret
+        - ConnectionStrings__PepmConnectionString
+        - ConnectionStrings__AzureBlobStorage
+      environmentConfig:
+        - environment: dev
+          imageTagName: latest
+          variables:
+            ASPNETCORE_ENVIRONMENT: "Development"
+        - environment: test
+          imageTagName: latest
+          variables:
+            ASPNETCORE_ENVIRONMENT: "Test"
+        - environment: prod
+          imageTagName: latest
+          variables:
+            ASPNETCORE_ENVIRONMENT: "Production"
+  privateImageHubs:
+    ghcr.io:
+      username: hakoneriksson
+      email: hake@equinor.com
