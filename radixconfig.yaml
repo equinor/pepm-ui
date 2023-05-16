@@ -6,7 +6,7 @@ spec:
   environments:
     - name: dev
       build:
-        from: main
+        from: radix-cicd
     - name: test
     - name: prod
   components:
