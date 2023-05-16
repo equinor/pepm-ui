@@ -1,0 +1,21 @@
+# Node
+**/node_modules/
+**/dist
+npm-debug.log
+**/*.env
+
+# Git
+.git
+.gitignore
+.github
+
+# VS Code
+.vs
+
+# Radix
+radixconfig.yaml
+
+# Other
+README.md
+LICENSE
+.husky
