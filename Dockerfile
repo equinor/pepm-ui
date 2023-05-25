@@ -10,11 +10,6 @@ FROM base AS development
 CMD ["yarn", "start"]
 
 FROM base AS production
-ENV REACT_APP_AAD_TENANT_ID=3aa4a235-b6e2-48d5-9195-7fcf05b459b0
-ENV REACT_APP_AAD_CLIENT_ID=e8a0f8e6-059b-426f-9011-40f463640285
-ENV REACT_APP_BACKEND_API_SCOPE=api://e8a0f8e6-059b-426f-9011-40f463640285/read
-ENV REACT_APP_BACKEND_URL=https://api-pepm-dev.radix.equinor.com
-ENV REACT_APP_AAD_REDIRECT_URI=/
 
 RUN yarn global add serve
 RUN yarn build
