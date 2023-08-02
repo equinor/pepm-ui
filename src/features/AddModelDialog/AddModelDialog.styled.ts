@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { spacings } from '../../tokens/spacings'
 
 const StyledDialog = styled(Dialog)`
-  width: 30em;
+  width: max-content;
 `
 
 const StyledDialogActions = styled(Dialog.Actions)`
