@@ -9,10 +9,9 @@ interface Tab extends Required<Pick<NonIndexRouteObject, 'path' | 'element'>> {
 const NotImplemented = () => <p>Not implemented</p>
 
 const tabs: Tab[] = [
-  { title: 'Add model', path: 'add-model', element: <NotImplemented /> },
   {
-    title: 'Browse',
-    path: 'browse',
+    title: 'Models',
+    path: 'models',
     element: <Browse />,
   },
   { title: 'API', path: 'api', element: <NotImplemented /> },
