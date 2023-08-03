@@ -1,10 +1,64 @@
-import { Button, Table } from '@equinor/eds-core-react'
-import { delete_to_trash as deleteIcon } from '@equinor/eds-icons'
+import { Button, Icon, Table } from '@equinor/eds-core-react'
+import {
+  subdirectory_arrow_right as arrowIcon,
+  delete_to_trash as deleteIcon,
+} from '@equinor/eds-icons'
 import IconButton from '../../components/IconButton/IconButton'
+import { theme } from '../../tokens/theme'
+import * as Styled from './ModelInputFiles.styled'
+
+// Temporary type
+type File = { name: string; size: number }
 
 interface ModelInputFilesTableProps {
-  inputFiles: { name: string; size: number }[]
+  inputFiles: File[]
+  // NC file:
+  modelFile?: File
+  // INI file:
+  parameterFile?: File
   onDeleteFile: () => void
+}
+
+const FileColumn = ({
+  file,
+  deleteFile,
+  className,
+}: {
+  file?: File
+  deleteFile: () => void
+  className?: string
+}) => {
+  return (
+    <Table.Row className={className}>
+      {file ? (
+        // INI file
+        <>
+          <Table.Cell>{file.name}</Table.Cell>
+          <Table.Cell>
+            <Button variant="outlined">Hide</Button>
+          </Table.Cell>
+          <Table.Cell>{`${file.size} GB`}</Table.Cell>
+          <Table.Cell>
+            <IconButton icon={deleteIcon} title="delete" onClick={deleteFile} />
+          </Table.Cell>
+        </>
+      ) : (
+        // Upload INI file
+        <>
+          <Styled.TableCell>
+            <Icon
+              fill={theme.light.text.staticIconsTertiary}
+              data={arrowIcon}
+            />
+            <a href="/">Select parameter INI file</a> (optional)
+          </Styled.TableCell>
+          <Table.Cell />
+          <Table.Cell>-</Table.Cell>
+          <Table.Cell />
+        </>
+      )}
+    </Table.Row>
+  )
 }
 
 export const ModelInputFilesTable = ({
@@ -22,24 +76,16 @@ export const ModelInputFilesTable = ({
         </Table.Row>
       </Table.Head>
       <Table.Body>
-        <Table.Row>
-          {inputFiles.map((file) => (
-            <>
-              <Table.Cell>{file.name}</Table.Cell>
-              <Table.Cell>
-                <Button variant="outlined">Hide</Button>
-              </Table.Cell>
-              <Table.Cell>{`${file.size} GB`}</Table.Cell>
-              <Table.Cell>
-                <IconButton
-                  icon={deleteIcon}
-                  title="delete"
-                  onClick={onDeleteFile}
-                />
-              </Table.Cell>
-            </>
-          ))}
-        </Table.Row>
+        <FileColumn
+          className="nc-file"
+          deleteFile={onDeleteFile}
+          file={inputFiles[0]}
+        />
+        <FileColumn
+          className="ini-file"
+          deleteFile={onDeleteFile}
+          file={inputFiles[1]}
+        />
       </Table.Body>
     </Table>
   )

@@ -16,5 +16,8 @@ export const theme = {
       linkHover: interactive.secondary__link_hover.hex,
       highlight: interactive.secondary__highlight.hex,
     },
+    text: {
+      staticIconsTertiary: tokens.colors.text.static_icons__tertiary.hex,
+    },
   },
 }
