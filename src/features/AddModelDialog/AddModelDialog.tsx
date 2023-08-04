@@ -14,8 +14,6 @@ interface AddModelDialogProps {
   cancel: () => void
 }
 
-type Content = 'INI_FILE' | 'METADATA'
-
 const DescriptionAndMetadata = () => {
   const fields = [{ name: 'Tor' }]
   return (
@@ -40,22 +38,24 @@ export const AddModelDialog = ({
   confirm,
   cancel,
 }: AddModelDialogProps) => {
-  const [content, setContent] = useState<Content>('METADATA')
+  const [isFileDisplay, setFileDisplay] = useState<boolean>(false)
+  const files = {
+    NC: {
+      name: 'CoarseSand_LargerFlow_1.nc',
+      size: 1.43,
+      onDelete: deleteInputFile,
+    },
+  }
 
   // Temporary ignore because not implemented yet
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   function deleteInputFile() {}
 
-  function toggleContent() {
-    setContent(content === 'METADATA' ? 'INI_FILE' : 'METADATA')
+  function toggleINIFileContent() {
+    setFileDisplay(!isFileDisplay)
   }
 
-  const DisplayContent = ({ display }: { display: Content }) =>
-    display === 'METADATA' ? (
-      <DescriptionAndMetadata />
-    ) : (
-      <p>Not implemented yet...</p>
-    )
+  const INIFileContent = () => <p>Not implemented yet...</p>
 
   return (
     <Styled.Dialog open={isOpen}>
@@ -64,19 +64,14 @@ export const AddModelDialog = ({
       </Styled.Dialog.Header>
       <Styled.DialogCustomContent scrollable>
         <InputFilesTable
-          files={{
-            NC: {
-              name: 'CoarseSand_LargerFlow_1.nc',
-              size: 1.43,
-              onDelete: deleteInputFile,
-            },
-          }}
+          files={files}
           fileDisplay={{
-            isFileDisplay: content === 'INI_FILE',
-            toggleFileDisplay: toggleContent,
+            isFileDisplay: isFileDisplay,
+            toggleFileDisplay: toggleINIFileContent,
           }}
         />
-        <DisplayContent display={content} />
+        {isFileDisplay && <INIFileContent />}
+        <DescriptionAndMetadata />
       </Styled.DialogCustomContent>
       <Styled.DialogActions>
         <Button onClick={confirm}>Confirm and start uploading</Button>
