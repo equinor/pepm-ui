@@ -8,63 +8,62 @@ import { theme } from '../../tokens/theme'
 import * as Styled from './ModelInputFiles.styled'
 
 // Temporary type
-type File = { name: string; size: number }
+type File = { name: string; size: number; onDelete: () => void }
 
-interface ModelInputFilesTableProps {
-  inputFiles: File[]
-  // NC file:
-  modelFile?: File
-  // INI file:
-  parameterFile?: File
-  onDeleteFile: () => void
-}
+type FileDisplay = { isFileDisplay: boolean; toggleFileDisplay: () => void }
 
-const FileColumn = ({
+const DeleteButton = ({ onDelete }: { onDelete: () => void }) => (
+  <IconButton icon={deleteIcon} title="delete" onClick={onDelete} />
+)
+
+const ModelFileColumn = ({ file }: { file?: File }) => (
+  <Table.Row className="nc-file">
+    <Table.Cell>
+      {file ? file.name : <a href="/">Select model NC file</a>}
+    </Table.Cell>
+    <Table.Cell />
+    <Table.Cell>{file ? `${file.size} GB` : '-'}</Table.Cell>
+    <Table.Cell>{file && <DeleteButton onDelete={file.onDelete} />}</Table.Cell>
+  </Table.Row>
+)
+
+const ParameterFileColumn = ({
   file,
-  deleteFile,
-  className,
+  fileDisplay,
 }: {
   file?: File
-  deleteFile: () => void
-  className?: string
-}) => {
-  return (
-    <Table.Row className={className}>
+  fileDisplay?: FileDisplay
+}) => (
+  <Table.Row className="ini-file">
+    <Styled.TableCell>
       {file ? (
-        // INI file
-        <>
-          <Table.Cell>{file.name}</Table.Cell>
-          <Table.Cell>
-            <Button variant="outlined">Hide</Button>
-          </Table.Cell>
-          <Table.Cell>{`${file.size} GB`}</Table.Cell>
-          <Table.Cell>
-            <IconButton icon={deleteIcon} title="delete" onClick={deleteFile} />
-          </Table.Cell>
-        </>
+        file.name
       ) : (
-        // Upload INI file
         <>
-          <Styled.TableCell>
-            <Icon
-              fill={theme.light.text.staticIconsTertiary}
-              data={arrowIcon}
-            />
-            <a href="/">Select parameter INI file</a> (optional)
-          </Styled.TableCell>
-          <Table.Cell />
-          <Table.Cell>-</Table.Cell>
-          <Table.Cell />
+          <Icon fill={theme.light.text.staticIconsTertiary} data={arrowIcon} />
+          <a href="/">Select parameter INI file</a> (optional)
         </>
       )}
-    </Table.Row>
-  )
-}
+    </Styled.TableCell>
+    <Table.Cell>
+      {file && (
+        <Button variant="outlined" onClick={fileDisplay?.toggleFileDisplay}>
+          {fileDisplay?.isFileDisplay ? 'Hide' : 'Show'}
+        </Button>
+      )}
+    </Table.Cell>
+    <Table.Cell>{file ? `${file.size} GB` : '-'}</Table.Cell>
+    <Table.Cell>{file && <DeleteButton onDelete={file.onDelete} />}</Table.Cell>
+  </Table.Row>
+)
 
 export const ModelInputFilesTable = ({
-  inputFiles,
-  onDeleteFile,
-}: ModelInputFilesTableProps) => {
+  files,
+  fileDisplay,
+}: {
+  files: { NC?: File; INI?: File }
+  fileDisplay: FileDisplay
+}) => {
   return (
     <Table>
       <Table.Head>
@@ -76,16 +75,8 @@ export const ModelInputFilesTable = ({
         </Table.Row>
       </Table.Head>
       <Table.Body>
-        <FileColumn
-          className="nc-file"
-          deleteFile={onDeleteFile}
-          file={inputFiles[0]}
-        />
-        <FileColumn
-          className="ini-file"
-          deleteFile={onDeleteFile}
-          file={inputFiles[1]}
-        />
+        <ModelFileColumn file={files.NC} />
+        <ParameterFileColumn file={files.INI} fileDisplay={fileDisplay} />
       </Table.Body>
     </Table>
   )
