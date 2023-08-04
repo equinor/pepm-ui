@@ -5,7 +5,7 @@ import {
 } from '@equinor/eds-icons'
 import IconButton from '../../components/IconButton/IconButton'
 import { theme } from '../../tokens/theme'
-import * as Styled from './ModelInputFiles.styled'
+import * as Styled from './InputFilesTable.styled'
 
 // Temporary type
 type File = { name: string; size: number; onDelete: () => void }
@@ -57,7 +57,7 @@ const ParameterFileColumn = ({
   </Table.Row>
 )
 
-export const ModelInputFilesTable = ({
+export const InputFilesTable = ({
   files,
   fileDisplay,
 }: {
