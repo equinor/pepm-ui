@@ -4,6 +4,7 @@ import {
   TextField,
   Typography,
 } from '@equinor/eds-core-react'
+import { useState } from 'react'
 import { ModelInputFilesTable } from '../ModelInputFiles/ModelInputFiles'
 import * as Styled from './AddModelDialog.styled'
 
@@ -12,6 +13,8 @@ interface AddModelDialogProps {
   confirm: () => void
   cancel: () => void
 }
+
+type Content = 'INI_FILE' | 'METADATA'
 
 const DescriptionAndMetadata = () => {
   const fields = [{ name: 'Tor' }]
@@ -37,9 +40,22 @@ export const AddModelDialog = ({
   confirm,
   cancel,
 }: AddModelDialogProps) => {
+  const [content, setContent] = useState<Content>('METADATA')
+
   // Temporary ignore because not implemented yet
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   function deleteInputFile() {}
+
+  function toggleContent() {
+    setContent(content === 'METADATA' ? 'INI_FILE' : 'METADATA')
+  }
+
+  const DisplayContent = ({ display }: { display: Content }) =>
+    display === 'METADATA' ? (
+      <DescriptionAndMetadata />
+    ) : (
+      <p>Not implemented yet...</p>
+    )
 
   return (
     <Styled.Dialog open={isOpen}>
@@ -48,10 +64,19 @@ export const AddModelDialog = ({
       </Styled.Dialog.Header>
       <Styled.DialogCustomContent>
         <ModelInputFilesTable
-          inputFiles={[{ name: 'CoarseSand_LargerFlow_1.nc', size: 1.43 }]}
-          onDeleteFile={deleteInputFile}
+          files={{
+            NC: {
+              name: 'CoarseSand_LargerFlow_1.nc',
+              size: 1.43,
+              onDelete: deleteInputFile,
+            },
+          }}
+          fileDisplay={{
+            isFileDisplay: content === 'INI_FILE',
+            toggleFileDisplay: toggleContent,
+          }}
         />
-        <DescriptionAndMetadata />
+        <DisplayContent display={content} />
         <Styled.DialogActions>
           <Button onClick={confirm}>Confirm and start uploading</Button>
           <Button variant="outlined" onClick={cancel}>
