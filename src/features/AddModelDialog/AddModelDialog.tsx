@@ -5,7 +5,7 @@ import {
   Typography,
 } from '@equinor/eds-core-react'
 import { useState } from 'react'
-import { ModelInputFilesTable } from '../ModelInputFiles/ModelInputFiles'
+import { InputFilesTable } from '../InputFilesTable/InputFilesTable'
 import * as Styled from './AddModelDialog.styled'
 
 interface AddModelDialogProps {
@@ -63,7 +63,7 @@ export const AddModelDialog = ({
         <Styled.Dialog.Title>Add new model</Styled.Dialog.Title>
       </Styled.Dialog.Header>
       <Styled.DialogCustomContent>
-        <ModelInputFilesTable
+        <InputFilesTable
           files={{
             NC: {
               name: 'CoarseSand_LargerFlow_1.nc',
