@@ -3,8 +3,8 @@ import {
   subdirectory_arrow_right as arrowIcon,
   delete_to_trash as deleteIcon,
 } from '@equinor/eds-icons'
-import IconButton from '../../components/IconButton/IconButton'
-import { theme } from '../../tokens/theme'
+import IconButton from '../../../components/IconButton/IconButton'
+import { theme } from '../../../tokens/theme'
 import * as Styled from './InputFilesTable.styled'
 
 // Temporary type

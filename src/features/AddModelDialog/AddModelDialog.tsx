@@ -5,8 +5,8 @@ import {
   Typography,
 } from '@equinor/eds-core-react'
 import { useState } from 'react'
-import { InputFilesTable } from '../InputFilesTable/InputFilesTable'
 import * as Styled from './AddModelDialog.styled'
+import { InputFilesTable } from './InputFilesTable/InputFilesTable'
 
 interface AddModelDialogProps {
   isOpen: boolean
