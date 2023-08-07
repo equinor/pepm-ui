@@ -10,7 +10,7 @@ import * as Styled from './InputFilesTable.styled'
 // Temporary type
 type File = { name: string; size: number; onDelete: () => void }
 
-type FileDisplay = { isFileDisplay: boolean; toggleFileDisplay: () => void }
+type FileDisplay = { isVisible: boolean; toggle: () => void }
 
 const DeleteButton = ({ onDelete }: { onDelete: () => void }) => (
   <IconButton icon={deleteIcon} title="delete" onClick={onDelete} />
@@ -47,8 +47,8 @@ const ParameterFileColumn = ({
     </Styled.TableCell>
     <Table.Cell>
       {file && (
-        <Button variant="outlined" onClick={fileDisplay?.toggleFileDisplay}>
-          {fileDisplay?.isFileDisplay ? 'Hide' : 'Show'}
+        <Button variant="outlined" onClick={fileDisplay?.toggle}>
+          {fileDisplay?.isVisible ? 'Hide' : 'Show'}
         </Button>
       )}
     </Table.Cell>
