@@ -1,36 +1,13 @@
-import {
-  Autocomplete,
-  Button,
-  TextField,
-  Typography,
-} from '@equinor/eds-core-react'
+import { Button } from '@equinor/eds-core-react'
 import { useState } from 'react'
 import * as Styled from './AddModelDialog.styled'
 import { InputFilesTable } from './InputFilesTable/InputFilesTable'
+import { Metadata } from './Metadata/Metadata'
 
 interface AddModelDialogProps {
   isOpen: boolean
   confirm: () => void
   cancel: () => void
-}
-
-const DescriptionAndMetadata = () => {
-  const fields = [{ name: 'Tor' }]
-  return (
-    <Styled.Metadata className="model-metadata">
-      <Typography variant="h4">Description and metadata</Typography>
-      <TextField
-        id="model-description"
-        className="model-description"
-        label="Model description (optional)"
-        multiline
-      />
-      <Autocomplete label="Field" options={fields}></Autocomplete>
-      <Autocomplete label="Formation" options={fields}></Autocomplete>
-      <Autocomplete label="Analogue (optional)" options={fields}></Autocomplete>
-      <Autocomplete label="Zone (optional)" options={fields}></Autocomplete>
-    </Styled.Metadata>
-  )
 }
 
 export const AddModelDialog = ({
@@ -71,7 +48,7 @@ export const AddModelDialog = ({
           }}
         />
         {isFileDisplay && <INIFileContent />}
-        <DescriptionAndMetadata />
+        <Metadata />
       </Styled.DialogCustomContent>
       <Styled.DialogActions>
         <Button onClick={confirm}>Confirm and start uploading</Button>

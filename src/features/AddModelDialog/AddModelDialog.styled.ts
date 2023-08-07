@@ -19,22 +19,8 @@ const StyledDialogActions = styled(Dialog.Actions)`
   gap: ${spacings.SMALL};
 `
 
-const StyledMetadata = styled.div`
-  &.model-metadata {
-    display: grid;
-    grid-template-columns: auto auto;
-    column-gap: ${spacings.MEDIUM}};
-    row-gap: ${spacings.MEDIUM};
-
-    > .model-description {
-      grid-column: 1 / span 2;
-    }
-  }
-`
-
 export {
   StyledDialog as Dialog,
   StyledDialogActions as DialogActions,
   StyledDialogCustomContent as DialogCustomContent,
-  StyledMetadata as Metadata,
 }
