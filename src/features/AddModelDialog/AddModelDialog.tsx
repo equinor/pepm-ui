@@ -66,8 +66,8 @@ export const AddModelDialog = ({
         <InputFilesTable
           files={files}
           fileDisplay={{
-            isFileDisplay: isFileDisplay,
-            toggleFileDisplay: toggleINIFileContent,
+            isVisible: isFileDisplay,
+            toggle: toggleINIFileContent,
           }}
         />
         {isFileDisplay && <INIFileContent />}
