@@ -17,12 +17,12 @@ export const Browse = () => {
     setUploadStatus(undefined)
   }
 
-  function closeDialog() {
-    setAddModelDialog(false)
+  function toggleDialog() {
+    setAddModelDialog(!isAddModelDialog)
   }
 
   function uploadModel() {
-    closeDialog()
+    toggleDialog()
     setUploadStatus(uploadProcess.started)
     // TODO: upload model
     // setUploadStatus(uploadProcess.success)
@@ -30,12 +30,12 @@ export const Browse = () => {
 
   return (
     <>
-      <Button onClick={() => setAddModelDialog(true)}>Add new model</Button>
+      <Button onClick={toggleDialog}>Add new model</Button>
       <Table />
       <AddModelDialog
         isOpen={isAddModelDialog}
         confirm={uploadModel}
-        cancel={closeDialog}
+        cancel={toggleDialog}
       />
       <Snackbar
         open={!!uploadStatus}
