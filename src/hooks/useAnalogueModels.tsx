@@ -2,19 +2,14 @@ import { useEffect, useState } from 'react'
 import { callApi } from '../api/callApi'
 import { loginRequest } from '../auth/authConfig'
 import msalInstance from '../auth/msalClient'
+import { AnalogueModel } from '../models/models'
 
 /**
  * NOTE: This is a temporary hook for testing purposes
  */
 
-type Model = {
-  analogueModelId: string
-  name: string
-  description: string
-}
-
 export const useAnalogueModels = () => {
-  const [models, setModels] = useState<Model[]>([])
+  const [models, setModels] = useState<AnalogueModel[]>([])
 
   useEffect(() => {
     const request = {
@@ -28,7 +23,7 @@ export const useAnalogueModels = () => {
         .then((response) => response.accessToken)
         .then((token) =>
           callApi(token, '/analogueModels')
-            .then((response) => response)
+            .then((response) => response.value)
             .then((models) => setModels(models))
         )
         .catch(() =>
