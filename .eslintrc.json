@@ -11,6 +11,7 @@
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
     "plugin:jsx-a11y/recommended",
+    "plugin:@tanstack/eslint-plugin-query/recommended",
     "plugin:@typescript-eslint/recommended",
     "prettier",
     "plugin:prettier/recommended"
@@ -23,6 +24,7 @@
   },
   "plugins": [
     "react",
+    "@tanstack/query",
     "@typescript-eslint",
     "react-hooks",
     "jsx-a11y",
@@ -33,6 +35,8 @@
     "react-hooks/exhaustive-deps": "error",
     "react/boolean-prop-naming": "warn",
     "prettier/prettier": "error",
+    "@tanstack/query/exhaustive-deps": "error",
+    "@tanstack/query/prefer-query-object-syntax": "error",
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/ban-ts-comment": [
       "error",
