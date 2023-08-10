@@ -30,6 +30,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:ts": "tsc --noEmit",
     "eject": "react-scripts eject",
     "lint": "eslint --fix --ext .ts,.tsx .",
     "prepare": "husky install",
