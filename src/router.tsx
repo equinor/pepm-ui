@@ -1,6 +1,6 @@
 import { createBrowserRouter, NonIndexRouteObject } from 'react-router-dom'
 import { App } from './App'
-import { Browse } from './pages/Browse'
+import { Browse } from './pages/Browse/Browse'
 
 interface Tab extends Required<Pick<NonIndexRouteObject, 'path' | 'element'>> {
   title: string
