@@ -1,11 +1,11 @@
 import { useMsal } from '@azure/msal-react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { Outlet } from 'react-router-dom'
+import { queryClient } from '../auth/queryClient'
 import AppBar from '../features/AppBar/AppBar'
 
 export function PEPM() {
   const { instance } = useMsal()
-  const queryClient = new QueryClient()
 
   return (
     <QueryClientProvider client={queryClient}>
