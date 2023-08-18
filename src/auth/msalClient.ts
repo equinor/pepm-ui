@@ -1,10 +1,11 @@
+/* eslint-disable no-magic-numbers */
 import {
   AuthenticationResult,
   EventMessage,
   EventType,
   PublicClientApplication,
 } from '@azure/msal-browser'
-import { msalConfig } from './authConfig'
+import { loginRequest, msalConfig } from './authConfig'
 
 const msalInstance = new PublicClientApplication(msalConfig)
 
@@ -24,4 +25,20 @@ msalInstance.addEventCallback((event: EventMessage) => {
   }
 })
 
-export default msalInstance
+const request = {
+  ...loginRequest,
+  account: accounts[0],
+}
+
+async function fetchAccessToken() {
+  return msalInstance
+    .acquireTokenSilent(request)
+    .then((response) => response.accessToken)
+    .catch(() =>
+      msalInstance
+        .acquireTokenPopup(request)
+        .then((response) => response.accessToken)
+    )
+}
+
+export { fetchAccessToken, msalInstance }

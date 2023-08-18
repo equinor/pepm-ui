@@ -26,7 +26,7 @@ const loginRequest: PopupRequest = {
 }
 
 const apiConfig = {
-  baseUrl: `${process.env.REACT_APP_BACKEND_URL}/api`,
+  baseUrl: `${process.env.REACT_APP_BACKEND_URL}`,
 }
 
-export { msalConfig, loginRequest, apiConfig }
+export { apiConfig, loginRequest, msalConfig }
