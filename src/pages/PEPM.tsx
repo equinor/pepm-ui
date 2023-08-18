@@ -8,13 +8,11 @@ export function PEPM() {
   const queryClient = new QueryClient()
 
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <AppBar title="PEPM" />
       <p>Authenticated</p>
       <button onClick={() => instance.logoutRedirect()}>Log out</button>
-      <QueryClientProvider client={queryClient}>
-        <Outlet />
-      </QueryClientProvider>
-    </>
+      <Outlet />
+    </QueryClientProvider>
   )
 }
