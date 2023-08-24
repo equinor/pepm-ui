@@ -1,9 +1,11 @@
 import { DataTable } from '@equinor/apollo-components'
 import { Chip } from '@equinor/eds-core-react'
-import { useAnalogueModels } from '../hooks/useAnalogueModels'
+import { useGetAnalogueModels } from '../hooks/useGetAnalogueModels'
 
 export const Table = () => {
-  const models = useAnalogueModels()
+  const { data: models } = useGetAnalogueModels()
+
+  if (!models) return <p>Loading...</p>
 
   return (
     <DataTable
@@ -59,6 +61,6 @@ export const Table = () => {
           accessorKey: 'Status',
         },
       ]}
-    ></DataTable>
+    />
   )
 }
