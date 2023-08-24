@@ -5,6 +5,31 @@
 
 
 export interface paths {
+  "/api/analoguemodels/{id}/parameters": {
+    post: {
+      parameters: {
+        path: {
+          id: string;
+        };
+      };
+      requestBody?: {
+        content: {
+          "application/json-patch+json": components["schemas"]["AddAnalogueModelParameterCommandForm"];
+          "application/json": components["schemas"]["AddAnalogueModelParameterCommandForm"];
+          "text/json": components["schemas"]["AddAnalogueModelParameterCommandForm"];
+          "application/*+json": components["schemas"]["AddAnalogueModelParameterCommandForm"];
+        };
+      };
+      responses: {
+        /** @description Success */
+        200: {
+          content: {
+            "application/json": components["schemas"]["AddAnalogueModelParameterCommandResponse"];
+          };
+        };
+      };
+    };
+  };
   "/api/analoguemodels": {
     /** Get a list of all AnalogueModels */
     get: {
@@ -12,7 +37,7 @@ export interface paths {
         /** @description Success */
         200: {
           content: {
-            "application/json": components["schemas"]["AnalogueModelList"][];
+            "application/json": components["schemas"]["GetAnalogueModelListQueryResponse"];
           };
         };
       };
@@ -34,6 +59,12 @@ export interface paths {
             "application/json": components["schemas"]["CreateAnalogueModelCommandResponse"];
           };
         };
+        /** @description Bad Request */
+        400: {
+          content: {
+            "application/json": components["schemas"]["ErrorResponse"];
+          };
+        };
       };
     };
   };
@@ -49,7 +80,7 @@ export interface paths {
         /** @description Success */
         200: {
           content: {
-            "application/json": components["schemas"]["AnalogueModelDetail"];
+            "application/json": components["schemas"]["GetAnalogueModelQueryResponse"];
           };
         };
       };
@@ -79,13 +110,13 @@ export interface paths {
         /** @description Bad Request */
         400: {
           content: {
-            "application/json": components["schemas"]["StringBaseResponse"];
+            "application/json": components["schemas"]["ErrorResponse"];
           };
         };
         /** @description Not Found */
         404: {
           content: {
-            "application/json": components["schemas"]["StringBaseResponse"];
+            "application/json": components["schemas"]["ErrorResponse"];
           };
         };
       };
@@ -103,13 +134,13 @@ export interface paths {
         /** @description Bad Request */
         400: {
           content: {
-            "application/json": components["schemas"]["StringBaseResponse"];
+            "application/json": components["schemas"]["ErrorResponse"];
           };
         };
         /** @description Not Found */
         404: {
           content: {
-            "application/json": components["schemas"]["StringBaseResponse"];
+            "application/json": components["schemas"]["ErrorResponse"];
           };
         };
       };
@@ -139,57 +170,13 @@ export interface paths {
         /** @description Bad Request */
         400: {
           content: {
-            "application/json": components["schemas"]["StringBaseResponse"];
+            "application/json": components["schemas"]["ErrorResponse"];
           };
         };
         /** @description Not Found */
         404: {
           content: {
-            "application/json": components["schemas"]["StringBaseResponse"];
-          };
-        };
-      };
-    };
-  };
-  "/api/analoguemodels/{id}/uploads": {
-    /** Upload model files that is converted to PEPM models. */
-    post: {
-      parameters: {
-        path: {
-          id: string;
-        };
-      };
-      requestBody?: {
-        content: {
-          "multipart/form-data": {
-            /** Format: binary */
-            File?: string;
-            FileType?: components["schemas"]["UploadFileType"];
-          };
-        };
-      };
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "application/json": components["schemas"]["UploadAnalogueModelCommandResponse"];
-          };
-        };
-      };
-    };
-  };
-  "/api/analoguemodels/{id}/convert": {
-    post: {
-      parameters: {
-        path: {
-          id: string;
-        };
-      };
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "application/json": components["schemas"]["UploadAnalogueModelCommandResponse"];
+            "application/json": components["schemas"]["ErrorResponse"];
           };
         };
       };
@@ -201,7 +188,7 @@ export interface paths {
         /** @description Success */
         200: {
           content: {
-            "application/json": components["schemas"]["AnalogueList"];
+            "application/json": components["schemas"]["GetAnalogueListQueryResponse"];
           };
         };
       };
@@ -231,9 +218,93 @@ export interface paths {
         /** @description Success */
         200: {
           content: {
-            "application/json": components["schemas"]["JobList"];
+            "application/json": components["schemas"]["GetJobListQueryResponse"];
           };
         };
+      };
+    };
+  };
+  "/api/jobs/{id}": {
+    get: {
+      parameters: {
+        path: {
+          id: string;
+        };
+      };
+      responses: {
+        /** @description Success */
+        200: {
+          content: {
+            "application/json": components["schemas"]["GetJobDetailQueryResponse"];
+          };
+        };
+      };
+    };
+  };
+  "/api/jobs/{id}/status": {
+    /** Get current job status for job. This will fetch current status from underlying compute engine and update the status for the supplied Job Id. */
+    get: {
+      parameters: {
+        path: {
+          id: string;
+        };
+      };
+      responses: {
+        /** @description Success */
+        200: {
+          content: {
+            "application/json": components["schemas"]["GetCurrentJobStatusCommandResponse"];
+          };
+        };
+      };
+    };
+  };
+  "/api/jobs/status": {
+    /** Get current job status for all jobs. This will fetch current status from underlying compute engine and update the status for all matching Jobs. */
+    get: {
+      responses: {
+        /** @description Success */
+        200: {
+          content: {
+            "application/json": components["schemas"]["GetCurrentJobStatusListCommand"];
+          };
+        };
+      };
+    };
+    /** Update current job status for job. This will fetch current status from underlying compute engine and update the status for the supplied Job Name. */
+    post: {
+      requestBody?: {
+        content: {
+          "application/json-patch+json": components["schemas"]["UpdateJobStatusCommand"];
+          "application/json": components["schemas"]["UpdateJobStatusCommand"];
+          "text/json": components["schemas"]["UpdateJobStatusCommand"];
+          "application/*+json": components["schemas"]["UpdateJobStatusCommand"];
+        };
+      };
+      responses: {
+        /** @description Success */
+        200: {
+          content: {
+            "application/json": components["schemas"]["ConvertAnalogueModelCommandResponse"];
+          };
+        };
+      };
+    };
+  };
+  "/api/jobs/modelconversions": {
+    /** Convert AnalogueModels to the internal format used by PEPM in order to perform calculations. */
+    post: {
+      requestBody?: {
+        content: {
+          "application/json-patch+json": components["schemas"]["ConvertAnalogueModelCommand"];
+          "application/json": components["schemas"]["ConvertAnalogueModelCommand"];
+          "text/json": components["schemas"]["ConvertAnalogueModelCommand"];
+          "application/*+json": components["schemas"]["ConvertAnalogueModelCommand"];
+        };
+      };
+      responses: {
+        /** @description Accepted */
+        202: never;
       };
     };
   };
@@ -244,7 +315,7 @@ export interface paths {
         /** @description Success */
         200: {
           content: {
-            "application/json": components["schemas"]["ParameterList"][];
+            "application/json": components["schemas"]["GetParameterListQueryResponse"];
           };
         };
       };
@@ -263,7 +334,7 @@ export interface paths {
         /** @description Bad Request */
         400: {
           content: {
-            "application/json": components["schemas"]["StringBaseResponse"];
+            "application/json": components["schemas"]["ErrorResponse"];
           };
         };
       };
@@ -281,19 +352,19 @@ export interface paths {
         /** @description Success */
         200: {
           content: {
-            "application/json": components["schemas"]["ParameterDetail"];
+            "application/json": components["schemas"]["GetParameterDetailQueryResponse"];
           };
         };
         /** @description Bad Request */
         400: {
           content: {
-            "application/json": components["schemas"]["StringBaseResponse"];
+            "application/json": components["schemas"]["ErrorResponse"];
           };
         };
         /** @description Not Found */
         404: {
           content: {
-            "application/json": components["schemas"]["StringBaseResponse"];
+            "application/json": components["schemas"]["ErrorResponse"];
           };
         };
       };
@@ -323,13 +394,13 @@ export interface paths {
         /** @description Bad Request */
         400: {
           content: {
-            "application/json": components["schemas"]["StringBaseResponse"];
+            "application/json": components["schemas"]["ErrorResponse"];
           };
         };
         /** @description Not Found */
         404: {
           content: {
-            "application/json": components["schemas"]["StringBaseResponse"];
+            "application/json": components["schemas"]["ErrorResponse"];
           };
         };
       };
@@ -347,13 +418,13 @@ export interface paths {
         /** @description Bad Request */
         400: {
           content: {
-            "application/json": components["schemas"]["StringBaseResponse"];
+            "application/json": components["schemas"]["ErrorResponse"];
           };
         };
         /** @description Not Found */
         404: {
           content: {
-            "application/json": components["schemas"]["StringBaseResponse"];
+            "application/json": components["schemas"]["ErrorResponse"];
           };
         };
       };
@@ -383,13 +454,13 @@ export interface paths {
         /** @description Bad Request */
         400: {
           content: {
-            "application/json": components["schemas"]["StringBaseResponse"];
+            "application/json": components["schemas"]["ErrorResponse"];
           };
         };
         /** @description Not Found */
         404: {
           content: {
-            "application/json": components["schemas"]["StringBaseResponse"];
+            "application/json": components["schemas"]["ErrorResponse"];
           };
         };
       };
@@ -401,7 +472,48 @@ export interface paths {
         /** @description Success */
         200: {
           content: {
-            "application/json": components["schemas"]["UploadList"];
+            "application/json": components["schemas"]["GetUploadListQueryResponse"];
+          };
+        };
+      };
+    };
+  };
+  "/api/uploads/{id}": {
+    get: {
+      parameters: {
+        path: {
+          id: string;
+        };
+      };
+      responses: {
+        /** @description Success */
+        200: {
+          content: {
+            "application/json": components["schemas"]["GetUploadDetailQueryResponse"];
+          };
+        };
+      };
+    };
+  };
+  "/api/uploads/models": {
+    /** Upload model files that is converted to PEPM models. */
+    post: {
+      requestBody?: {
+        content: {
+          "multipart/form-data": {
+            /** Format: uuid */
+            ModelId?: string;
+            /** Format: binary */
+            File?: string;
+            FileType?: components["schemas"]["UploadFileType"];
+          };
+        };
+      };
+      responses: {
+        /** @description Success */
+        200: {
+          content: {
+            "application/json": components["schemas"]["UploadAnalogueModelCommandResponse"];
           };
         };
       };
@@ -413,6 +525,30 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
+    AddAnalogueModelParameterCommandForm: {
+      parameters?: components["schemas"]["AddParameterDto"][] | null;
+    };
+    AddAnalogueModelParameterCommandResponse: {
+      success?: boolean;
+      /** Format: int32 */
+      count?: number | null;
+      message?: string | null;
+      validationErrors?: string[] | null;
+      data: components["schemas"]["AddAnalogueModelParameterDto"];
+    };
+    AddAnalogueModelParameterDto: {
+      /** Format: uuid */
+      analogueModelId?: string;
+      name?: string | null;
+      description?: string | null;
+      sourceType?: string | null;
+      parameters?: components["schemas"]["AddParameterDto"][] | null;
+    };
+    AddParameterDto: {
+      /** Format: uuid */
+      parameterId?: string;
+      parameterValue?: string | null;
+    };
     AnalogueList: {
       /** Format: uuid */
       analogueId?: string;
@@ -439,6 +575,25 @@ export interface components {
     };
     /** @enum {string} */
     AnalogueModelSourceType: "Deltares" | "ResQML";
+    ConvertAnalogueModelCommand: {
+      /** Format: uuid */
+      modelId?: string;
+    };
+    ConvertAnalogueModelCommandResponse: {
+      success?: boolean;
+      /** Format: int32 */
+      count?: number | null;
+      message?: string | null;
+      validationErrors?: string[] | null;
+      data: components["schemas"]["ConvertAnalogueModelDto"];
+    };
+    ConvertAnalogueModelDto: {
+      /** Format: uuid */
+      jobId?: string;
+      name?: string | null;
+      jobStatus?: components["schemas"]["JobStatus"];
+      jobType?: components["schemas"]["JobType"];
+    };
     CreateAnalogueCommand: {
       name?: string | null;
       description?: string | null;
@@ -449,7 +604,7 @@ export interface components {
       count?: number | null;
       message?: string | null;
       validationErrors?: string[] | null;
-      value?: components["schemas"]["CreateAnalogueDto"];
+      data: components["schemas"]["CreateAnalogueDto"];
     };
     CreateAnalogueDto: {
       /** Format: uuid */
@@ -468,7 +623,7 @@ export interface components {
       count?: number | null;
       message?: string | null;
       validationErrors?: string[] | null;
-      value?: components["schemas"]["CreateAnalogueModelDto"];
+      data: components["schemas"]["CreateAnalogueModelDto"];
     };
     CreateAnalogueModelDto: {
       /** Format: uuid */
@@ -481,15 +636,127 @@ export interface components {
       name?: string | null;
       description?: string | null;
     };
-    JobList: {
+    ErrorResponse: {
+      success?: boolean;
+      /** Format: int32 */
+      count?: number | null;
+      message?: string | null;
+      validationErrors?: string[] | null;
+      data: string;
+    };
+    GetAnalogueListQueryResponse: {
+      success?: boolean;
+      /** Format: int32 */
+      count?: number | null;
+      message?: string | null;
+      validationErrors?: string[] | null;
+      data: components["schemas"]["AnalogueList"][];
+    };
+    GetAnalogueModelListQueryResponse: {
+      success?: boolean;
+      /** Format: int32 */
+      count?: number | null;
+      message?: string | null;
+      validationErrors?: string[] | null;
+      data: components["schemas"]["AnalogueModelList"][];
+    };
+    GetAnalogueModelQueryResponse: {
+      success?: boolean;
+      /** Format: int32 */
+      count?: number | null;
+      message?: string | null;
+      validationErrors?: string[] | null;
+      data: components["schemas"]["AnalogueModelDetail"];
+    };
+    GetCurrentJobStatusCommandResponse: {
+      success?: boolean;
+      /** Format: int32 */
+      count?: number | null;
+      message?: string | null;
+      validationErrors?: string[] | null;
+      data: components["schemas"]["GetCurrentJobStatusDto"];
+    };
+    GetCurrentJobStatusDto: {
       /** Format: uuid */
       jobId?: string;
       name?: string | null;
       jobStatus?: components["schemas"]["JobStatus"];
       jobType?: components["schemas"]["JobType"];
     };
+    GetCurrentJobStatusListCommand: Record<string, never>;
+    GetJobDetailQueryResponse: {
+      success?: boolean;
+      /** Format: int32 */
+      count?: number | null;
+      message?: string | null;
+      validationErrors?: string[] | null;
+      data: components["schemas"]["JobDetail"];
+    };
+    GetJobListQueryResponse: {
+      success?: boolean;
+      /** Format: int32 */
+      count?: number | null;
+      message?: string | null;
+      validationErrors?: string[] | null;
+      data: components["schemas"]["JobList"][];
+    };
+    GetParameterDetailQueryResponse: {
+      success?: boolean;
+      /** Format: int32 */
+      count?: number | null;
+      message?: string | null;
+      validationErrors?: string[] | null;
+      data: components["schemas"]["ParameterDetail"];
+    };
+    GetParameterListQueryResponse: {
+      success?: boolean;
+      /** Format: int32 */
+      count?: number | null;
+      message?: string | null;
+      validationErrors?: string[] | null;
+      data: components["schemas"]["ParameterList"][];
+    };
+    GetUploadDetailQueryResponse: {
+      success?: boolean;
+      /** Format: int32 */
+      count?: number | null;
+      message?: string | null;
+      validationErrors?: string[] | null;
+      data: components["schemas"]["UploadDetail"];
+    };
+    GetUploadListQueryResponse: {
+      success?: boolean;
+      /** Format: int32 */
+      count?: number | null;
+      message?: string | null;
+      validationErrors?: string[] | null;
+      data: components["schemas"]["UploadList"][];
+    };
+    JobDetail: {
+      /** Format: uuid */
+      jobId?: string;
+      name?: string | null;
+      jobStatus?: components["schemas"]["JobStatus"];
+      jobType?: components["schemas"]["JobType"];
+    };
+    JobList: {
+      /** Format: uuid */
+      jobId?: string;
+      name?: string | null;
+      jobStatus?: components["schemas"]["JobStatus"];
+      jobType?: components["schemas"]["JobType"];
+      /** Format: date-time */
+      updated?: string;
+      uploads?: components["schemas"]["JobListUploadsDto"][] | null;
+    };
+    JobListUploadsDto: {
+      /** Format: uuid */
+      uploadId?: string;
+      uploadStatus?: components["schemas"]["UploadStatus"];
+      uploadFileType?: components["schemas"]["UploadFileType"];
+    };
     /** @enum {string} */
-    JobStatus: "Unknown" | "Created" | "Started" | "Running" | "Successful" | "Failed";
+    JobStatus: "Unknown" | "Created" | "Started" | "Running" | "Successful" | "Succeeded" | "Failed";
     /** @enum {string} */
     JobType: "Nrresqml" | "Nrchannel" | "Nrvariogram";
     Operation: {
@@ -521,7 +788,7 @@ export interface components {
       count?: number | null;
       message?: string | null;
       validationErrors?: string[] | null;
-      value?: components["schemas"]["PatchAnalogueModelDto"];
+      data: components["schemas"]["PatchAnalogueModelDto"];
     };
     PatchAnalogueModelDto: {
       /** Format: uuid */
@@ -535,7 +802,7 @@ export interface components {
       count?: number | null;
       message?: string | null;
       validationErrors?: string[] | null;
-      value?: components["schemas"]["PatchParameterDto"];
+      data: components["schemas"]["PatchParameterDto"];
     };
     PatchParameterDto: {
       /** Format: uuid */
@@ -543,14 +810,6 @@ export interface components {
       identifier?: string | null;
       name?: string | null;
       description?: string | null;
-    };
-    StringBaseResponse: {
-      success?: boolean;
-      /** Format: int32 */
-      count?: number | null;
-      message?: string | null;
-      validationErrors?: string[] | null;
-      value?: string | null;
     };
     UpdateAnalogueModelCommandBody: {
       name?: string | null;
@@ -563,7 +822,7 @@ export interface components {
       count?: number | null;
       message?: string | null;
       validationErrors?: string[] | null;
-      value?: components["schemas"]["UpdateAnalogueModelDto"];
+      data: components["schemas"]["UpdateAnalogueModelDto"];
     };
     UpdateAnalogueModelDto: {
       /** Format: uuid */
@@ -571,6 +830,12 @@ export interface components {
       name?: string | null;
       description?: string | null;
       sourceType?: string | null;
+    };
+    UpdateJobStatusCommand: {
+      name?: string | null;
+      started?: string | null;
+      ended?: string | null;
+      status?: string | null;
     };
     UpdateParameterCommandBody: {
       identifier?: string | null;
@@ -583,7 +848,7 @@ export interface components {
       count?: number | null;
       message?: string | null;
       validationErrors?: string[] | null;
-      value?: components["schemas"]["UpdateParameterDto"];
+      data: components["schemas"]["UpdateParameterDto"];
     };
     UpdateParameterDto: {
       /** Format: uuid */
@@ -598,12 +863,21 @@ export interface components {
       count?: number | null;
       message?: string | null;
       validationErrors?: string[] | null;
-      value?: components["schemas"]["UploadAnalogueModelDto"];
+      data: components["schemas"]["UploadAnalogueModelDto"];
     };
     UploadAnalogueModelDto: {
       /** Format: uuid */
       uploadId?: string;
       uploadStatus?: components["schemas"]["UploadStatus"];
+      processed?: boolean;
+    };
+    UploadDetail: {
+      /** Format: uuid */
+      uploadId?: string;
+      originalFileName?: string | null;
+      uploadStatus?: components["schemas"]["UploadStatus"];
+      uploadFileType?: components["schemas"]["UploadFileType"];
+      uploadFileCategory?: components["schemas"]["UploadFileCategory"];
       processed?: boolean;
     };
     /** @enum {string} */
@@ -613,6 +887,8 @@ export interface components {
     UploadList: {
       /** Format: uuid */
       uploadId?: string;
+      /** Format: uuid */
+      analogueModelId?: string;
       originalFileName?: string | null;
       uploadStatus?: components["schemas"]["UploadStatus"];
       uploadFileType?: components["schemas"]["UploadFileType"];
