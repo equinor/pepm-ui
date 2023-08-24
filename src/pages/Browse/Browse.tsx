@@ -2,7 +2,6 @@ import { Button, Snackbar } from '@equinor/eds-core-react'
 import { useState } from 'react'
 import { Table } from '../../components/Table'
 import { AddModelDialog } from '../../features/AddModelDialog/AddModelDialog'
-import { useAnalogue } from '../../hooks/useAnalogue'
 
 export const Browse = () => {
   const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false)
