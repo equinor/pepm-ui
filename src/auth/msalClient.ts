@@ -5,7 +5,7 @@ import {
   EventType,
   PublicClientApplication,
 } from '@azure/msal-browser'
-import { loginRequest, msalConfig } from './authConfig'
+import { msalConfig } from './authConfig'
 
 const msalInstance = new PublicClientApplication(msalConfig)
 
@@ -25,20 +25,4 @@ msalInstance.addEventCallback((event: EventMessage) => {
   }
 })
 
-const request = {
-  ...loginRequest,
-  account: accounts[0],
-}
-
-async function fetchAccessToken() {
-  return msalInstance
-    .acquireTokenSilent(request)
-    .then((response) => response.accessToken)
-    .catch(() =>
-      msalInstance
-        .acquireTokenPopup(request)
-        .then((response) => response.accessToken)
-    )
-}
-
-export { fetchAccessToken, msalInstance }
+export { msalInstance }
