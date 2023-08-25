@@ -3,7 +3,8 @@ import {
   UnauthenticatedTemplate,
   useMsal,
 } from '@azure/msal-react'
-import { PEPM } from './pages/PEPM'
+import { Outlet } from 'react-router-dom'
+import AppBar from './features/AppBar/AppBar'
 
 export function App() {
   const { instance } = useMsal()
@@ -11,7 +12,10 @@ export function App() {
   return (
     <>
       <AuthenticatedTemplate>
-        <PEPM />
+        <AppBar title="PEPM" />
+        <p>Authenticated</p>
+        <button onClick={() => instance.logoutRedirect()}>Log out</button>
+        <Outlet />
       </AuthenticatedTemplate>
       <UnauthenticatedTemplate>
         <p>Not authenticated</p>
