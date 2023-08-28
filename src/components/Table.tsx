@@ -1,5 +1,5 @@
-import { DataTable } from '@equinor/apollo-components'
 import { Chip } from '@equinor/eds-core-react'
+import { EdsDataGrid } from '@equinor/eds-data-grid-react'
 import { useGetAnalogueModels } from '../hooks/useGetAnalogueModels'
 
 export const Table = () => {
@@ -8,57 +8,52 @@ export const Table = () => {
   if (!models) return <p>Loading...</p>
 
   return (
-    <DataTable
-      sorting={{ enableSorting: true }}
-      tableCaption={'Analogue Models Table'}
-      data={models}
+    <EdsDataGrid
+      enableSorting
+      enablePagination
+      emptyMessage="Empty :("
+      rows={models}
       columns={[
         {
-          accessorFn: (model) => model.analogueModelId,
-          accessorKey: 'Model ID',
+          accessorKey: 'analogueModelId',
+          header: 'Model ID',
+          id: 'analogueModelId',
+        },
+        { accessorKey: 'name', header: 'Name', id: 'name' },
+        {
+          accessorKey: 'description',
+          header: 'Description',
+          id: 'description',
         },
         {
-          accessorFn: (model) => model.name,
-          accessorKey: 'Name',
-        },
-        {
-          accessorFn: (model) => model.description,
-          accessorKey: 'Description',
-        },
-        {
-          accessorFn: (model) => model, // model.isApproved
           accessorKey: 'isApproved',
           header: 'Result',
           cell: () => <Chip>{'Approved'}</Chip>,
-          // cell: (cell) => cell.row.original.isApproved && <Chip>{'Approved'}</Chip>,
         },
         {
-          accessorFn: (model) => model,
-          accessorKey: 'Last Modified',
+          accessorKey: 'modified',
           header: 'Last Modified',
           cell: () => <div>{'<Last Modified>'}</div>,
         },
         {
-          accessorFn: (model) => model, // model.analogue
           accessorKey: 'analogue',
           header: 'Analogue',
-          cell: () => <div>{'<Analogue>'}</div>, // (context) => <div>{context.row.original.analogue}</div>
+          cell: () => <div>{'<Analogue>'}</div>,
         },
         {
-          accessorFn: (model) => model,
-          accessorKey: 'Formation',
+          accessorKey: 'formation',
           header: 'Formation',
           cell: () => <div>{'<Formation>'}</div>,
         },
         {
-          accessorFn: (model) => model,
-          accessorKey: 'Field',
+          accessorKey: 'field',
           header: 'Field',
-          cell: () => <div>{'<Formation>'}</div>,
+          cell: () => <div>{'<Field>'}</div>,
         },
         {
-          accessorFn: () => (0.43 * 100).toFixed() + '%', // (model) => (model.status * 100).toFixed() + '%',
-          accessorKey: 'Status',
+          accessorKey: 'isProcessed',
+          header: 'Status',
+          id: 'isProcessed',
         },
       ]}
     />
