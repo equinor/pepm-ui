@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import { spacings } from '../../../tokens/spacings'
+import { spacings } from '../../tokens/spacings'
 
-export const Metadata = styled.div`
+export const ModelMetadata = styled.div`
   &.model-metadata {
     display: grid;
     grid-template-columns: auto auto;

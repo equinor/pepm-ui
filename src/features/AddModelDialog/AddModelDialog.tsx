@@ -1,8 +1,8 @@
 import { Button } from '@equinor/eds-core-react'
 import { useState } from 'react'
+import { ModelMetadata } from '../ModelMetadata/ModelMetadata'
 import * as Styled from './AddModelDialog.styled'
 import { InputFilesTable } from './InputFilesTable/InputFilesTable'
-import { Metadata } from './Metadata/Metadata'
 
 interface AddModelDialogProps {
   isOpen: boolean
@@ -48,7 +48,7 @@ export const AddModelDialog = ({
           }}
         />
         {isFileDisplay && <INIFileContent />}
-        <Metadata />
+        <ModelMetadata />
       </Styled.DialogCustomContent>
       <Styled.DialogActions>
         <Button onClick={confirm}>Confirm and start uploading</Button>
