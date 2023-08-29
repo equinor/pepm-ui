@@ -8,7 +8,7 @@ const FileUpload = styled.label`
   gap: ${spacings.X_SMALL};
 
   > input[type='file'] {
-    display: none;
+    opacity: 0;
   }
 `
 
