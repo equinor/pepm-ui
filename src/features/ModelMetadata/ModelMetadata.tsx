@@ -1,10 +1,10 @@
 import { Autocomplete, TextField, Typography } from '@equinor/eds-core-react'
-import * as Styled from './Metadata.styled'
+import * as Styled from './ModelMetadata.styled'
 
-export const Metadata = () => {
+export const ModelMetadata = () => {
   const fields = [{ name: 'Tor' }]
   return (
-    <Styled.Metadata className="model-metadata">
+    <Styled.ModelMetadata className="model-metadata">
       <Typography variant="h4">Description and metadata</Typography>
       <TextField
         id="model-description"
@@ -16,6 +16,6 @@ export const Metadata = () => {
       <Autocomplete label="Formation" options={fields}></Autocomplete>
       <Autocomplete label="Analogue (optional)" options={fields}></Autocomplete>
       <Autocomplete label="Zone (optional)" options={fields}></Autocomplete>
-    </Styled.Metadata>
+    </Styled.ModelMetadata>
   )
 }
