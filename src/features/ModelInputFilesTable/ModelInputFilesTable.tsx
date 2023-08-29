@@ -1,7 +1,7 @@
 import { Button, Table } from '@equinor/eds-core-react'
 import { delete_to_trash as deleteIcon } from '@equinor/eds-icons'
-import IconButton from '../../../components/IconButton/IconButton'
-import { FileUploader } from '../../FileUploader/FileUploader'
+import IconButton from '../../components/IconButton/IconButton'
+import { FileUploader } from '../FileUploader/FileUploader'
 
 // TODO: Temporary type
 export type File = { name: string; size: number; onDelete: () => void }
@@ -40,7 +40,7 @@ const FileColumn = ({
   )
 }
 
-export const InputFilesTable = ({
+export const ModelInputFilesTable = ({
   files,
   fileDisplay,
 }: {

@@ -1,7 +1,7 @@
 import { Icon } from '@equinor/eds-core-react'
 import { subdirectory_arrow_right as arrowIcon } from '@equinor/eds-icons'
 import { theme } from '../../tokens/theme'
-import { File } from '../AddModelDialog/InputFilesTable/InputFilesTable'
+import { File } from '../ModelInputFilesTable/ModelInputFilesTable'
 import { FileUpload, SelectFile } from './FileUploader.styled'
 
 interface FileUploaderProps {

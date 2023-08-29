@@ -1,8 +1,8 @@
 import { Button } from '@equinor/eds-core-react'
 import { useState } from 'react'
+import { ModelInputFilesTable } from '../ModelInputFilesTable/ModelInputFilesTable'
 import { ModelMetadata } from '../ModelMetadata/ModelMetadata'
 import * as Styled from './AddModelDialog.styled'
-import { InputFilesTable } from './InputFilesTable/InputFilesTable'
 
 interface AddModelDialogProps {
   isOpen: boolean
@@ -40,7 +40,7 @@ export const AddModelDialog = ({
         <Styled.Dialog.Title>Add new model</Styled.Dialog.Title>
       </Styled.Dialog.Header>
       <Styled.DialogCustomContent scrollable>
-        <InputFilesTable
+        <ModelInputFilesTable
           files={files}
           fileDisplay={{
             isVisible: isFileDisplay,
