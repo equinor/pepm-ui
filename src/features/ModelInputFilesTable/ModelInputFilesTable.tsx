@@ -8,10 +8,6 @@ export type File = { name: string; size: number; onDelete: () => void }
 
 type FileDisplay = { isVisible: boolean; toggle: () => void }
 
-const DeleteButton = ({ onDelete }: { onDelete: () => void }) => (
-  <IconButton icon={deleteIcon} title="delete" onClick={onDelete} />
-)
-
 const FileColumn = ({
   file,
   fileDisplay,
@@ -20,6 +16,11 @@ const FileColumn = ({
   fileDisplay?: FileDisplay
 }) => {
   const isINI = fileDisplay !== undefined
+
+  const DeleteButton = ({ onDelete }: { onDelete: () => void }) => (
+    <IconButton icon={deleteIcon} title="delete" onClick={onDelete} />
+  )
+
   return (
     <Table.Row className={`${isINI ? 'ini' : 'nc'}-file`}>
       <Table.Cell>
