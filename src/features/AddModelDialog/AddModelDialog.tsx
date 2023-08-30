@@ -16,17 +16,6 @@ export const AddModelDialog = ({
   cancel,
 }: AddModelDialogProps) => {
   const [isFileDisplay, setFileDisplay] = useState<boolean>(false)
-  const files = {
-    NC: {
-      name: 'CoarseSand_LargerFlow_1.nc',
-      size: 1.43,
-      onDelete: deleteInputFile,
-    },
-  }
-
-  // Temporary ignore because not implemented yet
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  function deleteInputFile() {}
 
   function toggleINIFileContent() {
     setFileDisplay(!isFileDisplay)
@@ -41,7 +30,6 @@ export const AddModelDialog = ({
       </Styled.Dialog.Header>
       <Styled.DialogCustomContent scrollable>
         <ModelInputFilesTable
-          files={files}
           fileDisplay={{
             isVisible: isFileDisplay,
             toggle: toggleINIFileContent,

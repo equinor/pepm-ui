@@ -1,53 +1,76 @@
 import { Button, Table } from '@equinor/eds-core-react'
 import { delete_to_trash as deleteIcon } from '@equinor/eds-icons'
+import { ChangeEvent, useState } from 'react'
 import IconButton from '../../components/IconButton/IconButton'
 import { FileUploader } from '../FileUploader/FileUploader'
 
-// TODO: Temporary type
-export type File = { name: string; size: number; onDelete: () => void }
-
 type FileDisplay = { isVisible: boolean; toggle: () => void }
 
-const FileColumn = ({
-  file,
-  fileDisplay,
-}: {
+interface FileColumnProps {
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void
+  onDelete: () => void
+  INI?: true
   file?: File
   fileDisplay?: FileDisplay
-}) => {
-  const isINI = fileDisplay !== undefined
+}
 
+const FileColumn = ({
+  onChange,
+  onDelete,
+  INI,
+  file,
+  fileDisplay,
+}: FileColumnProps) => {
   const DeleteButton = ({ onDelete }: { onDelete: () => void }) => (
     <IconButton icon={deleteIcon} title="delete" onClick={onDelete} />
   )
 
+  function fileSize(size: number) {
+    if (size < 1024) {
+      return `${size} bytes`
+    } else if (size >= 1024 && size < 1048576) {
+      return `${(size / 1024).toFixed(1)} KB`
+    } else if (size >= 1048576) {
+      return `${(size / 1048576).toFixed(1)} MB`
+    }
+  }
+
   return (
-    <Table.Row className={`${isINI ? 'ini' : 'nc'}-file`}>
+    <Table.Row className={`${INI ? 'ini' : 'nc'}-file`}>
       <Table.Cell>
-        <FileUploader INI={isINI} file={file} />
+        <FileUploader
+          onChange={onChange}
+          file={file}
+          acceptType={INI ? 'INI' : 'NC'}
+        />
       </Table.Cell>
       <Table.Cell>
-        {file && isINI && (
+        {file && INI && (
           <Button variant="outlined" onClick={fileDisplay?.toggle}>
             {fileDisplay?.isVisible ? 'Hide' : 'Show'}
           </Button>
         )}
       </Table.Cell>
-      <Table.Cell>{file ? `${file.size} GB` : '-'}</Table.Cell>
-      <Table.Cell>
-        {file && <DeleteButton onDelete={file.onDelete} />}
-      </Table.Cell>
+      <Table.Cell>{file ? fileSize(file.size) : '-'}</Table.Cell>
+      <Table.Cell>{file && <DeleteButton onDelete={onDelete} />}</Table.Cell>
     </Table.Row>
   )
 }
 
 export const ModelInputFilesTable = ({
-  files,
   fileDisplay,
 }: {
-  files: { NC?: File; INI?: File }
   fileDisplay: FileDisplay
 }) => {
+  const [files, setFiles] = useState<{ NC?: File; INI?: File }>()
+
+  function updateFileDisplay(e: ChangeEvent<HTMLInputElement>) {
+    e.preventDefault()
+    const file = e.target.value
+    const type = e.target.name
+    setFiles({ ...files, [type]: file })
+  }
+
   return (
     <Table>
       <Table.Head>
@@ -59,8 +82,18 @@ export const ModelInputFilesTable = ({
         </Table.Row>
       </Table.Head>
       <Table.Body>
-        <FileColumn file={files.NC} />
-        <FileColumn file={files.INI} fileDisplay={fileDisplay} />
+        <FileColumn
+          file={files?.NC}
+          onChange={updateFileDisplay}
+          onDelete={() => setFiles({ ...files, NC: undefined })}
+        />
+        <FileColumn
+          INI
+          file={files?.INI}
+          onChange={updateFileDisplay}
+          onDelete={() => setFiles({ ...files, INI: undefined })}
+          fileDisplay={fileDisplay}
+        />
       </Table.Body>
     </Table>
   )
