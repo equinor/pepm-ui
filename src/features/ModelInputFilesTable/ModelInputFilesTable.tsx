@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import { Button, Table } from '@equinor/eds-core-react'
 import { delete_to_trash as deleteIcon } from '@equinor/eds-icons'
 import { ChangeEvent, useState } from 'react'

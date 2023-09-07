@@ -18,6 +18,9 @@ export interface paths {
           "application/json": components["schemas"]["AddAnalogueModelParameterCommandForm"];
           "text/json": components["schemas"]["AddAnalogueModelParameterCommandForm"];
           "application/*+json": components["schemas"]["AddAnalogueModelParameterCommandForm"];
+          "application/xml": components["schemas"]["AddAnalogueModelParameterCommandForm"];
+          "text/xml": components["schemas"]["AddAnalogueModelParameterCommandForm"];
+          "application/*+xml": components["schemas"]["AddAnalogueModelParameterCommandForm"];
         };
       };
       responses: {
@@ -25,6 +28,7 @@ export interface paths {
         200: {
           content: {
             "application/json": components["schemas"]["AddAnalogueModelParameterCommandResponse"];
+            "application/xml": components["schemas"]["AddAnalogueModelParameterCommandResponse"];
           };
         };
       };
@@ -38,6 +42,7 @@ export interface paths {
         200: {
           content: {
             "application/json": components["schemas"]["GetAnalogueModelListQueryResponse"];
+            "application/xml": components["schemas"]["GetAnalogueModelListQueryResponse"];
           };
         };
       };
@@ -50,6 +55,9 @@ export interface paths {
           "application/json": components["schemas"]["CreateAnalogueModelCommand"];
           "text/json": components["schemas"]["CreateAnalogueModelCommand"];
           "application/*+json": components["schemas"]["CreateAnalogueModelCommand"];
+          "application/xml": components["schemas"]["CreateAnalogueModelCommand"];
+          "text/xml": components["schemas"]["CreateAnalogueModelCommand"];
+          "application/*+xml": components["schemas"]["CreateAnalogueModelCommand"];
         };
       };
       responses: {
@@ -57,12 +65,14 @@ export interface paths {
         200: {
           content: {
             "application/json": components["schemas"]["CreateAnalogueModelCommandResponse"];
+            "application/xml": components["schemas"]["CreateAnalogueModelCommandResponse"];
           };
         };
         /** @description Bad Request */
         400: {
           content: {
             "application/json": components["schemas"]["ErrorResponse"];
+            "application/xml": components["schemas"]["ErrorResponse"];
           };
         };
       };
@@ -81,6 +91,7 @@ export interface paths {
         200: {
           content: {
             "application/json": components["schemas"]["GetAnalogueModelQueryResponse"];
+            "application/xml": components["schemas"]["GetAnalogueModelQueryResponse"];
           };
         };
       };
@@ -98,6 +109,9 @@ export interface paths {
           "application/json": components["schemas"]["UpdateAnalogueModelCommandBody"];
           "text/json": components["schemas"]["UpdateAnalogueModelCommandBody"];
           "application/*+json": components["schemas"]["UpdateAnalogueModelCommandBody"];
+          "application/xml": components["schemas"]["UpdateAnalogueModelCommandBody"];
+          "text/xml": components["schemas"]["UpdateAnalogueModelCommandBody"];
+          "application/*+xml": components["schemas"]["UpdateAnalogueModelCommandBody"];
         };
       };
       responses: {
@@ -105,18 +119,21 @@ export interface paths {
         200: {
           content: {
             "application/json": components["schemas"]["UpdateAnalogueModelCommandResponse"];
+            "application/xml": components["schemas"]["UpdateAnalogueModelCommandResponse"];
           };
         };
         /** @description Bad Request */
         400: {
           content: {
             "application/json": components["schemas"]["ErrorResponse"];
+            "application/xml": components["schemas"]["ErrorResponse"];
           };
         };
         /** @description Not Found */
         404: {
           content: {
             "application/json": components["schemas"]["ErrorResponse"];
+            "application/xml": components["schemas"]["ErrorResponse"];
           };
         };
       };
@@ -130,17 +147,21 @@ export interface paths {
       };
       responses: {
         /** @description No Content */
-        204: never;
+        204: {
+          content: never;
+        };
         /** @description Bad Request */
         400: {
           content: {
             "application/json": components["schemas"]["ErrorResponse"];
+            "application/xml": components["schemas"]["ErrorResponse"];
           };
         };
         /** @description Not Found */
         404: {
           content: {
             "application/json": components["schemas"]["ErrorResponse"];
+            "application/xml": components["schemas"]["ErrorResponse"];
           };
         };
       };
@@ -165,18 +186,49 @@ export interface paths {
         200: {
           content: {
             "application/json": components["schemas"]["PatchAnalogueModelCommandResponse"];
+            "application/xml": components["schemas"]["PatchAnalogueModelCommandResponse"];
           };
         };
         /** @description Bad Request */
         400: {
           content: {
             "application/json": components["schemas"]["ErrorResponse"];
+            "application/xml": components["schemas"]["ErrorResponse"];
           };
         };
         /** @description Not Found */
         404: {
           content: {
             "application/json": components["schemas"]["ErrorResponse"];
+            "application/xml": components["schemas"]["ErrorResponse"];
+          };
+        };
+      };
+    };
+  };
+  "/api/analoguemodels/{id}/input-models": {
+    /** Upload model files that later can be converted to PEPM models. */
+    post: {
+      parameters: {
+        path: {
+          id: string;
+        };
+      };
+      requestBody?: {
+        content: {
+          "multipart/form-data": {
+            /** Format: binary */
+            File?: string;
+            FileType?: components["schemas"]["UploadFileType"];
+          };
+        };
+      };
+      responses: {
+        /** @description Success */
+        200: {
+          content: {
+            "application/json": components["schemas"]["UploadAnalogueModelCommandResponse"];
+            "application/xml": components["schemas"]["UploadAnalogueModelCommandResponse"];
           };
         };
       };
@@ -200,6 +252,9 @@ export interface paths {
           "application/json": components["schemas"]["CreateAnalogueCommand"];
           "text/json": components["schemas"]["CreateAnalogueCommand"];
           "application/*+json": components["schemas"]["CreateAnalogueCommand"];
+          "application/xml": components["schemas"]["CreateAnalogueCommand"];
+          "text/xml": components["schemas"]["CreateAnalogueCommand"];
+          "application/*+xml": components["schemas"]["CreateAnalogueCommand"];
         };
       };
       responses: {
@@ -279,6 +334,9 @@ export interface paths {
           "application/json": components["schemas"]["UpdateJobStatusCommand"];
           "text/json": components["schemas"]["UpdateJobStatusCommand"];
           "application/*+json": components["schemas"]["UpdateJobStatusCommand"];
+          "application/xml": components["schemas"]["UpdateJobStatusCommand"];
+          "text/xml": components["schemas"]["UpdateJobStatusCommand"];
+          "application/*+xml": components["schemas"]["UpdateJobStatusCommand"];
         };
       };
       responses: {
@@ -291,7 +349,7 @@ export interface paths {
       };
     };
   };
-  "/api/jobs/modelconversions": {
+  "/api/jobs/compute/model-conversions": {
     /** Convert AnalogueModels to the internal format used by PEPM in order to perform calculations. */
     post: {
       requestBody?: {
@@ -300,11 +358,38 @@ export interface paths {
           "application/json": components["schemas"]["ConvertAnalogueModelCommand"];
           "text/json": components["schemas"]["ConvertAnalogueModelCommand"];
           "application/*+json": components["schemas"]["ConvertAnalogueModelCommand"];
+          "application/xml": components["schemas"]["ConvertAnalogueModelCommand"];
+          "text/xml": components["schemas"]["ConvertAnalogueModelCommand"];
+          "application/*+xml": components["schemas"]["ConvertAnalogueModelCommand"];
         };
       };
       responses: {
         /** @description Accepted */
-        202: never;
+        202: {
+          content: never;
+        };
+      };
+    };
+  };
+  "/api/jobs/compute/channel-estimations": {
+    /** Estimate channel on a Deltares based model. */
+    post: {
+      requestBody?: {
+        content: {
+          "application/json-patch+json": components["schemas"]["EstimateChannelCommand"];
+          "application/json": components["schemas"]["EstimateChannelCommand"];
+          "text/json": components["schemas"]["EstimateChannelCommand"];
+          "application/*+json": components["schemas"]["EstimateChannelCommand"];
+          "application/xml": components["schemas"]["EstimateChannelCommand"];
+          "text/xml": components["schemas"]["EstimateChannelCommand"];
+          "application/*+xml": components["schemas"]["EstimateChannelCommand"];
+        };
+      };
+      responses: {
+        /** @description Accepted */
+        202: {
+          content: never;
+        };
       };
     };
   };
@@ -328,6 +413,9 @@ export interface paths {
           "application/json": components["schemas"]["CreateParameterCommand"];
           "text/json": components["schemas"]["CreateParameterCommand"];
           "application/*+json": components["schemas"]["CreateParameterCommand"];
+          "application/xml": components["schemas"]["CreateParameterCommand"];
+          "text/xml": components["schemas"]["CreateParameterCommand"];
+          "application/*+xml": components["schemas"]["CreateParameterCommand"];
         };
       };
       responses: {
@@ -382,6 +470,9 @@ export interface paths {
           "application/json": components["schemas"]["UpdateParameterCommandBody"];
           "text/json": components["schemas"]["UpdateParameterCommandBody"];
           "application/*+json": components["schemas"]["UpdateParameterCommandBody"];
+          "application/xml": components["schemas"]["UpdateParameterCommandBody"];
+          "text/xml": components["schemas"]["UpdateParameterCommandBody"];
+          "application/*+xml": components["schemas"]["UpdateParameterCommandBody"];
         };
       };
       responses: {
@@ -414,7 +505,9 @@ export interface paths {
       };
       responses: {
         /** @description No Content */
-        204: never;
+        204: {
+          content: never;
+        };
         /** @description Bad Request */
         400: {
           content: {
@@ -496,7 +589,7 @@ export interface paths {
     };
   };
   "/api/uploads/models": {
-    /** Upload model files that is converted to PEPM models. */
+    /** Upload model files that later can be converted to PEPM models. */
     post: {
       requestBody?: {
         content: {
@@ -643,6 +736,10 @@ export interface components {
       message?: string | null;
       validationErrors?: string[] | null;
       data: string;
+    };
+    EstimateChannelCommand: {
+      /** Format: uuid */
+      modelId?: string;
     };
     GetAnalogueListQueryResponse: {
       success?: boolean;
@@ -868,8 +965,10 @@ export interface components {
     UploadAnalogueModelDto: {
       /** Format: uuid */
       uploadId?: string;
+      originalFileName?: string | null;
       uploadStatus?: components["schemas"]["UploadStatus"];
-      processed?: boolean;
+      uploadFileType?: components["schemas"]["UploadFileType"];
+      uploadFileCategory?: components["schemas"]["UploadFileCategory"];
     };
     UploadDetail: {
       /** Format: uuid */
@@ -878,7 +977,6 @@ export interface components {
       uploadStatus?: components["schemas"]["UploadStatus"];
       uploadFileType?: components["schemas"]["UploadFileType"];
       uploadFileCategory?: components["schemas"]["UploadFileCategory"];
-      processed?: boolean;
     };
     /** @enum {string} */
     UploadFileCategory: "InputModel" | "InputMetadata" | "ResQmlModel";
@@ -893,7 +991,6 @@ export interface components {
       uploadStatus?: components["schemas"]["UploadStatus"];
       uploadFileType?: components["schemas"]["UploadFileType"];
       uploadFileCategory?: components["schemas"]["UploadFileCategory"];
-      processed?: boolean;
     };
     /** @enum {string} */
     UploadStatus: "Started" | "ReadyForProcessing" | "Processing" | "Processed" | "Failed";
@@ -904,6 +1001,8 @@ export interface components {
   headers: never;
   pathItems: never;
 }
+
+export type $defs = Record<string, never>;
 
 export type external = Record<string, never>;
 
