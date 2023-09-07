@@ -2,15 +2,21 @@ import { Button, Snackbar } from '@equinor/eds-core-react'
 import { useState } from 'react'
 import { Table } from '../../components/Table'
 import { AddModelDialog } from '../../features/AddModelDialog/AddModelDialog'
+import { useAnalogueModels } from '../../hooks/useAnalogueModels'
+
+enum UploadProcess {
+  STARTED = 'We are uploading your new model. Please keep this browser tab open.',
+  SUCCESS = 'Model successfully uploaded. You may close this browser tab now.',
+}
 
 export const Browse = () => {
+  const { createModel, NC } = useAnalogueModels()
   const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false)
   const [uploadStatus, setUploadStatus] = useState<string>()
-
-  const uploadProcess = {
-    started:
-      'We are uploading your new model. Please keep this browser tab open.',
-    success: 'Model successfully uploaded. You may close this browser tab now.',
+  const testModel = {
+    name: 'hei',
+    description: 'beste modell',
+    sourceType: 'Deltares',
   }
 
   function clearStatus() {
@@ -21,11 +27,18 @@ export const Browse = () => {
     setAddModelDialog(!isAddModelDialog)
   }
 
-  function uploadModel() {
-    toggleDialog()
-    setUploadStatus(uploadProcess.started)
-    // TODO: upload model
-    // setUploadStatus(uploadProcess.success)
+  async function uploadModel(file: File | string) {
+    setUploadStatus(UploadProcess.STARTED)
+    await createModel({ body: testModel })
+      .then((model) => model?.data.analogueModelId)
+      .then((id) => {
+        NC({
+          params: { path: { id: id ?? '' } },
+          body: { File: file, FileType: 'NetCDF' },
+        })
+      })
+    // toggleDialog()
+    // setUploadStatus(UploadProcess.SUCCESS)
   }
 
   return (

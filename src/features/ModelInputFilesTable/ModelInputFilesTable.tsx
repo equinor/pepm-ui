@@ -1,6 +1,6 @@
 import { Button, Table } from '@equinor/eds-core-react'
 import { delete_to_trash as deleteIcon } from '@equinor/eds-icons'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent } from 'react'
 import IconButton from '../../components/IconButton/IconButton'
 import { FileUploader } from '../FileUploader/FileUploader'
 
@@ -59,10 +59,19 @@ const FileColumn = ({
 
 export const ModelInputFilesTable = ({
   fileDisplay,
+  files,
+  setFiles,
 }: {
   fileDisplay: FileDisplay
+  files: { NC?: File; INI?: File }
+  setFiles: React.Dispatch<
+    React.SetStateAction<{
+      NC?: File | undefined
+      INI?: File | undefined
+    }>
+  >
 }) => {
-  const [files, setFiles] = useState<{ NC?: File; INI?: File }>()
+  // const [files, setFiles] = useState<{ NC?: File; INI?: File }>()
 
   function updateFileDisplay(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault()
