@@ -8,9 +8,15 @@ type UseQueryOptions<T> = ParamsOption<T> &
   RequestBodyOption<T> & {
     // add your custom options here
     // token: string
+    params?: {
+      path: {
+        id: string
+      }
+    }
   }
 
 const ANALOGUEMODELS_KEY = '/api/analoguemodels'
+const NC_FILE_KEY = '/api/analoguemodels/{id}/input-models'
 
 export function useAnalogueModels() {
   const apiClient = useApiClient()
@@ -34,37 +40,23 @@ export function useAnalogueModels() {
     return data
   }
 
-  // PathsWithMethod<paths, 'get'>
-  // async function get(url: string) {
-  //   const { data } = await apiClient.GET(url, {
-  //     headers: headers,
-  //   })
-  //   return data
-  // }
-
-  // async function get({ signal }: { signal: AbortSignal | undefined }) {
-  //   const { data } = await apiClient.GET(ANALOGUEMODELS_KEY, {
-  //     signal, // allows React Query to cancel request
-  //     headers: new Headers({ Authorization: `Bearer ${token}` }),
-  //   })
-  //   return data
-  // }
+  const NC = ({
+    params,
+    body,
+  }: UseQueryOptions<paths[typeof NC_FILE_KEY]['post']>) =>
+    useQuery([NC_FILE_KEY, token, params.path.id], async () => {
+      const { data } = await apiClient.POST(NC_FILE_KEY, {
+        params,
+        body,
+        headers: new Headers({ Authorization: `Bearer ${token}` }),
+      })
+      return data
+    })
 
   const models = useQuery(
     [ANALOGUEMODELS_KEY, token],
     async () => await fetchModels()
   )
 
-  return { fetchModels, createModel, models }
-
-  // return useQuery(
-  //   [ANALOGUEMODELS_KEY, token],
-  //   async ({ signal }) =>
-  //     await apiClient
-  //       .GET(ANALOGUEMODELS_KEY, {
-  //         signal, // allows React Query to cancel request
-  //         headers: new Headers({ Authorization: `Bearer ${token}` }),
-  //       })
-  //       .then((response) => response.data?.data)
-  // )
+  return { fetchModels, createModel, models, NC }
 }

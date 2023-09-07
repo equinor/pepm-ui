@@ -6,7 +6,7 @@ import * as Styled from './AddModelDialog.styled'
 
 interface AddModelDialogProps {
   isOpen: boolean
-  confirm: () => void
+  confirm: (file: File) => Promise<void>
   cancel: () => void
 }
 
@@ -16,6 +16,10 @@ export const AddModelDialog = ({
   cancel,
 }: AddModelDialogProps) => {
   const [isFileDisplay, setFileDisplay] = useState<boolean>(false)
+  const [files, setFiles] = useState<{ NC?: File; INI?: File }>({
+    NC: undefined,
+    INI: undefined,
+  })
 
   function toggleINIFileContent() {
     setFileDisplay(!isFileDisplay)
@@ -30,6 +34,8 @@ export const AddModelDialog = ({
       </Styled.Dialog.Header>
       <Styled.DialogCustomContent scrollable>
         <ModelInputFilesTable
+          files={files}
+          setFiles={setFiles}
           fileDisplay={{
             isVisible: isFileDisplay,
             toggle: toggleINIFileContent,
@@ -39,7 +45,9 @@ export const AddModelDialog = ({
         <ModelMetadata />
       </Styled.DialogCustomContent>
       <Styled.DialogActions>
-        <Button onClick={confirm}>Confirm and start uploading</Button>
+        <Button onClick={() => (files.NC ? confirm(files.NC) : {})}>
+          Confirm and start uploading
+        </Button>
         <Button variant="outlined" onClick={cancel}>
           Cancel
         </Button>
