@@ -40,23 +40,32 @@ export function useAnalogueModels() {
     return data
   }
 
-  const NC = ({
+  async function uploadNCFile({
     params,
     body,
-  }: UseQueryOptions<paths[typeof NC_FILE_KEY]['post']>) =>
-    useQuery([NC_FILE_KEY, token, params.path.id], async () => {
-      const { data } = await apiClient.POST(NC_FILE_KEY, {
-        params,
-        body,
-        headers: new Headers({ Authorization: `Bearer ${token}` }),
-      })
-      return data
+  }: UseQueryOptions<paths[typeof NC_FILE_KEY]['post']>) {
+    const { data } = await apiClient.POST(NC_FILE_KEY, {
+      params,
+      body,
+      headers: new Headers({ Authorization: `Bearer ${token}` }),
     })
+    return data
+  }
+
+  // async function NC({
+  //   params,
+  //   body,
+  // }: UseQueryOptions<paths[typeof NC_FILE_KEY]['post']>) {
+  //   return useQuery(
+  //     [NC_FILE_KEY, token, params.path.id],
+  //     async () => await uploadNCFile(params, body)
+  //   )
+  // }
 
   const models = useQuery(
     [ANALOGUEMODELS_KEY, token],
     async () => await fetchModels()
   )
 
-  return { fetchModels, createModel, models, NC }
+  return { fetchModels, createModel, models, uploadNCFile }
 }
