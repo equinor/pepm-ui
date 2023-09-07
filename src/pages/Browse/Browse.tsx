@@ -10,7 +10,7 @@ enum UploadProcess {
 }
 
 export const Browse = () => {
-  const { createModel, NC } = useAnalogueModels()
+  const { createModel, uploadNCFile } = useAnalogueModels()
   const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false)
   const [uploadStatus, setUploadStatus] = useState<string>()
   const testModel = {
@@ -27,12 +27,12 @@ export const Browse = () => {
     setAddModelDialog(!isAddModelDialog)
   }
 
-  async function uploadModel(file: File | string) {
+  async function uploadModel(file: File) {
     setUploadStatus(UploadProcess.STARTED)
     await createModel({ body: testModel })
       .then((model) => model?.data.analogueModelId)
       .then((id) => {
-        NC({
+        uploadNCFile({
           params: { path: { id: id ?? '' } },
           body: { File: file, FileType: 'NetCDF' },
         })
