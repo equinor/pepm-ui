@@ -1,12 +1,12 @@
 import { Chip } from '@equinor/eds-core-react'
 import { EdsDataGrid } from '@equinor/eds-data-grid-react'
-import { useGetAnalogueModels } from '../hooks/useGetAnalogueModels'
 import * as Styled from './Table.styled'
+import { useAnalogueModels } from '../hooks/useAnalogueModels'
 
 export const Table = () => {
-  const { data: models } = useGetAnalogueModels()
+  const { models } = useAnalogueModels()
 
-  if (!models) return <p>Loading...</p>
+  if (models.isLoading || !models.data?.data) return <p>Loading...</p>
 
   return (
     <Styled.StyledDiv>
@@ -14,7 +14,7 @@ export const Table = () => {
         enableSorting
         enablePagination
         emptyMessage="Empty :("
-        rows={models}
+        rows={models.data.data}
         columns={[
           {
             accessorKey: 'analogueModelId',
