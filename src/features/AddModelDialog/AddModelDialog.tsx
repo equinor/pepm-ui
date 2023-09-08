@@ -31,52 +31,48 @@ export const AddModelDialog = ({
   }>({ field: false, formation: false })
   const [metadata, setMetadata] = useState<Partial<MetadataProps>>()
 
-  // const [description, setDescription] = useState<string>()
-  // const [field, setField] = useState<string[]>()
-  // const [zone, setZone] = useState<string[]>()
-  // const [formation, setFormation] = useState<string[]>()
-  // const [analogue, setAnalogue] = useState<string[]>()
-  // const [fieldError, setFieldError] = useState<boolean>(false)
-  // const [formationError, setFormationError] = useState<boolean>(false)
-
   function toggleINIFileContent() {
     setFileDisplay(!isFileDisplay)
   }
 
   const INIFileContent = () => <p>Not implemented yet...</p>
 
-  const validateInput = (values: string[] | undefined, target: string) => {
-    // const value = e.selectedItems
-    // console.log('Kjører: Value => ' + values + ' target => ' + target)
-
-    values === undefined || !typeof Object
-      ? setValidationError({ ...validationError, [target]: true })
-      : setValidationError({ ...validationError, [target]: false })
-    // onChange(metadata)
+  const validateInput = (
+    // input: { values: string[] | undefined; target: string }[]
+    input: { [target: string]: string[] | undefined }
+  ) => {
+    Object.entries(input).map(([target, value]) =>
+      setValidationError({ ...validationError, [target]: value !== undefined })
+    )
+    // input.forEach((input) => {
+    //   console.log('Kjører: ' + input.target)
+    //   if (!input.values)
+    //     setValidationError({ ...validationError, [input.target]: true })
+    //
+    //   if (input.values === undefined) {
+    //     setValidationError({ ...validationError, [input.target]: true })
+    //     console.log('Undefined Error')
+    //     console.log(validationError)
+    //   } else if (input.values.length === 0) {
+    //     setValidationError({ ...validationError, [input.target]: true })
+    //     console.log('Length 0 Error')
+    //     console.log(validationError)
+    //   } else {
+    //     setValidationError({ ...validationError, [input.target]: false })
+    //     console.log('Ingen Error')
+    //     console.log(validationError)
+    //   }
+    // })
   }
 
   const submit = () => {
-    /**
-     * 
-    console.log('Metadata' + metadata)
-
-    console.log('Field: ' + metadata?.field)
-    console.log('Formation: ' + metadata?.formation)
-
-    console.log('Type Formation: ' + typeof metadata?.formation)
-    console.log('Type Field: ' + typeof metadata?.field)
-     */
-
-    validateInput(metadata?.field, 'field')
-
-    validateInput(metadata?.formation, 'formation')
-    /**
- * 
-console.log('Field error: ' + validationError.field)
-console.log('Formation error: ' + validationError.formation)
-*/
-
-    // confirm()
+    console.log(metadata)
+    validateInput([
+      { values: metadata?.field, target: 'field' },
+      { values: metadata?.formation, target: 'formation' },
+    ])
+    validateInput()
+    console.log(validationError)
   }
 
   return (
@@ -93,7 +89,7 @@ console.log('Formation error: ' + validationError.formation)
         />
         {isFileDisplay && <INIFileContent />}
         <ModelMetadata
-          onValidate={validateInput}
+          // onValidate={validateInput}
           validationError={validationError}
           metadata={metadata}
           setMetadata={setMetadata}

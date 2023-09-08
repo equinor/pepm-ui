@@ -10,12 +10,12 @@ import MetadataProps from '../AddModelDialog/AddModelDialog'
 import * as Styled from './ModelMetadata.styled'
 
 export const ModelMetadata = ({
-  onValidate,
+  // onValidate,
   validationError,
   metadata,
   setMetadata,
 }: {
-  onValidate: (values: string[], target: string) => void
+  // onValidate: (values: string[], target: string) => void
   validationError: { field: boolean; formation: boolean }
   metadata: Partial<MetadataProps> | undefined
   setMetadata: (metadata: Partial<MetadataProps>) => void
@@ -29,8 +29,8 @@ export const ModelMetadata = ({
   }
 
   const handleInput = (e: AutocompleteChanges<string>, target: string) => {
-    onValidate(e.selectedItems, target)
     setMetadata({ ...metadata, [target]: e.selectedItems })
+    // onValidate(e.selectedItems, target)
   }
 
   return (
