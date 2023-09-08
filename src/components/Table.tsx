@@ -1,7 +1,7 @@
 import { Chip } from '@equinor/eds-core-react'
+import { EdsDataGrid } from '@equinor/eds-data-grid-react'
 import { useGetAnalogueModels } from '../hooks/useGetAnalogueModels'
 import * as Styled from './Table.styled'
-import { EdsDataGrid } from '@equinor/eds-data-grid-react'
 
 export const Table = () => {
   const { data: models } = useGetAnalogueModels()
