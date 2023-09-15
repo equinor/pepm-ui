@@ -7,7 +7,6 @@ import { useAccessToken } from './useAccessToken'
 type UseQueryOptions<T> = ParamsOption<T> &
   RequestBodyOption<T> & {
     // add your custom options here
-    // token: string
     params?: {
       path: {
         id: string
@@ -15,8 +14,8 @@ type UseQueryOptions<T> = ParamsOption<T> &
     }
   }
 
-const ANALOGUEMODELS_KEY = '/api/analoguemodels'
-const NC_FILE_KEY = '/api/analoguemodels/{id}/input-models'
+const ANALOGUEMODELS_KEY = '/api/analogue-models'
+const NC_FILE_KEY = '/api/analogue-models/{id}/netcdf-models'
 
 export function useAnalogueModels() {
   const apiClient = useApiClient()
