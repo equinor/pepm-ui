@@ -5,7 +5,7 @@
 
 
 export interface paths {
-  "/api/analoguemodels/{id}/parameters": {
+  "/api/analogue-models/{id}/parameters": {
     post: {
       parameters: {
         path: {
@@ -30,7 +30,7 @@ export interface paths {
       };
     };
   };
-  "/api/analoguemodels": {
+  "/api/analogue-models": {
     /** Get a list of all AnalogueModels */
     get: {
       responses: {
@@ -68,7 +68,7 @@ export interface paths {
       };
     };
   };
-  "/api/analoguemodels/{id}": {
+  "/api/analogue-models/{id}": {
     /** Get AnalogueModel by id */
     get: {
       parameters: {
@@ -177,6 +177,62 @@ export interface paths {
         404: {
           content: {
             "application/json": components["schemas"]["ErrorResponse"];
+            "application/xml": components["schemas"]["ErrorResponse"];
+          };
+        };
+      };
+    };
+  };
+  "/api/analogue-models/{id}/input-models": {
+    /** Upload model files that later can be converted to PEPM models. */
+    post: {
+      parameters: {
+        path: {
+          id: string;
+        };
+      };
+      requestBody?: {
+        content: {
+          "multipart/form-data": {
+            /** Format: binary */
+            File?: string;
+            FileType?: components["schemas"]["UploadFileType"];
+          };
+        };
+      };
+      responses: {
+        /** @description Success */
+        200: {
+          content: {
+            "application/json": components["schemas"]["UploadAnalogueModelCommandResponse"];
+            "application/xml": components["schemas"]["UploadAnalogueModelCommandResponse"];
+          };
+        };
+      };
+    };
+  };
+  "/api/analogue-models/{id}/netcdf-models": {
+    /** Upload NetCDF model files that later can be converted to PEPM models. */
+    post: {
+      parameters: {
+        path: {
+          id: string;
+        };
+      };
+      requestBody?: {
+        content: {
+          "multipart/form-data": {
+            /** Format: binary */
+            file?: string;
+          };
+        };
+      };
+      responses: {
+        /** @description Success */
+        200: {
+          content: {
+            "application/json": components["schemas"]["UploadAnalogueModelCommandResponse"];
+            "application/xml": components["schemas"]["UploadAnalogueModelCommandResponse"];
           };
         };
       };
