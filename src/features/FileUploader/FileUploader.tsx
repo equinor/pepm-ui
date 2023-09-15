@@ -24,7 +24,7 @@ export const FileUploader = ({
   }
 
   return file ? (
-    <>{file}</>
+    <>{file.name}</>
   ) : (
     <form method="post" encType="multipart/form-data">
       <FileUpload htmlFor="file-upload" className="custom-file-upload">

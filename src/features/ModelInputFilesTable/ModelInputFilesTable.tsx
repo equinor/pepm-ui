@@ -71,11 +71,10 @@ export const ModelInputFilesTable = ({
     }>
   >
 }) => {
-  // const [files, setFiles] = useState<{ NC?: File; INI?: File }>()
-
   function updateFileDisplay(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault()
-    const file = e.target.value
+    if (!e.target.files) return
+    const file = e.target.files[0]
     const type = e.target.name
     setFiles({ ...files, [type]: file })
   }
