@@ -46,7 +46,6 @@
     "max-lines-per-function": ["warn", { "max": 60, "skipBlankLines": true }],
     "no-console": "warn",
     "no-duplicate-imports": "error",
-    "no-magic-numbers": "warn",
     "no-self-compare": "error",
     "no-var": "error",
     "prefer-const": "error",
