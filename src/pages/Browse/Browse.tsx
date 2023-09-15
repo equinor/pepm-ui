@@ -7,17 +7,13 @@ import { useAnalogueModels } from '../../hooks/useAnalogueModels'
 enum UploadProcess {
   STARTED = 'We are uploading your new model. Please keep this browser tab open.',
   SUCCESS = 'Model successfully uploaded. You may close this browser tab now.',
+  FAILED = 'File upload failed.',
 }
 
 export const Browse = () => {
   const { createModel, uploadNCFile } = useAnalogueModels()
   const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false)
   const [uploadStatus, setUploadStatus] = useState<string>()
-  const testModel = {
-    name: 'hei',
-    description: 'beste modell',
-    sourceType: 'Deltares',
-  }
 
   function clearStatus() {
     setUploadStatus(undefined)
@@ -29,16 +25,28 @@ export const Browse = () => {
 
   async function uploadModel(file: File) {
     setUploadStatus(UploadProcess.STARTED)
-    await createModel({ body: testModel })
-      .then((model) => model?.data.analogueModelId)
-      .then((id) => {
-        uploadNCFile({
-          params: { path: { id: id ?? '' } },
-          body: { File: file, FileType: 'NetCDF' },
-        })
-      })
-    // toggleDialog()
-    // setUploadStatus(UploadProcess.SUCCESS)
+    const modelUpload = await createModel({
+      // TODO
+      body: {
+        name: 'testModel',
+        description: 'description',
+        sourceType: 'Deltares',
+      },
+    })
+
+    if (modelUpload?.success) {
+      toggleDialog()
+      const fileUpload = await uploadNCFile(
+        modelUpload.data.analogueModelId ?? '',
+        file
+      )
+
+      if (fileUpload.success) setUploadStatus(UploadProcess.SUCCESS)
+      else if (!fileUpload.success) {
+        setUploadStatus(UploadProcess.FAILED)
+        // TODO: show validation message
+      }
+    }
   }
 
   return (
