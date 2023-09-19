@@ -22,7 +22,7 @@ export const InnerMetadataWrapper = styled.div`
   row-gap: ${spacings.XXX_LARGE};
 
   .edit-metadata-button {
-    margin-top: 12px;
+    margin-top: ${spacings.MEDIUM_SMALL};
   }
 
   .metadata-view {
