@@ -39,7 +39,7 @@ export const ModelNavigationBar = () => {
           <SideBar.Link
             key={m.label}
             {...m}
-            active={m.href === tab[tab.length - 1] ? true : false}
+            active={m.href === tab[tab.length - 1]}
           />
         ))}
       </SideBar.Content>
