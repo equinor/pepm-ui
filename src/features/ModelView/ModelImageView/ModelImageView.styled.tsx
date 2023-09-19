@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { spacings } from '../../../tokens/spacings'
+import { theme } from '../../../tokens/theme'
 
 export const ImageWrapper = styled.div`
   display: flex;
@@ -8,7 +9,7 @@ export const ImageWrapper = styled.div`
 
   border-style: solid;
   border-width: 1px;
-  border-color: #cdcdcd;
+  border-color: ${theme.light.ui.background.medium};
 
   max-width: 100%;
   height: 100%;

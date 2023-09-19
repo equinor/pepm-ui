@@ -1,6 +1,8 @@
 import { tokens } from '@equinor/eds-tokens'
 
 const interactive = tokens.colors.interactive
+const text = tokens.colors.text
+const ui = tokens.colors.ui
 
 export const theme = {
   light: {
@@ -17,7 +19,13 @@ export const theme = {
       highlight: interactive.secondary__highlight.hex,
     },
     text: {
-      staticIconsTertiary: tokens.colors.text.static_icons__tertiary.hex,
+      staticIconsTertiary: text.static_icons__tertiary.hex,
+    },
+    ui: {
+      background: {
+        light: ui.background__light.hex,
+        medium: ui.background__medium.hex,
+      },
     },
   },
 }
