@@ -1,5 +1,5 @@
 import Img from '../image.png'
-import * as Styled from './ModelImageView.syled'
+import * as Styled from './ModelImageView.styled'
 
 export const ModelImageView = () => {
   // TODO
