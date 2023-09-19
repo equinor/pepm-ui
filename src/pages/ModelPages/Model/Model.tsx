@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
-import { useAnalogueModels } from '../../hooks/useAnalogueModels'
-import { components } from '../../models/schema'
+import { useAnalogueModels } from '../../../hooks/useAnalogueModels'
+import { components } from '../../../models/schema'
 import * as Styled from './Model.styled'
 
-import { ModelNameFrame } from '../../features/ModelView/ModelNameFrame/ModelNameFrame'
-import { ModelNavigationBar } from '../../features/ModelView/ModelNavigationBar/ModelNavigationBar'
+import { ModelNameFrame } from '../../../features/ModelView/ModelNameFrame/ModelNameFrame'
+import { ModelNavigationBar } from '../../../features/ModelView/ModelNavigationBar/ModelNavigationBar'
 
 export type ModelType = Partial<
   components['schemas']['GetAnalogueModelQueryResponse']['data']

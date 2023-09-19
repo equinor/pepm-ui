@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useAnalogueModels } from '../../../hooks/useAnalogueModels'
 
 import { Table, Typography } from '@equinor/eds-core-react'
-import { ModelType } from '../../../pages/Model/Model'
+import { ModelType } from '../../../pages/ModelPages/Model/Model'
 
 export const ModelSourceView = () => {
   const [model, setModel] = useState<ModelType>()

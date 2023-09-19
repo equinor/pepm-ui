@@ -2,9 +2,9 @@ import { createBrowserRouter, NonIndexRouteObject } from 'react-router-dom'
 import { App } from './App'
 import { ModelView } from './features/ModelView/ModelView'
 import { Browse } from './pages/Browse/Browse'
-import { Compute } from './pages/Compute/Compute'
-import { Model } from './pages/Model/Model'
-import { Results } from './pages/Results/Results'
+import { Compute } from './pages/ModelPages/Compute/Compute'
+import { Model } from './pages/ModelPages/Model/Model'
+import { Results } from './pages/ModelPages/Results/Results'
 
 interface Tab extends Required<Pick<NonIndexRouteObject, 'path' | 'element'>> {
   title: string

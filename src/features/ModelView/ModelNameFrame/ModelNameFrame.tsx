@@ -1,4 +1,4 @@
-import { ModelType } from '../../../pages/Model/Model'
+import { ModelType } from '../../../pages/ModelPages/Model/Model'
 import * as Styled from './ModelNameFrame.styled'
 
 export const ModelNameFrame = ({ model }: { model: ModelType }) => {
