@@ -51,6 +51,11 @@ export const Browse = () => {
 
   return (
     <>
+      <div>
+        <Button href="/model/bf2171bc-2f5e-44a1-f6e0-08dbb5ed15e2/details">
+          model
+        </Button>
+      </div>
       <Button onClick={toggleDialog}>Add new model</Button>
       <Table />
       <AddModelDialog

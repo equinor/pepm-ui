@@ -16,7 +16,8 @@ type UseQueryOptions<T> = ParamsOption<T> &
   }
 
 const ANALOGUEMODELS_KEY = '/api/analogue-models'
-const NC_FILE_KEY = '/api/analogue-models/{id}/netcdf-models'
+const ANALOGUEMODEL_KEY = '/api/analogue-models/{id}'
+const NC_FILE_KEY = '/api/analogue-models/{id}/input-models'
 
 export function useAnalogueModels() {
   const apiClient = useApiClient()
@@ -26,6 +27,16 @@ export function useAnalogueModels() {
   async function fetchModels() {
     const { data } = await apiClient.GET(ANALOGUEMODELS_KEY, {
       headers: headers,
+    })
+    return data
+  }
+
+  async function fetchModel({
+    params,
+  }: UseQueryOptions<paths[typeof ANALOGUEMODEL_KEY]['get']>) {
+    const { data } = await apiClient.GET(ANALOGUEMODEL_KEY, {
+      params,
+      headers: new Headers({ Authorization: `Bearer ${token}` }),
     })
     return data
   }
@@ -59,5 +70,5 @@ export function useAnalogueModels() {
 
   const models = useQuery([ANALOGUEMODELS_KEY, token], fetchModels)
 
-  return { fetchModels, createModel, models, uploadNCFile }
+  return { fetchModels, fetchModel, createModel, models, uploadNCFile }
 }
