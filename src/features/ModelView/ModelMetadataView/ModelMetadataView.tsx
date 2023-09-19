@@ -3,9 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useAnalogueModels } from '../../../hooks/useAnalogueModels'
 
 import { Button, Table, Typography } from '@equinor/eds-core-react'
-import { ModelType } from '../../../pages/Model/Model'
-
-import * as Styled from './ModelMetadataView.styled'
+import { ModelType } from '../../../pages/ModelPages/Model/Model'
 
 export const ModelMetadataView = () => {
   const [model, setModel] = useState<ModelType>()
@@ -39,7 +37,7 @@ export const ModelMetadataView = () => {
           <br />
         </p>
       )}
-      <Styled.TableWrapper>
+      <div>
         <Table>
           <Table.Body>
             <Table.Row className="table-row">
@@ -60,7 +58,7 @@ export const ModelMetadataView = () => {
             </Table.Row>
           </Table.Body>
         </Table>
-      </Styled.TableWrapper>
+      </div>
 
       <Button variant="outlined" className="edit-metadata-button">
         Edit description and metadata
