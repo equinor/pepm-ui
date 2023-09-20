@@ -20,7 +20,7 @@ export function App() {
         <Styled.OutletWrapper>
           <Outlet />
         </Styled.OutletWrapper>
-        <Footer footerText="All information is proprietary of Equinor © 2023 Equinor ASA" />
+        <Footer text="All information is proprietary of Equinor © 2023 Equinor ASA" />
       </AuthenticatedTemplate>
       <UnauthenticatedTemplate>
         <p>Not authenticated</p>
