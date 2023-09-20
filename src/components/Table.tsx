@@ -1,7 +1,7 @@
 import { Chip } from '@equinor/eds-core-react'
 import { EdsDataGrid } from '@equinor/eds-data-grid-react'
-import * as Styled from './Table.styled'
 import { useAnalogueModels } from '../hooks/useAnalogueModels'
+import * as Styled from './Table.styled'
 
 export const Table = () => {
   const { models } = useAnalogueModels()
@@ -15,6 +15,7 @@ export const Table = () => {
         enablePagination
         emptyMessage="Empty :("
         rows={models.data.data}
+        pageSize={15}
         columns={[
           {
             accessorKey: 'analogueModelId',
