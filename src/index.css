@@ -13,6 +13,11 @@ body {
   box-sizing: inherit;
 }
 
+#root {
+  height: 100vh;
+}
+
 code {
-  font-family: 'Equinor Mono', source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: 'Equinor Mono', source-code-pro, Menlo, Monaco, Consolas,
+    'Courier New', monospace;
 }
