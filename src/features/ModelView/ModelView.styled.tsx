@@ -20,6 +20,7 @@ export const InnerMetadataWrapper = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: ${spacings.XXX_LARGE};
+  width: 80%;
 
   .edit-metadata-button {
     margin-top: ${spacings.MEDIUM_SMALL};
@@ -31,7 +32,7 @@ export const InnerMetadataWrapper = styled.div`
 
     > div {
       > table {
-        width: 480px;
+        width: 85%;
 
         > tbody {
           > tr {
@@ -39,7 +40,7 @@ export const InnerMetadataWrapper = styled.div`
             }
 
             > .table-first-col {
-              width: 80px;
+              width: 20%;
               padding-right: ${spacings.X_LARGE};
             }
           }
@@ -51,10 +52,10 @@ export const InnerMetadataWrapper = styled.div`
   .source-view {
     width: 100%;
     min-width: 256px;
-    max-width: 640px;
+    max-width: 100%;
 
     > table {
-      width: 480px;
+      width: 85%;
 
       > thead,
       tbody {
@@ -63,7 +64,7 @@ export const InnerMetadataWrapper = styled.div`
           }
 
           > .table-first-col {
-            width: 376px;
+            width: 80%;
             padding-right: ${spacings.X_LARGE};
           }
         }
