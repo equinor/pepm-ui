@@ -8,7 +8,6 @@ export const StyledDiv = styled.div`
   > .table-wrapper {
     > table {
       width: auto !important;
-      margin: 0px !important;
     }
 
     > div {
