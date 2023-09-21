@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import { spacings } from '../../../tokens/spacings'
-import { theme } from '../../../tokens/theme'
+import { spacings } from '../../tokens/spacings'
+import { theme } from '../../tokens/theme'
 
 export const ImageWrapper = styled.div`
   display: flex;
@@ -12,7 +12,8 @@ export const ImageWrapper = styled.div`
   border-color: ${theme.light.ui.background.medium};
 
   max-width: 100%;
-  height: 100%;
+
+  height: fit-content;
 
   > h5 {
     font-weight: normal;
@@ -20,16 +21,8 @@ export const ImageWrapper = styled.div`
     padding: ${spacings.SMALL};
   }
 
-  > .metadata-image {
+  > .image {
     max-width: 100%;
     padding: ${spacings.SMALL};
-  }
-
-  @media (max-width: 1350px) {
-    max-width: 100%;
-
-    > .metadata-image {
-      max-width: 100%;
-    }
   }
 `
