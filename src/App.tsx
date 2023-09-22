@@ -15,8 +15,6 @@ export function App() {
     <>
       <AuthenticatedTemplate>
         <AppBar title="PEPM" />
-        <p>Authenticated</p>
-        <button onClick={() => instance.logoutRedirect()}>Log out</button>
         <Styled.OutletWrapper>
           <Outlet />
         </Styled.OutletWrapper>
