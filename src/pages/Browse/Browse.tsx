@@ -1,8 +1,9 @@
-import { Button, Snackbar } from '@equinor/eds-core-react'
+import { Button, Snackbar, Typography } from '@equinor/eds-core-react'
 import { useState } from 'react'
 import { Table } from '../../components/Table'
 import { AddModelDialog } from '../../features/AddModelDialog/AddModelDialog'
 import { useAnalogueModels } from '../../hooks/useAnalogueModels'
+import * as Styled from './Browse.styled'
 
 enum UploadProcess {
   STARTED = 'We are uploading your new model. Please keep this browser tab open.',
@@ -51,13 +52,16 @@ export const Browse = () => {
 
   return (
     <>
-      <div>
-        <Button href="/model/bf2171bc-2f5e-44a1-f6e0-08dbb5ed15e2/details">
-          model
-        </Button>
-      </div>
-      <Button onClick={toggleDialog}>Add new model</Button>
-      <Table />
+      <Styled.BrowseWrapper>
+        <Typography variant="h1">Browse all models</Typography>
+        <div className="btn-div">
+          <Button onClick={toggleDialog}>Add new model</Button>
+          <Button href="/model/bf2171bc-2f5e-44a1-f6e0-08dbb5ed15e2/details">
+            Model view - Hardkodet
+          </Button>
+        </div>
+        <Table />
+      </Styled.BrowseWrapper>
       <AddModelDialog
         isOpen={isAddModelDialog}
         confirm={uploadModel}

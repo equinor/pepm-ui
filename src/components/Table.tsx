@@ -15,7 +15,7 @@ export const Table = () => {
         enablePagination
         emptyMessage="Empty :("
         rows={models.data.data}
-        pageSize={15}
+        pageSize={5}
         columns={[
           {
             accessorKey: 'analogueModelId',
