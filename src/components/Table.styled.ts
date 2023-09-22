@@ -9,9 +9,5 @@ export const StyledDiv = styled.div`
     > table {
       width: auto !important;
     }
-
-    > div {
-      max-width: none !important;
-    }
   }
 `
