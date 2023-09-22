@@ -1,6 +1,7 @@
 import { createBrowserRouter, NonIndexRouteObject } from 'react-router-dom'
 import { App } from './App'
 import { ModelView } from './features/ModelView/ModelView'
+import { About } from './pages/About/About'
 import { Api } from './pages/Api/Api'
 import { Browse } from './pages/Browse/Browse'
 import { Compute } from './pages/ModelPages/Compute/Compute'
@@ -11,8 +12,6 @@ interface Tab extends Required<Pick<NonIndexRouteObject, 'path' | 'element'>> {
   title: string
 }
 
-const NotImplemented = () => <p>Not implemented</p>
-
 const tabs: Tab[] = [
   {
     title: 'Models',
@@ -20,7 +19,7 @@ const tabs: Tab[] = [
     element: <Browse />,
   },
   { title: 'API', path: 'api', element: <Api /> },
-  { title: 'About', path: 'about', element: <NotImplemented /> },
+  { title: 'About', path: 'about', element: <About /> },
 ]
 const appRoutes = (tabs as NonIndexRouteObject[]).concat([
   {
