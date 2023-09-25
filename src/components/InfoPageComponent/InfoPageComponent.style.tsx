@@ -18,5 +18,14 @@ const InnerWrapper = styled.div`
 
   row-gap: ${spacings.LARGE};
   width: 50%;
+
+  > a {
+    display: flex;
+    width: max-content;
+
+    > svg {
+      margin-left: ${spacings.SMALL};
+    }
+  }
 `
 export { InnerWrapper, StyledInforPage as Page }

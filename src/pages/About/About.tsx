@@ -3,7 +3,7 @@ import { InfoPageComponent } from '../../components/InfoPageComponent/InfoPageCo
 
 export const About = () => {
   return (
-    <InfoPageComponent title="About New">
+    <InfoPageComponent title="About PEPM">
       <Typography variant="body_long">
         It began with the forging of the Great Rings. Three were given to{' '}
         <Typography link href="https://nr.no/">
