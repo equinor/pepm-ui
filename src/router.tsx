@@ -4,6 +4,7 @@ import { ModelView } from './features/ModelView/ModelView'
 import { About } from './pages/About/About'
 import { Api } from './pages/Api/Api'
 import { Browse } from './pages/Browse/Browse'
+import { InvalidURL } from './pages/InvalidURL/InvalidURL'
 import { Compute } from './pages/ModelPages/Compute/Compute'
 import { Model } from './pages/ModelPages/Model/Model'
 import { Results } from './pages/ModelPages/Results/Results'
@@ -50,7 +51,7 @@ const router = createBrowserRouter([
   },
   {
     path: '*',
-    element: <p>Invalid url</p>,
+    element: <InvalidURL />,
   },
 ])
 
