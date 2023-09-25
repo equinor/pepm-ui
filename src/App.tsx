@@ -7,6 +7,7 @@ import { Outlet } from 'react-router-dom'
 import * as Styled from './App.styled'
 import AppBar from './features/AppBar/AppBar'
 import { Footer } from './features/Footer/Footer'
+import { NoAccess } from './pages/NoAccess/NoAccess'
 
 export function App() {
   const { instance } = useMsal()
@@ -23,6 +24,7 @@ export function App() {
       <UnauthenticatedTemplate>
         <p>Not authenticated</p>
         <button onClick={() => instance.loginRedirect()}>Log in</button>
+        <NoAccess />
       </UnauthenticatedTemplate>
     </>
   )
