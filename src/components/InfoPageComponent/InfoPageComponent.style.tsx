@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { spacings } from '../../tokens/spacings'
 
-const StyledAbout = styled.div`
+const StyledInforPage = styled.div`
   display: flex;
   flex-wrap: wrap;
 
@@ -19,4 +19,4 @@ const InnerWrapper = styled.div`
   row-gap: ${spacings.LARGE};
   width: 50%;
 `
-export { StyledAbout as About, InnerWrapper }
+export { InnerWrapper, StyledInforPage as Page }
