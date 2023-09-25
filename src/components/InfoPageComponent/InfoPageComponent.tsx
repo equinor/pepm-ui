@@ -6,7 +6,7 @@ export const InfoPageComponent = ({
   children,
 }: {
   title: string
-  children?: JSX.Element | JSX.Element[]
+  children?: React.ReactNode
 }) => {
   return (
     <Styled.Page className="about-container">
