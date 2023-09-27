@@ -1,13 +1,10 @@
 import { Button, Table, Typography } from '@equinor/eds-core-react'
-import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
-import { ModelType } from '../../../pages/ModelPages/Model/Model'
+import { useAnalogueModels } from '../../../hooks/useAnalogueModels'
 
 export const ModelMetadataView = () => {
   const { id } = useParams()
-  const model = useQuery(['models', 'token', { analogueModelId: id }], {
-    enabled: !!id,
-  }) as ModelType
+  const { model } = useAnalogueModels(id)
 
   if (!model) return <p>Loading ...</p>
 

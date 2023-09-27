@@ -15,19 +15,17 @@ const ANALOGUEMODELS_KEY = '/api/analogue-models'
 const ANALOGUEMODEL_KEY = '/api/analogue-models/{id}'
 const NC_FILE_KEY = '/api/analogue-models/{id}/input-models'
 
-export function useAnalogueModels() {
+export function useAnalogueModels(id?: string) {
   const apiClient = useApiClient()
   const token = useAccessToken()
   const headers = new Headers({ Authorization: `Bearer ${token}` })
 
-  async function fetchModels() {
+  async function fetchModels(): AnalogueModelResponse {
     const { data } = await apiClient.GET(ANALOGUEMODELS_KEY, {
       headers: headers,
     })
     return data
   }
-
-  const models = useQuery(['models', token], fetchModels, { enabled: !!token })
 
   async function fetchModel({
     params,
@@ -68,7 +66,15 @@ export function useAnalogueModels() {
     return data
   }
 
+  const models = useQuery(['models', token], fetchModels, { enabled: !!token })
+  const model: AnalogueModel = useQuery([
+    'models',
+    token,
+    { analogueModelId: id },
+  ])
+
   return {
+    model,
     fetchModel,
     createModel,
     models,
