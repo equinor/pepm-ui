@@ -51,6 +51,65 @@ spec:
           imageTagName: latest
           variables:
             ASPNETCORE_ENVIRONMENT: "Production"
+  jobs:
+    - name: pepm-nrresqml
+      image: ghcr.io/equinor/pepm-worker-api/pepm-nrresqml:latest
+      schedulerPort: 8090
+      resources:
+        requests:
+          memory: "2048Mi"
+          cpu: "1000m"
+        limits:
+          memory: "4096Mi"
+          cpu: "2000m"
+      payload:
+        path: /app/args
+      variables:
+        MODELS_PATH: "/mnt/azure-storage/models"
+      environmentConfig:
+        - environment: dev
+          volumeMounts:
+            - name: pepm-nrresqml-model-storage-dev
+              path: /mnt/azure-storage/models
+              blobfuse2:
+                protocol: fuse2
+                container: models
+                uid: 1000
+            - name: pepm-nrresqml-worker-storage-dev
+              path: /mnt/azure-storage/worker
+              blobfuse2:
+                protocol: fuse2
+                container: nrresqml
+                uid: 1000
+    - name: pepm-nrchannest
+      image: ghcr.io/equinor/pepm-worker-api/pepm-nrchannest:latest
+      schedulerPort: 8090
+      resources:
+        requests:
+          memory: "4096Mi"
+          cpu: "1000m"
+        limits:
+          memory: "8192Mi"
+          cpu: "2000m"
+      payload:
+        path: /app/args
+      variables:
+        MODELS_PATH: "/mnt/azure-storage/models"
+      environmentConfig:
+        - environment: dev
+          volumeMounts:
+            - name: pepm-nrchannest-model-storage-dev
+              path: /mnt/azure-storage/models
+              blobfuse2:
+                protocol: fuse2
+                container: models
+                uid: 1000
+            - name: pepm-nrchannest-worker-storage-dev
+              path: /mnt/azure-storage/worker
+              blobfuse2:
+                protocol: fuse2
+                container: nrchannest
+                uid: 1000
   privateImageHubs:
     ghcr.io:
       username: hakoneriksson
