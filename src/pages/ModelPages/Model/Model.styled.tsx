@@ -9,6 +9,10 @@ export const Wrapper = styled.div`
   height: 100%;
 `
 
+export const ContentWrapper = styled.div`
+  width: 100%;
+`
+
 export const SidebarWrapper = styled.div`
   heigth: 100%;
   max-width: 256px;
