@@ -3,6 +3,13 @@ import styled from 'styled-components'
 import { spacings } from '../../../tokens/spacings'
 import { theme } from '../../../tokens/theme'
 
+export const StyledSidebarContent = styled(SideBar.Content)`
+  padding-top: ${spacings.MEDIUM};
+  > a {
+    border-bottom: none;
+  }
+`
+
 export const StyledSidebarLink = styled(SideBar.Link)`
   &.activeTab {
     background: none;
@@ -27,9 +34,6 @@ export const StyledAccordian = styled(SideBar.Accordion)`
       fill: ${theme.light.primary.resting};
       opacity: 1;
     }
-
-    .Icon__StyledSvg-sc-6evbi1-0 {
-    }
   }
 `
 
@@ -47,7 +51,7 @@ export const StyledAccordianItem = styled(SideBar.AccordionItem)`
       border-left: solid;
       border-width: medium;
       border-color: ${theme.light.primary.resting};
-      padding-left: 20px;
+      padding-left: ${spacings.MEDIUM};
 
       > p {
         color: ${theme.light.primary.resting};
@@ -59,3 +63,10 @@ export const StyledAccordianItem = styled(SideBar.AccordionItem)`
     }
   }
 `
+
+export {
+  StyledAccordian as Accordian,
+  StyledAccordianItem as AccordianItem,
+  StyledSidebarContent as SidebarContent,
+  StyledSidebarLink as SidebarLink,
+}
