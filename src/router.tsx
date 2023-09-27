@@ -5,7 +5,8 @@ import { About } from './pages/About/About'
 import { Api } from './pages/Api/Api'
 import { Browse } from './pages/Browse/Browse'
 import { InvalidURL } from './pages/InvalidURL/InvalidURL'
-import { Compute } from './pages/ModelPages/Compute/Compute'
+import { ComputeObject } from './pages/ModelPages/Compute/ComputeObject'
+import { ComputeVariogram } from './pages/ModelPages/Compute/ComputeVariogram'
 import { Model } from './pages/ModelPages/Model/Model'
 import { Results } from './pages/ModelPages/Results/Results'
 
@@ -31,10 +32,16 @@ const appRoutes = (tabs as NonIndexRouteObject[]).concat([
         path: 'details',
         element: <ModelView />,
       },
+
       {
-        path: 'compute',
-        element: <Compute />,
+        path: 'variogram',
+        element: <ComputeVariogram />,
       },
+      {
+        path: 'object',
+        element: <ComputeObject />,
+      },
+
       {
         path: 'results',
         element: <Results />,
