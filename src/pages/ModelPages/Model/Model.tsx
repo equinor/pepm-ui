@@ -10,12 +10,14 @@ export const Model = () => {
 
   return (
     <>
-      <ModelNameFrame model={model} />
       <Styled.Wrapper>
         <Styled.SidebarWrapper>
           <ModelNavigationBar />
         </Styled.SidebarWrapper>
-        <Outlet />
+        <Styled.ContentWrapper>
+          {model && <ModelNameFrame model={model} />}
+          <Outlet />
+        </Styled.ContentWrapper>
       </Styled.Wrapper>
     </>
   )
