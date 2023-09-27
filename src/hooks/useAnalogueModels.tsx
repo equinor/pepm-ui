@@ -12,7 +12,6 @@ type UseQueryOptions<T> = ParamsOption<T> &
   }
 
 const ANALOGUEMODELS_KEY = '/api/analogue-models'
-const ANALOGUEMODEL_KEY = '/api/analogue-models/{id}'
 const NC_FILE_KEY = '/api/analogue-models/{id}/input-models'
 
 export function useAnalogueModels(id?: string) {
@@ -22,18 +21,6 @@ export function useAnalogueModels(id?: string) {
 
   async function fetchModels(): AnalogueModelResponse {
     const { data } = await apiClient.GET(ANALOGUEMODELS_KEY, {
-      headers: headers,
-    })
-    return data
-  }
-
-  async function fetchModel({
-    params,
-  }: UseQueryOptions<paths[typeof ANALOGUEMODEL_KEY]['get']>) {
-    // check id at runtime because it can be undefined
-    if (params.path.id === undefined) Promise.reject(new Error('Invalid id'))
-    const { data } = await apiClient.GET(ANALOGUEMODEL_KEY, {
-      params,
       headers: headers,
     })
     return data
@@ -67,6 +54,7 @@ export function useAnalogueModels(id?: string) {
   }
 
   const models = useQuery(['models', token], fetchModels, { enabled: !!token })
+  // TODO: might want to add queryFn to this:
   const model: AnalogueModel = useQuery([
     'models',
     token,
@@ -75,7 +63,6 @@ export function useAnalogueModels(id?: string) {
 
   return {
     model,
-    fetchModel,
     createModel,
     models,
     uploadNCFile,
