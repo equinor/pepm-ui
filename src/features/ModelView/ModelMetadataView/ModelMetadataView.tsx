@@ -1,28 +1,13 @@
-/* eslint-disable max-lines-per-function */
-import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { useAnalogueModels } from '../../../hooks/useAnalogueModels'
-
 import { Button, Table, Typography } from '@equinor/eds-core-react'
+import { useQuery } from '@tanstack/react-query'
+import { useParams } from 'react-router-dom'
 import { ModelType } from '../../../pages/ModelPages/Model/Model'
 
 export const ModelMetadataView = () => {
-  const [model, setModel] = useState<ModelType>()
   const { id } = useParams()
-  const { fetchModel } = useAnalogueModels()
-
-  useEffect(() => {
-    async function getModel() {
-      return await fetchModel({
-        params: { path: { id: id ?? '' } },
-      })
-        .then((response) => response?.data)
-        .then((model) => model && setModel(model as ModelType))
-    }
-    if (!model) {
-      getModel()
-    }
-  }, [id, model, fetchModel])
+  const model = useQuery(['models', 'token', { analogueModelId: id }], {
+    enabled: !!id,
+  }) as ModelType
 
   if (!model) return <p>Loading ...</p>
 

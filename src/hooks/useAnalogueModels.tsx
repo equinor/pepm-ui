@@ -8,11 +8,7 @@ import { useAccessToken } from './useAccessToken'
 type UseQueryOptions<T> = ParamsOption<T> &
   RequestBodyOption<T> & {
     // custom options
-    params?: {
-      path: {
-        id: string
-      }
-    }
+    params?: { path: { id: string } }
   }
 
 const ANALOGUEMODELS_KEY = '/api/analogue-models'
@@ -31,12 +27,16 @@ export function useAnalogueModels() {
     return data
   }
 
+  const models = useQuery(['models', token], fetchModels, { enabled: !!token })
+
   async function fetchModel({
     params,
   }: UseQueryOptions<paths[typeof ANALOGUEMODEL_KEY]['get']>) {
+    // check id at runtime because it can be undefined
+    if (params.path.id === undefined) Promise.reject(new Error('Invalid id'))
     const { data } = await apiClient.GET(ANALOGUEMODEL_KEY, {
       params,
-      headers: new Headers({ Authorization: `Bearer ${token}` }),
+      headers: headers,
     })
     return data
   }
@@ -68,7 +68,10 @@ export function useAnalogueModels() {
     return data
   }
 
-  const models = useQuery([ANALOGUEMODELS_KEY, token], fetchModels)
-
-  return { fetchModels, fetchModel, createModel, models, uploadNCFile }
+  return {
+    fetchModel,
+    createModel,
+    models,
+    uploadNCFile,
+  }
 }
