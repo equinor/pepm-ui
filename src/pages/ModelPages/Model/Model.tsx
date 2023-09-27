@@ -1,21 +1,16 @@
-import { useQuery } from '@tanstack/react-query'
 import { Outlet, useParams } from 'react-router-dom'
 import { ModelNameFrame } from '../../../features/ModelView/ModelNameFrame/ModelNameFrame'
 import { ModelNavigationBar } from '../../../features/ModelView/ModelNavigationBar/ModelNavigationBar'
-import { components } from '../../../models/schema'
+import { useAnalogueModels } from '../../../hooks/useAnalogueModels'
 import * as Styled from './Model.styled'
-
-export type ModelType = Partial<
-  components['schemas']['GetAnalogueModelQueryResponse']['data']
->
 
 export const Model = () => {
   const { id } = useParams<{ id: string }>()
-  const model = useQuery(['models', 'token', { analogueModelId: id }])
+  const { model } = useAnalogueModels(id)
 
   return (
     <>
-      <ModelNameFrame model={model as ModelType} />
+      <ModelNameFrame model={model} />
       <Styled.Wrapper>
         <Styled.SidebarWrapper>
           <ModelNavigationBar />
