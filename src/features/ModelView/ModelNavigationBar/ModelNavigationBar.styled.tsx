@@ -23,21 +23,7 @@ export const StyledSidebarLink = styled(SideBar.Link)`
   }
 `
 
-export const StyledAccordian = styled(SideBar.Accordion)`
-  &.activeTab {
-    background: none;
-    > p {
-      color: ${theme.light.primary.resting};
-      font-weight: bold;
-    }
-    > svg {
-      fill: ${theme.light.primary.resting};
-      opacity: 1;
-    }
-  }
-`
-
-export const StyledAccordianItem = styled(SideBar.AccordionItem)`
+export const StyledAccordionItem = styled(SideBar.AccordionItem)`
   > div {
     border-left: solid;
     border-color: ${theme.light.ui.background.medium};
@@ -65,8 +51,7 @@ export const StyledAccordianItem = styled(SideBar.AccordionItem)`
 `
 
 export {
-  StyledAccordian as Accordian,
-  StyledAccordianItem as AccordianItem,
+  StyledAccordionItem as AccordionItem,
   StyledSidebarContent as SidebarContent,
   StyledSidebarLink as SidebarLink,
 }
