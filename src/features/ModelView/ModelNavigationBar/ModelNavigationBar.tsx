@@ -22,6 +22,7 @@ type MenuItems = SidebarLinkProps & {
 export const ModelNavigationBar = () => {
   const location = useLocation()
   const tab = location.pathname.split('/')
+  const path = tab[tab.length - 1]
 
   const menuItems: SidebarLinkProps[] = [
     {
@@ -30,7 +31,6 @@ export const ModelNavigationBar = () => {
       href: 'details',
       active: false,
     },
-
     {
       label: 'Results',
       icon: approve,
@@ -62,54 +62,35 @@ export const ModelNavigationBar = () => {
   return (
     <SideBar open>
       <Styled.SidebarContent>
-        {/* <Styled.StyledSidebarToggle /> */}
-        {/* {menuItems.map((m) => (
-          <Styled.StyledSidebarLink
-            className={m.href === tab[tab.length - 1] && 'activeTab'}
-            key={m.label}
-            {...m}
-            active={m.href === tab[tab.length - 1]}
-          ></Styled.StyledSidebarLink>
-        ))} */}
-
         <Styled.SidebarLink
-          className={menuItems[0].href === tab[tab.length - 1] && 'activeTab'}
+          className={menuItems[0].href === path && 'activeTab'}
           key={menuItems[0].label}
           {...menuItems[0]}
-          active={menuItems[0].href === tab[tab.length - 1]}
+          active={menuItems[0].href === path}
         ></Styled.SidebarLink>
         <Styled.SidebarLink
           disabled
-          className={
-            ('object' === tab[tab.length - 1] ||
-              'variogram' === tab[tab.length - 1]) &&
-            'activeTab'
-          }
+          className={('object' === path || 'variogram' === path) && 'activeTab'}
           isExpanded
           label={sidebarCompute.label}
           icon={sidebarCompute.icon}
-          active={
-            'object' === tab[tab.length - 1] ||
-            'variogram' === tab[tab.length - 1]
-          }
+          active={'object' === path || 'variogram' === path}
           href={'variogram'}
         ></Styled.SidebarLink>
         {sidebarCompute.subItems?.map((item) => (
-          <Styled.AccordianItem
-            className={item.href === tab[tab.length - 1] && 'activeTab actTab'}
+          <Styled.AccordionItem
+            className={item.href === path && 'activeTab actTab'}
             key={item.label}
             label={item.label}
-            active={
-              item.href === tab[tab.length - 1] && item.label === 'Variogram'
-            }
+            active={item.href === path && item.label === 'Variogram'}
             href={item.href}
-          ></Styled.AccordianItem>
+          ></Styled.AccordionItem>
         ))}
         <Styled.SidebarLink
-          className={menuItems[1].href === tab[tab.length - 1] && 'activeTab'}
+          className={menuItems[1].href === path && 'activeTab'}
           key={menuItems[1].label}
           {...menuItems[1]}
-          active={menuItems[1].href === tab[tab.length - 1]}
+          active={menuItems[1].href === path}
         ></Styled.SidebarLink>
       </Styled.SidebarContent>
     </SideBar>
