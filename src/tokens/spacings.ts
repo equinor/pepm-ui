@@ -23,4 +23,6 @@ export const spacings = {
   XXX_LARGE: comfortable.xxx_large,
   /** 64px */
   XXXX_LARGE: '64px',
+  /** 92px */
+  COMPUTE_BUTTON: '92px',
 }

@@ -3,6 +3,7 @@ import { tokens } from '@equinor/eds-tokens'
 const interactive = tokens.colors.interactive
 const text = tokens.colors.text
 const ui = tokens.colors.ui
+const base = tokens.elevation
 
 export const theme = {
   light: {
@@ -23,8 +24,12 @@ export const theme = {
     },
     ui: {
       background: {
+        default: ui.background__default.hex,
         light: ui.background__light.hex,
         medium: ui.background__medium.hex,
+      },
+      elevation: {
+        raised: base.raised,
       },
     },
   },
