@@ -36,7 +36,6 @@ export const ComputeVariogram = () => {
         <Typography>Add a Case</Typography>
       )}
       <Styled.AddCaseButton variant="outlined" onClick={AddCase}>
-
         Add variogram case
       </Styled.AddCaseButton>
     </Styled.Case>
