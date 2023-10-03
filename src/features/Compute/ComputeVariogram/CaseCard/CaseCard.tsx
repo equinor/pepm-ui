@@ -90,7 +90,6 @@ export const CaseCard = ({ name }: { name: string }) => {
                 setParameters={setParameters}
               />
             )}
-
             <CaseCardParameters
               label={'Variogram model'}
               type={'variogramModels'}

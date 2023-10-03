@@ -20,6 +20,7 @@ export const Model = () => {
           {!model.isLoadingError && model.isFetched && (
             <ModelNameFrame model={model.data.data} />
           )}
+
           <Outlet />
         </Styled.ContentWrapper>
       </Styled.Wrapper>
