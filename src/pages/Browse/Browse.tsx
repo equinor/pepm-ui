@@ -12,7 +12,7 @@ enum UploadProcess {
 }
 
 export const Browse = () => {
-  const { createModel, uploadNCFile } = useAnalogueModels()
+  const { createModel, uploadNCFile } = useAnalogueModels('undefined')
   const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false)
   const [uploadStatus, setUploadStatus] = useState<string>()
 

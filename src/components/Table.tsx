@@ -4,7 +4,7 @@ import { useAnalogueModels } from '../hooks/useAnalogueModels'
 import * as Styled from './Table.styled'
 
 export const Table = () => {
-  const { models } = useAnalogueModels()
+  const { models } = useAnalogueModels('undefined')
 
   if (models.isLoading || !models.data?.data) return <p>Loading...</p>
 

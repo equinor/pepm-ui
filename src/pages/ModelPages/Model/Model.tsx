@@ -6,7 +6,9 @@ import * as Styled from './Model.styled'
 
 export const Model = () => {
   const { id } = useParams<{ id: string }>()
-  const { model } = useAnalogueModels(id)
+  const { model } = useAnalogueModels(id!)
+
+  if (model.isLoading) <p>Loading.....</p>
 
   return (
     <>
@@ -15,7 +17,9 @@ export const Model = () => {
           <ModelNavigationBar />
         </Styled.SidebarWrapper>
         <Styled.ContentWrapper>
-          {model && <ModelNameFrame model={model} />}
+          {!model.isLoadingError && model.isFetched && (
+            <ModelNameFrame model={model.data.data} />
+          )}
           <Outlet />
         </Styled.ContentWrapper>
       </Styled.Wrapper>
