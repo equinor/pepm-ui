@@ -5,14 +5,21 @@ import * as Styled from './CaseCard.styled'
 import { CaseCardButtons } from './CaseCardButtons/CaseCardButtons'
 import { CaseCardInputs } from './CaseCardInputs/CaseCardInputs'
 import { CaseCardParameters } from './CaseCardParameters/CaseCardParameters'
-
 export default interface optionTypes {
   id: number
   name: string
   size?: string
 }
 
-export const CaseCard = ({ name }: { name: string }) => {
+export const CaseCard = ({
+  name,
+  id,
+  removeCase,
+}: {
+  name: string
+  id: string
+  removeCase: (id: string) => void
+}) => {
   const [selectedModelArea, setModelArea] = useState<optionTypes>()
   const [selectedComputeMethod, setComputeMethod] = useState<optionTypes>()
   const [selectedGrainSize, setGrainSize] = useState<optionTypes>()
@@ -66,7 +73,7 @@ export const CaseCard = ({ name }: { name: string }) => {
             setModelArea={setModelArea}
             setComputeMethod={setComputeMethod}
           />
-          <CaseCardButtons runCase={runCase} />
+          <CaseCardButtons id={id} runCase={runCase} removeCase={removeCase} />
         </Styled.CaseCard>
       </Styled.Case>
       <div>

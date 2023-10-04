@@ -6,36 +6,40 @@ import { ComputeCaseInfoActions } from '../../../../features/Compute/ComputeVari
 import * as Styled from './ComputeVariogram.styled'
 
 interface Casetype {
-  id: number
+  id: string
   name: string
 }
 export const ComputeVariogram = () => {
   const [cases, setCases] = useState<Casetype[]>([
-    { id: 1, name: 'Variogram Case 1' },
+    { id: '1', name: 'Variogram Case 1' },
   ])
 
-  const AddCase = () => {
+  const addCase = () => {
     const newCase: Casetype = {
-      id: Math.floor(Math.random() * 100),
+      id: `${Math.floor(Math.random() * 100)}`,
       name: `Variogram Case ${cases.length + 1}`,
     }
-
     setCases([...cases, newCase])
+  }
+
+  const removeCase = (id: string) => {
+    const newCaseList = cases.filter((c) => c.id !== id)
+    setCases(newCaseList)
   }
 
   return (
     <Styled.Case>
-      <ComputeCaseInfoActions addCase={AddCase} />
+      <ComputeCaseInfoActions addCase={addCase} />
       {cases.length !== 0 ? (
         cases.map((c) => (
           <Styled.CaseBorder key={c.id}>
-            <CaseCard name={c.name} />
+            <CaseCard id={c.id} name={c.name} removeCase={removeCase} />
           </Styled.CaseBorder>
         ))
       ) : (
         <Typography>Add a Case</Typography>
       )}
-      <Styled.AddCaseButton variant="outlined" onClick={AddCase}>
+      <Styled.AddCaseButton variant="outlined" onClick={addCase}>
         Add variogram case
       </Styled.AddCaseButton>
     </Styled.Case>
