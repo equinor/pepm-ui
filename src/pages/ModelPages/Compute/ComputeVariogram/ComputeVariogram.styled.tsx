@@ -7,22 +7,24 @@ export const Case = styled.div`
   display: flex;
   flex-direction: column;
 
-  margin: ${spacings.X_LARGE};
+  padding: ${spacings.X_LARGE};
   column-gap: ${spacings.MEDIUM};
   row-gap: ${spacings.XXX_LARGE};
 
-  width: 70%;
+  width: 75%;
 
   @media (max-width: 1450px) {
     width: 95%;
   }
+
+  border-left: solid ${spacings.XX_SMALL} ${theme.light.ui.background.medium};
 `
 export const CaseBorder = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: ${spacings.XXX_LARGE};
 
-  border-radius: ${spacings.X_SMALL};
+  border-radius: ${spacings.CARD_ROUNDED};
   border: solid 1px ${theme.light.ui.background.medium};
 `
 export const AddCaseButton = styled(Button)`

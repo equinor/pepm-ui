@@ -16,7 +16,7 @@ export const Case = styled.div`
   padding: ${spacings.LARGE};
   column-gap: ${spacings.MEDIUM};
 
-  border: solid thin ${theme.light.ui.background.medium};
+  border-bottom: solid thin ${theme.light.ui.background.medium};
 `
 
 export const Parameters = styled.div`
@@ -24,14 +24,14 @@ export const Parameters = styled.div`
   flex-direction: column;
   row-gap: ${spacings.MEDIUM};
 
-  background-color: ${theme.light.ui.background.light};
   padding: ${spacings.LARGE};
   background-color: ${theme.light.ui.background.light};
+  border-radius: 0 0 ${spacings.CARD_ROUNDED} 0;
 `
 
 export const Wrapper = styled.div`
   border-left: solid;
-  border-width: thick;
+  border-width: ${spacings.SMALL};
   border-color: ${theme.light.primary.resting};
-  border-radius: ${spacings.X_SMALL};
+  border-radius: ${spacings.BORDER_ROUNDED};
 `

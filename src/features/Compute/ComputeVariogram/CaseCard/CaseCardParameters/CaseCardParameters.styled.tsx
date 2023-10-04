@@ -5,7 +5,7 @@ import { theme } from '../../../../../tokens/theme'
 export const Parameters = styled.div`
   background-color: ${theme.light.ui.background.default};
   padding: ${spacings.MEDIUM};
-  border-radius: ${spacings.X_SMALL};
+  border-radius: ${spacings.CARD_ROUNDED};
   box-shadow: ${theme.light.ui.elevation.raised};
 
   display: flex;

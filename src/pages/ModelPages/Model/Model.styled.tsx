@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { theme } from '../../../tokens/theme'
 
 export const Wrapper = styled.div`
   display: flex;
@@ -16,4 +17,7 @@ export const ContentWrapper = styled.div`
 export const SidebarWrapper = styled.div`
   heigth: 100%;
   max-width: 256px;
+  > div {
+    border-color: ${theme.light.ui.background.medium};
+  }
 `
