@@ -25,4 +25,8 @@ export const spacings = {
   XXXX_LARGE: '64px',
   /** 92px */
   COMPUTE_BUTTON: '92px',
+  /** 5px */
+  CARD_ROUNDED: '5px',
+  /** 4px */
+  BORDER_ROUNDED: '4px', // CARD_ROUNDED - 1px
 }
