@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import type { ParamsOption, RequestBodyOption } from 'openapi-fetch'
@@ -12,17 +13,30 @@ type UseQueryOptions<T> = ParamsOption<T> &
   }
 
 const ANALOGUEMODELS_KEY = '/api/analogue-models'
+const ANALOGUEMODEL_KEY = '/api/analogue-models/{id}'
 const NC_FILE_KEY = '/api/analogue-models/{id}/input-models'
 
-export function useAnalogueModels(id?: string) {
+export function useAnalogueModels(id: string) {
   const apiClient = useApiClient()
   const token = useAccessToken()
   const headers = new Headers({ Authorization: `Bearer ${token}` })
+  const modelId = id
 
   async function fetchModels(): AnalogueModelResponse {
     const { data } = await apiClient.GET(ANALOGUEMODELS_KEY, {
       headers: headers,
     })
+    return data
+  }
+
+  async function fetchModel(id: string): AnalogueModelResponse {
+    const params = { path: { id } }
+
+    const { data } = await apiClient.GET(ANALOGUEMODEL_KEY, {
+      params,
+      headers: headers,
+    })
+
     return data
   }
 
@@ -55,11 +69,13 @@ export function useAnalogueModels(id?: string) {
 
   const models = useQuery(['models', token], fetchModels, { enabled: !!token })
   // TODO: might want to add queryFn to this:
-  const model: AnalogueModel = useQuery([
-    'models',
-    token,
-    { analogueModelId: id },
-  ])
+
+  const model: AnalogueModel = useQuery({
+    queryKey: ['model', token, modelId],
+    queryFn: () => fetchModel(modelId),
+
+    enabled: !!modelId,
+  })
 
   return {
     model,

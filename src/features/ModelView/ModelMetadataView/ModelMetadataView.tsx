@@ -3,38 +3,32 @@ import { useParams } from 'react-router-dom'
 import { useAnalogueModels } from '../../../hooks/useAnalogueModels'
 
 export const ModelMetadataView = () => {
-  const { id } = useParams()
-  const { model } = useAnalogueModels(id)
+  const { id } = useParams<{ id: string }>()
+  const { model } = useAnalogueModels(id!)
 
-  if (!model) return <p>Loading ...</p>
-
-  // TODO
-  // Map rows to model data
+  if (model.isLoading) <p>Loading.....</p>
 
   return (
     <div className="metadata-view">
       <Typography variant="h3">Description and metadata</Typography>
-      {model.description && (
-        <p>
-          {model.description}
-          <br />
+      {!model.isLoadingError &&
+        model.isFetched &&
+        model.data.data.description && (
           <p>
-            ** Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-            bibendum ex at venenatis gravida. Sed id tempor dui. Nunc a posuere
-            ligula. Pellentesque pulvinar varius neque nec molestie. Aliquam
-            erat volutpat. Nunc pulvinar varius scelerisque. Suspendisse
-            iaculis, elit id fringilla semper, justo felis luctus felis, et
-            malesuada augue sapien a sem. Donec varius, sapien quis varius
-            blandit, justo ex pellentesque nisl, eu placerat magna nisi et odio.
-            Donec laoreet est quam, id fringilla magna semper in. Duis non massa
-            euismod, ultrices tortor et, ultricies ante. Vivamus quis dignissim
-            sem. Quisque purus dui, euismod eu lacus sed, mollis sagittis arcu.
-            Curabitur vitae mauris ornare, elementum massa suscipit, congue leo.
-            Sed fermentum imperdiet dapibus. Aliquam non ligula in felis laoreet
-            suscipit. **
+            {model.data.data.description}
+            <br />
+            <p>
+              ** Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Maecenas bibendum ex at venenatis gravida. Sed id tempor dui. Nunc
+              a posuere ligula. Pellentesque pulvinar varius neque nec molestie.
+              Aliquam erat volutpat. Nunc pulvinar varius scelerisque.
+              Suspendisse iaculis, elit id fringilla semper, justo felis luctus
+              felis, et malesuada augue sapien a sem. Donec varius, sapien quis
+              varius blandit, justo ex pellentesque nisl, eu placerat magna nisi
+              et odio. Donec laoreet est quam, id fringilla magna semper in. **
+            </p>
           </p>
-        </p>
-      )}
+        )}
       <div>
         <Table>
           <Table.Body>

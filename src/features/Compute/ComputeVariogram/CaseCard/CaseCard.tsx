@@ -12,7 +12,7 @@ export default interface optionTypes {
   size?: string
 }
 
-export const CaseCard = () => {
+export const CaseCard = ({ name }: { name: string }) => {
   const [selectedModelArea, setModelArea] = useState<optionTypes>()
   const [selectedComputeMethod, setComputeMethod] = useState<optionTypes>()
   const [selectedGrainSize, setGrainSize] = useState<optionTypes>()
@@ -58,7 +58,7 @@ export const CaseCard = () => {
   return (
     <Styled.Wrapper>
       <Styled.Case>
-        <Typography variant="h4">Variogram/object case N</Typography>
+        <Typography variant="h4">{name}</Typography>
         <Styled.CaseCard>
           <CaseCardInputs
             modelAreas={modelAreas}
@@ -72,26 +72,30 @@ export const CaseCard = () => {
       <div>
         {selectedModelArea && selectedComputeMethod ? (
           <Styled.Parameters>
-            <CaseCardParameters
-              label={'From grain size'}
-              type={'grainSize'}
-              options={grainOptions}
-              selectedGrainSize={selectedGrainSize}
-              setGrainSize={setGrainSize}
-            />
+            {selectedComputeMethod.name === 'Net-to-gross' && (
+              <CaseCardParameters
+                label={'From grain size'}
+                type={'grainSize'}
+                options={grainOptions}
+                selectedGrainSize={selectedGrainSize}
+                setGrainSize={setGrainSize}
+              />
+            )}
+            {selectedComputeMethod.name === 'Continuous parameter' && (
+              <CaseCardParameters
+                label={'Parameter'}
+                type={'parameters'}
+                options={parameterOptions}
+                selectedParameters={selectedParameters}
+                setParameters={setParameters}
+              />
+            )}
             <CaseCardParameters
               label={'Variogram model'}
               type={'variogramModels'}
               options={modelOptions}
               selectedVariogramModels={selectedVariogramModels}
               setVariogramModels={setVariogramModels}
-            />
-            <CaseCardParameters
-              label={'Parameter'}
-              type={'parameters'}
-              options={parameterOptions}
-              selectedParameters={selectedParameters}
-              setParameters={setParameters}
             />
           </Styled.Parameters>
         ) : (
