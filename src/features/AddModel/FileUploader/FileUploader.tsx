@@ -1,7 +1,7 @@
 import { Icon } from '@equinor/eds-core-react'
 import { subdirectory_arrow_right as arrowIcon } from '@equinor/eds-icons'
 import { ChangeEvent, useRef } from 'react'
-import { theme } from '../../tokens/theme'
+import { theme } from '../../../tokens/theme'
 import { FileUpload, SelectFile } from './FileUploader.styled'
 
 interface FileUploaderProps {
