@@ -1,7 +1,7 @@
 import { Button, Table } from '@equinor/eds-core-react'
 import { delete_to_trash as deleteIcon } from '@equinor/eds-icons'
 import { ChangeEvent } from 'react'
-import IconButton from '../../components/IconButton/IconButton'
+import IconButton from '../../../components/IconButton/IconButton'
 import { FileUploader } from '../FileUploader/FileUploader'
 
 type FileDisplay = { isVisible: boolean; toggle: () => void }

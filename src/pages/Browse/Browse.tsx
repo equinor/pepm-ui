@@ -1,7 +1,7 @@
 import { Button, Snackbar, Typography } from '@equinor/eds-core-react'
 import { useState } from 'react'
 import { Table } from '../../components/Table'
-import { AddModelDialog } from '../../features/AddModelDialog/AddModelDialog'
+import { AddModelDialog } from '../../features/AddModel/AddModelDialog/AddModelDialog'
 import { useAnalogueModels } from '../../hooks/useAnalogueModels'
 import * as Styled from './Browse.styled'
 

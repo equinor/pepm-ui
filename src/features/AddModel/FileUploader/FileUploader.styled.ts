@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react'
 import styled from 'styled-components'
-import { spacings } from '../../tokens/spacings'
+import { spacings } from '../../../tokens/spacings'
 
 /*
   Note: Hiding the input element because it is ugly,

@@ -1,6 +1,6 @@
 import { Dialog } from '@equinor/eds-core-react'
 import styled from 'styled-components'
-import { spacings } from '../../tokens/spacings'
+import { spacings } from '../../../tokens/spacings'
 
 const StyledDialog = styled(Dialog)`
   min-width: 600px;
