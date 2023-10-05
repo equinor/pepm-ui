@@ -8,6 +8,10 @@ const StyledInforPage = styled.div`
   justify-content: center;
   padding-top: 10%;
 
+  &.scaleHight {
+    height: calc(100% - 75.5px);
+  }
+
   width: 100%;
   height: 100%;
 `
