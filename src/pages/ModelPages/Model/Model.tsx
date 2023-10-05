@@ -1,12 +1,13 @@
 import { Outlet, useParams } from 'react-router-dom'
+import { ModelParam } from '../../../features/ModelView/ModelMetadataView/ModelMetadataView'
 import { ModelNameFrame } from '../../../features/ModelView/ModelNameFrame/ModelNameFrame'
 import { ModelNavigationBar } from '../../../features/ModelView/ModelNavigationBar/ModelNavigationBar'
 import { useAnalogueModels } from '../../../hooks/useAnalogueModels'
 import * as Styled from './Model.styled'
 
 export const Model = () => {
-  const { id } = useParams<{ id: string }>()
-  const { model } = useAnalogueModels(id!)
+  const { id } = useParams<keyof ModelParam>() as ModelParam
+  const { model } = useAnalogueModels(id)
 
   if (model.isLoading) <p>Loading.....</p>
 

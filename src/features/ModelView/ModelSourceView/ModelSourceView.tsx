@@ -1,9 +1,10 @@
 import { Table, Typography } from '@equinor/eds-core-react'
 import { useParams } from 'react-router-dom'
 import { useAnalogueModels } from '../../../hooks/useAnalogueModels'
+import { ModelParam } from '../ModelMetadataView/ModelMetadataView'
 export const ModelSourceView = () => {
-  const { id } = useParams<{ id: string }>()
-  const { model } = useAnalogueModels(id!)
+  const { id } = useParams<keyof ModelParam>() as ModelParam
+  const { model } = useAnalogueModels(id)
 
   if (model.isLoading) <p>Loading.....</p>
 
@@ -25,7 +26,7 @@ export const ModelSourceView = () => {
           model.isFetched &&
           (model.data.data.fileUploads?.length === undefined ||
             model.data.data.fileUploads?.length > 0) ? (
-            model.data.data.fileUploads?.map((file: any) => (
+            model.data.data.fileUploads?.map((file: AnalogueModel) => (
               <Table.Row key={file.uploadId} className="table-row">
                 <Table.Cell className="table-first-col">
                   {file.originalFileName}

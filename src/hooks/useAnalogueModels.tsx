@@ -20,7 +20,6 @@ export function useAnalogueModels(id: string) {
   const apiClient = useApiClient()
   const token = useAccessToken()
   const headers = new Headers({ Authorization: `Bearer ${token}` })
-  const modelId = id
 
   async function fetchModels(): AnalogueModelResponse {
     const { data } = await apiClient.GET(ANALOGUEMODELS_KEY, {
@@ -50,20 +49,16 @@ export function useAnalogueModels(id: string) {
     return data
   }
 
-  async function uploadNCFile(modelId: string, file: File) {
+  async function uploadNCFile(id: string, file: File) {
     axios.defaults.baseURL = process.env.REACT_APP_BACKEND_ENV
     const form = new FormData()
     form.append('file', file)
-    const { data } = await axios.post(
-      NC_FILE_KEY.replace('{id}', modelId),
-      form,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      }
-    )
+    const { data } = await axios.post(NC_FILE_KEY.replace('{id}', id), form, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    })
     return data
   }
 
@@ -71,10 +66,10 @@ export function useAnalogueModels(id: string) {
   // TODO: might want to add queryFn to this:
 
   const model: AnalogueModel = useQuery({
-    queryKey: ['model', token, modelId],
-    queryFn: () => fetchModel(modelId),
+    queryKey: ['model', token, id],
+    queryFn: () => fetchModel(id),
 
-    enabled: !!modelId,
+    enabled: !!id,
   })
 
   return {
