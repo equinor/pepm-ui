@@ -2,9 +2,12 @@ import { Button, Table, Typography } from '@equinor/eds-core-react'
 import { useParams } from 'react-router-dom'
 import { useAnalogueModels } from '../../../hooks/useAnalogueModels'
 
+export type ModelParam = {
+  id: string
+}
 export const ModelMetadataView = () => {
-  const { id } = useParams<{ id: string }>()
-  const { model } = useAnalogueModels(id!)
+  const { id } = useParams<keyof ModelParam>() as ModelParam
+  const { model } = useAnalogueModels(id)
 
   if (model.isLoading) <p>Loading.....</p>
 
