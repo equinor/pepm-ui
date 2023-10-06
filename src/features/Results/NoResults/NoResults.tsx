@@ -6,7 +6,7 @@ import * as Styled from './NoResults.styled'
 export const NoResults = () => {
   return (
     <InfoPageComponent scaleHight="true">
-      <img src={NoResultPicture} alt="altText" />
+      <Styled.Img src={NoResultPicture} alt="altText" />
       <Styled.TextDiv>
         <Typography variant="h4">
           Oh no! It seems we don’t have any results for this model yet
