@@ -11,5 +11,24 @@ export const ModelMetadata = styled.div`
     > .model-description {
       grid-column: 1 / span 2;
     }
+
+    > .model-required {
+      border-style: solid;
+      border-width: 2px;
+      border-color: red;
+    }
+    
+    > .required-div {
+      > label {
+        color: red !important;
+      }
+      > .model-required2 {
+        > div {
+          border-style: solid !important;
+          border-width: 2px !important;
+          border-color: red !important;
+        }
+      }
+    }
   }
 `
