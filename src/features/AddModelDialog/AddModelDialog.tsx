@@ -25,11 +25,16 @@ export const AddModelDialog = ({
   cancel,
 }: AddModelDialogProps) => {
   const [isFileDisplay, setFileDisplay] = useState<boolean>(false)
-  const [validationError, setValidationError] = useState<{
-    field: boolean
-    formation: boolean
-  }>({ field: false, formation: false })
   const [metadata, setMetadata] = useState<Partial<MetadataProps>>()
+
+  const [fieldValidationError, setFieldValidationError] =
+    useState<boolean>(false)
+  const [formationValidationError, setFormationValidationError] =
+    useState<boolean>(false)
+  // const [validationError, setValidationError] = useState<{
+  //   field: boolean
+  //   formation: boolean
+  // }>({ field: false, formation: false })
 
   function toggleINIFileContent() {
     setFileDisplay(!isFileDisplay)
@@ -37,42 +42,63 @@ export const AddModelDialog = ({
 
   const INIFileContent = () => <p>Not implemented yet...</p>
 
+  /** 
+   * 
+   * 
   const validateInput = (
-    // input: { values: string[] | undefined; target: string }[]
-    input: { [target: string]: string[] | undefined }
-  ) => {
-    Object.entries(input).map(([target, value]) =>
-      setValidationError({ ...validationError, [target]: value !== undefined })
-    )
-    // input.forEach((input) => {
-    //   console.log('Kjører: ' + input.target)
-    //   if (!input.values)
-    //     setValidationError({ ...validationError, [input.target]: true })
-    //
-    //   if (input.values === undefined) {
-    //     setValidationError({ ...validationError, [input.target]: true })
-    //     console.log('Undefined Error')
-    //     console.log(validationError)
-    //   } else if (input.values.length === 0) {
-    //     setValidationError({ ...validationError, [input.target]: true })
-    //     console.log('Length 0 Error')
-    //     console.log(validationError)
-    //   } else {
-    //     setValidationError({ ...validationError, [input.target]: false })
-    //     console.log('Ingen Error')
-    //     console.log(validationError)
-    //   }
-    // })
-  }
+    input: {
+      values: string[] | undefined
+      target: string
+    }[]
+    ) =>
+    input.forEach((input) => {
+      console.log('Kjører: ' + input.target)
+      if (!input.values)
+      setValidationError({ ...validationError, [input.target]: true })
+    
+    if (input.values === undefined) {
+      setValidationError({ ...validationError, [input.target]: true })
+      console.log('Undefined Error')
+      console.log(validationError)
+    } else if (input.values.length === 0) {
+      setValidationError({ ...validationError, [input.target]: true })
+      console.log('Length 0 Error')
+      console.log(validationError)
+    } else {
+      setValidationError({ ...validationError, [input.target]: false })
+      console.log('Ingen Error')
+      console.log(validationError)
+    }
+  })
 
-  const submit = () => {
-    console.log(metadata)
-    validateInput([
+  validateInput([
       { values: metadata?.field, target: 'field' },
       { values: metadata?.formation, target: 'formation' },
     ])
-    validateInput()
-    console.log(validationError)
+  */
+
+  const validateFieldInput = () => {
+    if (metadata?.field === undefined) {
+      setFieldValidationError(true)
+    } else if (metadata?.field.length === 0) {
+      setFieldValidationError(true)
+    } else {
+      setFieldValidationError(false)
+    }
+  }
+  const validateFormationInput = () => {
+    if (metadata?.formation === undefined) {
+      setFormationValidationError(true)
+    } else if (metadata?.formation.length === 0) {
+      setFormationValidationError(true)
+    } else {
+      setFormationValidationError(false)
+    }
+  }
+
+  const submit = () => {
+    validateFieldInput()
+    validateFormationInput()
   }
 
   return (
@@ -90,7 +116,8 @@ export const AddModelDialog = ({
         {isFileDisplay && <INIFileContent />}
         <ModelMetadata
           // onValidate={validateInput}
-          validationError={validationError}
+          fieldValidationError={fieldValidationError}
+          formationValidationError={formationValidationError}
           metadata={metadata}
           setMetadata={setMetadata}
         />

@@ -11,12 +11,16 @@ import * as Styled from './ModelMetadata.styled'
 
 export const ModelMetadata = ({
   // onValidate,
-  validationError,
+  // validationError,
+  fieldValidationError,
+  formationValidationError,
   metadata,
   setMetadata,
 }: {
   // onValidate: (values: string[], target: string) => void
-  validationError: { field: boolean; formation: boolean }
+  // validationError: { field: boolean; formation: boolean }
+  fieldValidationError: boolean
+  formationValidationError: boolean
   metadata: Partial<MetadataProps> | undefined
   setMetadata: (metadata: Partial<MetadataProps>) => void
 }) => {
@@ -50,7 +54,7 @@ export const ModelMetadata = ({
         <Autocomplete
           id="field-select"
           className={`${
-            validationError.field && 'model-required model-required2'
+            fieldValidationError && 'model-required model-required2'
           }`}
           label="Field"
           options={fields.field}
@@ -58,7 +62,7 @@ export const ModelMetadata = ({
             handleInput(e, 'field')
           }
         ></Autocomplete>
-        {validationError.field && (
+        {fieldValidationError && (
           <Label
             label="This field is required"
             className="required-lable"
@@ -68,7 +72,7 @@ export const ModelMetadata = ({
 
       <div className="required-div">
         <Autocomplete
-          className={`${validationError.formation && 'model-required2'}`}
+          className={`${formationValidationError && 'model-required2'}`}
           label="Formation"
           options={fields.formation}
           multiple
@@ -76,7 +80,7 @@ export const ModelMetadata = ({
             handleInput(e, 'formation')
           }
         ></Autocomplete>
-        {validationError.formation && (
+        {formationValidationError && (
           <Label
             label="This field is required"
             className="required-lable"
