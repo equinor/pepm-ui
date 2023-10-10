@@ -12,6 +12,12 @@ const StyledDialogCustomContent = styled(Dialog.CustomContent)`
   flex-direction: column;
   row-gap: ${spacings.X_LARGE};
   height: 740px;
+
+  > p {
+    &.error {
+      color: red;
+    }
+  }
 `
 
 const StyledDialogActions = styled(Dialog.Actions)`

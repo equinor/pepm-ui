@@ -1,6 +1,6 @@
 /* eslint-disable max-lines-per-function */
-import { Button } from '@equinor/eds-core-react'
-import { useState } from 'react'
+import { Button, Typography } from '@equinor/eds-core-react'
+import { useEffect, useState } from 'react'
 import { ModelInputFilesTable } from '../ModelInputFilesTable/ModelInputFilesTable'
 import { ModelMetadata } from '../ModelMetadata/ModelMetadata'
 import * as Styled from './AddModelDialog.styled'
@@ -19,6 +19,11 @@ export default interface MetadataProps {
   analogue?: string[]
 }
 
+export type ErrorType = {
+  field?: string
+  formation?: string
+  file?: string
+}
 export const AddModelDialog = ({
   isOpen,
   confirm,
@@ -30,11 +35,8 @@ export const AddModelDialog = ({
     INI: undefined,
   })
   const [metadata, setMetadata] = useState<Partial<MetadataProps>>()
-
-  const [fieldValidationError, setFieldValidationError] =
-    useState<boolean>(false)
-  const [formationValidationError, setFormationValidationError] =
-    useState<boolean>(false)
+  const [errors, setErrors] = useState({})
+  const [submitting, setSubmitting] = useState(false)
 
   function toggleINIFileContent() {
     setFileDisplay(!isFileDisplay)
@@ -42,35 +44,40 @@ export const AddModelDialog = ({
 
   const INIFileContent = () => <p>Not implemented yet...</p>
 
-  const validateFieldInput = () => {
-    if (metadata?.field === undefined) {
-      setFieldValidationError(true)
-    } else if (metadata?.field.length === 0) {
-      setFieldValidationError(true)
-    } else {
-      setFieldValidationError(false)
+  const validateValues = (inputValues: Partial<MetadataProps> | undefined) => {
+    const errors: ErrorType = {}
+    if (inputValues?.field === undefined || inputValues?.field?.length === 0) {
+      errors.field = 'Field not selected'
     }
-  }
-  const validateFormationInput = () => {
-    if (metadata?.formation === undefined) {
-      setFormationValidationError(true)
-    } else if (metadata?.formation.length === 0) {
-      setFormationValidationError(true)
-    } else {
-      setFormationValidationError(false)
+
+    if (
+      inputValues?.formation === undefined ||
+      inputValues?.formation?.length === 0
+    ) {
+      errors.formation = 'Formation not selected'
     }
+
+    if (!files.NC) {
+      errors.file = 'NC file missing'
+    }
+    return errors
   }
 
-  const uploadFile = () => {
+  const handleSubmit = () => {
+    setErrors(validateValues(metadata))
+    setSubmitting(true)
+  }
+
+  const finishSubmit = () => {
     if (files.NC) confirm(files.NC)
   }
 
-  const submit = () => {
-    validateFieldInput()
-    validateFormationInput()
-
-    if (!fieldValidationError || !formationValidationError) uploadFile()
-  }
+  useEffect(() => {
+    if (Object.keys(errors).length === 0 && submitting) {
+      finishSubmit()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [errors, submitting])
 
   return (
     <Styled.Dialog open={isOpen}>
@@ -88,14 +95,16 @@ export const AddModelDialog = ({
         />
         {isFileDisplay && <INIFileContent />}
         <ModelMetadata
-          fieldValidationError={fieldValidationError}
-          formationValidationError={formationValidationError}
+          errors={errors}
           metadata={metadata}
           setMetadata={setMetadata}
         />
+        {Object.keys(errors).includes('file') && (
+          <Typography className="error">NC file missing</Typography>
+        )}
       </Styled.DialogCustomContent>
       <Styled.DialogActions>
-        <Button onClick={submit}>Confirm and start uploading</Button>
+        <Button onClick={handleSubmit}>Confirm and start uploading</Button>
         <Button variant="outlined" onClick={cancel}>
           Cancel
         </Button>

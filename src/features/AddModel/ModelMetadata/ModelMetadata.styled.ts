@@ -1,33 +1,47 @@
+import { TextField } from '@equinor/eds-core-react'
 import styled from 'styled-components'
 import { spacings } from '../../../tokens/spacings'
-
 export const ModelMetadata = styled.div`
-  &.model-metadata {
-    display: grid;
-    grid-template-columns: auto auto;
-    column-gap: ${spacings.MEDIUM}};
-    row-gap: ${spacings.MEDIUM};
+  display: flex;
+  flex-direction: column;
 
-    > .model-description {
-      grid-column: 1 / span 2;
-    }
+  row-gap: ${spacings.MEDIUM};
+`
 
-    > .model-required {
-      border-style: solid;
-      border-width: 2px;
-      border-color: red;
-    }
-    
-    > .required-div {
-      > label {
-        color: red !important;
-      }
-      > .model-required2 {
-        > div {
-          border-style: solid !important;
-          border-width: 2px !important;
-          border-color: red !important;
-        }
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  row-gap: ${spacings.MEDIUM};
+`
+
+export const AutocompleteWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  row-gap: ${spacings.MEDIUM};
+`
+export const AutocompleteRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex: end;
+  column-gap: ${spacings.MEDIUM};
+
+  > div {
+    flex-grow: 1;
+  }
+`
+
+export const TextInput = styled(TextField)`
+  display: flex;
+  flex-direction: column;
+`
+export const Required = styled.div`
+  > label {
+    color: red;
+  }
+  > .model-required {
+    > div {
+      > div {
+        border: solid 2px red;
       }
     }
   }

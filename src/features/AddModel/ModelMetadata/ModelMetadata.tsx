@@ -3,21 +3,18 @@ import {
   Autocomplete,
   AutocompleteChanges,
   Label,
-  TextField,
   Typography,
 } from '@equinor/eds-core-react'
-import MetadataProps from '../AddModelDialog/AddModelDialog'
+import MetadataProps, { ErrorType } from '../AddModelDialog/AddModelDialog'
 
 import * as Styled from './ModelMetadata.styled'
 
 export const ModelMetadata = ({
-  fieldValidationError,
-  formationValidationError,
+  errors,
   metadata,
   setMetadata,
 }: {
-  fieldValidationError: boolean
-  formationValidationError: boolean
+  errors: ErrorType
   metadata: Partial<MetadataProps> | undefined
   setMetadata: (metadata: Partial<MetadataProps>) => void
 }) => {
@@ -32,70 +29,69 @@ export const ModelMetadata = ({
   const handleInput = (e: AutocompleteChanges<string>, target: string) => {
     setMetadata({ ...metadata, [target]: e.selectedItems })
   }
+
   return (
     <Styled.ModelMetadata className="model-metadata">
       <Typography variant="h4">Description and metadata</Typography>
-      <TextField
-        id="model-description"
-        className="model-description"
-        label="Model description (optional)"
-        value={metadata?.description}
-        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-          setMetadata({ ...metadata, description: e.currentTarget.value })
-        }
-        multiline
-      />
-      <div className="required-div">
-        <Autocomplete
-          id="field-select"
-          className={`${
-            fieldValidationError && 'model-required model-required2'
-          }`}
-          label="Field"
-          options={fields.field}
-          onOptionsChange={(e: AutocompleteChanges<string>) =>
-            handleInput(e, 'field')
+      <Styled.Form>
+        <Styled.TextInput
+          id="model-description"
+          label="Model description (optional)"
+          value={metadata?.description}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+            setMetadata({ ...metadata, description: e.currentTarget.value })
           }
-        ></Autocomplete>
-        {fieldValidationError && (
-          <Label
-            label="This field is required"
-            className="required-lable"
-          ></Label>
-        )}
-      </div>
-      <div className="required-div">
-        <Autocomplete
-          className={`${formationValidationError && 'model-required2'}`}
-          label="Formation"
-          options={fields.formation}
-          multiple
-          onOptionsChange={(e: AutocompleteChanges<string>) =>
-            handleInput(e, 'formation')
-          }
-        ></Autocomplete>
-        {formationValidationError && (
-          <Label
-            label="This field is required"
-            className="required-lable"
-          ></Label>
-        )}
-      </div>
-      <Autocomplete
-        label="Analogue (optional)"
-        options={fields.analogue}
-        multiple
-        onOptionsChange={(e: AutocompleteChanges<string>) =>
-          setMetadata({ ...metadata, analogue: e.selectedItems })
-        }
-      ></Autocomplete>
-      <Autocomplete
-        label="Zone (optional)"
-        options={fields.zone}
-        onOptionsChange={(e: AutocompleteChanges<string>) =>
-          setMetadata({ ...metadata, zone: e.selectedItems })
-        }
-      ></Autocomplete>{' '}
+          multiline
+          rows={4}
+          rowsMax={8}
+        />
+        <Styled.AutocompleteWrapper>
+          <Styled.AutocompleteRow>
+            <Styled.Required>
+              <Autocomplete
+                className={`${errors.field && 'model-required'}`}
+                label="Field"
+                options={fields.field}
+                onOptionsChange={(e: AutocompleteChanges<string>) =>
+                  handleInput(e, 'field')
+                }
+              ></Autocomplete>
+              {errors.field && <Label label="This field is required"></Label>}
+            </Styled.Required>
+            <Styled.Required>
+              <Autocomplete
+                className={`${errors.formation && 'model-required'}`}
+                label="Formation"
+                options={fields.formation}
+                multiple
+                onOptionsChange={(e: AutocompleteChanges<string>) =>
+                  handleInput(e, 'formation')
+                }
+              ></Autocomplete>
+              {errors.formation && (
+                <Label label="This field is required"></Label>
+              )}
+            </Styled.Required>
+          </Styled.AutocompleteRow>
+          <Styled.AutocompleteRow>
+            <Autocomplete
+              label="Analogue (optional)"
+              options={fields.analogue}
+              multiple
+              onOptionsChange={(e: AutocompleteChanges<string>) =>
+                setMetadata({ ...metadata, analogue: e.selectedItems })
+              }
+            ></Autocomplete>
+            <Autocomplete
+              label="Zone (optional)"
+              options={fields.zone}
+              onOptionsChange={(e: AutocompleteChanges<string>) =>
+                setMetadata({ ...metadata, zone: e.selectedItems })
+              }
+            ></Autocomplete>
+          </Styled.AutocompleteRow>
+        </Styled.AutocompleteWrapper>
+      </Styled.Form>
     </Styled.ModelMetadata>
   )
 }
