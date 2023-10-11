@@ -18,11 +18,11 @@ spec:
         - name: http
           port: 3000
       variables:
-        REACT_APP_AAD_TENANT_ID: ""
-        REACT_APP_AAD_CLIENT_ID: ""
-        REACT_APP_AAD_REDIRECT_URI: ""
-        REACT_APP_BACKEND_URL: ""
-        REACT_APP_BACKEND_API_SCOPE: ""
+        REACT_APP_AAD_TENANT_ID: ''
+        REACT_APP_AAD_CLIENT_ID: ''
+        REACT_APP_AAD_REDIRECT_URI: ''
+        REACT_APP_BACKEND_URL: ''
+        REACT_APP_BACKEND_API_SCOPE: ''
       environmentConfig:
         - environment: dev
         - environment: test
@@ -42,30 +42,30 @@ spec:
         - environment: dev
           imageTagName: latest
           variables:
-            ASPNETCORE_ENVIRONMENT: "Development"
+            ASPNETCORE_ENVIRONMENT: 'Development'
         - environment: test
           imageTagName: latest
           variables:
-            ASPNETCORE_ENVIRONMENT: "Test"
+            ASPNETCORE_ENVIRONMENT: 'Test'
         - environment: prod
           imageTagName: latest
           variables:
-            ASPNETCORE_ENVIRONMENT: "Production"
+            ASPNETCORE_ENVIRONMENT: 'Production'
   jobs:
     - name: pepm-nrresqml
       image: ghcr.io/equinor/pepm-worker-api/pepm-nrresqml:latest
       schedulerPort: 8090
       resources:
         requests:
-          memory: "2048Mi"
-          cpu: "1000m"
+          memory: '2048Mi'
+          cpu: '1000m'
         limits:
-          memory: "4096Mi"
-          cpu: "2000m"
+          memory: '4096Mi'
+          cpu: '2000m'
       payload:
         path: /app/args
       variables:
-        MODELS_PATH: "/mnt/azure-storage/models"
+        MODELS_PATH: '/mnt/azure-storage/models'
       environmentConfig:
         - environment: dev
           volumeMounts:
@@ -86,15 +86,15 @@ spec:
       schedulerPort: 8090
       resources:
         requests:
-          memory: "4096Mi"
-          cpu: "1000m"
+          memory: '4096Mi'
+          cpu: '1000m'
         limits:
-          memory: "8192Mi"
-          cpu: "2000m"
+          memory: '8192Mi'
+          cpu: '2000m'
       payload:
         path: /app/args
       variables:
-        MODELS_PATH: "/mnt/azure-storage/models"
+        MODELS_PATH: '/mnt/azure-storage/models'
       environmentConfig:
         - environment: dev
           volumeMounts:

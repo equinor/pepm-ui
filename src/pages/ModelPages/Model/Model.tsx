@@ -1,12 +1,17 @@
-import { Outlet, useParams } from 'react-router-dom'
-import { ModelNameFrame } from '../../../features/ModelView/ModelNameFrame/ModelNameFrame'
-import { ModelNavigationBar } from '../../../features/ModelView/ModelNavigationBar/ModelNavigationBar'
-import { useAnalogueModels } from '../../../hooks/useAnalogueModels'
-import * as Styled from './Model.styled'
+import { Outlet, useParams } from 'react-router-dom';
+import { ModelNameFrame } from '../../../features/ModelView/ModelNameFrame/ModelNameFrame';
+import { ModelNavigationBar } from '../../../features/ModelView/ModelNavigationBar/ModelNavigationBar';
+import * as Styled from './Model.styled';
+import { useQuery } from '@tanstack/react-query';
+import { AnalogueModelsService } from '../../../api/generated';
 
 export const Model = () => {
-  const { id } = useParams<{ id: string }>()
-  const { model } = useAnalogueModels(id)
+  const { id } = useParams<{ id: string }>();
+
+  const { data } = useQuery({
+    queryKey: ['analogue-models', id],
+    queryFn: () => AnalogueModelsService.getApiAnalogueModels1(id as string),
+  });
 
   return (
     <>
@@ -15,10 +20,10 @@ export const Model = () => {
           <ModelNavigationBar />
         </Styled.SidebarWrapper>
         <Styled.ContentWrapper>
-          {model && <ModelNameFrame model={model} />}
+          {data?.success && <ModelNameFrame model={data.data} />}
           <Outlet />
         </Styled.ContentWrapper>
       </Styled.Wrapper>
     </>
-  )
-}
+  );
+};

@@ -1,31 +1,25 @@
 import {
   AuthenticatedTemplate,
   UnauthenticatedTemplate,
-  useMsal,
-} from '@azure/msal-react'
-import { Outlet } from 'react-router-dom'
-import * as Styled from './App.styled'
-import AppBar from './features/AppBar/AppBar'
-import { Footer } from './features/Footer/Footer'
-import { NoAccess } from './pages/NoAccess/NoAccess'
+  useMsalAuthentication,
+} from '@azure/msal-react';
+import { InteractionType } from '@azure/msal-browser';
+import { Layout } from './pages/Layout';
+import { OpenAPI } from './api/generated';
+import { apiConfig } from './auth/authConfig';
 
 export function App() {
-  const { instance } = useMsal()
+  useMsalAuthentication(InteractionType.Redirect);
+  OpenAPI.BASE = apiConfig.baseUrl;
 
   return (
     <>
       <AuthenticatedTemplate>
-        <AppBar title="PEPM" />
-        <Styled.OutletWrapper>
-          <Outlet />
-        </Styled.OutletWrapper>
-        <Footer text="All information is proprietary of Equinor © 2023 Equinor ASA" />
+        <Layout />
       </AuthenticatedTemplate>
       <UnauthenticatedTemplate>
-        <p>Not authenticated</p>
-        <button onClick={() => instance.loginRedirect()}>Log in</button>
-        <NoAccess />
+        <div>You are not authorized</div>
       </UnauthenticatedTemplate>
     </>
-  )
+  );
 }

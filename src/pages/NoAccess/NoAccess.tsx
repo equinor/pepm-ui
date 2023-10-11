@@ -1,6 +1,6 @@
-import { Icon, Typography } from '@equinor/eds-core-react'
-import { external_link as externalLink } from '@equinor/eds-icons'
-import { InfoPageComponent } from '../../components/InfoPageComponent/InfoPageComponent'
+import { Icon, Typography } from '@equinor/eds-core-react';
+import { external_link as externalLink } from '@equinor/eds-icons';
+import { InfoPageComponent } from '../../components/InfoPageComponent/InfoPageComponent';
 
 export const NoAccess = () => {
   const requiredAccesses = [
@@ -8,7 +8,7 @@ export const NoAccess = () => {
       name: 'Parameter estimation from conseptual geological models',
       type: 'Basic access',
     },
-  ]
+  ];
   return (
     <InfoPageComponent title="Access required">
       <Typography variant="body_long">
@@ -27,5 +27,5 @@ export const NoAccess = () => {
         <Icon data={externalLink} title={'Link to Api'} />
       </Typography>
     </InfoPageComponent>
-  )
-}
+  );
+};

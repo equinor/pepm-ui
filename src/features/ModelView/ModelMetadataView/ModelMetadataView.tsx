@@ -1,12 +1,15 @@
-import { Button, Table, Typography } from '@equinor/eds-core-react'
-import { useParams } from 'react-router-dom'
-import { useAnalogueModels } from '../../../hooks/useAnalogueModels'
+import { Button, Table, Typography } from '@equinor/eds-core-react';
+import { useParams } from 'react-router-dom';
+import { AnalogueModelsService } from '../../../api/generated/services/AnalogueModelsService';
+import { useQuery } from '@tanstack/react-query';
 
 export const ModelMetadataView = () => {
-  const { id } = useParams()
-  const { model } = useAnalogueModels(id)
-
-  if (!model) return <p>Loading ...</p>
+  const { id } = useParams();
+  const { isLoading, data } = useQuery({
+    queryKey: ['analogue-models', id],
+    queryFn: () => AnalogueModelsService.getApiAnalogueModels1(id as string),
+  });
+  if (isLoading || !data?.success) return <p>Loading ...</p>;
 
   // TODO
   // Map rows to model data
@@ -14,9 +17,9 @@ export const ModelMetadataView = () => {
   return (
     <div className="metadata-view">
       <Typography variant="h3">Description and metadata</Typography>
-      {model.description && (
+      {data.data.description && (
         <p>
-          {model.description}
+          {data.data.description}
           <br />
           <p>
             ** Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -62,5 +65,5 @@ export const ModelMetadataView = () => {
         Edit description and metadata
       </Button>
     </div>
-  )
-}
+  );
+};

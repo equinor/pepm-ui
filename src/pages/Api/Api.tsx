@@ -1,6 +1,6 @@
-import { Icon, Typography } from '@equinor/eds-core-react'
-import { external_link as externalLink } from '@equinor/eds-icons'
-import { InfoPageComponent } from '../../components/InfoPageComponent/InfoPageComponent'
+import { Icon, Typography } from '@equinor/eds-core-react';
+import { external_link as externalLink } from '@equinor/eds-icons';
+import { InfoPageComponent } from '../../components/InfoPageComponent/InfoPageComponent';
 
 export const Api = () => {
   return (
@@ -11,5 +11,5 @@ export const Api = () => {
         <Icon data={externalLink} title={'Link to Api'} />
       </Typography>
     </InfoPageComponent>
-  )
-}
+  );
+};

@@ -1,12 +1,12 @@
-import { Typography } from '@equinor/eds-core-react'
-import * as Styled from './InfoPageComponent.style'
+import { Typography } from '@equinor/eds-core-react';
+import * as Styled from './InfoPageComponent.style';
 
 export const InfoPageComponent = ({
   title,
   children,
 }: {
-  title: string
-  children?: React.ReactNode
+  title: string;
+  children?: React.ReactNode;
 }) => {
   return (
     <Styled.Page className="about-container">
@@ -15,5 +15,5 @@ export const InfoPageComponent = ({
         {children}
       </Styled.InnerWrapper>
     </Styled.Page>
-  )
-}
+  );
+};

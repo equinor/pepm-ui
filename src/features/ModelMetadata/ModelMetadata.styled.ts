@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import { spacings } from '../../tokens/spacings'
+import styled from 'styled-components';
+import { spacings } from '../../tokens/spacings';
 
 export const ModelMetadata = styled.div`
   &.model-metadata {
@@ -12,4 +12,4 @@ export const ModelMetadata = styled.div`
       grid-column: 1 / span 2;
     }
   }
-`
+`;

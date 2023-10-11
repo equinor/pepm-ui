@@ -10,6 +10,7 @@
     "@equinor/eds-icons": "^0.19.1",
     "@equinor/eds-tokens": "^0.9.0",
     "@tanstack/react-query": "^4.32.6",
+    "@tanstack/react-query-devtools": "^4.36.1",
     "@tanstack/react-table": "^8.9.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
@@ -20,6 +21,7 @@
     "@types/react-dom": "^18.0.0",
     "axios": "^1.5.0",
     "openapi-fetch": "^0.7.2",
+    "openapi-typescript-codegen": "^0.25.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.0",
@@ -35,6 +37,7 @@
     "test:ts": "tsc --noEmit",
     "eject": "react-scripts eject",
     "lint": "eslint --fix --ext .ts,.tsx .",
+    "prettier:fix": "prettier . --write",
     "prepare": "husky install",
     "pre-commit": "yarn test --watchAll=false && yarn lint-staged",
     "generate-schema:radix": "npx openapi-typescript https://api-pepm-dev.radix.equinor.com/swagger/v1/swagger.yaml -o src/models/schema.d.ts"

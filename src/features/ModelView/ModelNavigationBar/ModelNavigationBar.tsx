@@ -1,28 +1,28 @@
 /* eslint-disable max-lines-per-function */
-import { SideBar, SidebarLinkProps } from '@equinor/eds-core-react'
+import { SideBar, SidebarLinkProps } from '@equinor/eds-core-react';
 import {
   IconData,
   // eslint-disable-next-line sort-imports
   approve,
   format_list_bulleted as formatListBullet,
   settings,
-} from '@equinor/eds-icons'
-import { useLocation } from 'react-router-dom'
-import * as Styled from './ModelNavigationBar.styled'
+} from '@equinor/eds-icons';
+import { useLocation } from 'react-router-dom';
+import * as Styled from './ModelNavigationBar.styled';
 
 type MenuItems = SidebarLinkProps & {
   subItems?: Array<{
-    label: string
-    name: string
-    href: string
-    icon: IconData
-  }>
-}
+    label: string;
+    name: string;
+    href: string;
+    icon: IconData;
+  }>;
+};
 
 export const ModelNavigationBar = () => {
-  const location = useLocation()
-  const tab = location.pathname.split('/')
-  const path = tab[tab.length - 1]
+  const location = useLocation();
+  const tab = location.pathname.split('/');
+  const path = tab[tab.length - 1];
 
   const menuItems: SidebarLinkProps[] = [
     {
@@ -37,7 +37,7 @@ export const ModelNavigationBar = () => {
       href: 'results',
       active: false,
     },
-  ]
+  ];
 
   const sidebarCompute: MenuItems = {
     label: 'Compute',
@@ -57,7 +57,7 @@ export const ModelNavigationBar = () => {
         icon: settings,
       },
     ],
-  }
+  };
 
   return (
     <SideBar open>
@@ -94,5 +94,5 @@ export const ModelNavigationBar = () => {
         ></Styled.SidebarLink>
       </Styled.SidebarContent>
     </SideBar>
-  )
-}
+  );
+};

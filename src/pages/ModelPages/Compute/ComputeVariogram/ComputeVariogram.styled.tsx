@@ -1,7 +1,7 @@
-import { Button } from '@equinor/eds-core-react'
-import styled from 'styled-components'
-import { spacings } from '../../../../tokens/spacings'
-import { theme } from '../../../../tokens/theme'
+import { Button } from '@equinor/eds-core-react';
+import styled from 'styled-components';
+import { spacings } from '../../../../tokens/spacings';
+import { theme } from '../../../../tokens/theme';
 
 export const Case = styled.div`
   display: flex;
@@ -16,7 +16,7 @@ export const Case = styled.div`
   @media (max-width: 1450px) {
     width: 95%;
   }
-`
+`;
 export const CaseBorder = styled.div`
   display: flex;
   flex-direction: column;
@@ -24,7 +24,7 @@ export const CaseBorder = styled.div`
 
   border-radius: ${spacings.X_SMALL};
   border: solid 1px ${theme.light.ui.background.medium};
-`
+`;
 export const AddCaseButton = styled(Button)`
   width: fit-content;
-`
+`;

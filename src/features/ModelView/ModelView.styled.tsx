@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import { spacings } from '../../tokens/spacings'
+import styled from 'styled-components';
+import { spacings } from '../../tokens/spacings';
 
 export const MetadataWrapper = styled.div`
   display: flex;
@@ -15,7 +15,7 @@ export const MetadataWrapper = styled.div`
   @media (max-width: 1350px) {
     flex-direction: column;
   }
-`
+`;
 export const InnerMetadataWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -71,4 +71,4 @@ export const InnerMetadataWrapper = styled.div`
       }
     }
   }
-`
+`;

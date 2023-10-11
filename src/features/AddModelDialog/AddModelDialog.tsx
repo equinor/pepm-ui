@@ -1,13 +1,13 @@
-import { Button } from '@equinor/eds-core-react'
-import { useState } from 'react'
-import { ModelInputFilesTable } from '../ModelInputFilesTable/ModelInputFilesTable'
-import { ModelMetadata } from '../ModelMetadata/ModelMetadata'
-import * as Styled from './AddModelDialog.styled'
+import { Button } from '@equinor/eds-core-react';
+import { useState } from 'react';
+import { ModelInputFilesTable } from '../ModelInputFilesTable/ModelInputFilesTable';
+import { ModelMetadata } from '../ModelMetadata/ModelMetadata';
+import * as Styled from './AddModelDialog.styled';
 
 interface AddModelDialogProps {
-  isOpen: boolean
-  confirm: (file: File) => Promise<void>
-  cancel: () => void
+  isOpen: boolean;
+  confirm: (file: File) => Promise<void>;
+  cancel: () => void;
 }
 
 export const AddModelDialog = ({
@@ -15,17 +15,17 @@ export const AddModelDialog = ({
   confirm,
   cancel,
 }: AddModelDialogProps) => {
-  const [isFileDisplay, setFileDisplay] = useState<boolean>(false)
+  const [isFileDisplay, setFileDisplay] = useState<boolean>(false);
   const [files, setFiles] = useState<{ NC?: File; INI?: File }>({
     NC: undefined,
     INI: undefined,
-  })
+  });
 
   function toggleINIFileContent() {
-    setFileDisplay(!isFileDisplay)
+    setFileDisplay(!isFileDisplay);
   }
 
-  const INIFileContent = () => <p>Not implemented yet...</p>
+  const INIFileContent = () => <p>Not implemented yet...</p>;
 
   return (
     <Styled.Dialog open={isOpen}>
@@ -53,5 +53,5 @@ export const AddModelDialog = ({
         </Button>
       </Styled.DialogActions>
     </Styled.Dialog>
-  )
-}
+  );
+};

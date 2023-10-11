@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-import { spacings } from '../../../tokens/spacings'
-import { theme } from '../../../tokens/theme'
+import styled from 'styled-components';
+import { spacings } from '../../../tokens/spacings';
+import { theme } from '../../../tokens/theme';
 
 export const NameFrame = styled.div`
   width: 100%;
@@ -12,4 +12,4 @@ export const NameFrame = styled.div`
     padding: 0 ${spacings.X_LARGE};
     font-weight: normal;
   }
-`
+`;

@@ -22,4 +22,3 @@ jobs:
 
       - name: Publish Container Image
         run: IMAGE_TAG=${{inputs.IMAGE_TAG}} docker compose push
-

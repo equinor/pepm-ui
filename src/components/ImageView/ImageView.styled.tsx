@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-import { spacings } from '../../tokens/spacings'
-import { theme } from '../../tokens/theme'
+import styled from 'styled-components';
+import { spacings } from '../../tokens/spacings';
+import { theme } from '../../tokens/theme';
 
 export const ImageWrapper = styled.div`
   display: flex;
@@ -25,4 +25,4 @@ export const ImageWrapper = styled.div`
     max-width: 100%;
     padding: ${spacings.SMALL};
   }
-`
+`;

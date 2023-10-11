@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-import { spacings } from '../../../../../tokens/spacings'
-import { theme } from '../../../../../tokens/theme'
+import styled from 'styled-components';
+import { spacings } from '../../../../../tokens/spacings';
+import { theme } from '../../../../../tokens/theme';
 
 export const Parameters = styled.div`
   background-color: ${theme.light.ui.background.default};
@@ -12,4 +12,4 @@ export const Parameters = styled.div`
   flex-direction: row;
   align-items: center;
   column-gap: ${spacings.MEDIUM};
-`
+`;

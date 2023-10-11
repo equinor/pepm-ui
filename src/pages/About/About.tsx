@@ -1,5 +1,5 @@
-import { Typography } from '@equinor/eds-core-react'
-import { InfoPageComponent } from '../../components/InfoPageComponent/InfoPageComponent'
+import { Typography } from '@equinor/eds-core-react';
+import { InfoPageComponent } from '../../components/InfoPageComponent/InfoPageComponent';
 
 export const About = () => {
   return (
@@ -29,5 +29,5 @@ export const About = () => {
         sword.
       </Typography>
     </InfoPageComponent>
-  )
-}
+  );
+};

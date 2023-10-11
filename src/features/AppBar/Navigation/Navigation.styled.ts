@@ -1,6 +1,6 @@
-import { Tabs } from '@equinor/eds-core-react'
-import styled from 'styled-components'
-import { spacings } from '../../../tokens/spacings'
+import { Tabs } from '@equinor/eds-core-react';
+import styled from 'styled-components';
+import { spacings } from '../../../tokens/spacings';
 
 const StyledTabs = styled(Tabs)`
   display: flex;
@@ -14,5 +14,5 @@ const StyledTabs = styled(Tabs)`
       border-color: transparent;
     }
   }
-`
-export { StyledTabs as Tabs }
+`;
+export { StyledTabs as Tabs };

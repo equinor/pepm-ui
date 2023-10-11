@@ -1,5 +1,5 @@
-import { Button } from '@equinor/eds-core-react'
-import * as Styled from './CaseCardButtons.styled'
+import { Button } from '@equinor/eds-core-react';
+import * as Styled from './CaseCardButtons.styled';
 
 export const CaseCardButtons = ({ runCase }: { runCase: () => void }) => {
   return (
@@ -10,5 +10,5 @@ export const CaseCardButtons = ({ runCase }: { runCase: () => void }) => {
         Run
       </Button>
     </Styled.ButtonDiv>
-  )
-}
+  );
+};

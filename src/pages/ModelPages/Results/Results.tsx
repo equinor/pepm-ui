@@ -3,5 +3,5 @@ export const Results = () => {
     <>
       <p>Results for models will soon be available here!</p>
     </>
-  )
-}
+  );
+};

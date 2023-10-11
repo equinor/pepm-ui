@@ -1,9 +1,9 @@
-import { tokens } from '@equinor/eds-tokens'
+import { tokens } from '@equinor/eds-tokens';
 
-const interactive = tokens.colors.interactive
-const text = tokens.colors.text
-const ui = tokens.colors.ui
-const base = tokens.elevation
+const interactive = tokens.colors.interactive;
+const text = tokens.colors.text;
+const ui = tokens.colors.ui;
+const base = tokens.elevation;
 
 export const theme = {
   light: {
@@ -33,4 +33,4 @@ export const theme = {
       },
     },
   },
-}
+};

@@ -1,5 +1,5 @@
-import { Button, Typography } from '@equinor/eds-core-react'
-import * as Styled from './ComputeCaseInfoActions.styled'
+import { Button, Typography } from '@equinor/eds-core-react';
+import * as Styled from './ComputeCaseInfoActions.styled';
 
 export const ComputeCaseInfoActions = () => {
   return (
@@ -15,5 +15,5 @@ export const ComputeCaseInfoActions = () => {
         <Button>Run all variograms</Button>
       </Styled.Buttons>
     </Styled.CaseOverview>
-  )
-}
+  );
+};

@@ -1,9 +1,15 @@
-import { Button, Snackbar, Typography } from '@equinor/eds-core-react'
-import { useState } from 'react'
-import { Table } from '../../components/Table'
-import { AddModelDialog } from '../../features/AddModelDialog/AddModelDialog'
-import { useAnalogueModels } from '../../hooks/useAnalogueModels'
-import * as Styled from './Browse.styled'
+/* tslint:disable */
+/* eslint-disable */
+import { Button, Snackbar, Typography } from '@equinor/eds-core-react';
+import { useState } from 'react';
+import { Table } from '../../components/Table';
+import { AddModelDialog } from '../../features/AddModelDialog/AddModelDialog';
+import * as Styled from './Browse.styled';
+import { useMutation } from '@tanstack/react-query';
+import {
+  AnalogueModelsService,
+  CreateAnalogueModelCommand,
+} from '../../api/generated';
 
 enum UploadProcess {
   STARTED = 'We are uploading your new model. Please keep this browser tab open.',
@@ -12,39 +18,49 @@ enum UploadProcess {
 }
 
 export const Browse = () => {
-  const { createModel, uploadNCFile } = useAnalogueModels()
-  const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false)
-  const [uploadStatus, setUploadStatus] = useState<string>()
+  const createModel = (input: CreateAnalogueModelCommand) =>
+    useMutation({
+      mutationFn: () => AnalogueModelsService.postApiAnalogueModels(input),
+    });
+
+  const uploadNCFile = (id: string, file: Blob) =>
+    useMutation({
+      mutationFn: () =>
+        AnalogueModelsService.postApiAnalogueModelsNetcdfModels(id, { file }),
+    });
+
+  const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false);
+  const [uploadStatus, setUploadStatus] = useState<string>();
 
   function clearStatus() {
-    setUploadStatus(undefined)
+    setUploadStatus(undefined);
   }
 
   function toggleDialog() {
-    setAddModelDialog(!isAddModelDialog)
+    setAddModelDialog(!isAddModelDialog);
   }
 
   async function uploadModel(file: File) {
-    setUploadStatus(UploadProcess.STARTED)
-    const modelUpload = await createModel({
+    setUploadStatus(UploadProcess.STARTED);
+    const modelUpload = await createModel(
       // TODO
-      body: {
+      {
         name: 'testModel',
         description: 'description',
         sourceType: 'Deltares',
-      },
-    })
+      } as CreateAnalogueModelCommand,
+    );
 
-    if (modelUpload?.success) {
-      toggleDialog()
+    if (modelUpload?.isSuccess) {
+      toggleDialog();
       const fileUpload = await uploadNCFile(
-        modelUpload.data.analogueModelId ?? '',
-        file
-      )
+        modelUpload.data.data.analogueModelId ?? '',
+        file,
+      );
 
-      if (fileUpload.success) setUploadStatus(UploadProcess.SUCCESS)
-      else if (!fileUpload.success) {
-        setUploadStatus(UploadProcess.FAILED)
+      if (fileUpload.isSuccess) setUploadStatus(UploadProcess.SUCCESS);
+      else if (!fileUpload.isSuccess) {
+        setUploadStatus(UploadProcess.FAILED);
         // TODO: show validation message
       }
     }
@@ -75,5 +91,5 @@ export const Browse = () => {
         {uploadStatus}
       </Snackbar>
     </>
-  )
-}
+  );
+};

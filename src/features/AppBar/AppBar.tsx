@@ -1,7 +1,7 @@
-import { TopBar } from '@equinor/eds-core-react'
-import * as Styled from './AppBar.styled'
-import { Icons } from './Icons/Icons'
-import { Navigation } from './Navigation/Navigation'
+import { TopBar } from '@equinor/eds-core-react';
+import * as Styled from './AppBar.styled';
+import { Icons } from './Icons/Icons';
+import { Navigation } from './Navigation/Navigation';
 
 const AppBar = ({ title }: { title: string }) => {
   return (
@@ -12,7 +12,7 @@ const AppBar = ({ title }: { title: string }) => {
         <Icons />
       </TopBar.Actions>
     </Styled.TopBar>
-  )
-}
+  );
+};
 
-export default AppBar
+export default AppBar;
