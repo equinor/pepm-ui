@@ -1,13 +1,19 @@
-import { Table, Typography } from '@equinor/eds-core-react'
-import { useParams } from 'react-router-dom'
-import { useAnalogueModels } from '../../../hooks/useAnalogueModels'
-import { ModelParam } from '../ModelMetadataView/ModelMetadataView'
+import { Table, Typography } from '@equinor/eds-core-react';
+import { useParams } from 'react-router-dom';
+import { AnalogueModelsService, UploadList } from '../../../api/generated';
+import { useQuery } from '@tanstack/react-query';
+
 export const ModelSourceView = () => {
-  const { id } = useParams<keyof ModelParam>() as ModelParam
-  const { model } = useAnalogueModels(id)
+  const { id } = useParams();
+  const { isLoading, data } = useQuery({
+    queryKey: ['analogue-models', id],
+    queryFn: () => AnalogueModelsService.getApiAnalogueModels1(id as string),
+  });
 
-  if (model.isLoading) <p>Loading.....</p>
+  if (isLoading || !data?.success) return <p>Loading ...</p>;
 
+  // TODO
+  // Add uploaded by and upload time
   return (
     <div className="source-view">
       <Typography variant="h3">Source</Typography>
@@ -22,11 +28,10 @@ export const ModelSourceView = () => {
           </Table.Row>
         </Table.Head>
         <Table.Body>
-          {!model.isLoadingError &&
-          model.isFetched &&
-          (model.data.data.fileUploads?.length === undefined ||
-            model.data.data.fileUploads?.length > 0) ? (
-            model.data.data.fileUploads?.map((file: AnalogueModel) => (
+          {data.success &&
+          (data.data.fileUploads?.length === undefined ||
+            data.data.fileUploads?.length > 0) ? (
+            data.data.fileUploads?.map((file: UploadList) => (
               <Table.Row key={file.uploadId} className="table-row">
                 <Table.Cell className="table-first-col">
                   {file.originalFileName}
@@ -43,5 +48,5 @@ export const ModelSourceView = () => {
         </Table.Body>
       </Table>
     </div>
-  )
-}
+  );
+};

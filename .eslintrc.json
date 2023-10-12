@@ -17,7 +17,9 @@
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaFeatures": { "jsx": true },
+    "ecmaFeatures": {
+      "jsx": true
+    },
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
@@ -33,17 +35,32 @@
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "error",
     "react/boolean-prop-naming": "warn",
-    "prettier/prettier": "error",
+    "prettier/prettier": "warn",
     "@tanstack/query/exhaustive-deps": "error",
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/ban-ts-comment": [
       "error",
-      { "ts-ignore": { "descriptionFormat": "^ because .+$" } }
+      {
+        "ts-ignore": {
+          "descriptionFormat": "^ because .+$"
+        }
+      }
     ],
-    "camelcase": ["error", { "ignoreImports": true }],
+    "camelcase": [
+      "error",
+      {
+        "ignoreImports": true
+      }
+    ],
     "max-depth": "warn",
     "max-lines": "warn",
-    "max-lines-per-function": ["warn", { "max": 60, "skipBlankLines": true }],
+    "max-lines-per-function": [
+      "warn",
+      {
+        "max": 60,
+        "skipBlankLines": true
+      }
+    ],
     "no-console": "warn",
     "no-duplicate-imports": "error",
     "no-self-compare": "error",
@@ -51,8 +68,17 @@
     "prefer-const": "error",
     "sort-imports": [
       "error",
-      { "ignoreCase": true, "ignoreDeclarationSort": true }
+      {
+        "ignoreCase": true,
+        "ignoreDeclarationSort": true
+      }
     ],
-    "spaced-comment": ["warn", "always", { "markers": ["/"] }]
+    "spaced-comment": [
+      "warn",
+      "always",
+      {
+        "markers": ["/"]
+      }
+    ]
   }
 }

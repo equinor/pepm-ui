@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import { spacings } from '../../../../../tokens/spacings'
+import styled from 'styled-components';
+import { spacings } from '../../../../../tokens/spacings';
 
 export const AutocompleteWrapper = styled.div`
   display: flex;
@@ -7,4 +7,4 @@ export const AutocompleteWrapper = styled.div`
   flex-direction: row;
 
   column-gap: ${spacings.MEDIUM};
-`
+`;

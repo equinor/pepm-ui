@@ -1,37 +1,41 @@
-import { Button, Table, Typography } from '@equinor/eds-core-react'
-import { useParams } from 'react-router-dom'
-import { useAnalogueModels } from '../../../hooks/useAnalogueModels'
+import { Button, Table, Typography } from '@equinor/eds-core-react';
+import { useParams } from 'react-router-dom';
+import { AnalogueModelsService } from '../../../api/generated/services/AnalogueModelsService';
+import { useQuery } from '@tanstack/react-query';
 
 export type ModelParam = {
-  id: string
-}
+  id: string;
+};
 export const ModelMetadataView = () => {
-  const { id } = useParams<keyof ModelParam>() as ModelParam
-  const { model } = useAnalogueModels(id)
+  const { id } = useParams();
+  const { isLoading, data } = useQuery({
+    queryKey: ['analogue-models', id],
+    queryFn: () => AnalogueModelsService.getApiAnalogueModels1(id as string),
+  });
+  if (isLoading || !data?.success) return <p>Loading ...</p>;
 
-  if (model.isLoading) <p>Loading.....</p>
+  // TODO
+  // Map rows to model data
 
   return (
     <div className="metadata-view">
       <Typography variant="h3">Description and metadata</Typography>
-      {!model.isLoadingError &&
-        model.isFetched &&
-        model.data.data.description && (
+      {data.data.description && (
+        <p>
+          {data.data.description}
+          <br />
           <p>
-            {model.data.data.description}
-            <br />
-            <p>
-              ** Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Maecenas bibendum ex at venenatis gravida. Sed id tempor dui. Nunc
-              a posuere ligula. Pellentesque pulvinar varius neque nec molestie.
-              Aliquam erat volutpat. Nunc pulvinar varius scelerisque.
-              Suspendisse iaculis, elit id fringilla semper, justo felis luctus
-              felis, et malesuada augue sapien a sem. Donec varius, sapien quis
-              varius blandit, justo ex pellentesque nisl, eu placerat magna nisi
-              et odio. Donec laoreet est quam, id fringilla magna semper in. **
-            </p>
+            ** Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+            bibendum ex at venenatis gravida. Sed id tempor dui. Nunc a posuere
+            ligula. Pellentesque pulvinar varius neque nec molestie. Aliquam
+            erat volutpat. Nunc pulvinar varius scelerisque. Suspendisse
+            iaculis, elit id fringilla semper, justo felis luctus felis, et
+            malesuada augue sapien a sem. Donec varius, sapien quis varius
+            blandit, justo ex pellentesque nisl, eu placerat magna nisi et odio.
+            Donec laoreet est quam, id fringilla magna semper in. **
           </p>
-        )}
+        </p>
+      )}
       <div>
         <Table>
           <Table.Body>
@@ -59,5 +63,5 @@ export const ModelMetadataView = () => {
         Edit description and metadata
       </Button>
     </div>
-  )
-}
+  );
+};

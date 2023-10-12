@@ -1,14 +1,14 @@
-import { Typography } from '@equinor/eds-core-react'
-import * as Styled from './InfoPageComponent.style'
+import { Typography } from '@equinor/eds-core-react';
+import * as Styled from './InfoPageComponent.style';
 
 export const InfoPageComponent = ({
   title,
   children,
   scaleHight,
 }: {
-  title?: string
-  children?: React.ReactNode
-  scaleHight?: string
+  title?: string;
+  children?: React.ReactNode;
+  scaleHight?: string;
 }) => {
   return (
     <Styled.Page className={scaleHight && 'scaleHight'}>
@@ -17,5 +17,5 @@ export const InfoPageComponent = ({
         {children}
       </Styled.InnerWrapper>
     </Styled.Page>
-  )
-}
+  );
+};

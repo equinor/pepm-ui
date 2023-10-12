@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import { spacings } from '../../tokens/spacings'
+import styled from 'styled-components';
+import { spacings } from '../../tokens/spacings';
 
 const StyledInforPage = styled.div`
   display: flex;
@@ -15,7 +15,7 @@ const StyledInforPage = styled.div`
 
   width: 100%;
   height: 100%;
-`
+`;
 
 const InnerWrapper = styled.div`
   display: flex;
@@ -32,5 +32,5 @@ const InnerWrapper = styled.div`
       margin-left: ${spacings.SMALL};
     }
   }
-`
-export { InnerWrapper, StyledInforPage as Page }
+`;
+export { InnerWrapper, StyledInforPage as Page };

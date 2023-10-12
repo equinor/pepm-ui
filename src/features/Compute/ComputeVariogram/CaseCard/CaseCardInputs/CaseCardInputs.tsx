@@ -1,6 +1,6 @@
-import { Autocomplete, AutocompleteChanges } from '@equinor/eds-core-react'
-import { default as optionTypes } from '../CaseCard'
-import * as Styled from './CaseCardInputs.styled'
+import { Autocomplete, AutocompleteChanges } from '@equinor/eds-core-react';
+import { default as optionTypes } from '../CaseCard';
+import * as Styled from './CaseCardInputs.styled';
 
 export const CaseCardInputs = ({
   modelAreas,
@@ -8,12 +8,12 @@ export const CaseCardInputs = ({
   setModelArea,
   setComputeMethod,
 }: {
-  modelAreas: optionTypes[]
-  computeMethods: optionTypes[]
-  setModelArea: React.Dispatch<React.SetStateAction<optionTypes | undefined>>
+  modelAreas: optionTypes[];
+  computeMethods: optionTypes[];
+  setModelArea: React.Dispatch<React.SetStateAction<optionTypes | undefined>>;
   setComputeMethod: React.Dispatch<
     React.SetStateAction<optionTypes | undefined>
-  >
+  >;
 }) => {
   return (
     <Styled.AutocompleteWrapper>
@@ -34,5 +34,5 @@ export const CaseCardInputs = ({
         }
       ></Autocomplete>
     </Styled.AutocompleteWrapper>
-  )
-}
+  );
+};

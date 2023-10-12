@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-import { spacings } from '../../tokens/spacings'
-import { theme } from '../../tokens/theme'
+import styled from 'styled-components';
+import { spacings } from '../../tokens/spacings';
+import { theme } from '../../tokens/theme';
 
 const StyledFooter = styled.footer`
   height: ${spacings.XXXX_LARGE};
@@ -21,5 +21,5 @@ const StyledFooter = styled.footer`
   > .footer-img {
     height: ${spacings.XXX_LARGE};
   }
-`
-export { StyledFooter as Footer }
+`;
+export { StyledFooter as Footer };

@@ -1,11 +1,11 @@
-import { Dialog } from '@equinor/eds-core-react'
-import styled from 'styled-components'
-import { spacings } from '../../../tokens/spacings'
+import { Dialog } from '@equinor/eds-core-react';
+import styled from 'styled-components';
+import { spacings } from '../../../tokens/spacings';
 
 const StyledDialog = styled(Dialog)`
   min-width: 600px;
   width: max-content;
-`
+`;
 
 const StyledDialogCustomContent = styled(Dialog.CustomContent)`
   display: flex;
@@ -18,15 +18,15 @@ const StyledDialogCustomContent = styled(Dialog.CustomContent)`
       color: red;
     }
   }
-`
+`;
 
 const StyledDialogActions = styled(Dialog.Actions)`
   display: flex;
   gap: ${spacings.SMALL};
-`
+`;
 
 export {
   StyledDialog as Dialog,
   StyledDialogActions as DialogActions,
   StyledDialogCustomContent as DialogCustomContent,
-}
+};

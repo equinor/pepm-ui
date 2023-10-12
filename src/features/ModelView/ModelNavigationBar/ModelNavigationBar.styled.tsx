@@ -1,14 +1,14 @@
-import { SideBar } from '@equinor/eds-core-react'
-import styled from 'styled-components'
-import { spacings } from '../../../tokens/spacings'
-import { theme } from '../../../tokens/theme'
+import { SideBar } from '@equinor/eds-core-react';
+import styled from 'styled-components';
+import { spacings } from '../../../tokens/spacings';
+import { theme } from '../../../tokens/theme';
 
 export const StyledSidebarContent = styled(SideBar.Content)`
   padding-top: ${spacings.MEDIUM};
   > a {
     border-bottom: none;
   }
-`
+`;
 
 export const StyledSidebarLink = styled(SideBar.Link)`
   &.activeTab {
@@ -21,7 +21,7 @@ export const StyledSidebarLink = styled(SideBar.Link)`
       fill: ${theme.light.primary.resting};
     }
   }
-`
+`;
 
 export const StyledAccordionItem = styled(SideBar.AccordionItem)`
   > div {
@@ -48,10 +48,10 @@ export const StyledAccordionItem = styled(SideBar.AccordionItem)`
       }
     }
   }
-`
+`;
 
 export {
   StyledAccordionItem as AccordionItem,
   StyledSidebarContent as SidebarContent,
   StyledSidebarLink as SidebarLink,
-}
+};

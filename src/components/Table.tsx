@@ -1,20 +1,22 @@
-import { Chip } from '@equinor/eds-core-react'
-import { EdsDataGrid } from '@equinor/eds-data-grid-react'
-import { useAnalogueModels } from '../hooks/useAnalogueModels'
-import * as Styled from './Table.styled'
+import { Chip } from '@equinor/eds-core-react';
+import { EdsDataGrid } from '@equinor/eds-data-grid-react';
+import * as Styled from './Table.styled';
+import { useQuery } from '@tanstack/react-query';
+import { AnalogueModelsService } from '../api/generated';
 
 export const Table = () => {
-  const { models } = useAnalogueModels('undefined')
-
-  if (models.isLoading || !models.data?.data) return <p>Loading...</p>
-
+  const { isLoading, data } = useQuery({
+    queryKey: ['analogue-models'],
+    queryFn: () => AnalogueModelsService.getApiAnalogueModels(),
+  });
+  if (isLoading || !data?.success) return <p>Loading...</p>;
   return (
     <Styled.StyledDiv>
       <EdsDataGrid
         enableSorting
         enablePagination
         emptyMessage="Empty :("
-        rows={models.data.data}
+        rows={data.data}
         pageSize={5}
         columns={[
           {
@@ -61,5 +63,5 @@ export const Table = () => {
         ]}
       />
     </Styled.StyledDiv>
-  )
-}
+  );
+};

@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import { spacings } from '../../../tokens/spacings'
+import styled from 'styled-components';
+import { spacings } from '../../../tokens/spacings';
 
 export const TextDiv = styled.div`
   display: flex;
@@ -7,4 +7,4 @@ export const TextDiv = styled.div`
   align-items: center;
 
   row-gap: ${spacings.MEDIUM};
-`
+`;

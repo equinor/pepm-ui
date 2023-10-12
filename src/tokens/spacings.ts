@@ -1,6 +1,6 @@
-import { tokens } from '@equinor/eds-tokens'
+import { tokens } from '@equinor/eds-tokens';
 
-const comfortable = tokens.spacings.comfortable
+const comfortable = tokens.spacings.comfortable;
 
 export const spacings = {
   /** 2px */
@@ -29,4 +29,4 @@ export const spacings = {
   CARD_ROUNDED: '5px',
   /** 4px */
   BORDER_ROUNDED: '4px', // CARD_ROUNDED - 1px
-}
+};

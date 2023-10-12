@@ -1,7 +1,7 @@
-import { Typography } from '@equinor/eds-core-react'
-import { InfoPageComponent } from '../../../components/InfoPageComponent/InfoPageComponent'
-import NoResultPicture from './NoResults.jpeg'
-import * as Styled from './NoResults.styled'
+import { Typography } from '@equinor/eds-core-react';
+import { InfoPageComponent } from '../../../components/InfoPageComponent/InfoPageComponent';
+import NoResultPicture from './NoResults.jpeg';
+import * as Styled from './NoResults.styled';
 
 export const NoResults = () => {
   return (
@@ -25,5 +25,5 @@ export const NoResults = () => {
         </Typography>
       </Styled.TextDiv>
     </InfoPageComponent>
-  )
-}
+  );
+};

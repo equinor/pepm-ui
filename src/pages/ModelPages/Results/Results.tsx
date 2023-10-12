@@ -1,7 +1,7 @@
-import { NoResults } from '../../../features/Results/NoResults/NoResults'
+import { NoResults } from '../../../features/Results/NoResults/NoResults';
 
 export const Results = () => {
-  const results = undefined
+  const results = undefined;
 
-  return <>{results ? <p>Results Here</p> : <NoResults />}</>
-}
+  return <>{results ? <p>Results Here</p> : <NoResults />}</>;
+};

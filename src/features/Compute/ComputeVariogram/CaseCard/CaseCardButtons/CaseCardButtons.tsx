@@ -1,14 +1,14 @@
-import { Button } from '@equinor/eds-core-react'
-import * as Styled from './CaseCardButtons.styled'
+import { Button } from '@equinor/eds-core-react';
+import * as Styled from './CaseCardButtons.styled';
 
 export const CaseCardButtons = ({
   id,
   removeCase,
   runCase,
 }: {
-  id: string
-  removeCase: (id: string) => void
-  runCase: () => void
+  id: string;
+  removeCase: (id: string) => void;
+  runCase: () => void;
 }) => {
   return (
     <Styled.ButtonDiv>
@@ -20,5 +20,5 @@ export const CaseCardButtons = ({
         Run
       </Button>
     </Styled.ButtonDiv>
-  )
-}
+  );
+};

@@ -1,16 +1,18 @@
-import { useMsal } from '@azure/msal-react'
-import { useEffect, useState } from 'react'
-import { loginRequest } from '../auth/authConfig'
+import { useEffect, useState } from 'react';
+import { loginRequest } from '../auth/authConfig';
+import { AccountInfo, IPublicClientApplication } from '@azure/msal-browser';
 
-export const useAccessToken = () => {
-  const { instance, accounts } = useMsal()
-  const [accessToken, setAccessToken] = useState<string | undefined>(undefined)
+export const useAccessToken = (
+  instance: IPublicClientApplication,
+  activeAccount: AccountInfo,
+) => {
+  const [accessToken, setAccessToken] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     const request = {
       ...loginRequest,
-      account: accounts[0],
-    }
+      account: activeAccount,
+    };
 
     async function fetchAccessToken() {
       return instance
@@ -19,14 +21,14 @@ export const useAccessToken = () => {
         .catch(() =>
           instance
             .acquireTokenPopup(request)
-            .then((response) => response.accessToken)
-        )
+            .then((response) => response.accessToken),
+        );
     }
 
     if (!accessToken) {
-      fetchAccessToken().then((token) => setAccessToken(token))
+      fetchAccessToken().then((token) => setAccessToken(token));
     }
-  }, [accessToken, accounts, instance])
+  }, [accessToken, activeAccount, instance]);
 
-  return accessToken
-}
+  return accessToken;
+};

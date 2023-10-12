@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import { spacings } from '../../tokens/spacings'
+import styled from 'styled-components';
+import { spacings } from '../../tokens/spacings';
 
 export const BrowseWrapper = styled.div`
   column-gap: ${spacings.X_LARGE};
@@ -15,4 +15,4 @@ export const BrowseWrapper = styled.div`
       margin-right: 50px;
     }
   }
-`
+`;

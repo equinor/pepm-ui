@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import { spacings } from '../../../../../tokens/spacings'
+import styled from 'styled-components';
+import { spacings } from '../../../../../tokens/spacings';
 
 export const ButtonDiv = styled.div`
   display: flex;
@@ -11,4 +11,4 @@ export const ButtonDiv = styled.div`
   > button {
     width: ${spacings.COMPUTE_BUTTON};
   }
-`
+`;

@@ -1,15 +1,19 @@
-import { Outlet, useParams } from 'react-router-dom'
-import { ModelParam } from '../../../features/ModelView/ModelMetadataView/ModelMetadataView'
-import { ModelNameFrame } from '../../../features/ModelView/ModelNameFrame/ModelNameFrame'
-import { ModelNavigationBar } from '../../../features/ModelView/ModelNavigationBar/ModelNavigationBar'
-import { useAnalogueModels } from '../../../hooks/useAnalogueModels'
-import * as Styled from './Model.styled'
+import { Outlet, useParams } from 'react-router-dom';
+import { ModelNameFrame } from '../../../features/ModelView/ModelNameFrame/ModelNameFrame';
+import { ModelNavigationBar } from '../../../features/ModelView/ModelNavigationBar/ModelNavigationBar';
+import * as Styled from './Model.styled';
+import { useQuery } from '@tanstack/react-query';
+import { AnalogueModelsService } from '../../../api/generated';
 
 export const Model = () => {
-  const { id } = useParams<keyof ModelParam>() as ModelParam
-  const { model } = useAnalogueModels(id)
+  const { id } = useParams<{ id: string }>();
 
-  if (model.isLoading) <p>Loading.....</p>
+  const { data, isLoading } = useQuery({
+    queryKey: ['analogue-models', id],
+    queryFn: () => AnalogueModelsService.getApiAnalogueModels1(id as string),
+  });
+
+  if (isLoading) <p>Loading.....</p>;
 
   return (
     <>
@@ -18,13 +22,11 @@ export const Model = () => {
           <ModelNavigationBar />
         </Styled.SidebarWrapper>
         <Styled.ContentWrapper>
-          {!model.isLoadingError && model.isFetched && (
-            <ModelNameFrame model={model.data.data} />
-          )}
+          {data?.success && <ModelNameFrame model={data.data} />}
 
           <Outlet />
         </Styled.ContentWrapper>
       </Styled.Wrapper>
     </>
-  )
-}
+  );
+};

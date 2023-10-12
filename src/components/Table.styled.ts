@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import { spacings } from '../tokens/spacings'
+import styled from 'styled-components';
+import { spacings } from '../tokens/spacings';
 
 export const StyledDiv = styled.div`
   overflow-x: auto;
@@ -10,4 +10,4 @@ export const StyledDiv = styled.div`
       width: auto !important;
     }
   }
-`
+`;

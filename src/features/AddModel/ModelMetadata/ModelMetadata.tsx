@@ -4,19 +4,19 @@ import {
   AutocompleteChanges,
   Label,
   Typography,
-} from '@equinor/eds-core-react'
-import MetadataProps, { ErrorType } from '../AddModelDialog/AddModelDialog'
+} from '@equinor/eds-core-react';
+import MetadataProps, { ErrorType } from '../AddModelDialog/AddModelDialog';
 
-import * as Styled from './ModelMetadata.styled'
+import * as Styled from './ModelMetadata.styled';
 
 export const ModelMetadata = ({
   errors,
   metadata,
   setMetadata,
 }: {
-  errors: ErrorType
-  metadata: Partial<MetadataProps> | undefined
-  setMetadata: (metadata: Partial<MetadataProps>) => void
+  errors: ErrorType;
+  metadata: Partial<MetadataProps> | undefined;
+  setMetadata: (metadata: Partial<MetadataProps>) => void;
 }) => {
   const fields = {
     description: 'Description string',
@@ -24,11 +24,11 @@ export const ModelMetadata = ({
     zone: ['Zone 1', 'Zone 2', 'Zone 3'],
     formation: ['Rocky', 'Hilly', 'Flat'],
     analogue: ['Analouge1', 'Analouge2'],
-  }
+  };
 
   const handleInput = (e: AutocompleteChanges<string>, target: string) => {
-    setMetadata({ ...metadata, [target]: e.selectedItems })
-  }
+    setMetadata({ ...metadata, [target]: e.selectedItems });
+  };
 
   return (
     <Styled.ModelMetadata className="model-metadata">
@@ -93,5 +93,5 @@ export const ModelMetadata = ({
         </Styled.AutocompleteWrapper>
       </Styled.Form>
     </Styled.ModelMetadata>
-  )
-}
+  );
+};

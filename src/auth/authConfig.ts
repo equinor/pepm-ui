@@ -1,4 +1,4 @@
-import { Configuration, PopupRequest } from '@azure/msal-browser'
+import { Configuration, PopupRequest } from '@azure/msal-browser';
 
 // Config object to be passed to Msal on creation
 const msalConfig: Configuration = {
@@ -11,22 +11,22 @@ const msalConfig: Configuration = {
   cache: {
     cacheLocation: 'sessionStorage',
   },
-}
+};
 
 const protectedResources = {
   endpoint: process.env.REACT_APP_BACKEND_URL,
   scopes: {
     read: [process.env.REACT_APP_BACKEND_API_SCOPE as string],
   },
-}
+};
 
 // Scopes for id token to be used at MS Identity Platform endpoints
 const loginRequest: PopupRequest = {
   scopes: [...protectedResources.scopes.read],
-}
+};
 
 const apiConfig = {
   baseUrl: `${process.env.REACT_APP_BACKEND_URL}`,
-}
+};
 
-export { apiConfig, loginRequest, msalConfig }
+export { apiConfig, loginRequest, msalConfig };

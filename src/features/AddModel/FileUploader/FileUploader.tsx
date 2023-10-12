@@ -1,13 +1,13 @@
-import { Icon } from '@equinor/eds-core-react'
-import { subdirectory_arrow_right as arrowIcon } from '@equinor/eds-icons'
-import { ChangeEvent, useRef } from 'react'
-import { theme } from '../../../tokens/theme'
-import { FileUpload, SelectFile } from './FileUploader.styled'
+import { Icon } from '@equinor/eds-core-react';
+import { subdirectory_arrow_right as arrowIcon } from '@equinor/eds-icons';
+import { ChangeEvent, useRef } from 'react';
+import { theme } from '../../../tokens/theme';
+import { FileUpload, SelectFile } from './FileUploader.styled';
 
 interface FileUploaderProps {
-  file?: File
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void
-  acceptType: 'NC' | 'INI'
+  file?: File;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  acceptType: 'NC' | 'INI';
 }
 
 export const FileUploader = ({
@@ -15,12 +15,12 @@ export const FileUploader = ({
   onChange,
   acceptType,
 }: FileUploaderProps) => {
-  const INI = acceptType === 'INI'
-  const ref = useRef<HTMLInputElement>(null)
+  const INI = acceptType === 'INI';
+  const ref = useRef<HTMLInputElement>(null);
 
   function handleClick(e: ChangeEvent<HTMLInputElement>) {
-    e.preventDefault()
-    ref.current?.click()
+    e.preventDefault();
+    ref.current?.click();
   }
 
   return file ? (
@@ -46,5 +46,5 @@ export const FileUploader = ({
         />
       </FileUpload>
     </form>
-  )
-}
+  );
+};

@@ -1,17 +1,17 @@
-import { createBrowserRouter, NonIndexRouteObject } from 'react-router-dom'
-import { App } from './App'
-import { ModelView } from './features/ModelView/ModelView'
-import { About } from './pages/About/About'
-import { Api } from './pages/Api/Api'
-import { Browse } from './pages/Browse/Browse'
-import { InvalidURL } from './pages/InvalidURL/InvalidURL'
-import { ComputeObject } from './pages/ModelPages/Compute/ComputeObject/ComputeObject'
-import { ComputeVariogram } from './pages/ModelPages/Compute/ComputeVariogram/ComputeVariogram'
-import { Model } from './pages/ModelPages/Model/Model'
-import { Results } from './pages/ModelPages/Results/Results'
+import { createBrowserRouter, NonIndexRouteObject } from 'react-router-dom';
+import { App } from './App';
+import { ModelView } from './features/ModelView/ModelView';
+import { About } from './pages/About/About';
+import { Api } from './pages/Api/Api';
+import { Browse } from './pages/Browse/Browse';
+import { InvalidURL } from './pages/InvalidURL/InvalidURL';
+import { ComputeObject } from './pages/ModelPages/Compute/ComputeObject/ComputeObject';
+import { ComputeVariogram } from './pages/ModelPages/Compute/ComputeVariogram/ComputeVariogram';
+import { Model } from './pages/ModelPages/Model/Model';
+import { Results } from './pages/ModelPages/Results/Results';
 
 interface Tab extends Required<Pick<NonIndexRouteObject, 'path' | 'element'>> {
-  title: string
+  title: string;
 }
 
 const tabs: Tab[] = [
@@ -22,7 +22,7 @@ const tabs: Tab[] = [
   },
   { title: 'API', path: 'api', element: <Api /> },
   { title: 'About', path: 'about', element: <About /> },
-]
+];
 const appRoutes = (tabs as NonIndexRouteObject[]).concat([
   {
     path: 'model/:id/',
@@ -48,7 +48,7 @@ const appRoutes = (tabs as NonIndexRouteObject[]).concat([
       },
     ],
   },
-])
+]);
 
 const router = createBrowserRouter([
   {
@@ -60,6 +60,6 @@ const router = createBrowserRouter([
     path: '*',
     element: <InvalidURL />,
   },
-])
+]);
 
-export { router, tabs }
+export { router, tabs };

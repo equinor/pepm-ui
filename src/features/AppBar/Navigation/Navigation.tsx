@@ -1,14 +1,16 @@
-import { Tabs } from '@equinor/eds-core-react'
-import { useNavigate } from 'react-router-dom'
-import { tabs } from '../../../router'
-import * as Styled from './Navigation.styled'
+import { Tabs } from '@equinor/eds-core-react';
+import { useNavigate } from 'react-router-dom';
+import { tabs } from '../../../router';
+import * as Styled from './Navigation.styled';
 
 export const Navigation = () => {
-  const navigate = useNavigate()
-  const active = tabs.find((tab) => `/${tab.path}` === window.location.pathname)
+  const navigate = useNavigate();
+  const active = tabs.find(
+    (tab) => `/${tab.path}` === window.location.pathname,
+  );
 
   function clickTab(tab: number) {
-    navigate(tabs[tab].path)
+    navigate(tabs[tab].path);
   }
 
   return (
@@ -23,5 +25,5 @@ export const Navigation = () => {
         ))}
       </Tabs.List>
     </Styled.Tabs>
-  )
-}
+  );
+};
