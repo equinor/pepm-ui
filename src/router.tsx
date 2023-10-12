@@ -1,6 +1,7 @@
 import { createBrowserRouter, NonIndexRouteObject } from 'react-router-dom'
 import { App } from './App'
 import { ModelView } from './features/ModelView/ModelView'
+import { CaseResults } from './features/Results/CaseResult/CaseResults'
 import { About } from './pages/About/About'
 import { Api } from './pages/Api/Api'
 import { Browse } from './pages/Browse/Browse'
@@ -46,6 +47,7 @@ const appRoutes = (tabs as NonIndexRouteObject[]).concat([
         path: 'results',
         element: <Results />,
       },
+      { path: 'results/:id', element: <CaseResults /> },
     ],
   },
 ])
