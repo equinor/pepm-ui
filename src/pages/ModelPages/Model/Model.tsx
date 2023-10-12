@@ -8,12 +8,12 @@ import { AnalogueModelsService } from '../../../api/generated';
 export const Model = () => {
   const { id } = useParams<{ id: string }>();
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['analogue-models', id],
     queryFn: () => AnalogueModelsService.getApiAnalogueModels1(id as string),
   });
 
-  if (model.isLoading) <p>Loading.....</p>;
+  if (isLoading) <p>Loading.....</p>;
 
   return (
     <>
