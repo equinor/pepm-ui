@@ -7,7 +7,7 @@ import {
   format_list_bulleted as formatListBullet,
   settings,
 } from '@equinor/eds-icons';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import * as Styled from './ModelNavigationBar.styled';
 
 type MenuItems = SidebarLinkProps & {
@@ -23,6 +23,7 @@ export const ModelNavigationBar = () => {
   const location = useLocation();
   const tab = location.pathname.split('/');
   const path = tab[tab.length - 1];
+  const path2 = tab[tab.length - 2];
 
   const menuItems: SidebarLinkProps[] = [
     {
@@ -58,6 +59,7 @@ export const ModelNavigationBar = () => {
       },
     ],
   };
+  const navigate = useNavigate();
 
   return (
     <SideBar open>
@@ -67,6 +69,9 @@ export const ModelNavigationBar = () => {
           key={menuItems[0].label}
           {...menuItems[0]}
           active={menuItems[0].href === path}
+          onClick={() => {
+            navigate('details');
+          }}
         ></Styled.SidebarLink>
         <Styled.SidebarLink
           disabled
@@ -75,7 +80,9 @@ export const ModelNavigationBar = () => {
           label={sidebarCompute.label}
           icon={sidebarCompute.icon}
           active={'object' === path || 'variogram' === path}
-          href={'variogram'}
+          onClick={() => {
+            navigate('variogram');
+          }}
         ></Styled.SidebarLink>
         {sidebarCompute.subItems?.map((item) => (
           <Styled.AccordionItem
@@ -83,14 +90,22 @@ export const ModelNavigationBar = () => {
             key={item.label}
             label={item.label}
             active={item.href === path && item.label === 'Variogram'}
-            href={item.href}
+            onClick={() => {
+              navigate(`${item.href}`);
+            }}
           ></Styled.AccordionItem>
         ))}
         <Styled.SidebarLink
-          className={menuItems[1].href === path && 'activeTab'}
+          className={
+            (menuItems[1].href === path || menuItems[1].href === path2) &&
+            'activeTab'
+          }
           key={menuItems[1].label}
           {...menuItems[1]}
-          active={menuItems[1].href === path}
+          active={menuItems[1].href === path || menuItems[1].href === path2}
+          onClick={() => {
+            navigate('results');
+          }}
         ></Styled.SidebarLink>
       </Styled.SidebarContent>
     </SideBar>
