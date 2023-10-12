@@ -1,6 +1,6 @@
 import { Dialog } from '@equinor/eds-core-react';
 import styled from 'styled-components';
-import { spacings } from '../../tokens/spacings';
+import { spacings } from '../../../tokens/spacings';
 
 const StyledDialog = styled(Dialog)`
   min-width: 600px;
@@ -12,6 +12,12 @@ const StyledDialogCustomContent = styled(Dialog.CustomContent)`
   flex-direction: column;
   row-gap: ${spacings.X_LARGE};
   height: 740px;
+
+  > p {
+    &.error {
+      color: red;
+    }
+  }
 `;
 
 const StyledDialogActions = styled(Dialog.Actions)`

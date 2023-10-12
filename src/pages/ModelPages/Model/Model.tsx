@@ -13,6 +13,8 @@ export const Model = () => {
     queryFn: () => AnalogueModelsService.getApiAnalogueModels1(id as string),
   });
 
+  if (model.isLoading) <p>Loading.....</p>;
+
   return (
     <>
       <Styled.Wrapper>
@@ -21,6 +23,7 @@ export const Model = () => {
         </Styled.SidebarWrapper>
         <Styled.ContentWrapper>
           {data?.success && <ModelNameFrame model={data.data} />}
+
           <Outlet />
         </Styled.ContentWrapper>
       </Styled.Wrapper>

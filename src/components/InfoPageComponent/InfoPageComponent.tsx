@@ -4,12 +4,14 @@ import * as Styled from './InfoPageComponent.style';
 export const InfoPageComponent = ({
   title,
   children,
+  scaleHight,
 }: {
-  title: string;
+  title?: string;
   children?: React.ReactNode;
+  scaleHight?: string;
 }) => {
   return (
-    <Styled.Page className="about-container">
+    <Styled.Page className={scaleHight && 'scaleHight'}>
       <Styled.InnerWrapper>
         <Typography variant="h1">{title}</Typography>
         {children}

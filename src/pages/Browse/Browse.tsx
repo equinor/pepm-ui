@@ -1,15 +1,13 @@
-/* tslint:disable */
-/* eslint-disable */
 import { Button, Snackbar, Typography } from '@equinor/eds-core-react';
 import { useState } from 'react';
 import { Table } from '../../components/Table';
-import { AddModelDialog } from '../../features/AddModelDialog/AddModelDialog';
 import * as Styled from './Browse.styled';
 import { useMutation } from '@tanstack/react-query';
 import {
   AnalogueModelsService,
   CreateAnalogueModelCommand,
 } from '../../api/generated';
+import { AddModelDialog } from '../../features/AddModel/AddModelDialog/AddModelDialog';
 
 enum UploadProcess {
   STARTED = 'We are uploading your new model. Please keep this browser tab open.',
@@ -17,17 +15,24 @@ enum UploadProcess {
   FAILED = 'File upload failed.',
 }
 
-export const Browse = () => {
-  const createModel = (input: CreateAnalogueModelCommand) =>
-    useMutation({
-      mutationFn: () => AnalogueModelsService.postApiAnalogueModels(input),
-    });
+type MutationContract = {
+  id: string;
+  file: Blob;
+};
 
-  const uploadNCFile = (id: string, file: Blob) =>
-    useMutation({
-      mutationFn: () =>
-        AnalogueModelsService.postApiAnalogueModelsNetcdfModels(id, { file }),
-    });
+export const Browse = () => {
+  const createModel = useMutation({
+    mutationFn: AnalogueModelsService.postApiAnalogueModels,
+  });
+
+  const uploadNCFile = useMutation({
+    mutationFn: (mutationContract: MutationContract) => {
+      return AnalogueModelsService.postApiAnalogueModelsNetcdfModels(
+        mutationContract.id,
+        { file: mutationContract.file },
+      );
+    },
+  });
 
   const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false);
   const [uploadStatus, setUploadStatus] = useState<string>();
@@ -42,7 +47,7 @@ export const Browse = () => {
 
   async function uploadModel(file: File) {
     setUploadStatus(UploadProcess.STARTED);
-    const modelUpload = await createModel(
+    const modelUpload = await createModel.mutateAsync(
       // TODO
       {
         name: 'testModel',
@@ -51,15 +56,16 @@ export const Browse = () => {
       } as CreateAnalogueModelCommand,
     );
 
-    if (modelUpload?.isSuccess) {
+    if (createModel?.isSuccess) {
       toggleDialog();
-      const fileUpload = await uploadNCFile(
-        modelUpload.data.data.analogueModelId ?? '',
-        file,
-      );
+      const fileUpload = await uploadNCFile.mutateAsync({
+        id: modelUpload.data.analogueModelId ?? '',
+        file: file,
+      } as MutationContract);
 
-      if (fileUpload.isSuccess) setUploadStatus(UploadProcess.SUCCESS);
-      else if (!fileUpload.isSuccess) {
+      if (fileUpload && uploadNCFile.isSuccess)
+        setUploadStatus(UploadProcess.SUCCESS);
+      else if (!uploadNCFile.isSuccess) {
         setUploadStatus(UploadProcess.FAILED);
         // TODO: show validation message
       }

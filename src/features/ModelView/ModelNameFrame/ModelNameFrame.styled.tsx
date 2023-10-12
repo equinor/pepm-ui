@@ -6,6 +6,7 @@ export const NameFrame = styled.div`
   width: 100%;
   padding: ${spacings.LARGE} 0;
   background-color: ${theme.light.ui.background.light};
+  border-left: solid ${spacings.XX_SMALL} ${theme.light.ui.background.medium};
 
   > h1 {
     margin: 0;

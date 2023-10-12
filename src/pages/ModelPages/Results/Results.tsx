@@ -1,7 +1,7 @@
+import { NoResults } from '../../../features/Results/NoResults/NoResults';
+
 export const Results = () => {
-  return (
-    <>
-      <p>Results for models will soon be available here!</p>
-    </>
-  );
+  const results = undefined;
+
+  return <>{results ? <p>Results Here</p> : <NoResults />}</>;
 };

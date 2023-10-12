@@ -1,6 +1,6 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import { useParams } from 'react-router-dom';
-import { AnalogueModelsService } from '../../../api/generated';
+import { AnalogueModelsService, UploadList } from '../../../api/generated';
 import { useQuery } from '@tanstack/react-query';
 
 export const ModelSourceView = () => {
@@ -28,9 +28,10 @@ export const ModelSourceView = () => {
           </Table.Row>
         </Table.Head>
         <Table.Body>
-          {data.data.fileUploads?.length === undefined ||
-          data.data.fileUploads?.length > 0 ? (
-            data.data.fileUploads?.map((file: any) => (
+          {data.success &&
+          (data.data.fileUploads?.length === undefined ||
+            data.data.fileUploads?.length > 0) ? (
+            data.data.fileUploads?.map((file: UploadList) => (
               <Table.Row key={file.uploadId} className="table-row">
                 <Table.Cell className="table-first-col">
                   {file.originalFileName}

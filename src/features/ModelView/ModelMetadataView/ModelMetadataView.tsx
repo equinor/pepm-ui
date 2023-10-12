@@ -3,6 +3,9 @@ import { useParams } from 'react-router-dom';
 import { AnalogueModelsService } from '../../../api/generated/services/AnalogueModelsService';
 import { useQuery } from '@tanstack/react-query';
 
+export type ModelParam = {
+  id: string;
+};
 export const ModelMetadataView = () => {
   const { id } = useParams();
   const { isLoading, data } = useQuery({
@@ -29,12 +32,7 @@ export const ModelMetadataView = () => {
             iaculis, elit id fringilla semper, justo felis luctus felis, et
             malesuada augue sapien a sem. Donec varius, sapien quis varius
             blandit, justo ex pellentesque nisl, eu placerat magna nisi et odio.
-            Donec laoreet est quam, id fringilla magna semper in. Duis non massa
-            euismod, ultrices tortor et, ultricies ante. Vivamus quis dignissim
-            sem. Quisque purus dui, euismod eu lacus sed, mollis sagittis arcu.
-            Curabitur vitae mauris ornare, elementum massa suscipit, congue leo.
-            Sed fermentum imperdiet dapibus. Aliquam non ligula in felis laoreet
-            suscipit. **
+            Donec laoreet est quam, id fringilla magna semper in. **
           </p>
         </p>
       )}
