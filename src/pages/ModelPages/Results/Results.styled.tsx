@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { spacings } from '../../../tokens/spacings';
+import { theme } from '../../../tokens/theme';
 
 export const TextDiv = styled.div`
   display: flex;
@@ -7,4 +8,30 @@ export const TextDiv = styled.div`
   align-items: center;
 
   row-gap: ${spacings.MEDIUM};
+`;
+
+export const ResultCaseList = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  column-gap: ${spacings.LARGE};
+  row-gap: ${spacings.LARGE};
+
+  margin: ${spacings.XXX_LARGE};
+`;
+
+export const ResultCaseCard = styled.div`
+  display: flex;
+  flex-direction: row;
+
+  width: 60%;
+  column-gap: ${spacings.LARGE};
+  padding-left: ${spacings.LARGE};
+
+  background-color: ${theme.light.ui.background.light};
+
+  &:hover {
+    background-color: ${theme.light.ui.background.medium};
+    cursor: pointer;
+  }
 `;
