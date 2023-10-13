@@ -12,6 +12,7 @@ export const Wrapper = styled.div`
 
 export const ContentWrapper = styled.div`
   width: 100%;
+  overflow: scroll;
 `;
 
 export const SidebarWrapper = styled.div`
