@@ -1,6 +1,5 @@
-import { useNavigate } from 'react-router-dom'
+import { CaseResultList } from '../../../features/Results/CaseResult/CaseResultList/CaseResultList'
 import { NoResults } from '../../../features/Results/NoResults/NoResults'
-import * as Styled from './Results.styled'
 
 export type ResultType = {
   id: string
@@ -18,29 +17,5 @@ export const Results = () => {
     <>
       {loaded && results ? <CaseResultList results={results} /> : <NoResults />}
     </>
-  )
-}
-
-const CaseResultList = ({ results }: { results: ResultType[] }) => {
-  return (
-    <Styled.ResultCaseList>
-      {results.map((res: ResultType) => (
-        <ResultCaseCard key={res.id} result={res} />
-      ))}
-    </Styled.ResultCaseList>
-  )
-}
-
-const ResultCaseCard = ({ result }: { result: ResultType }) => {
-  const navigate = useNavigate()
-  const handleClick = () => {
-    navigate(`${result.id}`)
-  }
-
-  return (
-    <Styled.ResultCaseCard onClick={handleClick}>
-      <h2>{result.case}</h2>
-      {result.finished ? <h4>Finished</h4> : <h4>Not computed yet!</h4>}
-    </Styled.ResultCaseCard>
   )
 }

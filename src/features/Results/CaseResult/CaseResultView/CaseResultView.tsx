@@ -1,7 +1,7 @@
-import { ResultType } from '../../../pages/ModelPages/Results/Results'
-import * as Styled from './CaseResults.styled'
+import { ResultType } from '../../../../pages/ModelPages/Results/Results'
+import * as Styled from './CaseResultView.styled'
 
-export const CaseResults = () => {
+export const CaseResultView = () => {
   const caseResult: ResultType = {
     id: '1',
     case: 'Variogramcase 1',
@@ -14,11 +14,11 @@ export const CaseResults = () => {
 
   return (
     <>
-      <Styled.CaseResults>
+      <Styled.CaseResultView>
         <h2>Case Result</h2>
         <h3>{caseResult.case}</h3>
         {caseResult.finished ? <h4>Finished</h4> : <h4>Not computed yet!</h4>}
-      </Styled.CaseResults>
+      </Styled.CaseResultView>
     </>
   )
 }
