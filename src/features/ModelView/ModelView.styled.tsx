@@ -5,12 +5,11 @@ export const MetadataWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  height: 100%;
+  height: calc(100% - 75.5px);
   width: 100%;
   padding: ${spacings.X_LARGE};
   row-gap: ${spacings.XXX_LARGE};
   column-gap: ${spacings.X_LARGE};
-  overflow-y: scroll;
 
   @media (max-width: 1350px) {
     flex-direction: column;
