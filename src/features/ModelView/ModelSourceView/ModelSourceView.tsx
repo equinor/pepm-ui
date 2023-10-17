@@ -1,7 +1,7 @@
 import { Table, Typography } from '@equinor/eds-core-react';
+import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { AnalogueModelsService, UploadList } from '../../../api/generated';
-import { useQuery } from '@tanstack/react-query';
 
 export const ModelSourceView = () => {
   const { id } = useParams();
