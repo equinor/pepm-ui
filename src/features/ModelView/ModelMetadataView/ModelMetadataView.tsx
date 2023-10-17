@@ -1,7 +1,7 @@
 import { Button, Table, Typography } from '@equinor/eds-core-react';
+import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { AnalogueModelsService } from '../../../api/generated/services/AnalogueModelsService';
-import { useQuery } from '@tanstack/react-query';
 
 export type ModelParam = {
   id: string;
@@ -21,7 +21,7 @@ export const ModelMetadataView = () => {
     <div className="metadata-view">
       <Typography variant="h3">Description and metadata</Typography>
       {data.data.description && (
-        <p>
+        <div>
           {data.data.description}
           <br />
           <p>
@@ -34,7 +34,7 @@ export const ModelMetadataView = () => {
             blandit, justo ex pellentesque nisl, eu placerat magna nisi et odio.
             Donec laoreet est quam, id fringilla magna semper in. **
           </p>
-        </p>
+        </div>
       )}
       <div>
         <Table>

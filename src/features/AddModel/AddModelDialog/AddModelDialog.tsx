@@ -1,6 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import { Button, Typography } from '@equinor/eds-core-react';
 import { useEffect, useState } from 'react';
+import { AnalogueList } from '../../../api/generated/models/AnalogueList';
 import { ModelInputFilesTable } from '../ModelInputFilesTable/ModelInputFilesTable';
 import { ModelMetadata } from '../ModelMetadata/ModelMetadata';
 import * as Styled from './AddModelDialog.styled';
@@ -16,7 +17,7 @@ export default interface MetadataProps {
   field: string[];
   zone?: string[];
   formation: string[];
-  analogue?: string[];
+  analogue?: string[] | AnalogueList[];
 }
 
 export type ErrorType = {
