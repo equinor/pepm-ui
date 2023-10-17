@@ -7,6 +7,8 @@ import {
 } from '@equinor/eds-core-react';
 import MetadataProps, { ErrorType } from '../AddModelDialog/AddModelDialog';
 
+import { useQuery } from '@tanstack/react-query';
+import { AnalogueList, AnaloguesService } from '../../../api/generated';
 import * as Styled from './ModelMetadata.styled';
 
 export const ModelMetadata = ({
@@ -25,6 +27,13 @@ export const ModelMetadata = ({
     formation: ['Rocky', 'Hilly', 'Flat'],
     analogue: ['Analouge1', 'Analouge2'],
   };
+
+  const { isLoading, data } = useQuery({
+    queryKey: ['apiParameters'],
+    queryFn: () => AnaloguesService.getApiAnalogues(),
+  });
+
+  if (isLoading || !data?.success) return <p>Loading ...</p>;
 
   const handleInput = (e: AutocompleteChanges<string>, target: string) => {
     setMetadata({ ...metadata, [target]: e.selectedItems });
@@ -76,9 +85,10 @@ export const ModelMetadata = ({
           <Styled.AutocompleteRow>
             <Autocomplete
               label="Analogue (optional)"
-              options={fields.analogue}
+              options={data.data}
+              optionLabel={(option) => option.name}
               multiple
-              onOptionsChange={(e: AutocompleteChanges<string>) =>
+              onOptionsChange={(e: AutocompleteChanges<AnalogueList>) =>
                 setMetadata({ ...metadata, analogue: e.selectedItems })
               }
             ></Autocomplete>

@@ -1,13 +1,16 @@
+/* eslint-disable max-lines-per-function */
 import { Button, Snackbar, Typography } from '@equinor/eds-core-react';
-import { useState } from 'react';
-import { Table } from '../../components/Table';
-import * as Styled from './Browse.styled';
 import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
 import {
   AnalogueModelsService,
+  ConvertAnalogueModelCommand,
   CreateAnalogueModelCommand,
+  JobsService,
 } from '../../api/generated';
+import { Table } from '../../components/Table';
 import { AddModelDialog } from '../../features/AddModel/AddModelDialog/AddModelDialog';
+import * as Styled from './Browse.styled';
 
 enum UploadProcess {
   STARTED = 'We are uploading your new model. Please keep this browser tab open.',
@@ -18,6 +21,12 @@ enum UploadProcess {
 type MutationContract = {
   id: string;
   file: Blob;
+};
+
+const ModelBody: CreateAnalogueModelCommand = {
+  name: 'Model test',
+  description: 'New test of the model',
+  sourceType: 'ResQML',
 };
 
 export const Browse = () => {
@@ -34,6 +43,12 @@ export const Browse = () => {
     },
   });
 
+  const convertModelFile = useMutation({
+    mutationFn: (modelId: ConvertAnalogueModelCommand) => {
+      return JobsService.postApiJobsComputeModelConversions(modelId);
+    },
+  });
+
   const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false);
   const [uploadStatus, setUploadStatus] = useState<string>();
 
@@ -47,26 +62,30 @@ export const Browse = () => {
 
   async function uploadModel(file: File) {
     setUploadStatus(UploadProcess.STARTED);
-    const modelUpload = await createModel.mutateAsync(
-      // TODO
-      {
-        name: 'testModel',
-        description: 'description',
-        sourceType: 'Deltares',
-      } as CreateAnalogueModelCommand,
-    );
 
-    if (createModel?.isSuccess) {
+    const modelUpload = await createModel.mutateAsync(ModelBody);
+
+    if (createModel.error === null && modelUpload.success) {
       toggleDialog();
-      const fileUpload = await uploadNCFile.mutateAsync({
+      const FileUploadBody: MutationContract = {
         id: modelUpload.data.analogueModelId ?? '',
         file: file,
-      } as MutationContract);
+      };
+      const fileUpload = await uploadNCFile.mutateAsync(FileUploadBody);
 
-      if (fileUpload && uploadNCFile.isSuccess)
+      if (uploadNCFile.error === null && fileUpload.success) {
         setUploadStatus(UploadProcess.SUCCESS);
-      else if (!uploadNCFile.isSuccess) {
+
+        const id = modelUpload.data.analogueModelId;
+        const convert = await convertModelFile.mutateAsync({
+          modelId: id,
+        });
+
+        // eslint-disable-next-line no-console
+        console.log(convert);
+      } else if (uploadNCFile.error) {
         setUploadStatus(UploadProcess.FAILED);
+
         // TODO: show validation message
       }
     }
@@ -78,7 +97,7 @@ export const Browse = () => {
         <Typography variant="h1">Browse all models</Typography>
         <div className="btn-div">
           <Button onClick={toggleDialog}>Add new model</Button>
-          <Button href="/model/bf2171bc-2f5e-44a1-f6e0-08dbb5ed15e2/details">
+          <Button href="/model/4e999a96-34a3-4121-998d-08dbb2a7609c/details">
             Model view - Hardkodet
           </Button>
         </div>
@@ -91,7 +110,7 @@ export const Browse = () => {
       />
       <Snackbar
         open={!!uploadStatus}
-        autoHideDuration={5000}
+        autoHideDuration={15000}
         onClose={clearStatus}
       >
         {uploadStatus}
