@@ -1,10 +1,17 @@
 /* eslint-disable max-lines-per-function */
 import { Typography } from '@equinor/eds-core-react';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+import { ParameterList } from '../../../../api/generated/models/ParameterList';
+import { ParametersService } from '../../../../api/generated/services/ParametersService';
 import * as Styled from './CaseCard.styled';
 import { CaseCardButtons } from './CaseCardButtons/CaseCardButtons';
 import { CaseCardInputs } from './CaseCardInputs/CaseCardInputs';
-import { CaseCardParameters } from './CaseCardParameters/CaseCardParameters';
+import { ModelSelect } from './CaseCardParameters/ModelSelect/ModelSelect';
+
+import { GrainSizeSelect } from './CaseCardParameters/GrainSizeSelect/GrainSizeSelect';
+import { ParameterSelect } from './CaseCardParameters/ParameterSelect/ParameterSelect';
+
 export default interface optionTypes {
   id: number;
   name: string;
@@ -25,7 +32,14 @@ export const CaseCard = ({
   const [selectedGrainSize, setGrainSize] = useState<optionTypes>();
   const [selectedVariogramModels, setVariogramModels] =
     useState<optionTypes[]>();
-  const [selectedParameters, setParameters] = useState<optionTypes[]>();
+  const [selectedParameters, setParameters] = useState<ParameterList[]>();
+
+  const { isLoading, data } = useQuery({
+    queryKey: ['apiParameters'],
+    queryFn: () => ParametersService.getApiParameters(),
+  });
+
+  if (isLoading || !data?.success) return <p>Loading ...</p>;
 
   const grainOptions: optionTypes[] = [
     { id: 1, name: 'Silt', size: '0.044mm' },
@@ -40,10 +54,10 @@ export const CaseCard = ({
     { id: 7, name: 'General exponential' },
   ];
 
-  const parameterOptions: optionTypes[] = [
-    { id: 8, name: 'Porosity' },
-    { id: 9, name: 'Permeability' },
-  ];
+  // const parameterOptions: optionTypes[] = [
+  //   { id: 8, name: 'Porosity' },
+  //   { id: 9, name: 'Permeability' },
+  // ];
 
   const modelAreas: optionTypes[] = [
     { id: 10, name: 'Proximal' },
@@ -55,10 +69,15 @@ export const CaseCard = ({
     { id: 14, name: 'Continuous parameter' },
   ];
   const runCase = () => {
+    // eslint-disable-next-line no-console
     console.log(selectedModelArea);
+    // eslint-disable-next-line no-console
     console.log(selectedComputeMethod);
+    // eslint-disable-next-line no-console
     console.log(selectedGrainSize);
+    // eslint-disable-next-line no-console
     console.log(selectedVariogramModels);
+    // eslint-disable-next-line no-console
     console.log(selectedParameters);
   };
 
@@ -80,7 +99,7 @@ export const CaseCard = ({
         {selectedModelArea && selectedComputeMethod ? (
           <Styled.Parameters>
             {selectedComputeMethod.name === 'Net-to-gross' && (
-              <CaseCardParameters
+              <GrainSizeSelect
                 label={'From grain size'}
                 type={'grainSize'}
                 options={grainOptions}
@@ -89,15 +108,15 @@ export const CaseCard = ({
               />
             )}
             {selectedComputeMethod.name === 'Continuous parameter' && (
-              <CaseCardParameters
+              <ParameterSelect
                 label={'Parameter'}
                 type={'parameters'}
-                options={parameterOptions}
+                options={data.data}
                 selectedParameters={selectedParameters}
                 setParameters={setParameters}
               />
             )}
-            <CaseCardParameters
+            <ModelSelect
               label={'Variogram model'}
               type={'variogramModels'}
               options={modelOptions}
