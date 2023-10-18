@@ -6,6 +6,6 @@
 export type ParameterList = {
   parameterId?: string;
   identifier?: string | null;
-  name?: string | null;
+  name: string;
   description?: string | null;
 };

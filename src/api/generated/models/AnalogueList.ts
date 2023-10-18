@@ -5,6 +5,6 @@
 
 export type AnalogueList = {
   analogueId?: string;
-  name?: string | null;
+  name: string;
   description?: string | null;
 };
