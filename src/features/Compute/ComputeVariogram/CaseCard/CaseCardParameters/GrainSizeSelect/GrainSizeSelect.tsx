@@ -16,11 +16,11 @@ export const GrainSizeSelect = ({
   label: string;
   type: string;
   options: optionTypes[];
-  selectedGrainSize?: optionTypes;
-  setGrainSize: React.Dispatch<React.SetStateAction<optionTypes | undefined>>;
+  selectedGrainSize?: optionTypes[];
+  setGrainSize: React.Dispatch<React.SetStateAction<optionTypes[] | undefined>>;
 }) => {
   const onGrainSizeChange = (changes: AutocompleteChanges<optionTypes>) => {
-    setGrainSize && setGrainSize(changes.selectedItems[0]);
+    setGrainSize && setGrainSize(changes.selectedItems);
   };
 
   return (
@@ -30,11 +30,14 @@ export const GrainSizeSelect = ({
         options={options}
         optionLabel={(option) => option.name}
         onOptionsChange={onGrainSizeChange}
+        selectedOptions={selectedGrainSize}
       ></Autocomplete>
 
-      {selectedGrainSize && (
-        <Chip key={selectedGrainSize.id}>{selectedGrainSize.size}</Chip>
-      )}
+      {/* {selectedGrainSize && (
+        <Chip key={selectedGrainSize[0].id}>{selectedGrainSize[0].size}</Chip>
+      )} */}
+      {selectedGrainSize &&
+        selectedGrainSize.map((s) => <Chip key={s.id}>{s.name}</Chip>)}
     </Styled.Parameters>
   );
 };

@@ -29,7 +29,7 @@ export const CaseCard = ({
 }) => {
   const [selectedModelArea, setModelArea] = useState<optionTypes>();
   const [selectedComputeMethod, setComputeMethod] = useState<optionTypes>();
-  const [selectedGrainSize, setGrainSize] = useState<optionTypes>();
+  const [selectedGrainSize, setGrainSize] = useState<optionTypes[]>();
   const [selectedVariogramModels, setVariogramModels] =
     useState<optionTypes[]>();
   const [selectedParameters, setParameters] = useState<ParameterList[]>();
