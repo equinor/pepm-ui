@@ -1,15 +1,21 @@
-import { Chip } from '@equinor/eds-core-react';
+/* eslint-disable max-lines-per-function */
+import { Button, Chip } from '@equinor/eds-core-react';
 import { EdsDataGrid } from '@equinor/eds-data-grid-react';
-import * as Styled from './Table.styled';
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { AnalogueModelsService } from '../api/generated';
+import * as Styled from './Table.styled';
 
 export const Table = () => {
   const { isLoading, data } = useQuery({
     queryKey: ['analogue-models'],
     queryFn: () => AnalogueModelsService.getApiAnalogueModels(),
   });
+
+  const navigate = useNavigate();
+
   if (isLoading || !data?.success) return <p>Loading...</p>;
+
   return (
     <Styled.StyledDiv>
       <EdsDataGrid
@@ -59,6 +65,21 @@ export const Table = () => {
             accessorKey: 'isProcessed',
             header: 'Status',
             id: 'isProcessed',
+          },
+
+          {
+            accessorKey: 'navigate',
+            cell: ({ row }) => (
+              <Button
+                onClick={() => {
+                  navigate(`/model/${row.original.analogueModelId}/details`);
+                }}
+              >
+                Go to model
+              </Button>
+            ),
+            header: '',
+            id: 'navigate',
           },
         ]}
       />
