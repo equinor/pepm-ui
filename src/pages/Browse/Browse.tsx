@@ -98,9 +98,6 @@ export const Browse = () => {
         <Typography variant="h1">Browse all models</Typography>
         <div className="btn-div">
           <Button onClick={toggleDialog}>Add new model</Button>
-          <Button href="/model/4e999a96-34a3-4121-998d-08dbb2a7609c/details">
-            Model view - Hardkodet
-          </Button>
         </div>
         <Table />
       </Styled.BrowseWrapper>
