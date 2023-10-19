@@ -32,6 +32,7 @@ export const ParameterSelect = ({
         options={options}
         optionLabel={(option) => option.name}
         onOptionsChange={onParameterChange}
+        selectedOptions={selectedParameters}
         multiple
       ></Autocomplete>
       {selectedParameters &&

@@ -34,6 +34,7 @@ export const ModelSelect = ({
         options={options}
         optionLabel={(opt) => opt.name}
         onOptionsChange={onModelChange}
+        selectedOptions={selectedVariogramModels}
         multiple
       ></Autocomplete>
 
