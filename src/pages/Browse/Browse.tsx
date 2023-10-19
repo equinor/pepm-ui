@@ -9,7 +9,9 @@ import {
   JobsService,
 } from '../../api/generated';
 import { Table } from '../../components/Table';
-import { AddModelDialog } from '../../features/AddModel/AddModelDialog/AddModelDialog';
+import MetadataProps, {
+  AddModelDialog,
+} from '../../features/AddModel/AddModelDialog/AddModelDialog';
 import * as Styled from './Browse.styled';
 
 enum UploadProcess {
@@ -21,12 +23,6 @@ enum UploadProcess {
 type MutationContract = {
   id: string;
   file: Blob;
-};
-
-const ModelBody: CreateAnalogueModelCommand = {
-  name: 'Model test',
-  description: 'New test of the model',
-  sourceType: 'ResQML',
 };
 
 export const Browse = () => {
@@ -60,8 +56,13 @@ export const Browse = () => {
     setAddModelDialog(!isAddModelDialog);
   }
 
-  async function uploadModel(file: File) {
+  async function uploadModel(file: File, metadata: Partial<MetadataProps>) {
     setUploadStatus(UploadProcess.STARTED);
+    const ModelBody: CreateAnalogueModelCommand = {
+      name: metadata.name,
+      description: metadata.description,
+      sourceType: 'ResQML',
+    };
 
     const modelUpload = await createModel.mutateAsync(ModelBody);
 

@@ -21,7 +21,6 @@ export const ModelMetadata = ({
   setMetadata: (metadata: Partial<MetadataProps>) => void;
 }) => {
   const fields = {
-    description: 'Description string',
     field: ['Tor', 'Pål'],
     zone: ['Zone 1', 'Zone 2', 'Zone 3'],
     formation: ['Rocky', 'Hilly', 'Flat'],
@@ -44,6 +43,14 @@ export const ModelMetadata = ({
       <Typography variant="h4">Description and metadata</Typography>
       <Styled.Form>
         <Styled.TextInput
+          id="model-name"
+          label="Model Name (optional)"
+          value={metadata?.name}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+            setMetadata({ ...metadata, name: e.currentTarget.value })
+          }
+        />
+        <Styled.TextInput
           id="model-description"
           label="Model description (optional)"
           value={metadata?.description}
@@ -61,6 +68,7 @@ export const ModelMetadata = ({
                 className={`${errors.field && 'model-required'}`}
                 label="Field"
                 options={fields.field}
+                selectedOptions={metadata?.field}
                 onOptionsChange={(e: AutocompleteChanges<string>) =>
                   handleInput(e, 'field')
                 }
@@ -72,6 +80,7 @@ export const ModelMetadata = ({
                 className={`${errors.formation && 'model-required'}`}
                 label="Formation"
                 options={fields.formation}
+                selectedOptions={metadata?.formation}
                 multiple
                 onOptionsChange={(e: AutocompleteChanges<string>) =>
                   handleInput(e, 'formation')
@@ -87,6 +96,7 @@ export const ModelMetadata = ({
               label="Analogue (optional)"
               options={data.data}
               optionLabel={(option) => option.name}
+              selectedOptions={metadata?.analogue}
               multiple
               onOptionsChange={(e: AutocompleteChanges<AnalogueList>) =>
                 setMetadata({ ...metadata, analogue: e.selectedItems })
@@ -95,6 +105,7 @@ export const ModelMetadata = ({
             <Autocomplete
               label="Zone (optional)"
               options={fields.zone}
+              selectedOptions={metadata?.zone}
               onOptionsChange={(e: AutocompleteChanges<string>) =>
                 setMetadata({ ...metadata, zone: e.selectedItems })
               }
