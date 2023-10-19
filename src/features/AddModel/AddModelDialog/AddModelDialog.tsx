@@ -8,16 +8,17 @@ import * as Styled from './AddModelDialog.styled';
 
 interface AddModelDialogProps {
   isOpen: boolean;
-  confirm: (file: File) => Promise<void>;
+  confirm: (file: File, metadata: Partial<MetadataProps>) => Promise<void>;
   cancel: () => void;
 }
 
 export default interface MetadataProps {
-  description?: string;
+  name: string;
+  description: string;
   field: string[];
   zone?: string[];
   formation: string[];
-  analogue?: string[] | AnalogueList[];
+  analogue?: AnalogueList[];
 }
 
 export type ErrorType = {
@@ -35,7 +36,10 @@ export const AddModelDialog = ({
     NC: undefined,
     INI: undefined,
   });
-  const [metadata, setMetadata] = useState<Partial<MetadataProps>>();
+  const [metadata, setMetadata] = useState<Partial<MetadataProps>>({
+    name: '',
+    description: '',
+  });
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
 
@@ -70,7 +74,7 @@ export const AddModelDialog = ({
   };
 
   const finishSubmit = () => {
-    if (files.NC) confirm(files.NC);
+    if (files.NC) confirm(files.NC, metadata);
   };
 
   useEffect(() => {
