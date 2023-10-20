@@ -6,7 +6,8 @@ import { ParameterList } from '../../../../api/generated/models/ParameterList';
 import { ParametersService } from '../../../../api/generated/services/ParametersService';
 import * as Styled from './CaseCard.styled';
 import { CaseCardButtons } from './CaseCardButtons/CaseCardButtons';
-import { CaseCardInputs } from './CaseCardInputs/CaseCardInputs';
+import { ObjectCaseCardInputs } from './CaseCardInputs/ObjectCaseCardInputs';
+import { VariogramCaseCardInputs } from './CaseCardInputs/VariogramCaseCardInputs';
 import { ModelSelect } from './CaseCardParameters/ModelSelect/ModelSelect';
 
 import { GrainSizeSelect } from './CaseCardParameters/GrainSizeSelect/GrainSizeSelect';
@@ -22,10 +23,12 @@ export const CaseCard = ({
   name,
   id,
   removeCase,
+  caseType,
 }: {
   name: string;
   id: string;
   removeCase: (id: string) => void;
+  caseType: string;
 }) => {
   const [selectedModelArea, setModelArea] = useState<optionTypes>();
   const [selectedComputeMethod, setComputeMethod] = useState<optionTypes>();
@@ -64,10 +67,12 @@ export const CaseCard = ({
     { id: 11, name: 'Left' },
     { id: 12, name: 'Distal' },
   ];
-  const computeMethods: optionTypes[] = [
+  const variogramComputeMethods: optionTypes[] = [
     { id: 13, name: 'Net-to-gross' },
     { id: 14, name: 'Continuous parameter' },
   ];
+  const objectComputeMethods: optionTypes[] = [{ id: 15, name: 'Channel' }];
+
   const runCase = () => {
     // eslint-disable-next-line no-console
     console.log(selectedModelArea);
@@ -86,45 +91,66 @@ export const CaseCard = ({
       <Styled.Case>
         <Typography variant="h4">{name}</Typography>
         <Styled.CaseCard>
-          <CaseCardInputs
-            modelAreas={modelAreas}
-            computeMethods={computeMethods}
-            setModelArea={setModelArea}
-            setComputeMethod={setComputeMethod}
-          />
+          {caseType === 'variogram' ? (
+            <VariogramCaseCardInputs
+              modelAreas={modelAreas}
+              computeMethods={variogramComputeMethods}
+              setModelArea={setModelArea}
+              setComputeMethod={setComputeMethod}
+            />
+          ) : (
+            <ObjectCaseCardInputs
+              modelAreas={modelAreas}
+              computeMethods={objectComputeMethods}
+              setModelArea={setModelArea}
+              setComputeMethod={setComputeMethod}
+            />
+          )}
           <CaseCardButtons id={id} runCase={runCase} removeCase={removeCase} />
         </Styled.CaseCard>
       </Styled.Case>
       <div>
-        {selectedModelArea && selectedComputeMethod ? (
+        {caseType === 'variogram' &&
+          selectedComputeMethod &&
+          selectedModelArea && (
+            <Styled.Parameters>
+              {caseType === 'variogram' &&
+                selectedComputeMethod.name === 'Net-to-gross' && (
+                  <GrainSizeSelect
+                    label={'From grain size'}
+                    type={'grainSize'}
+                    options={grainOptions}
+                    selectedGrainSize={selectedGrainSize}
+                    setGrainSize={setGrainSize}
+                  />
+                )}
+              {selectedComputeMethod.name === 'Continuous parameter' && (
+                <ParameterSelect
+                  label={'Parameter'}
+                  type={'parameters'}
+                  options={data.data}
+                  selectedParameters={selectedParameters}
+                  setParameters={setParameters}
+                />
+              )}
+              {caseType === 'variogram' && (
+                <ModelSelect
+                  label={'Variogram model'}
+                  type={'variogramModels'}
+                  options={modelOptions}
+                  selectedVariogramModels={selectedVariogramModels}
+                  setVariogramModels={setVariogramModels}
+                />
+              )}
+            </Styled.Parameters>
+          )}
+        {caseType === 'object' && (
           <Styled.Parameters>
-            {selectedComputeMethod.name === 'Net-to-gross' && (
-              <GrainSizeSelect
-                label={'From grain size'}
-                type={'grainSize'}
-                options={grainOptions}
-                selectedGrainSize={selectedGrainSize}
-                setGrainSize={setGrainSize}
-              />
-            )}
-            {selectedComputeMethod.name === 'Continuous parameter' && (
-              <ParameterSelect
-                label={'Parameter'}
-                type={'parameters'}
-                options={data.data}
-                selectedParameters={selectedParameters}
-                setParameters={setParameters}
-              />
-            )}
-            <ModelSelect
-              label={'Variogram model'}
-              type={'variogramModels'}
-              options={modelOptions}
-              selectedVariogramModels={selectedVariogramModels}
-              setVariogramModels={setVariogramModels}
-            />
+            <Typography>This compute method has no parameters.</Typography>
           </Styled.Parameters>
-        ) : (
+        )}
+
+        {!selectedComputeMethod && caseType === 'variogram' && (
           <Styled.Parameters>
             <Typography>
               Select model area and compute method to see available parameters.
