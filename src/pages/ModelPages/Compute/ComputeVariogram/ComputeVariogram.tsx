@@ -5,14 +5,28 @@ import { CaseCard } from '../../../../features/Compute/ComputeVariogram/CaseCard
 import { ComputeCaseInfoActions } from '../../../../features/Compute/ComputeVariogram/ComputeCaseInfoActions/ComputeCaseInfoActions';
 import * as Styled from './ComputeVariogram.styled';
 
-interface Casetype {
+export interface Casetype {
   id: string;
   name: string;
+}
+
+export interface CaseInfoTyoe {
+  title: string;
+  info: string;
+  addText: string;
+  runText: string;
 }
 export const ComputeVariogram = () => {
   const [cases, setCases] = useState<Casetype[]>([
     { id: '1', name: 'Variogram Case 1' },
   ]);
+
+  const variogramCaseInfo: CaseInfoTyoe = {
+    title: 'Variogram cases',
+    info: 'You can add multiple cases for the different areas in your model.',
+    addText: 'Add Variogram case',
+    runText: 'Run all variograms',
+  };
 
   const addCase = () => {
     const newCase: Casetype = {
@@ -29,11 +43,16 @@ export const ComputeVariogram = () => {
 
   return (
     <Styled.Case>
-      <ComputeCaseInfoActions addCase={addCase} />
+      <ComputeCaseInfoActions addCase={addCase} caseInfo={variogramCaseInfo} />
       {cases.length !== 0 ? (
         cases.map((c) => (
           <Styled.CaseBorder key={c.id}>
-            <CaseCard id={c.id} name={c.name} removeCase={removeCase} />
+            <CaseCard
+              id={c.id}
+              name={c.name}
+              removeCase={removeCase}
+              caseType={'variogram'}
+            />
           </Styled.CaseBorder>
         ))
       ) : (

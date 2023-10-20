@@ -2,7 +2,7 @@ import { Autocomplete, AutocompleteChanges } from '@equinor/eds-core-react';
 import { default as optionTypes } from '../CaseCard';
 import * as Styled from './CaseCardInputs.styled';
 
-export const CaseCardInputs = ({
+export const VariogramCaseCardInputs = ({
   modelAreas,
   computeMethods,
   setModelArea,
