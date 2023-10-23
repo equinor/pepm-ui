@@ -70,6 +70,7 @@ export const Table = () => {
             header: 'Status',
             id: 'isProcessed',
           },
+
           {
             accessorKey: 'navigate',
             cell: ({ row }) => (
