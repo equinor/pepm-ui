@@ -4,9 +4,9 @@
 /* eslint-disable */
 
 export enum UploadStatus {
-  STARTED = 'Started',
-  READY_FOR_PROCESSING = 'ReadyForProcessing',
-  PROCESSING = 'Processing',
-  PROCESSED = 'Processed',
-  FAILED = 'Failed',
+    STARTED = 'Started',
+    READY_FOR_PROCESSING = 'ReadyForProcessing',
+    PROCESSING = 'Processing',
+    PROCESSED = 'Processed',
+    FAILED = 'Failed',
 }

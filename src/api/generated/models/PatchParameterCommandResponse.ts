@@ -6,9 +6,9 @@
 import type { PatchParameterDto } from './PatchParameterDto';
 
 export type PatchParameterCommandResponse = {
-  success?: boolean;
-  count?: number | null;
-  message?: string | null;
-  validationErrors?: Array<string> | null;
-  data: PatchParameterDto;
+    success?: boolean;
+    count?: number | null;
+    message?: string | null;
+    validationErrors?: Array<string> | null;
+    data: PatchParameterDto;
 };

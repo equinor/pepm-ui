@@ -6,9 +6,9 @@
 import type { UpdateParameterDto } from './UpdateParameterDto';
 
 export type UpdateParameterCommandResponse = {
-  success?: boolean;
-  count?: number | null;
-  message?: string | null;
-  validationErrors?: Array<string> | null;
-  data: UpdateParameterDto;
+    success?: boolean;
+    count?: number | null;
+    message?: string | null;
+    validationErrors?: Array<string> | null;
+    data: UpdateParameterDto;
 };

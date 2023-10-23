@@ -4,11 +4,11 @@
 /* eslint-disable */
 
 export enum JobStatus {
-  UNKNOWN = 'Unknown',
-  CREATED = 'Created',
-  STARTED = 'Started',
-  RUNNING = 'Running',
-  SUCCESSFUL = 'Successful',
-  SUCCEEDED = 'Succeeded',
-  FAILED = 'Failed',
+    UNKNOWN = 'Unknown',
+    CREATED = 'Created',
+    STARTED = 'Started',
+    RUNNING = 'Running',
+    SUCCESSFUL = 'Successful',
+    SUCCEEDED = 'Succeeded',
+    FAILED = 'Failed',
 }

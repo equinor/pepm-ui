@@ -4,6 +4,6 @@
 /* eslint-disable */
 
 export enum AnalogueModelSourceType {
-  DELTARES = 'Deltares',
-  RES_QML = 'ResQML',
+    DELTARES = 'Deltares',
+    RES_QML = 'ResQML',
 }

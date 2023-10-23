@@ -11,30 +11,32 @@ import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
 export class AnaloguesService {
-  /**
-   * @returns GetAnalogueListQueryResponse Success
-   * @throws ApiError
-   */
-  public static getApiAnalogues(): CancelablePromise<GetAnalogueListQueryResponse> {
-    return __request(OpenAPI, {
-      method: 'GET',
-      url: '/api/analogues',
-    });
-  }
 
-  /**
-   * @param requestBody
-   * @returns CreateAnalogueCommandResponse Success
-   * @throws ApiError
-   */
-  public static postApiAnalogues(
-    requestBody?: CreateAnalogueCommand,
-  ): CancelablePromise<CreateAnalogueCommandResponse> {
-    return __request(OpenAPI, {
-      method: 'POST',
-      url: '/api/analogues',
-      body: requestBody,
-      mediaType: 'application/json-patch+json',
-    });
-  }
+    /**
+     * @returns GetAnalogueListQueryResponse Success
+     * @throws ApiError
+     */
+    public static getApiAnalogues(): CancelablePromise<GetAnalogueListQueryResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/analogues',
+        });
+    }
+
+    /**
+     * @param requestBody 
+     * @returns CreateAnalogueCommandResponse Success
+     * @throws ApiError
+     */
+    public static postApiAnalogues(
+requestBody?: CreateAnalogueCommand,
+): CancelablePromise<CreateAnalogueCommandResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/analogues',
+            body: requestBody,
+            mediaType: 'application/json-patch+json',
+        });
+    }
+
 }

@@ -4,7 +4,7 @@
 /* eslint-disable */
 
 export type PatchAnalogueModelDto = {
-  analogueModelId?: string;
-  name?: string | null;
-  description?: string | null;
+    analogueModelId: string;
+    name: string;
+    description?: string | null;
 };

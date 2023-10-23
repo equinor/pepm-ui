@@ -6,9 +6,9 @@
 import type { AnalogueModelSourceType } from './AnalogueModelSourceType';
 
 export type AnalogueModelList = {
-  analogueModelId?: string;
-  name?: string | null;
-  description?: string | null;
-  isProcessed?: boolean;
-  sourceType?: AnalogueModelSourceType;
+    analogueModelId: string;
+    name: string;
+    description: string;
+    isProcessed: boolean;
+    sourceType: AnalogueModelSourceType;
 };

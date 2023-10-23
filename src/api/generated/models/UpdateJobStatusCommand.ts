@@ -4,8 +4,8 @@
 /* eslint-disable */
 
 export type UpdateJobStatusCommand = {
-  name?: string | null;
-  started?: string | null;
-  ended?: string | null;
-  status?: string | null;
+    name: string;
+    started?: string | null;
+    ended?: string | null;
+    status: string;
 };

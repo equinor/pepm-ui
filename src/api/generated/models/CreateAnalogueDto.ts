@@ -4,7 +4,7 @@
 /* eslint-disable */
 
 export type CreateAnalogueDto = {
-  analogueId?: string;
-  name?: string | null;
-  description?: string | null;
+    analogueId?: string;
+    name?: string | null;
+    description?: string | null;
 };

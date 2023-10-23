@@ -6,9 +6,9 @@
 import type { ParameterDetail } from './ParameterDetail';
 
 export type GetParameterDetailQueryResponse = {
-  success?: boolean;
-  count?: number | null;
-  message?: string | null;
-  validationErrors?: Array<string> | null;
-  data: ParameterDetail;
+    success?: boolean;
+    count?: number | null;
+    message?: string | null;
+    validationErrors?: Array<string> | null;
+    data: ParameterDetail;
 };

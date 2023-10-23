@@ -8,9 +8,9 @@ import type { UploadFileType } from './UploadFileType';
 import type { UploadStatus } from './UploadStatus';
 
 export type UploadDetail = {
-  uploadId?: string;
-  originalFileName?: string | null;
-  uploadStatus?: UploadStatus;
-  uploadFileType?: UploadFileType;
-  uploadFileCategory?: UploadFileCategory;
+    uploadId: string;
+    originalFileName: string;
+    uploadStatus: UploadStatus;
+    uploadFileType: UploadFileType;
+    uploadFileCategory: UploadFileCategory;
 };

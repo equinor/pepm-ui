@@ -4,7 +4,7 @@
 /* eslint-disable */
 
 export enum UploadFileType {
-  NET_CDF = 'NetCDF',
-  RES_QMLEPC = 'ResQMLEpc',
-  RES_QMLDATA = 'ResQMLData',
+    NET_CDF = 'NetCDF',
+    RES_QMLEPC = 'ResQMLEpc',
+    RES_QMLDATA = 'ResQMLData',
 }

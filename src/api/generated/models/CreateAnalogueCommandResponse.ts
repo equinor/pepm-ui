@@ -6,9 +6,9 @@
 import type { CreateAnalogueDto } from './CreateAnalogueDto';
 
 export type CreateAnalogueCommandResponse = {
-  success?: boolean;
-  count?: number | null;
-  message?: string | null;
-  validationErrors?: Array<string> | null;
-  data: CreateAnalogueDto;
+    success?: boolean;
+    count?: number | null;
+    message?: string | null;
+    validationErrors?: Array<string> | null;
+    data: CreateAnalogueDto;
 };

@@ -4,5 +4,5 @@
 /* eslint-disable */
 
 export type EstimateChannelCommand = {
-  modelId?: string;
+    modelId: string;
 };

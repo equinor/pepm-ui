@@ -12,50 +12,54 @@ import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
 export class UploadsService {
-  /**
-   * @returns GetUploadListQueryResponse Success
-   * @throws ApiError
-   */
-  public static getApiUploads(): CancelablePromise<GetUploadListQueryResponse> {
-    return __request(OpenAPI, {
-      method: 'GET',
-      url: '/api/uploads',
-    });
-  }
 
-  /**
-   * @param id
-   * @returns GetUploadDetailQueryResponse Success
-   * @throws ApiError
-   */
-  public static getApiUploads1(
-    id: string,
-  ): CancelablePromise<GetUploadDetailQueryResponse> {
-    return __request(OpenAPI, {
-      method: 'GET',
-      url: '/api/uploads/{id}',
-      path: {
-        id: id,
-      },
-    });
-  }
+    /**
+     * @returns GetUploadListQueryResponse Success
+     * @throws ApiError
+     */
+    public static getApiUploads(): CancelablePromise<GetUploadListQueryResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/uploads',
+        });
+    }
 
-  /**
-   * Upload model files that later can be converted to PEPM models.
-   * @param formData
-   * @returns UploadAnalogueModelCommandResponse Success
-   * @throws ApiError
-   */
-  public static postApiUploadsModels(formData?: {
-    ModelId?: string;
-    File?: Blob;
-    FileType?: UploadFileType;
-  }): CancelablePromise<UploadAnalogueModelCommandResponse> {
-    return __request(OpenAPI, {
-      method: 'POST',
-      url: '/api/uploads/models',
-      formData: formData,
-      mediaType: 'multipart/form-data',
-    });
-  }
+    /**
+     * @param id 
+     * @returns GetUploadDetailQueryResponse Success
+     * @throws ApiError
+     */
+    public static getApiUploads1(
+id: string,
+): CancelablePromise<GetUploadDetailQueryResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/uploads/{id}',
+            path: {
+                'id': id,
+            },
+        });
+    }
+
+    /**
+     * Upload model files that later can be converted to PEPM models.
+     * @param formData 
+     * @returns UploadAnalogueModelCommandResponse Success
+     * @throws ApiError
+     */
+    public static postApiUploadsModels(
+formData?: {
+ModelId: string;
+File: Blob;
+FileType: UploadFileType;
+},
+): CancelablePromise<UploadAnalogueModelCommandResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/uploads/models',
+            formData: formData,
+            mediaType: 'multipart/form-data',
+        });
+    }
+
 }

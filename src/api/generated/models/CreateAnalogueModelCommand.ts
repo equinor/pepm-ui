@@ -4,7 +4,7 @@
 /* eslint-disable */
 
 export type CreateAnalogueModelCommand = {
-  name?: string | null;
-  description?: string | null;
-  sourceType?: string | null;
+    name: string;
+    description?: string | null;
+    sourceType: string;
 };

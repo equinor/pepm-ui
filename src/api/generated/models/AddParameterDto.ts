@@ -4,6 +4,6 @@
 /* eslint-disable */
 
 export type AddParameterDto = {
-  parameterId?: string;
-  parameterValue?: string | null;
+    parameterId: string;
+    parameterValue: string;
 };

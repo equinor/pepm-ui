@@ -4,6 +4,6 @@
 /* eslint-disable */
 
 export type CreateAnalogueCommand = {
-  name?: string | null;
-  description?: string | null;
+    name: string;
+    description?: string | null;
 };

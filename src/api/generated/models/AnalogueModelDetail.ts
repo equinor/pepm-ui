@@ -8,11 +8,11 @@ import type { AnalogueModelSourceType } from './AnalogueModelSourceType';
 import type { UploadList } from './UploadList';
 
 export type AnalogueModelDetail = {
-  analogueModelId?: string;
-  name?: string | null;
-  description?: string | null;
-  isProcessed?: boolean;
-  sourceType?: AnalogueModelSourceType;
-  analogues?: Array<AnalogueList> | null;
-  fileUploads?: Array<UploadList> | null;
+    analogueModelId: string;
+    name: string;
+    description: string;
+    isProcessed: boolean;
+    sourceType: AnalogueModelSourceType;
+    analogues: Array<AnalogueList>;
+    fileUploads: Array<UploadList>;
 };

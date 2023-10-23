@@ -18,174 +18,178 @@ import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
 export class AnalogueModelsService {
-  /**
-   * Get a list of all AnalogueModels
-   * @returns GetAnalogueModelListQueryResponse Success
-   * @throws ApiError
-   */
-  public static getApiAnalogueModels(): CancelablePromise<GetAnalogueModelListQueryResponse> {
-    return __request(OpenAPI, {
-      method: 'GET',
-      url: '/api/analogue-models',
-    });
-  }
 
-  /**
-   * Create new Analogue Model
-   * @param requestBody
-   * @returns CreateAnalogueModelCommandResponse Success
-   * @throws ApiError
-   */
-  public static postApiAnalogueModels(
-    requestBody?: CreateAnalogueModelCommand,
-  ): CancelablePromise<CreateAnalogueModelCommandResponse> {
-    return __request(OpenAPI, {
-      method: 'POST',
-      url: '/api/analogue-models',
-      body: requestBody,
-      mediaType: 'application/json-patch+json',
-      errors: {
-        400: `Bad Request`,
-      },
-    });
-  }
+    /**
+     * Get a list of all AnalogueModels
+     * @returns GetAnalogueModelListQueryResponse Success
+     * @throws ApiError
+     */
+    public static getApiAnalogueModels(): CancelablePromise<GetAnalogueModelListQueryResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/analogue-models',
+        });
+    }
 
-  /**
-   * Get AnalogueModel by id
-   * @param id
-   * @returns GetAnalogueModelQueryResponse Success
-   * @throws ApiError
-   */
-  public static getApiAnalogueModels1(
-    id: string,
-  ): CancelablePromise<GetAnalogueModelQueryResponse> {
-    return __request(OpenAPI, {
-      method: 'GET',
-      url: '/api/analogue-models/{id}',
-      path: {
-        id: id,
-      },
-    });
-  }
+    /**
+     * Create new Analogue Model
+     * @param requestBody 
+     * @returns CreateAnalogueModelCommandResponse Success
+     * @throws ApiError
+     */
+    public static postApiAnalogueModels(
+requestBody?: CreateAnalogueModelCommand,
+): CancelablePromise<CreateAnalogueModelCommandResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/analogue-models',
+            body: requestBody,
+            mediaType: 'application/json-patch+json',
+            errors: {
+                400: `Bad Request`,
+            },
+        });
+    }
 
-  /**
-   * Patch a AnalogueModel by Id with new values
-   * @param id
-   * @param requestBody
-   * @returns PatchAnalogueModelCommandResponse Success
-   * @throws ApiError
-   */
-  public static patchApiAnalogueModels(
-    id: string,
-    requestBody?: Array<Operation>,
-  ): CancelablePromise<PatchAnalogueModelCommandResponse> {
-    return __request(OpenAPI, {
-      method: 'PATCH',
-      url: '/api/analogue-models/{id}',
-      path: {
-        id: id,
-      },
-      body: requestBody,
-      mediaType: 'application/json-patch+json',
-      errors: {
-        400: `Bad Request`,
-        404: `Not Found`,
-      },
-    });
-  }
+    /**
+     * Get AnalogueModel by id
+     * @param id 
+     * @returns GetAnalogueModelQueryResponse Success
+     * @throws ApiError
+     */
+    public static getApiAnalogueModels1(
+id: string,
+): CancelablePromise<GetAnalogueModelQueryResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/analogue-models/{id}',
+            path: {
+                'id': id,
+            },
+        });
+    }
 
-  /**
-   * Update AnalogueModel by Id
-   * @param id
-   * @param requestBody
-   * @returns UpdateAnalogueModelCommandResponse Success
-   * @throws ApiError
-   */
-  public static putApiAnalogueModels(
-    id: string,
-    requestBody?: UpdateAnalogueModelCommandBody,
-  ): CancelablePromise<UpdateAnalogueModelCommandResponse> {
-    return __request(OpenAPI, {
-      method: 'PUT',
-      url: '/api/analogue-models/{id}',
-      path: {
-        id: id,
-      },
-      body: requestBody,
-      mediaType: 'application/json-patch+json',
-      errors: {
-        400: `Bad Request`,
-        404: `Not Found`,
-      },
-    });
-  }
+    /**
+     * Patch a AnalogueModel by Id with new values
+     * @param id 
+     * @param requestBody 
+     * @returns PatchAnalogueModelCommandResponse Success
+     * @throws ApiError
+     */
+    public static patchApiAnalogueModels(
+id: string,
+requestBody?: Array<Operation>,
+): CancelablePromise<PatchAnalogueModelCommandResponse> {
+        return __request(OpenAPI, {
+            method: 'PATCH',
+            url: '/api/analogue-models/{id}',
+            path: {
+                'id': id,
+            },
+            body: requestBody,
+            mediaType: 'application/json-patch+json',
+            errors: {
+                400: `Bad Request`,
+                404: `Not Found`,
+            },
+        });
+    }
 
-  /**
-   * Delete a AnalogueModel by id
-   * @param id
-   * @returns void
-   * @throws ApiError
-   */
-  public static deleteApiAnalogueModels(id: string): CancelablePromise<void> {
-    return __request(OpenAPI, {
-      method: 'DELETE',
-      url: '/api/analogue-models/{id}',
-      path: {
-        id: id,
-      },
-      errors: {
-        400: `Bad Request`,
-        404: `Not Found`,
-      },
-    });
-  }
+    /**
+     * Update AnalogueModel by Id
+     * @param id 
+     * @param requestBody 
+     * @returns UpdateAnalogueModelCommandResponse Success
+     * @throws ApiError
+     */
+    public static putApiAnalogueModels(
+id: string,
+requestBody?: UpdateAnalogueModelCommandBody,
+): CancelablePromise<UpdateAnalogueModelCommandResponse> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/api/analogue-models/{id}',
+            path: {
+                'id': id,
+            },
+            body: requestBody,
+            mediaType: 'application/json-patch+json',
+            errors: {
+                400: `Bad Request`,
+                404: `Not Found`,
+            },
+        });
+    }
 
-  /**
-   * Upload model files that later can be converted to PEPM models.
-   * @param id
-   * @param formData
-   * @returns UploadAnalogueModelCommandResponse Success
-   * @throws ApiError
-   */
-  public static postApiAnalogueModelsInputModels(
-    id: string,
-    formData?: {
-      File?: Blob;
-      FileType?: UploadFileType;
-    },
-  ): CancelablePromise<UploadAnalogueModelCommandResponse> {
-    return __request(OpenAPI, {
-      method: 'POST',
-      url: '/api/analogue-models/{id}/input-models',
-      path: {
-        id: id,
-      },
-      formData: formData,
-      mediaType: 'multipart/form-data',
-    });
-  }
+    /**
+     * Delete a AnalogueModel by id
+     * @param id 
+     * @returns void 
+     * @throws ApiError
+     */
+    public static deleteApiAnalogueModels(
+id: string,
+): CancelablePromise<void> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/api/analogue-models/{id}',
+            path: {
+                'id': id,
+            },
+            errors: {
+                400: `Bad Request`,
+                404: `Not Found`,
+            },
+        });
+    }
 
-  /**
-   * Upload NetCDF model files that later can be converted to PEPM models.
-   * @param id
-   * @param formData
-   * @returns UploadAnalogueModelCommandResponse Success
-   * @throws ApiError
-   */
-  public static postApiAnalogueModelsNetcdfModels(
-    id: string,
-    formData?: {
-      file?: Blob;
-    },
-  ): CancelablePromise<UploadAnalogueModelCommandResponse> {
-    return __request(OpenAPI, {
-      method: 'POST',
-      url: '/api/analogue-models/{id}/netcdf-models',
-      path: {
-        id: id,
-      },
-      formData: formData,
-      mediaType: 'multipart/form-data',
-    });
-  }
+    /**
+     * Upload model files that later can be converted to PEPM models.
+     * @param id 
+     * @param formData 
+     * @returns UploadAnalogueModelCommandResponse Success
+     * @throws ApiError
+     */
+    public static postApiAnalogueModelsInputModels(
+id: string,
+formData?: {
+File: Blob;
+FileType: UploadFileType;
+},
+): CancelablePromise<UploadAnalogueModelCommandResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/analogue-models/{id}/input-models',
+            path: {
+                'id': id,
+            },
+            formData: formData,
+            mediaType: 'multipart/form-data',
+        });
+    }
+
+    /**
+     * Upload NetCDF model files that later can be converted to PEPM models.
+     * @param id 
+     * @param formData 
+     * @returns UploadAnalogueModelCommandResponse Success
+     * @throws ApiError
+     */
+    public static postApiAnalogueModelsNetcdfModels(
+id: string,
+formData?: {
+file?: Blob;
+},
+): CancelablePromise<UploadAnalogueModelCommandResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/analogue-models/{id}/netcdf-models',
+            path: {
+                'id': id,
+            },
+            formData: formData,
+            mediaType: 'multipart/form-data',
+        });
+    }
+
 }

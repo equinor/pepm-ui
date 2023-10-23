@@ -6,9 +6,9 @@
 import type { ConvertAnalogueModelDto } from './ConvertAnalogueModelDto';
 
 export type ConvertAnalogueModelCommandResponse = {
-  success?: boolean;
-  count?: number | null;
-  message?: string | null;
-  validationErrors?: Array<string> | null;
-  data: ConvertAnalogueModelDto;
+    success?: boolean;
+    count?: number | null;
+    message?: string | null;
+    validationErrors?: Array<string> | null;
+    data: ConvertAnalogueModelDto;
 };
