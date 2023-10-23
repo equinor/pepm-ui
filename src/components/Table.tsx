@@ -1,12 +1,16 @@
 /* eslint-disable max-lines-per-function */
-import { Button, Chip } from '@equinor/eds-core-react';
+import { Button, Chip, Scrim, SideSheet } from '@equinor/eds-core-react';
 import { EdsDataGrid } from '@equinor/eds-data-grid-react';
 import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnalogueModelsService } from '../api/generated';
+import { AreaCoordinates } from './AreaCoordinates/AreaCoordinates';
 import * as Styled from './Table.styled';
 
 export const Table = () => {
+  const [toggle, setToggle] = useState<boolean>(false);
+  const [activeModel, setActiveModel] = useState<string>();
   const { isLoading, data } = useQuery({
     queryKey: ['analogue-models'],
     queryFn: () => AnalogueModelsService.getApiAnalogueModels(),
@@ -81,8 +85,30 @@ export const Table = () => {
             header: '',
             id: 'navigate',
           },
+          {
+            accessorKey: 'areas',
+            cell: ({ row }) => (
+              <Button
+                onClick={() => {
+                  setActiveModel(row.original.analogueModelId);
+                  setToggle(!toggle);
+                }}
+              >
+                Set Areas
+              </Button>
+            ),
+            header: '',
+            id: 'areas',
+          },
         ]}
       />
+      {activeModel && (
+        <Scrim open={toggle}>
+          <SideSheet open={toggle} onClose={() => setToggle(!toggle)}>
+            <AreaCoordinates modelId={activeModel} />
+          </SideSheet>
+        </Scrim>
+      )}
     </Styled.StyledDiv>
   );
 };
