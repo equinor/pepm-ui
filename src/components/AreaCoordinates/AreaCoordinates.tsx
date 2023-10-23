@@ -10,8 +10,8 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { AnalogueModelsService } from '../../api/generated/services/AnalogueModelsService';
-import { ErrorType } from '../../features/AddModel/AddModelDialog/AddModelDialog';
 import optionTypes from '../../features/Compute/ComputeVariogram/CaseCard/CaseCard';
+import * as Styled from './AreaCoordinates.styled';
 
 interface CoordinateType {
   top: {
@@ -23,6 +23,12 @@ interface CoordinateType {
     Y?: string;
   };
 }
+
+type AreaErrorType = {
+  area?: string;
+  coordinateTop?: string;
+  coordinateBottom?: string;
+};
 export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
   const [selectedArea, setSelectedArea] = useState<optionTypes>();
   const [areaCoordinats, setAreaCoordinats] = useState<CoordinateType>({
@@ -35,7 +41,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
       Y: undefined,
     },
   });
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<AreaErrorType>({});
   const [submitting, setSubmitting] = useState(false);
 
   const { data, isLoading } = useQuery({
@@ -53,9 +59,9 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     selectedArea?: optionTypes,
     areaCoordinats?: CoordinateType,
   ) => {
-    const errors: ErrorType = {};
+    const errors: AreaErrorType = {};
     if (selectedArea === undefined) {
-      errors.field = 'Area to define coordinates for not selected';
+      errors.area = 'Area to define coordinates for not selected';
     }
 
     if (
@@ -64,7 +70,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
       areaCoordinats?.top.X.length < 1 ||
       areaCoordinats?.top.Y.length < 1
     ) {
-      errors.formation = 'Top coordinates not selected';
+      errors.coordinateTop = 'Top coordinates not selected';
     }
 
     if (
@@ -73,7 +79,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
       areaCoordinats?.bottom.X.length < 1 ||
       areaCoordinats?.bottom.Y.length < 1
     ) {
-      errors.file = 'Bottom coordinates not selected';
+      errors.coordinateBottom = 'Bottom coordinates not selected';
     }
     console.log(errors);
 
@@ -100,22 +106,56 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
   if (isLoading) <p>Loading.....</p>;
 
   return (
-    <>
+    <Styled.SideSheet>
       {data?.success && <Typography variant="h2">{data.data.name}</Typography>}
-      <Typography variant="h3">Set coordinates for model areas</Typography>
-      <form>
-        <Autocomplete
-          label={'Select area'}
-          options={modelAreas}
-          optionLabel={(option) => option.name}
-          onOptionsChange={(changes: AutocompleteChanges<optionTypes>) =>
-            setSelectedArea(changes.selectedItems[0])
-          }
-        ></Autocomplete>
+      <Typography variant="h3">Set coordinates: </Typography>
+      <Styled.Form>
+        <Styled.CoordinateGroup>
+          <Typography variant="h6">Area to define</Typography>
 
-        <div>
+          <Autocomplete
+            className={errors.area && 'autocomplete-error'}
+            label={'Select area'}
+            options={modelAreas}
+            optionLabel={(option) => option.name}
+            onOptionsChange={(changes: AutocompleteChanges<optionTypes>) =>
+              setSelectedArea(changes.selectedItems[0])
+            }
+          ></Autocomplete>
+        </Styled.CoordinateGroup>
+
+        <Styled.CoordinateGroup>
+          <Typography variant="h6">Top Left Corner</Typography>
+          <div className={errors.coordinateTop && 'input-error'}>
+            <Label label="X-coordinate" />
+            <Input
+              type="string"
+              value={areaCoordinats.top.X}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                setAreaCoordinats({
+                  ...areaCoordinats,
+                  top: { ...areaCoordinats.top, X: e.currentTarget.value },
+                })
+              }
+            />
+          </div>
+          <div className={errors.coordinateTop && 'input-error'}>
+            <Label label="Y-coordinate" />
+            <Input
+              type="string"
+              value={areaCoordinats.top.Y}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                setAreaCoordinats({
+                  ...areaCoordinats,
+                  top: { ...areaCoordinats.top, Y: e.currentTarget.value },
+                })
+              }
+            />
+          </div>
+        </Styled.CoordinateGroup>
+        <Styled.CoordinateGroup>
           <Typography variant="h6">Bottom Right Corner </Typography>
-          <div>
+          <div className={errors.coordinateBottom && 'input-error'}>
             <Label label="X-coordinate" />
             <Input
               type="string"
@@ -131,7 +171,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
               }
             />
           </div>
-          <div>
+          <div className={errors.coordinateBottom && 'input-error'}>
             <Label label="Y-coordinate" />
             <Input
               type="string"
@@ -147,40 +187,15 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
               }
             />
           </div>
-        </div>
-
-        <div>
-          <Typography variant="h6">Top Left Corner</Typography>
-          <div>
-            <Label label="X-coordinate" />
-            <Input
-              type="string"
-              value={areaCoordinats.top.X}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                setAreaCoordinats({
-                  ...areaCoordinats,
-                  top: { ...areaCoordinats.top, X: e.currentTarget.value },
-                })
-              }
-            />
-          </div>
-          <div>
-            <Label label="Y-coordinate" />
-            <Input
-              type="string"
-              value={areaCoordinats.top.Y}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                setAreaCoordinats({
-                  ...areaCoordinats,
-                  top: { ...areaCoordinats.top, Y: e.currentTarget.value },
-                })
-              }
-            />
-          </div>
-        </div>
+        </Styled.CoordinateGroup>
+        {(errors.area || errors.coordinateBottom || errors.coordinateTop) && (
+          <Styled.ErrorMessage variant="h4">
+            Highlighted fields required
+          </Styled.ErrorMessage>
+        )}
         <Button onClick={saveChange}>Save</Button>
-      </form>
-    </>
+      </Styled.Form>
+    </Styled.SideSheet>
   );
 };
 
