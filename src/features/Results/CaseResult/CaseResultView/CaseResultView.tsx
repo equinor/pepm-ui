@@ -150,6 +150,7 @@ const ResultMetadata = ({
               Approve
             </Button>
             <Button
+              color="danger"
               disabled={
                 data[caseNumner].approved === 'rejected' ||
                 data[caseNumner].approved === 'approved'
@@ -159,6 +160,7 @@ const ResultMetadata = ({
               Reject
             </Button>
             <Button
+              variant="outlined"
               disabled={data[caseNumner].approved === 'pending'}
               onClick={onResetClick}
             >
