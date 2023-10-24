@@ -6,9 +6,9 @@
 import type { JobDetail } from './JobDetail';
 
 export type GetJobDetailQueryResponse = {
-  success?: boolean;
-  count?: number | null;
-  message?: string | null;
-  validationErrors?: Array<string> | null;
-  data: JobDetail;
+    success?: boolean;
+    count?: number | null;
+    message?: string | null;
+    validationErrors?: Array<string> | null;
+    data: JobDetail;
 };

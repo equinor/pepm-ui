@@ -6,9 +6,9 @@
 import type { UpdateAnalogueModelDto } from './UpdateAnalogueModelDto';
 
 export type UpdateAnalogueModelCommandResponse = {
-  success?: boolean;
-  count?: number | null;
-  message?: string | null;
-  validationErrors?: Array<string> | null;
-  data: UpdateAnalogueModelDto;
+    success?: boolean;
+    count?: number | null;
+    message?: string | null;
+    validationErrors?: Array<string> | null;
+    data: UpdateAnalogueModelDto;
 };

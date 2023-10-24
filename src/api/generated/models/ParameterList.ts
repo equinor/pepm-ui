@@ -4,8 +4,8 @@
 /* eslint-disable */
 
 export type ParameterList = {
-  parameterId?: string;
-  identifier?: string | null;
-  name: string;
-  description?: string | null;
+    parameterId: string;
+    identifier: string;
+    name: string;
+    description: string;
 };

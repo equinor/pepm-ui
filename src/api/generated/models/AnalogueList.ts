@@ -4,7 +4,7 @@
 /* eslint-disable */
 
 export type AnalogueList = {
-  analogueId?: string;
-  name: string;
-  description?: string | null;
+    analogueId: string;
+    name: string;
+    description: string;
 };

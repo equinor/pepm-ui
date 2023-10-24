@@ -7,7 +7,7 @@ import type { UploadFileType } from './UploadFileType';
 import type { UploadStatus } from './UploadStatus';
 
 export type JobListUploadsDto = {
-  uploadId?: string;
-  uploadStatus?: UploadStatus;
-  uploadFileType?: UploadFileType;
+    uploadId: string;
+    uploadStatus: UploadStatus;
+    uploadFileType: UploadFileType;
 };

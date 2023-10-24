@@ -6,9 +6,9 @@
 import type { ParameterList } from './ParameterList';
 
 export type GetParameterListQueryResponse = {
-  success?: boolean;
-  count?: number | null;
-  message?: string | null;
-  validationErrors?: Array<string> | null;
-  data: Array<ParameterList>;
+    success?: boolean;
+    count?: number | null;
+    message?: string | null;
+    validationErrors?: Array<string> | null;
+    data: Array<ParameterList>;
 };

@@ -6,5 +6,5 @@
 import type { AddParameterDto } from './AddParameterDto';
 
 export type AddAnalogueModelParameterCommandForm = {
-  parameters?: Array<AddParameterDto> | null;
+    parameters?: Array<AddParameterDto> | null;
 };

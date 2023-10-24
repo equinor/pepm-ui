@@ -4,7 +4,7 @@
 /* eslint-disable */
 
 export enum JobType {
-  NRRESQML = 'Nrresqml',
-  NRCHANNEL = 'Nrchannel',
-  NRVARIOGRAM = 'Nrvariogram',
+    NRRESQML = 'Nrresqml',
+    NRCHANNEL = 'Nrchannel',
+    NRVARIOGRAM = 'Nrvariogram',
 }

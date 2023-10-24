@@ -4,7 +4,7 @@
 /* eslint-disable */
 
 export type UpdateParameterCommandBody = {
-  identifier?: string | null;
-  name?: string | null;
-  description?: string | null;
+    identifier: string;
+    name: string;
+    description?: string | null;
 };

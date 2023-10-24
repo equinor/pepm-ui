@@ -4,5 +4,5 @@
 /* eslint-disable */
 
 export type ConvertAnalogueModelCommand = {
-  modelId?: string;
+    modelId: string;
 };

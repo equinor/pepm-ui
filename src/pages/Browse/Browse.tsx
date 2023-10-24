@@ -59,7 +59,7 @@ export const Browse = () => {
   async function uploadModel(file: File, metadata: Partial<MetadataProps>) {
     setUploadStatus(UploadProcess.STARTED);
     const ModelBody: CreateAnalogueModelCommand = {
-      name: metadata.name,
+      name: metadata.name ? metadata.name : '',
       description: metadata.description,
       sourceType: 'ResQML',
     };

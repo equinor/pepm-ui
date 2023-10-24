@@ -8,10 +8,10 @@ import type { UploadFileType } from './UploadFileType';
 import type { UploadStatus } from './UploadStatus';
 
 export type UploadList = {
-  uploadId?: string;
-  analogueModelId?: string;
-  originalFileName?: string | null;
-  uploadStatus?: UploadStatus;
-  uploadFileType?: UploadFileType;
-  uploadFileCategory?: UploadFileCategory;
+    uploadId: string;
+    analogueModelId: string;
+    originalFileName: string;
+    uploadStatus: UploadStatus;
+    uploadFileType: UploadFileType;
+    uploadFileCategory: UploadFileCategory;
 };

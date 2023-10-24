@@ -6,9 +6,9 @@
 import type { GetCurrentJobStatusDto } from './GetCurrentJobStatusDto';
 
 export type GetCurrentJobStatusCommandResponse = {
-  success?: boolean;
-  count?: number | null;
-  message?: string | null;
-  validationErrors?: Array<string> | null;
-  data: GetCurrentJobStatusDto;
+    success?: boolean;
+    count?: number | null;
+    message?: string | null;
+    validationErrors?: Array<string> | null;
+    data: GetCurrentJobStatusDto;
 };

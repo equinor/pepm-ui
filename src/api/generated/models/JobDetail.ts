@@ -7,8 +7,8 @@ import type { JobStatus } from './JobStatus';
 import type { JobType } from './JobType';
 
 export type JobDetail = {
-  jobId?: string;
-  name?: string | null;
-  jobStatus?: JobStatus;
-  jobType?: JobType;
+    jobId?: string;
+    name?: string | null;
+    jobStatus?: JobStatus;
+    jobType?: JobType;
 };

@@ -4,11 +4,11 @@
 /* eslint-disable */
 
 export enum OperationType {
-  ADD = 'Add',
-  REMOVE = 'Remove',
-  REPLACE = 'Replace',
-  MOVE = 'Move',
-  COPY = 'Copy',
-  TEST = 'Test',
-  INVALID = 'Invalid',
+    ADD = 'Add',
+    REMOVE = 'Remove',
+    REPLACE = 'Replace',
+    MOVE = 'Move',
+    COPY = 'Copy',
+    TEST = 'Test',
+    INVALID = 'Invalid',
 }

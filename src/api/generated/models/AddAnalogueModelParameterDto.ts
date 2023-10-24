@@ -6,9 +6,9 @@
 import type { AddParameterDto } from './AddParameterDto';
 
 export type AddAnalogueModelParameterDto = {
-  analogueModelId?: string;
-  name?: string | null;
-  description?: string | null;
-  sourceType?: string | null;
-  parameters?: Array<AddParameterDto> | null;
+    analogueModelId?: string;
+    name?: string | null;
+    description?: string | null;
+    sourceType?: string | null;
+    parameters?: Array<AddParameterDto> | null;
 };

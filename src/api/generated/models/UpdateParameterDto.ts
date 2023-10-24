@@ -4,8 +4,8 @@
 /* eslint-disable */
 
 export type UpdateParameterDto = {
-  parameterId?: string;
-  identifier?: string | null;
-  name?: string | null;
-  description?: string | null;
+    parameterId: string;
+    identifier: string;
+    name: string;
+    description?: string | null;
 };

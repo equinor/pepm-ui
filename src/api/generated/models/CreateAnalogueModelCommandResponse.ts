@@ -6,9 +6,9 @@
 import type { CreateAnalogueModelDto } from './CreateAnalogueModelDto';
 
 export type CreateAnalogueModelCommandResponse = {
-  success?: boolean;
-  count?: number | null;
-  message?: string | null;
-  validationErrors?: Array<string> | null;
-  data: CreateAnalogueModelDto;
+    success?: boolean;
+    count?: number | null;
+    message?: string | null;
+    validationErrors?: Array<string> | null;
+    data: CreateAnalogueModelDto;
 };

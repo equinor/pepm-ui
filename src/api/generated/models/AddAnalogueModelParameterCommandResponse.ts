@@ -6,9 +6,9 @@
 import type { AddAnalogueModelParameterDto } from './AddAnalogueModelParameterDto';
 
 export type AddAnalogueModelParameterCommandResponse = {
-  success?: boolean;
-  count?: number | null;
-  message?: string | null;
-  validationErrors?: Array<string> | null;
-  data: AddAnalogueModelParameterDto;
+    success?: boolean;
+    count?: number | null;
+    message?: string | null;
+    validationErrors?: Array<string> | null;
+    data: AddAnalogueModelParameterDto;
 };

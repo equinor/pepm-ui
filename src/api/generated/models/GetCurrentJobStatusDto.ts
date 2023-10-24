@@ -7,8 +7,8 @@ import type { JobStatus } from './JobStatus';
 import type { JobType } from './JobType';
 
 export type GetCurrentJobStatusDto = {
-  jobId?: string;
-  name?: string | null;
-  jobStatus?: JobStatus;
-  jobType?: JobType;
+    jobId: string;
+    name: string;
+    jobStatus: JobStatus;
+    jobType: JobType;
 };

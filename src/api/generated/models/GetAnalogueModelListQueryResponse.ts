@@ -6,9 +6,9 @@
 import type { AnalogueModelList } from './AnalogueModelList';
 
 export type GetAnalogueModelListQueryResponse = {
-  success?: boolean;
-  count?: number | null;
-  message?: string | null;
-  validationErrors?: Array<string> | null;
-  data: Array<AnalogueModelList>;
+    success?: boolean;
+    count?: number | null;
+    message?: string | null;
+    validationErrors?: Array<string> | null;
+    data: Array<AnalogueModelList>;
 };
