@@ -73,10 +73,10 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
   // const selectedArea: optionTypes[] = [{ id: 10, name: 'Proximal' }];
   const areaCoordinats = {
     area: '',
-    topX: '43',
-    topY: '4133',
-    bottomX: '89754',
-    bottomY: '53345',
+    topX: '',
+    topY: '',
+    bottomX: '',
+    bottomY: '',
   };
 
   const { control, register, handleSubmit, formState } = useForm({
@@ -88,15 +88,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
   const { errors } = formState;
 
   const handleSelectChange = (changes: AutocompleteChanges<optionTypes>) => {
-    console.log(changes);
-    console.log(changes.selectedItems);
-    console.log(changes.selectedItems[0]);
-
     field.onChange(changes);
-    console.log(field.onChange);
-    console.log(field.value);
-    console.log(typeof field.value);
-    console.log(field.value);
   };
 
   const handleSave = (formValues: FieldValues) => {
