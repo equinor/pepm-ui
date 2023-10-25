@@ -20,6 +20,10 @@ export const CoordinateGroup = styled.div`
   flex-direction: column;
 
   > .autocomplete-error {
+    color: red;
+  }
+
+  > .autocomplete-error {
     > div {
       > div {
         border: solid 2px red;
@@ -33,6 +37,8 @@ export const CoordinateGroup = styled.div`
         border: solid 2px red;
       }
     }
+
+    color: red;
   }
 `;
 

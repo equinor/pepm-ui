@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable max-lines-per-function */
 import {
   Autocomplete,
@@ -5,49 +6,63 @@ import {
   Button,
   Input,
   Label,
+  Snackbar,
   Typography,
 } from '@equinor/eds-core-react';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { FieldValues, useController, useForm } from 'react-hook-form';
+import { z } from 'zod';
 import { AnalogueModelsService } from '../../api/generated/services/AnalogueModelsService';
 import optionTypes from '../../features/Compute/ComputeVariogram/CaseCard/CaseCard';
 import * as Styled from './AreaCoordinates.styled';
 
-interface CoordinateType {
-  top: {
-    X?: string;
-    Y?: string;
-  };
-  bottom: {
-    X?: string;
-    Y?: string;
-  };
-}
+// const areaSchema = z.object({
+//   id: z.number(),
+//   name: z.string().min(1, { message: 'Ares is required' }),
+// });
 
-type AreaErrorType = {
-  area?: string;
-  coordinateTop?: string;
-  coordinateBottom?: string;
-};
+const schema = z.object({
+  // area: z.array(
+  //   z.object({
+  //     id: z.number(),
+  //     name: z.string().min(1, { message: 'Ares is required' }),
+  //   }),
+  // ),
+  area: z.string().min(1, { message: 'Ares is required' }),
+
+  topX: z
+    .string()
+    .min(1, { message: 'Coordinate is required' })
+    .max(12, { message: 'Coordinate is too long, max 12 characters' }),
+  topY: z
+    .string()
+    .min(1, { message: 'Coordinate is required' })
+    .max(12, { message: 'Coordinate is too long, max 12 characters' }),
+  bottomX: z
+    .string()
+    .min(1, { message: 'Coordinate is required' })
+    .max(12, { message: 'Coordinate is too long, max 12 characters' }),
+  bottomY: z
+    .string()
+    .min(1, { message: 'Coordinate is required' })
+    .max(12, { message: 'Coordinate is too long, max 12 characters' }),
+});
+
+// type innput = z.input<typeof schema>;
+// type output = z.infer<typeof schema>;
+
 export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
-  const [selectedArea, setSelectedArea] = useState<optionTypes>();
-  const [areaCoordinats, setAreaCoordinats] = useState<CoordinateType>({
-    top: {
-      X: undefined,
-      Y: undefined,
-    },
-    bottom: {
-      X: undefined,
-      Y: undefined,
-    },
-  });
-  const [errors, setErrors] = useState<AreaErrorType>({});
-  const [submitting, setSubmitting] = useState(false);
-
+  const [showSaveAlert, setSaveAlert] = useState(false);
   const { data, isLoading } = useQuery({
     queryKey: ['analogue-models', modelId],
     queryFn: () => AnalogueModelsService.getApiAnalogueModels1(modelId),
   });
+
+  function clearStatus() {
+    setSaveAlert(false);
+  }
 
   const modelAreas: optionTypes[] = [
     { id: 10, name: 'Proximal' },
@@ -55,209 +70,111 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     { id: 12, name: 'Distal' },
   ];
 
-  const validateValues = (
-    selectedArea?: optionTypes,
-    areaCoordinats?: CoordinateType,
-  ) => {
-    const errors: AreaErrorType = {};
-    if (selectedArea === undefined) {
-      errors.area = 'Area to define coordinates for not selected';
-    }
-
-    if (
-      areaCoordinats?.top.X === undefined ||
-      areaCoordinats?.top.Y === undefined ||
-      areaCoordinats?.top.X.length < 1 ||
-      areaCoordinats?.top.Y.length < 1
-    ) {
-      errors.coordinateTop = 'Top coordinates not selected';
-    }
-
-    if (
-      areaCoordinats?.bottom.X === undefined ||
-      areaCoordinats?.bottom.Y === undefined ||
-      areaCoordinats?.bottom.X.length < 1 ||
-      areaCoordinats?.bottom.Y.length < 1
-    ) {
-      errors.coordinateBottom = 'Bottom coordinates not selected';
-    }
-    console.log(errors);
-
-    return errors;
+  // const selectedArea: optionTypes[] = [{ id: 10, name: 'Proximal' }];
+  const areaCoordinats = {
+    area: '',
+    topX: '43',
+    topY: '4133',
+    bottomX: '89754',
+    bottomY: '53345',
   };
 
-  const finishSubmit = () => {
-    console.log(selectedArea);
-    console.log(areaCoordinats);
+  const { control, register, handleSubmit, formState } = useForm({
+    defaultValues: areaCoordinats,
+    resolver: zodResolver(schema),
+  });
+  const { field } = useController({ name: 'area', control });
+
+  const { errors } = formState;
+
+  const handleSelectChange = (changes: AutocompleteChanges<optionTypes>) => {
+    console.log(changes);
+    console.log(changes.selectedItems);
+    console.log(changes.selectedItems[0]);
+
+    field.onChange(changes);
+    console.log(field.onChange);
+    console.log(field.value);
+    console.log(typeof field.value);
+    console.log(field.value);
   };
 
-  useEffect(() => {
-    if (Object.keys(errors).length === 0 && submitting) {
-      finishSubmit();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [errors, submitting]);
-
-  const saveChange = () => {
-    setErrors(validateValues(selectedArea, areaCoordinats));
-    setSubmitting(true);
+  const handleSave = (formValues: FieldValues) => {
+    console.log(formValues);
+    setSaveAlert(true);
   };
 
   if (isLoading) <p>Loading.....</p>;
 
   return (
-    <Styled.SideSheet>
-      {data?.success && <Typography variant="h2">{data.data.name}</Typography>}
-      <Typography variant="h3">Set coordinates: </Typography>
-      <Styled.Form>
-        <Styled.CoordinateGroup>
-          <Typography variant="h6">Area to define</Typography>
-
-          <Autocomplete
-            className={errors.area && 'autocomplete-error'}
-            label={'Select area'}
-            options={modelAreas}
-            optionLabel={(option) => option.name}
-            onOptionsChange={(changes: AutocompleteChanges<optionTypes>) =>
-              setSelectedArea(changes.selectedItems[0])
-            }
-          ></Autocomplete>
-        </Styled.CoordinateGroup>
-
-        <Styled.CoordinateGroup>
-          <Typography variant="h6">Top Left Corner</Typography>
-          <div className={errors.coordinateTop && 'input-error'}>
-            <Label label="X-coordinate" />
-            <Input
-              type="string"
-              value={areaCoordinats.top.X}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                setAreaCoordinats({
-                  ...areaCoordinats,
-                  top: { ...areaCoordinats.top, X: e.currentTarget.value },
-                })
-              }
-            />
-          </div>
-          <div className={errors.coordinateTop && 'input-error'}>
-            <Label label="Y-coordinate" />
-            <Input
-              type="string"
-              value={areaCoordinats.top.Y}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                setAreaCoordinats({
-                  ...areaCoordinats,
-                  top: { ...areaCoordinats.top, Y: e.currentTarget.value },
-                })
-              }
-            />
-          </div>
-        </Styled.CoordinateGroup>
-        <Styled.CoordinateGroup>
-          <Typography variant="h6">Bottom Right Corner </Typography>
-          <div className={errors.coordinateBottom && 'input-error'}>
-            <Label label="X-coordinate" />
-            <Input
-              type="string"
-              value={areaCoordinats.bottom.X}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                setAreaCoordinats({
-                  ...areaCoordinats,
-                  bottom: {
-                    ...areaCoordinats.bottom,
-                    X: e.currentTarget.value,
-                  },
-                })
-              }
-            />
-          </div>
-          <div className={errors.coordinateBottom && 'input-error'}>
-            <Label label="Y-coordinate" />
-            <Input
-              type="string"
-              value={areaCoordinats.bottom.Y}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                setAreaCoordinats({
-                  ...areaCoordinats,
-                  bottom: {
-                    ...areaCoordinats.bottom,
-                    Y: e.currentTarget.value,
-                  },
-                })
-              }
-            />
-          </div>
-        </Styled.CoordinateGroup>
-        {(errors.area || errors.coordinateBottom || errors.coordinateTop) && (
-          <Styled.ErrorMessage variant="h4">
-            Highlighted fields required
-          </Styled.ErrorMessage>
+    <>
+      <Styled.SideSheet>
+        {data?.success && (
+          <Typography variant="h2">{data.data.name}</Typography>
         )}
-        <Button onClick={saveChange}>Save</Button>
-      </Styled.Form>
-    </Styled.SideSheet>
-  );
-};
+        <Typography variant="h3">Set coordinates: </Typography>
+        <Styled.Form onSubmit={handleSubmit(handleSave)}>
+          <Styled.CoordinateGroup
+            className={errors.area && 'autocomplete-error'}
+          >
+            <Typography variant="h6">Area to define</Typography>
 
-/**
- * 
- * <CoordinateSet
-        label="Top Left Corner"
-        position={areaCoordinats.top}
-        areaCoordinats={areaCoordinats}
-        setAreaCoordinats={setAreaCoordinats}
-      ></CoordinateSet>
- * 
-const CoordinateSet = ({
-  label,
-  position,
-  areaCoordinats,
-  setAreaCoordinats,
-}: {
-  label: string;
-  position: {
-    X: string;
-    Y: string;
-  };
-  areaCoordinats: CoordinateType;
-  setAreaCoordinats: (areaCoordinats: CoordinateType) => void;
-}) => {
-  return (
-    <div>
-      <Typography variant="h6">{label}</Typography>
-      <div>
-        <Label label="X-coordinate" />
-        <Input
-          type="string"
-          value={areaCoordinats.top.X}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-            setAreaCoordinats({
-              ...areaCoordinats,
-              [position.X]: {
-                ...[position],
-                X: e.currentTarget.value,
-              },
-            })
-          }
-        />
-      </div>
-      <div>
-        <Label label="Y-coordinate" />
-        <Input
-          type="string"
-          value={areaCoordinats.top.Y}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-            setAreaCoordinats({
-              ...areaCoordinats,
-              [position.Y]: {
-                ...[position],
-                Y: e.currentTarget.value,
-              },
-            });
-          }}
-        />
-      </div>
-    </div>
+            <Autocomplete
+              className={errors.area && 'autocomplete-error'}
+              {
+                ...register('area')
+                // ,
+                // {
+                //   setValueAs: (value: any) => Array(value),
+                // }
+              }
+              label={'Select area'}
+              options={modelAreas}
+              optionLabel={(option) => option.name}
+              onOptionsChange={handleSelectChange}
+            ></Autocomplete>
+            <div className={errors.area && 'autocomplete-error'}>
+              {errors.area && errors.area?.message}
+            </div>
+          </Styled.CoordinateGroup>
+
+          <Styled.CoordinateGroup>
+            <Typography variant="h6">Top Left Corner</Typography>
+            <div className={errors.topX && 'input-error'}>
+              <Label label="X-coordinate" />
+              <Input {...register('topX')} />
+              {errors.topX && errors.topX?.message}
+            </div>
+            <div className={errors.topY && 'input-error'}>
+              <Label label="Y-coordinate" />
+              <Input {...register('topY')} />
+              {errors.topY && errors.topY?.message}
+            </div>
+          </Styled.CoordinateGroup>
+          <Styled.CoordinateGroup>
+            <Typography variant="h6">Bottom Right Corner </Typography>
+            <div className={errors.bottomX && 'input-error'}>
+              <Label label="X-coordinate" />
+              <Input {...register('bottomX')} />
+              {errors.bottomX && errors.bottomX?.message}
+            </div>
+            <div className={errors.bottomY && 'input-error'}>
+              <Label label="Y-coordinate" />
+              <Input {...register('bottomY')} />
+              {errors.bottomY && errors.bottomY?.message}
+            </div>
+          </Styled.CoordinateGroup>
+
+          <Button type="submit">Save</Button>
+        </Styled.Form>
+      </Styled.SideSheet>
+      <Snackbar
+        open={!!showSaveAlert}
+        autoHideDuration={3000}
+        onClose={clearStatus}
+      >
+        {'Area coordinates saved'}
+      </Snackbar>
+    </>
   );
 };
- */
