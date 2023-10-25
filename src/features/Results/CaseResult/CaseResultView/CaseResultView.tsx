@@ -108,15 +108,16 @@ const ResultMetadata = ({
         <Table>
           <Table.Body>
             <Table.Row key={data[caseNumner].identifier} className="table-row">
+              <Table.Cell className="table-first-col">Family</Table.Cell>
+              <Table.Cell>{data[caseNumner].family}</Table.Cell>
+            </Table.Row>
+            <Table.Row key={data[caseNumner].identifier} className="table-row">
               <Table.Cell className="table-first-col">
                 Quality factor
               </Table.Cell>
               <Table.Cell>{data[caseNumner].quality}</Table.Cell>
             </Table.Row>
-            <Table.Row key={data[caseNumner].identifier} className="table-row">
-              <Table.Cell className="table-first-col">Family</Table.Cell>
-              <Table.Cell>{data[caseNumner].family}</Table.Cell>
-            </Table.Row>
+
             <Table.Row key={data[caseNumner].identifier} className="table-row">
               <Table.Cell className="table-first-col">Attribute</Table.Cell>
               <Table.Cell>{data[caseNumner].attribute}</Table.Cell>
