@@ -4,10 +4,11 @@ import { useParams } from 'react-router-dom';
 import { AnalogueModelsService, UploadList } from '../../../api/generated';
 
 export const ModelSourceView = () => {
-  const { id } = useParams();
+  const { modelId } = useParams();
   const { isLoading, data } = useQuery({
-    queryKey: ['analogue-models', id],
-    queryFn: () => AnalogueModelsService.getApiAnalogueModels1(id as string),
+    queryKey: ['analogue-models', modelId],
+    queryFn: () =>
+      AnalogueModelsService.getApiAnalogueModels1(modelId as string),
   });
 
   if (isLoading || !data?.success) return <p>Loading ...</p>;

@@ -6,7 +6,7 @@ export const CaseResultList = ({ results }: { results: ResultType[] }) => {
   return (
     <Styled.CaseResultList>
       {results.map((res: ResultType) => (
-        <CaseResultCard key={res.id} result={res} />
+        <CaseResultCard key={res.caseId} result={res} />
       ))}
     </Styled.CaseResultList>
   );

@@ -26,7 +26,7 @@ const tabs: Tab[] = [
 ];
 const appRoutes = (tabs as NonIndexRouteObject[]).concat([
   {
-    path: 'model/:id/',
+    path: 'model/:modelId/',
     element: <Model />,
     children: [
       {
@@ -47,7 +47,7 @@ const appRoutes = (tabs as NonIndexRouteObject[]).concat([
         path: 'results',
         element: <Results />,
       },
-      { path: 'results/:id', element: <CaseResultView /> },
+      { path: 'results/:caseId', element: <CaseResultView /> },
     ],
   },
 ]);
