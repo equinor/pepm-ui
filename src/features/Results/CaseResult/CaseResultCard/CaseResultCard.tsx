@@ -5,7 +5,7 @@ import * as Styled from './CaseResultCard.styled';
 export const CaseResultCard = ({ result }: { result: ResultType }) => {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate(`${result.id}`);
+    navigate(`${result.caseId}`);
   };
 
   return (

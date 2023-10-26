@@ -2,15 +2,15 @@ import { CaseResultList } from '../../../features/Results/CaseResult/CaseResultL
 import { NoResults } from '../../../features/Results/NoResults/NoResults';
 
 export type ResultType = {
-  id: string;
+  caseId: string;
   case: string;
   finished: boolean;
 };
 export const Results = () => {
   const loaded = true;
   const results: ResultType[] = [
-    { id: '1', case: 'Variogramcase 1', finished: true },
-    { id: '2', case: 'Variogramcase 2', finished: false },
+    { caseId: '1', case: 'Variogramcase 1', finished: true },
+    { caseId: '2', case: 'Variogramcase 2', finished: false },
   ];
 
   return (

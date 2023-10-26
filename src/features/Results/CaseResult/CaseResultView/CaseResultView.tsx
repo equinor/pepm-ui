@@ -8,7 +8,7 @@ import Img from './vargrest_output-0-_variogram_slices_.png';
 import Img1 from './vargrest_output-1-_variogram_slices_.png';
 export const CaseResultView = () => {
   const caseResult: ResultType = {
-    id: '1',
+    caseId: '1',
     case: 'Variogramcase 1',
     finished: true,
   };
@@ -22,9 +22,9 @@ export const CaseResultView = () => {
       <h2>Case Results</h2>
       <h3>{caseResult.case}</h3>
       <Styled.CaseResultList>
-        <ResultMetadata caseNumner={0} img={Img}></ResultMetadata>
-        <ResultMetadata caseNumner={1} img={Img1}></ResultMetadata>
-        <ResultMetadata caseNumner={2} img={Img1}></ResultMetadata>
+        <ResultMetadata key={0} caseNumner={0} img={Img}></ResultMetadata>
+        <ResultMetadata key={1} caseNumner={1} img={Img1}></ResultMetadata>
+        <ResultMetadata key={2} caseNumner={2} img={Img1}></ResultMetadata>
       </Styled.CaseResultList>
     </Styled.CaseResultView>
   );
@@ -106,23 +106,23 @@ const ResultMetadata = ({
     <Styled.CaseResultCard>
       <Styled.CaseLeftDiv>
         <Table>
-          <Table.Body>
-            <Table.Row key={data[caseNumner].identifier} className="table-row">
+          <Table.Body key={data[caseNumner].identifier}>
+            <Table.Row className="table-row">
               <Table.Cell className="table-first-col">Family</Table.Cell>
               <Table.Cell>{data[caseNumner].family}</Table.Cell>
             </Table.Row>
-            <Table.Row key={data[caseNumner].identifier} className="table-row">
+            <Table.Row className="table-row">
               <Table.Cell className="table-first-col">
                 Quality factor
               </Table.Cell>
               <Table.Cell>{data[caseNumner].quality}</Table.Cell>
             </Table.Row>
 
-            <Table.Row key={data[caseNumner].identifier} className="table-row">
+            <Table.Row className="table-row">
               <Table.Cell className="table-first-col">Attribute</Table.Cell>
               <Table.Cell>{data[caseNumner].attribute}</Table.Cell>
             </Table.Row>
-            <Table.Row key={data[caseNumner].identifier} className="table-row">
+            <Table.Row className="table-row">
               <Table.Cell className="table-first-col">Sigma</Table.Cell>
               <Table.Cell>{data[caseNumner].sigma}</Table.Cell>
             </Table.Row>
