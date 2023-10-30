@@ -23,6 +23,8 @@ export const spacings = {
   XXX_LARGE: comfortable.xxx_large,
   /** 64px */
   XXXX_LARGE: '64px',
+  /** 75,5px */
+  NAME_FRAME: '75,5px',
   /** 92px */
   COMPUTE_BUTTON: '92px',
   /** 5px */

@@ -23,7 +23,7 @@ export const Model = () => {
           <ModelNavigationBar />
         </Styled.SidebarWrapper>
         <Styled.ContentWrapper>
-          {data?.success && <ModelNameFrame model={data.data} />}
+          <ModelNameFrame model={data?.data} />
 
           <Outlet />
         </Styled.ContentWrapper>
