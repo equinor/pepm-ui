@@ -21,6 +21,8 @@ type MenuItems = SidebarLinkProps & {
 
 export const ModelNavigationBar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+
   const tab = location.pathname.split('/');
   const path = tab[tab.length - 1];
   const path2 = tab[tab.length - 2];
@@ -59,7 +61,6 @@ export const ModelNavigationBar = () => {
       },
     ],
   };
-  const navigate = useNavigate();
 
   return (
     <SideBar open>

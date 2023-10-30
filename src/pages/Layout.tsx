@@ -1,5 +1,4 @@
 import { useMsal } from '@azure/msal-react';
-import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import * as Styled from '../App.styled';
 import { OpenAPI } from '../api/generated/core/OpenAPI';
@@ -11,9 +10,7 @@ export const Layout = () => {
   const { instance, accounts } = useMsal();
   const token = useAccessToken(instance, accounts[0]);
 
-  useEffect(() => {
-    OpenAPI.TOKEN = token;
-  }, [token, accounts]);
+  if (token) OpenAPI.TOKEN = token;
 
   return (
     <>

@@ -1,19 +1,25 @@
 /* eslint-disable max-lines-per-function */
+import { useMsal } from '@azure/msal-react';
 import { Button, Chip, Scrim, SideSheet } from '@equinor/eds-core-react';
 import { EdsDataGrid } from '@equinor/eds-data-grid-react';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnalogueModelsService } from '../api/generated';
+import { useAccessToken } from '../hooks/useAccessToken';
 import { AreaCoordinates } from './AreaCoordinates/AreaCoordinates';
 import * as Styled from './Table.styled';
 
 export const Table = () => {
+  const { instance, accounts } = useMsal();
+  const token = useAccessToken(instance, accounts[0]);
+
   const [toggle, setToggle] = useState<boolean>(false);
   const [activeModel, setActiveModel] = useState<string>();
   const { isLoading, data } = useQuery({
     queryKey: ['analogue-models'],
     queryFn: () => AnalogueModelsService.getApiAnalogueModels(),
+    enabled: !!token,
   });
 
   const navigate = useNavigate();
