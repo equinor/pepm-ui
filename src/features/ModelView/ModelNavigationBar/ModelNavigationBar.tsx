@@ -67,13 +67,14 @@ export const ModelNavigationBar = () => {
       <Styled.SidebarContent>
         <Styled.SidebarLink
           className={menuItems[0].href === path && 'activeTab'}
-          key={menuItems[0].label}
-          {...menuItems[0]}
+          label={menuItems[0].label}
+          icon={menuItems[0].icon}
           active={menuItems[0].href === path}
           onClick={() => {
             navigate('details');
           }}
         ></Styled.SidebarLink>
+
         <Styled.SidebarLink
           disabled
           className={('object' === path || 'variogram' === path) && 'activeTab'}
@@ -96,13 +97,14 @@ export const ModelNavigationBar = () => {
             }}
           ></Styled.AccordionItem>
         ))}
+
         <Styled.SidebarLink
           className={
             (menuItems[1].href === path || menuItems[1].href === path2) &&
             'activeTab'
           }
-          key={menuItems[1].label}
-          {...menuItems[1]}
+          label={menuItems[1].label}
+          icon={menuItems[1].icon}
           active={menuItems[1].href === path || menuItems[1].href === path2}
           onClick={() => {
             navigate('results');
