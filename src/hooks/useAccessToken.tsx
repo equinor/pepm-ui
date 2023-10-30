@@ -1,6 +1,6 @@
+import { AccountInfo, IPublicClientApplication } from '@azure/msal-browser';
 import { useEffect, useState } from 'react';
 import { loginRequest } from '../auth/authConfig';
-import { AccountInfo, IPublicClientApplication } from '@azure/msal-browser';
 
 export const useAccessToken = (
   instance: IPublicClientApplication,

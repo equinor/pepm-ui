@@ -1,17 +1,22 @@
+import { useMsal } from '@azure/msal-react';
 import { useQuery } from '@tanstack/react-query';
 import { Outlet, useParams } from 'react-router-dom';
 import { AnalogueModelsService } from '../../../api/generated';
 import { ModelNameFrame } from '../../../features/ModelView/ModelNameFrame/ModelNameFrame';
 import { ModelNavigationBar } from '../../../features/ModelView/ModelNavigationBar/ModelNavigationBar';
+import { useAccessToken } from '../../../hooks/useAccessToken';
 import * as Styled from './Model.styled';
 
 export const Model = () => {
   const { modelId } = useParams<{ modelId: string }>();
+  const { instance, accounts } = useMsal();
+  const token = useAccessToken(instance, accounts[0]);
 
   const { data, isLoading } = useQuery({
     queryKey: ['analogue-models', modelId],
     queryFn: () =>
       AnalogueModelsService.getApiAnalogueModels1(modelId as string),
+    enabled: !!token,
   });
 
   if (isLoading) <p>Loading.....</p>;
