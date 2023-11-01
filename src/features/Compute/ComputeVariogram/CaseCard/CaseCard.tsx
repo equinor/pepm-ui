@@ -13,6 +13,8 @@ import { ModelSelect } from './CaseCardParameters/ModelSelect/ModelSelect';
 import { GrainSizeSelect } from './CaseCardParameters/GrainSizeSelect/GrainSizeSelect';
 import { ParameterSelect } from './CaseCardParameters/ParameterSelect/ParameterSelect';
 
+import { CaseCardComponent } from '../../../../components/CaseCardComponent/CaseCardComponent';
+
 export default interface optionTypes {
   id: number;
   name: string;
@@ -57,11 +59,6 @@ export const CaseCard = ({
     { id: 7, name: 'General exponential' },
   ];
 
-  // const parameterOptions: optionTypes[] = [
-  //   { id: 8, name: 'Porosity' },
-  //   { id: 9, name: 'Permeability' },
-  // ];
-
   const modelAreas: optionTypes[] = [
     { id: 10, name: 'Proximal' },
     { id: 11, name: 'Left' },
@@ -87,9 +84,8 @@ export const CaseCard = ({
   };
 
   return (
-    <Styled.Wrapper>
+    <CaseCardComponent title={name}>
       <Styled.Case>
-        <Typography variant="h4">{name}</Typography>
         <Styled.CaseCard>
           {caseType === 'variogram' ? (
             <VariogramCaseCardInputs
@@ -158,6 +154,6 @@ export const CaseCard = ({
           </Styled.Parameters>
         )}
       </div>
-    </Styled.Wrapper>
+    </CaseCardComponent>
   );
 };

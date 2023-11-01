@@ -46,14 +46,13 @@ export const ComputeVariogram = () => {
       <ComputeCaseInfoActions addCase={addCase} caseInfo={variogramCaseInfo} />
       {cases.length !== 0 ? (
         cases.map((c) => (
-          <Styled.CaseBorder key={c.id}>
-            <CaseCard
-              id={c.id}
-              name={c.name}
-              removeCase={removeCase}
-              caseType={'variogram'}
-            />
-          </Styled.CaseBorder>
+          <CaseCard
+            key={c.id}
+            id={c.id}
+            name={c.name}
+            removeCase={removeCase}
+            caseType={'variogram'}
+          />
         ))
       ) : (
         <Typography>Add a Case</Typography>
