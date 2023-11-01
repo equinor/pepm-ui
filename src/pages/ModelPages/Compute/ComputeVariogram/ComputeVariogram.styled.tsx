@@ -19,14 +19,7 @@ export const Case = styled.div`
 
   border-left: solid ${spacings.XX_SMALL} ${theme.light.ui.background.medium};
 `;
-export const CaseBorder = styled.div`
-  display: flex;
-  flex-direction: column;
-  row-gap: ${spacings.XXX_LARGE};
 
-  border-radius: ${spacings.CARD_ROUNDED};
-  border: solid 1px ${theme.light.ui.background.medium};
-`;
 export const AddCaseButton = styled(Button)`
   width: fit-content;
 `;

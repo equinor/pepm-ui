@@ -34,14 +34,13 @@ export const ComputeObject = () => {
       <ComputeCaseInfoActions addCase={addCase} caseInfo={ObjectCaseInfo} />
       {cases.length !== 0 ? (
         cases.map((c) => (
-          <Styled.CaseBorder key={c.id}>
-            <CaseCard
-              id={c.id}
-              name={c.name}
-              removeCase={removeCase}
-              caseType={'object'}
-            />
-          </Styled.CaseBorder>
+          <CaseCard
+            key={c.id}
+            id={c.id}
+            name={c.name}
+            removeCase={removeCase}
+            caseType={'object'}
+          />
         ))
       ) : (
         <Typography>Add a Case</Typography>
