@@ -12,3 +12,4 @@ export type GetJobDetailQueryResponse = {
     validationErrors?: Array<string> | null;
     data: JobDetail;
 };
+

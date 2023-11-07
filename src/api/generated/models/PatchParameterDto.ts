@@ -9,3 +9,4 @@ export type PatchParameterDto = {
     name: string;
     description?: string | null;
 };
+

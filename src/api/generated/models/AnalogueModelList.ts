@@ -12,3 +12,4 @@ export type AnalogueModelList = {
     isProcessed: boolean;
     sourceType: AnalogueModelSourceType;
 };
+

@@ -12,3 +12,4 @@ export type UpdateParameterCommandResponse = {
     validationErrors?: Array<string> | null;
     data: UpdateParameterDto;
 };
+

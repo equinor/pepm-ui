@@ -9,3 +9,4 @@ export type UpdateJobStatusCommand = {
     ended?: string | null;
     status: string;
 };
+

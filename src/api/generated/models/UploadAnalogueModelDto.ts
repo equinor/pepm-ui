@@ -14,3 +14,4 @@ export type UploadAnalogueModelDto = {
     uploadFileType: UploadFileType;
     uploadFileCategory: UploadFileCategory;
 };
+

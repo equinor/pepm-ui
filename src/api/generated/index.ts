@@ -44,6 +44,8 @@ export type { JobList } from './models/JobList';
 export type { JobListUploadsDto } from './models/JobListUploadsDto';
 export { JobStatus } from './models/JobStatus';
 export { JobType } from './models/JobType';
+export type { MergeModelCommandResponse } from './models/MergeModelCommandResponse';
+export type { MergeModelDto } from './models/MergeModelDto';
 export type { Operation } from './models/Operation';
 export { OperationType } from './models/OperationType';
 export type { ParameterDetail } from './models/ParameterDetail';
@@ -52,6 +54,8 @@ export type { PatchAnalogueModelCommandResponse } from './models/PatchAnalogueMo
 export type { PatchAnalogueModelDto } from './models/PatchAnalogueModelDto';
 export type { PatchParameterCommandResponse } from './models/PatchParameterCommandResponse';
 export type { PatchParameterDto } from './models/PatchParameterDto';
+export type { PrepareChunkedUploadCommandResponse } from './models/PrepareChunkedUploadCommandResponse';
+export type { PrepareChunkedUploadDto } from './models/PrepareChunkedUploadDto';
 export type { UpdateAnalogueModelCommandBody } from './models/UpdateAnalogueModelCommandBody';
 export type { UpdateAnalogueModelCommandResponse } from './models/UpdateAnalogueModelCommandResponse';
 export type { UpdateAnalogueModelDto } from './models/UpdateAnalogueModelDto';
@@ -61,6 +65,7 @@ export type { UpdateParameterCommandResponse } from './models/UpdateParameterCom
 export type { UpdateParameterDto } from './models/UpdateParameterDto';
 export type { UploadAnalogueModelCommandResponse } from './models/UploadAnalogueModelCommandResponse';
 export type { UploadAnalogueModelDto } from './models/UploadAnalogueModelDto';
+export type { UploadChunkCommandResponse } from './models/UploadChunkCommandResponse';
 export type { UploadDetail } from './models/UploadDetail';
 export { UploadFileCategory } from './models/UploadFileCategory';
 export { UploadFileType } from './models/UploadFileType';

@@ -8,3 +8,4 @@ export type UpdateParameterCommandBody = {
     name: string;
     description?: string | null;
 };
+

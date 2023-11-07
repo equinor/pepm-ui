@@ -24,13 +24,13 @@ export class AnaloguesService {
     }
 
     /**
-     * @param requestBody 
+     * @param requestBody
      * @returns CreateAnalogueCommandResponse Success
      * @throws ApiError
      */
     public static postApiAnalogues(
-requestBody?: CreateAnalogueCommand,
-): CancelablePromise<CreateAnalogueCommandResponse> {
+        requestBody?: CreateAnalogueCommand,
+    ): CancelablePromise<CreateAnalogueCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/analogues',

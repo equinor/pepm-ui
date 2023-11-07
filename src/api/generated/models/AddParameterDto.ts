@@ -7,3 +7,4 @@ export type AddParameterDto = {
     parameterId: string;
     parameterValue: string;
 };
+

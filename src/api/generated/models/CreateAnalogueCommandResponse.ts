@@ -12,3 +12,4 @@ export type CreateAnalogueCommandResponse = {
     validationErrors?: Array<string> | null;
     data: CreateAnalogueDto;
 };
+

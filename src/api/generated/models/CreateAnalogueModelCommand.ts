@@ -8,3 +8,4 @@ export type CreateAnalogueModelCommand = {
     description?: string | null;
     sourceType: string;
 };
+

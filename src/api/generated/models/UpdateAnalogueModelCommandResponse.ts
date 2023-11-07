@@ -12,3 +12,4 @@ export type UpdateAnalogueModelCommandResponse = {
     validationErrors?: Array<string> | null;
     data: UpdateAnalogueModelDto;
 };
+

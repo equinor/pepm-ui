@@ -9,3 +9,4 @@ export type UpdateAnalogueModelDto = {
     description?: string | null;
     sourceType: string;
 };
+

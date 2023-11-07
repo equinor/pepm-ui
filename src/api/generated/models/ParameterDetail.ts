@@ -9,3 +9,4 @@ export type ParameterDetail = {
     name: string;
     description: string;
 };
+

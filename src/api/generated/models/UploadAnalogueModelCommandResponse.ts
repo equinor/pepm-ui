@@ -12,3 +12,4 @@ export type UploadAnalogueModelCommandResponse = {
     validationErrors?: Array<string> | null;
     data: UploadAnalogueModelDto;
 };
+

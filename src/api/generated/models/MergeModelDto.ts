@@ -7,7 +7,7 @@ import type { UploadFileCategory } from './UploadFileCategory';
 import type { UploadFileType } from './UploadFileType';
 import type { UploadStatus } from './UploadStatus';
 
-export type UploadDetail = {
+export type MergeModelDto = {
     uploadId: string;
     originalFileName: string;
     uploadStatus: UploadStatus;

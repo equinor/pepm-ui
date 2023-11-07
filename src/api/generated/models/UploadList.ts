@@ -15,3 +15,4 @@ export type UploadList = {
     uploadFileType: UploadFileType;
     uploadFileCategory: UploadFileCategory;
 };
+

@@ -3,9 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type AnalogueList = {
-    analogueId: string;
-    name: string;
-    description: string;
+export type PrepareChunkedUploadDto = {
+    uploadId: string;
+    numChunks: number;
+    fileSize: number;
 };
 

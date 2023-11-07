@@ -12,3 +12,4 @@ export type PatchParameterCommandResponse = {
     validationErrors?: Array<string> | null;
     data: PatchParameterDto;
 };
+

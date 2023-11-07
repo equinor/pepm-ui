@@ -9,3 +9,4 @@ export type UpdateParameterDto = {
     name: string;
     description?: string | null;
 };
+
