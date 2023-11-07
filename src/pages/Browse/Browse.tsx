@@ -21,7 +21,6 @@ import MetadataProps, {
 } from '../../features/AddModel/AddModelDialog/AddModelDialog';
 import * as Styled from './Browse.styled';
 
-const chunkSize = 1024 * 1024 * 99; // its 3MB, increase the number measure in mb
 enum UploadProcess {
   STARTED = 'We are uploading your new model. Please keep this browser tab open.',
   SUCCESS = 'Model successfully uploaded. You may close this browser tab now.',
@@ -30,12 +29,12 @@ enum UploadProcess {
 
 export const Browse = () => {
   const [progress, setProgress] = useState(0);
-
   const [counter, setCounter] = useState(1);
   const [fileToBeUpload, setFileToBeUpload] = useState<File>();
   const [beginingOfTheChunk, setBeginingOfTheChunk] = useState(0);
-  const [endOfTheChunk, setEndOfTheChunk] = useState(chunkSize);
+  const [endOfTheChunk, setEndOfTheChunk] = useState<number>();
   const [fileSize, setFileSize] = useState(0);
+  const [chunkSize, setChunkSize] = useState(0);
   const [chunkCount, setChunkCount] = useState(0);
   const [modelId, setModelId] = useState<string>('');
   const [uploadId, setUploadId] = useState<string>('');
@@ -100,19 +99,16 @@ export const Browse = () => {
 
       const createManifest = await modelManifest.mutateAsync(data);
       if (modelManifest.error === null && createManifest.success) {
-        const chunkSize = createManifest.data.fileSize;
         const uploadId = createManifest.data.uploadId;
+        const recivedChunkSize = createManifest.data.fileSize;
+        const numberOfChunks = createManifest.data.numChunks;
         setUploadId(uploadId);
+        setChunkSize(recivedChunkSize);
+        setEndOfTheChunk(recivedChunkSize);
+        setChunkCount(numberOfChunks);
+        setFileToBeUpload(file);
+        setFileSize(file.size);
 
-        const _file = file;
-        setFileSize(_file.size);
-        const _totalCount =
-          _file.size % chunkSize === 0
-            ? _file.size / chunkSize
-            : Math.floor(_file.size / chunkSize) + 1; // Total count of chunks will have been upload to finish the file
-        setChunkCount(_totalCount);
-
-        setFileToBeUpload(_file);
         toggleDialog();
       }
     }
@@ -141,6 +137,7 @@ export const Browse = () => {
       const uploadChunks = await chunkUpload.mutateAsync(chunkData);
 
       if (chunkUpload.error === null && uploadChunks.success) {
+        if (endOfTheChunk === undefined) return;
         setBeginingOfTheChunk(endOfTheChunk);
         setEndOfTheChunk(endOfTheChunk + chunkSize);
         if (counter === chunkCount) {
