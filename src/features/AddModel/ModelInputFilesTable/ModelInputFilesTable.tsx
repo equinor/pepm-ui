@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import { Button, Table } from '@equinor/eds-core-react';
 import { delete_to_trash as deleteIcon } from '@equinor/eds-icons';
 import { ChangeEvent } from 'react';
@@ -12,6 +13,7 @@ interface FileColumnProps {
   INI?: true;
   file?: File;
   fileDisplay?: FileDisplay;
+  fileSize?: number;
 }
 
 const FileColumn = ({
@@ -20,20 +22,11 @@ const FileColumn = ({
   INI,
   file,
   fileDisplay,
+  fileSize,
 }: FileColumnProps) => {
   const DeleteButton = ({ onDelete }: { onDelete: () => void }) => (
     <IconButton icon={deleteIcon} title="delete" onClick={onDelete} />
   );
-
-  function fileSize(size: number) {
-    if (size < 1024) {
-      return `${size} bytes`;
-    } else if (size >= 1024 && size < 1048576) {
-      return `${(size / 1024).toFixed(1)} KB`;
-    } else if (size >= 1048576) {
-      return `${(size / 1048576).toFixed(1)} MB`;
-    }
-  }
 
   return (
     <Table.Row className={`${INI ? 'ini' : 'nc'}-file`}>
@@ -51,7 +44,7 @@ const FileColumn = ({
           </Button>
         )}
       </Table.Cell>
-      <Table.Cell>{file ? fileSize(file.size) : '-'}</Table.Cell>
+      <Table.Cell>{file ? fileSize : '-'}</Table.Cell>
       <Table.Cell>{file && <DeleteButton onDelete={onDelete} />}</Table.Cell>
     </Table.Row>
   );
@@ -61,6 +54,8 @@ export const ModelInputFilesTable = ({
   fileDisplay,
   files,
   setFiles,
+  fileSize,
+  fileChange,
 }: {
   fileDisplay: FileDisplay;
   files: { NC?: File; INI?: File };
@@ -70,15 +65,9 @@ export const ModelInputFilesTable = ({
       INI?: File | undefined;
     }>
   >;
+  fileSize: number;
+  fileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
-  function updateFileDisplay(e: ChangeEvent<HTMLInputElement>) {
-    e.preventDefault();
-    if (!e.target.files) return;
-    const file = e.target.files[0];
-    const type = e.target.name;
-    setFiles({ ...files, [type]: file });
-  }
-
   return (
     <Table>
       <Table.Head>
@@ -92,13 +81,14 @@ export const ModelInputFilesTable = ({
       <Table.Body>
         <FileColumn
           file={files?.NC}
-          onChange={updateFileDisplay}
+          onChange={fileChange}
           onDelete={() => setFiles({ ...files, NC: undefined })}
+          fileSize={fileSize}
         />
         <FileColumn
           INI
           file={files?.INI}
-          onChange={updateFileDisplay}
+          onChange={fileChange}
           onDelete={() => setFiles({ ...files, INI: undefined })}
           fileDisplay={fileDisplay}
         />

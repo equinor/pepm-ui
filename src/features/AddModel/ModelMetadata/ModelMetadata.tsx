@@ -21,10 +21,17 @@ export const ModelMetadata = ({
   setMetadata: (metadata: Partial<MetadataProps>) => void;
 }) => {
   const fields = {
-    field: ['Tor', 'Pål'],
-    zone: ['Zone 1', 'Zone 2', 'Zone 3'],
-    formation: ['Rocky', 'Hilly', 'Flat'],
-    analogue: ['Analouge1', 'Analouge2'],
+    field: [
+      'Breidablikk',
+      'Gullfaks',
+      'Heidrun',
+      'Johan Sverdrup',
+      'Oseberg',
+      'Tordis',
+    ],
+    zone: ['Norwegian sea', 'North sea', 'Barents sea'],
+    formation: ['Formation1', 'Formation2', 'Formation3', 'Formation4'],
+    analogue: ['Analouge1', 'Analouge2', 'Analouge3', 'Analouge4'],
   };
 
   const { isLoading, data } = useQuery({
@@ -42,25 +49,34 @@ export const ModelMetadata = ({
     <Styled.ModelMetadata className="model-metadata">
       <Typography variant="h4">Description and metadata</Typography>
       <Styled.Form>
-        <Styled.TextInput
-          id="model-name"
-          label="Model Name (optional)"
-          value={metadata?.name}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-            setMetadata({ ...metadata, name: e.currentTarget.value })
-          }
-        />
-        <Styled.TextInput
-          id="model-description"
-          label="Model description (optional)"
-          value={metadata?.description}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-            setMetadata({ ...metadata, description: e.currentTarget.value })
-          }
-          multiline
-          rows={4}
-          rowsMax={8}
-        />
+        <Styled.InputfieldRequired>
+          <Styled.TextInput
+            className={`${errors.name && 'model-required'}`}
+            id="model-name"
+            label="Model Name (optional)"
+            value={metadata?.name}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+              setMetadata({ ...metadata, name: e.currentTarget.value })
+            }
+          />
+          {errors.name && <Label label="This field is required"></Label>}
+        </Styled.InputfieldRequired>
+        <Styled.InputfieldRequired>
+          <Styled.TextInput
+            className={`${errors.description && 'model-required'}`}
+            id="model-description"
+            label="Model description (optional)"
+            value={metadata?.description}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+              setMetadata({ ...metadata, description: e.currentTarget.value })
+            }
+            multiline
+            rows={4}
+            rowsMax={8}
+          />
+          {errors.description && <Label label="This field is required"></Label>}
+        </Styled.InputfieldRequired>
+
         <Styled.AutocompleteWrapper>
           <Styled.AutocompleteRow>
             <Styled.Required>

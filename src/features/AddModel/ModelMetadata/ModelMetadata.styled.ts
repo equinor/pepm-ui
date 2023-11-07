@@ -34,6 +34,18 @@ export const TextInput = styled(TextField)`
   display: flex;
   flex-direction: column;
 `;
+export const InputfieldRequired = styled.div`
+  > label {
+    color: red;
+  }
+
+  > .model-required {
+    > div {
+      border: solid 2px red;
+    }
+  }
+`;
+
 export const Required = styled.div`
   > label {
     color: red;
