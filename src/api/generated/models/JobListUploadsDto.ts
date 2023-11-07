@@ -11,3 +11,4 @@ export type JobListUploadsDto = {
     uploadStatus: UploadStatus;
     uploadFileType: UploadFileType;
 };
+

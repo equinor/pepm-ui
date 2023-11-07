@@ -12,3 +12,4 @@ export type AddAnalogueModelParameterCommandResponse = {
     validationErrors?: Array<string> | null;
     data: AddAnalogueModelParameterDto;
 };
+

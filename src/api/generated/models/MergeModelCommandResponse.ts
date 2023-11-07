@@ -3,11 +3,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type ErrorResponse = {
+import type { MergeModelDto } from './MergeModelDto';
+
+export type MergeModelCommandResponse = {
     success?: boolean;
     count?: number | null;
     message?: string | null;
     validationErrors?: Array<string> | null;
-    data: string;
+    data: MergeModelDto;
 };
 

@@ -33,13 +33,13 @@ export class AnalogueModelsService {
 
     /**
      * Create new Analogue Model
-     * @param requestBody 
+     * @param requestBody
      * @returns CreateAnalogueModelCommandResponse Success
      * @throws ApiError
      */
     public static postApiAnalogueModels(
-requestBody?: CreateAnalogueModelCommand,
-): CancelablePromise<CreateAnalogueModelCommandResponse> {
+        requestBody?: CreateAnalogueModelCommand,
+    ): CancelablePromise<CreateAnalogueModelCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/analogue-models',
@@ -53,13 +53,13 @@ requestBody?: CreateAnalogueModelCommand,
 
     /**
      * Get AnalogueModel by id
-     * @param id 
+     * @param id
      * @returns GetAnalogueModelQueryResponse Success
      * @throws ApiError
      */
     public static getApiAnalogueModels1(
-id: string,
-): CancelablePromise<GetAnalogueModelQueryResponse> {
+        id: string,
+    ): CancelablePromise<GetAnalogueModelQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/analogue-models/{id}',
@@ -71,15 +71,15 @@ id: string,
 
     /**
      * Patch a AnalogueModel by Id with new values
-     * @param id 
-     * @param requestBody 
+     * @param id
+     * @param requestBody
      * @returns PatchAnalogueModelCommandResponse Success
      * @throws ApiError
      */
     public static patchApiAnalogueModels(
-id: string,
-requestBody?: Array<Operation>,
-): CancelablePromise<PatchAnalogueModelCommandResponse> {
+        id: string,
+        requestBody?: Array<Operation>,
+    ): CancelablePromise<PatchAnalogueModelCommandResponse> {
         return __request(OpenAPI, {
             method: 'PATCH',
             url: '/api/analogue-models/{id}',
@@ -97,15 +97,15 @@ requestBody?: Array<Operation>,
 
     /**
      * Update AnalogueModel by Id
-     * @param id 
-     * @param requestBody 
+     * @param id
+     * @param requestBody
      * @returns UpdateAnalogueModelCommandResponse Success
      * @throws ApiError
      */
     public static putApiAnalogueModels(
-id: string,
-requestBody?: UpdateAnalogueModelCommandBody,
-): CancelablePromise<UpdateAnalogueModelCommandResponse> {
+        id: string,
+        requestBody?: UpdateAnalogueModelCommandBody,
+    ): CancelablePromise<UpdateAnalogueModelCommandResponse> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/analogue-models/{id}',
@@ -123,13 +123,13 @@ requestBody?: UpdateAnalogueModelCommandBody,
 
     /**
      * Delete a AnalogueModel by id
-     * @param id 
-     * @returns void 
+     * @param id
+     * @returns void
      * @throws ApiError
      */
     public static deleteApiAnalogueModels(
-id: string,
-): CancelablePromise<void> {
+        id: string,
+    ): CancelablePromise<void> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/api/analogue-models/{id}',
@@ -145,18 +145,18 @@ id: string,
 
     /**
      * Upload model files that later can be converted to PEPM models.
-     * @param id 
-     * @param formData 
+     * @param id
+     * @param formData
      * @returns UploadAnalogueModelCommandResponse Success
      * @throws ApiError
      */
     public static postApiAnalogueModelsInputModels(
-id: string,
-formData?: {
-File: Blob;
-FileType: UploadFileType;
-},
-): CancelablePromise<UploadAnalogueModelCommandResponse> {
+        id: string,
+        formData?: {
+            File: Blob;
+            FileType: UploadFileType;
+        },
+    ): CancelablePromise<UploadAnalogueModelCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/analogue-models/{id}/input-models',
@@ -170,17 +170,17 @@ FileType: UploadFileType;
 
     /**
      * Upload NetCDF model files that later can be converted to PEPM models.
-     * @param id 
-     * @param formData 
+     * @param id
+     * @param formData
      * @returns UploadAnalogueModelCommandResponse Success
      * @throws ApiError
      */
     public static postApiAnalogueModelsNetcdfModels(
-id: string,
-formData?: {
-file?: Blob;
-},
-): CancelablePromise<UploadAnalogueModelCommandResponse> {
+        id: string,
+        formData?: {
+            file?: Blob;
+        },
+    ): CancelablePromise<UploadAnalogueModelCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/analogue-models/{id}/netcdf-models',

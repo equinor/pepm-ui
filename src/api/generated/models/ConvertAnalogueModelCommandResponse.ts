@@ -12,3 +12,4 @@ export type ConvertAnalogueModelCommandResponse = {
     validationErrors?: Array<string> | null;
     data: ConvertAnalogueModelDto;
 };
+

@@ -12,3 +12,4 @@ export type ConvertAnalogueModelDto = {
     jobStatus: JobStatus;
     jobType: JobType;
 };
+

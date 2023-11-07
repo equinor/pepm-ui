@@ -8,3 +8,4 @@ export type CreateAnalogueModelDto = {
     name: string;
     description?: string | null;
 };
+

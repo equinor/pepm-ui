@@ -8,3 +8,4 @@ export type UpdateAnalogueModelCommandBody = {
     description?: string | null;
     sourceType: string;
 };
+

@@ -12,3 +12,4 @@ export type GetAnalogueListQueryResponse = {
     validationErrors?: Array<string> | null;
     data: Array<AnalogueList>;
 };
+

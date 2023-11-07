@@ -12,15 +12,15 @@ import { request as __request } from '../core/request';
 export class AnalogueModelParametersService {
 
     /**
-     * @param id 
-     * @param requestBody 
+     * @param id
+     * @param requestBody
      * @returns AddAnalogueModelParameterCommandResponse Success
      * @throws ApiError
      */
     public static postApiAnalogueModelsParameters(
-id: string,
-requestBody?: AddAnalogueModelParameterCommandForm,
-): CancelablePromise<AddAnalogueModelParameterCommandResponse> {
+        id: string,
+        requestBody?: AddAnalogueModelParameterCommandForm,
+    ): CancelablePromise<AddAnalogueModelParameterCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/analogue-models/{id}/parameters',

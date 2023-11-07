@@ -12,3 +12,4 @@ export type GetParameterListQueryResponse = {
     validationErrors?: Array<string> | null;
     data: Array<ParameterList>;
 };
+

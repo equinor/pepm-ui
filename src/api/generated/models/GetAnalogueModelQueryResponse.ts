@@ -12,3 +12,4 @@ export type GetAnalogueModelQueryResponse = {
     validationErrors?: Array<string> | null;
     data: AnalogueModelDetail;
 };
+

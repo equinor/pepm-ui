@@ -12,3 +12,4 @@ export type GetCurrentJobStatusCommandResponse = {
     validationErrors?: Array<string> | null;
     data: GetCurrentJobStatusDto;
 };
+

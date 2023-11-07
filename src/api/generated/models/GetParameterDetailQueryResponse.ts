@@ -12,3 +12,4 @@ export type GetParameterDetailQueryResponse = {
     validationErrors?: Array<string> | null;
     data: ParameterDetail;
 };
+

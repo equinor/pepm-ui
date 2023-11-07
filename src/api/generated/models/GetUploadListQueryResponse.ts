@@ -12,3 +12,4 @@ export type GetUploadListQueryResponse = {
     validationErrors?: Array<string> | null;
     data: Array<UploadList>;
 };
+

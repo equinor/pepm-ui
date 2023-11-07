@@ -12,3 +12,4 @@ export type AddAnalogueModelParameterDto = {
     sourceType?: string | null;
     parameters?: Array<AddParameterDto> | null;
 };
+

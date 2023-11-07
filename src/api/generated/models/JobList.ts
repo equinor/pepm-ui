@@ -15,3 +15,4 @@ export type JobList = {
     updated: string;
     uploads?: Array<JobListUploadsDto> | null;
 };
+

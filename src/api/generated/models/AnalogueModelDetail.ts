@@ -16,3 +16,4 @@ export type AnalogueModelDetail = {
     analogues: Array<AnalogueList>;
     fileUploads: Array<UploadList>;
 };
+

@@ -12,3 +12,4 @@ export type PatchAnalogueModelCommandResponse = {
     validationErrors?: Array<string> | null;
     data: PatchAnalogueModelDto;
 };
+

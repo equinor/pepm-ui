@@ -12,3 +12,4 @@ export type JobDetail = {
     jobStatus?: JobStatus;
     jobType?: JobType;
 };
+

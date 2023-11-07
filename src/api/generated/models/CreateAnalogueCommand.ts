@@ -7,3 +7,4 @@ export type CreateAnalogueCommand = {
     name: string;
     description?: string | null;
 };
+

@@ -12,3 +12,4 @@ export type GetUploadDetailQueryResponse = {
     validationErrors?: Array<string> | null;
     data: UploadDetail;
 };
+

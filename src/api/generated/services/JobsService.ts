@@ -29,13 +29,13 @@ export class JobsService {
     }
 
     /**
-     * @param id 
+     * @param id
      * @returns GetJobDetailQueryResponse Success
      * @throws ApiError
      */
     public static getApiJobs1(
-id: string,
-): CancelablePromise<GetJobDetailQueryResponse> {
+        id: string,
+    ): CancelablePromise<GetJobDetailQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/jobs/{id}',
@@ -47,13 +47,13 @@ id: string,
 
     /**
      * Get current job status for job. This will fetch current status from underlying compute engine and update the status for the supplied Job Id.
-     * @param id 
+     * @param id
      * @returns GetCurrentJobStatusCommandResponse Success
      * @throws ApiError
      */
     public static getApiJobsStatus(
-id: string,
-): CancelablePromise<GetCurrentJobStatusCommandResponse> {
+        id: string,
+    ): CancelablePromise<GetCurrentJobStatusCommandResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/jobs/{id}/status',
@@ -65,13 +65,13 @@ id: string,
 
     /**
      * Update current job status for job. This will fetch current status from underlying compute engine and update the status for the supplied Job Name.
-     * @param requestBody 
+     * @param requestBody
      * @returns ConvertAnalogueModelCommandResponse Success
      * @throws ApiError
      */
     public static postApiJobsStatus(
-requestBody?: UpdateJobStatusCommand,
-): CancelablePromise<ConvertAnalogueModelCommandResponse> {
+        requestBody?: UpdateJobStatusCommand,
+    ): CancelablePromise<ConvertAnalogueModelCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/jobs/status',
@@ -94,13 +94,13 @@ requestBody?: UpdateJobStatusCommand,
 
     /**
      * Convert AnalogueModels to the internal format used by PEPM in order to perform calculations.
-     * @param requestBody 
+     * @param requestBody
      * @returns any Accepted
      * @throws ApiError
      */
     public static postApiJobsComputeModelConversions(
-requestBody?: ConvertAnalogueModelCommand,
-): CancelablePromise<any> {
+        requestBody?: ConvertAnalogueModelCommand,
+    ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/jobs/compute/model-conversions',
@@ -111,13 +111,13 @@ requestBody?: ConvertAnalogueModelCommand,
 
     /**
      * Estimate channel on a Deltares based model.
-     * @param requestBody 
+     * @param requestBody
      * @returns any Accepted
      * @throws ApiError
      */
     public static postApiJobsComputeChannelEstimations(
-requestBody?: EstimateChannelCommand,
-): CancelablePromise<any> {
+        requestBody?: EstimateChannelCommand,
+    ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/jobs/compute/channel-estimations',

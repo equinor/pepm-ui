@@ -8,3 +8,4 @@ export type PatchAnalogueModelDto = {
     name: string;
     description?: string | null;
 };
+
