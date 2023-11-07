@@ -22,10 +22,13 @@ export default interface MetadataProps {
 }
 
 export type ErrorType = {
+  name?: string;
+  description?: string;
   field?: string;
   formation?: string;
   file?: string;
 };
+
 export const AddModelDialog = ({
   isOpen,
   confirm,
@@ -39,9 +42,15 @@ export const AddModelDialog = ({
   const [metadata, setMetadata] = useState<Partial<MetadataProps>>({
     name: '',
     description: '',
+    field: [],
+    zone: [],
+    formation: [],
+    analogue: [],
   });
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
+  const [fileSize, setFileSize] = useState(0);
+  const [rawFile, setrawFile] = useState<File>();
 
   function toggleINIFileContent() {
     setFileDisplay(!isFileDisplay);
@@ -51,6 +60,18 @@ export const AddModelDialog = ({
 
   const validateValues = (inputValues: Partial<MetadataProps> | undefined) => {
     const errors: ErrorType = {};
+
+    if (inputValues?.name === undefined || inputValues?.name === '') {
+      errors.name = 'Name not provided';
+    }
+
+    if (
+      inputValues?.description === undefined ||
+      inputValues?.description === ''
+    ) {
+      errors.description = 'Description not provided';
+    }
+
     if (inputValues?.field === undefined || inputValues?.field?.length === 0) {
       errors.field = 'Field not selected';
     }
@@ -65,6 +86,7 @@ export const AddModelDialog = ({
     if (!files.NC) {
       errors.file = 'NC file missing';
     }
+
     return errors;
   };
 
@@ -84,6 +106,19 @@ export const AddModelDialog = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [errors, submitting]);
 
+  useEffect(() => {
+    if (rawFile === undefined) return;
+    setFileSize(rawFile.size);
+  }, [rawFile]);
+
+  const fileAdded = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const file = e.target.files[0];
+    const type = e.target.name;
+    setFiles({ ...files, [type]: file });
+    setrawFile(e.target.files[0]);
+  };
+
   return (
     <Styled.Dialog open={isOpen}>
       <Styled.Dialog.Header>
@@ -97,6 +132,8 @@ export const AddModelDialog = ({
             isVisible: isFileDisplay,
             toggle: toggleINIFileContent,
           }}
+          fileSize={fileSize}
+          fileChange={fileAdded}
         />
         {isFileDisplay && <INIFileContent />}
         <ModelMetadata
