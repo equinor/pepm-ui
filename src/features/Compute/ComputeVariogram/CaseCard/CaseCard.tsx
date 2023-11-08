@@ -32,7 +32,7 @@ export const CaseCard = ({
   id: string;
   caseType: string;
   removeCase: (id: string) => void;
-  runCase: () => void;
+  runCase?: () => void;
 }) => {
   const [selectedModelArea, setModelArea] = useState<optionTypes>();
   const [selectedComputeMethod, setComputeMethod] = useState<optionTypes>();

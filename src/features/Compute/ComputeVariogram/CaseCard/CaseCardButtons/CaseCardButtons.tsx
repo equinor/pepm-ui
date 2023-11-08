@@ -8,7 +8,7 @@ export const CaseCardButtons = ({
 }: {
   id: string;
   removeCase: (id: string) => void;
-  runCase: () => void;
+  runCase?: () => void;
 }) => {
   return (
     <Styled.ButtonDiv>
