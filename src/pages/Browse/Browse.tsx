@@ -76,7 +76,7 @@ export const Browse = () => {
     const ModelBody: CreateAnalogueModelCommand = {
       name: metadata.name ? metadata.name : '',
       description: metadata.description,
-      sourceType: 'ResQML',
+      sourceType: 'Deltares',
     };
 
     const modelUpload = await createModel.mutateAsync(ModelBody);
