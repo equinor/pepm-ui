@@ -24,13 +24,15 @@ export default interface optionTypes {
 export const CaseCard = ({
   name,
   id,
-  removeCase,
   caseType,
+  removeCase,
+  runCase,
 }: {
   name: string;
   id: string;
-  removeCase: (id: string) => void;
   caseType: string;
+  removeCase: (id: string) => void;
+  runCase: () => void;
 }) => {
   const [selectedModelArea, setModelArea] = useState<optionTypes>();
   const [selectedComputeMethod, setComputeMethod] = useState<optionTypes>();
@@ -69,19 +71,6 @@ export const CaseCard = ({
     { id: 14, name: 'Continuous parameter' },
   ];
   const objectComputeMethods: optionTypes[] = [{ id: 15, name: 'Channel' }];
-
-  const runCase = () => {
-    // eslint-disable-next-line no-console
-    console.log(selectedModelArea);
-    // eslint-disable-next-line no-console
-    console.log(selectedComputeMethod);
-    // eslint-disable-next-line no-console
-    console.log(selectedGrainSize);
-    // eslint-disable-next-line no-console
-    console.log(selectedVariogramModels);
-    // eslint-disable-next-line no-console
-    console.log(selectedParameters);
-  };
 
   return (
     <CaseCardComponent title={name}>

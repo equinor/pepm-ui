@@ -1,6 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
 import { useState } from 'react';
-
 import { CaseCard } from '../../../../features/Compute/ComputeVariogram/CaseCard/CaseCard';
 import { ComputeCaseInfoActions } from '../../../../features/Compute/ComputeVariogram/ComputeCaseInfoActions/ComputeCaseInfoActions';
 import * as Styled from './ComputeVariogram.styled';
@@ -16,6 +15,7 @@ export interface CaseInfoTyoe {
   addText: string;
   runText: string;
 }
+
 export const ComputeVariogram = () => {
   const [cases, setCases] = useState<Casetype[]>([
     { id: '1', name: 'Variogram Case 1' },
@@ -41,6 +41,10 @@ export const ComputeVariogram = () => {
     setCases(newCaseList);
   };
 
+  const runComputeVariogram = () => {
+    console.log('variogram run');
+  };
+
   return (
     <Styled.Case>
       <ComputeCaseInfoActions addCase={addCase} caseInfo={variogramCaseInfo} />
@@ -50,8 +54,9 @@ export const ComputeVariogram = () => {
             key={c.id}
             id={c.id}
             name={c.name}
-            removeCase={removeCase}
             caseType={'variogram'}
+            removeCase={removeCase}
+            runCase={runComputeVariogram}
           />
         ))
       ) : (
