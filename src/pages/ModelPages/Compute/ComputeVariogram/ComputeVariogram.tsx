@@ -41,10 +41,6 @@ export const ComputeVariogram = () => {
     setCases(newCaseList);
   };
 
-  const runComputeVariogram = () => {
-    console.log('variogram run');
-  };
-
   return (
     <Styled.Case>
       <ComputeCaseInfoActions addCase={addCase} caseInfo={variogramCaseInfo} />
@@ -56,7 +52,6 @@ export const ComputeVariogram = () => {
             name={c.name}
             caseType={'variogram'}
             removeCase={removeCase}
-            runCase={runComputeVariogram}
           />
         ))
       ) : (
