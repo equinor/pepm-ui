@@ -88,12 +88,14 @@ export const Browse = () => {
       if (file === undefined) return;
 
       const fileType = UploadFileType.NET_CDF;
+      const filenameExtention = file.name.split('.').pop();
+      const fileExtention = '.' + filenameExtention;
 
       const data = {
         ModelId: id,
         FileSize: file.size,
         FileName: file.name,
-        FileExtension: 'test',
+        FileExtension: fileExtention,
         FileType: fileType,
       };
 
