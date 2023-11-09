@@ -75,12 +75,16 @@ spec:
                 protocol: fuse2
                 container: models
                 uid: 1000
+              streaming:
+                enabled: false
             - name: pepm-nrresqml-worker-storage-dev
               path: /mnt/azure-storage/worker
               blobfuse2:
                 protocol: fuse2
                 container: nrresqml
                 uid: 1000
+              streaming:
+                enabled: false
     - name: pepm-nrchannest
       image: ghcr.io/equinor/pepm-worker-api/pepm-nrchannest:latest
       schedulerPort: 8090
@@ -104,12 +108,16 @@ spec:
                 protocol: fuse2
                 container: models
                 uid: 1000
+              streaming:
+                enabled: false
             - name: pepm-nrchannest-worker-storage-dev
               path: /mnt/azure-storage/worker
               blobfuse2:
                 protocol: fuse2
                 container: nrchannest
                 uid: 1000
+              streaming:
+                enabled: false
   privateImageHubs:
     ghcr.io:
       username: hakoneriksson
