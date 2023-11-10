@@ -40,6 +40,7 @@ export const Browse = () => {
   const [uploadId, setUploadId] = useState<string>('');
   const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false);
   const [uploadStatus, setUploadStatus] = useState<string>();
+  const [refetch, setRefetch] = useState<number>(0);
 
   const createModel = useMutation({
     mutationFn: AnalogueModelsService.postApiAnalogueModels,
@@ -84,6 +85,7 @@ export const Browse = () => {
     if (createModel.error === null && modelUpload.success) {
       const id = modelUpload.data.analogueModelId;
       setModelId(id);
+      setRefetch(refetch + 1);
 
       if (file === undefined) return;
 
@@ -195,7 +197,7 @@ export const Browse = () => {
         <div className="btn-div">
           <Button onClick={toggleDialog}>Add new model</Button>
         </div>
-        <Table />
+        <Table refetch={refetch} />
       </Styled.BrowseWrapper>
       <AddModelDialog
         isOpen={isAddModelDialog}
