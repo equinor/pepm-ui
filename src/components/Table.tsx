@@ -10,14 +10,14 @@ import { useAccessToken } from '../hooks/useAccessToken';
 import { AreaCoordinates } from './AreaCoordinates/AreaCoordinates';
 import * as Styled from './Table.styled';
 
-export const Table = () => {
+export const Table = ({ refetch }: { refetch: number }) => {
   const { instance, accounts } = useMsal();
   const token = useAccessToken(instance, accounts[0]);
 
   const [toggle, setToggle] = useState<boolean>(false);
   const [activeModel, setActiveModel] = useState<string>();
   const { isLoading, data } = useQuery({
-    queryKey: ['analogue-models'],
+    queryKey: ['analogue-models', refetch],
     queryFn: () => AnalogueModelsService.getApiAnalogueModels(),
     enabled: !!token,
   });
