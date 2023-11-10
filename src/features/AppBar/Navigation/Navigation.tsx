@@ -1,13 +1,19 @@
 import { Tabs } from '@equinor/eds-core-react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { tabs } from '../../../router';
 import * as Styled from './Navigation.styled';
 
 export const Navigation = () => {
   const navigate = useNavigate();
+
   const active = tabs.find(
     (tab) => `/${tab.path}` === window.location.pathname,
   );
+
+  useEffect(() => {
+    if (!active) navigate('models');
+  }, [active, navigate]);
 
   function clickTab(tab: number) {
     navigate(tabs[tab].path);
