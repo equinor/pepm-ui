@@ -12,8 +12,9 @@ export const Navigation = () => {
   );
 
   useEffect(() => {
-    if (!active) navigate('models');
-  }, [active, navigate]);
+    const currentURL = window.location.pathname;
+    if (currentURL === '/') navigate('models');
+  }, [navigate]);
 
   function clickTab(tab: number) {
     navigate(tabs[tab].path);
