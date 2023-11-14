@@ -197,7 +197,7 @@ export const Browse = () => {
         <div className="btn-div">
           <Button onClick={toggleDialog}>Add new model</Button>
         </div>
-        <Table refetch={refetch} />
+        <Table refetchKey={refetch} />
       </Styled.BrowseWrapper>
       <AddModelDialog
         isOpen={isAddModelDialog}
