@@ -5,24 +5,24 @@ import { EdsDataGrid } from '@equinor/eds-data-grid-react';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AnalogueModelsService } from '../api/generated';
+import { AnalogueModelsService, OpenAPI } from '../api/generated';
 import { useAccessToken } from '../hooks/useAccessToken';
 import { AreaCoordinates } from './AreaCoordinates/AreaCoordinates';
 import * as Styled from './Table.styled';
 
-export const Table = ({ refetch }: { refetch: number }) => {
+export const Table = ({ refetchKey }: { refetchKey: number }) => {
   const { instance, accounts } = useMsal();
   const token = useAccessToken(instance, accounts[0]);
+  if (token) OpenAPI.TOKEN = token;
+  const navigate = useNavigate();
 
   const [toggle, setToggle] = useState<boolean>(false);
   const [activeModel, setActiveModel] = useState<string>();
   const { isLoading, data } = useQuery({
-    queryKey: ['analogue-models', refetch],
+    queryKey: ['analogue-models', refetchKey],
     queryFn: () => AnalogueModelsService.getApiAnalogueModels(),
     enabled: !!token,
   });
-
-  const navigate = useNavigate();
 
   if (isLoading || !data?.success) return <p>Loading...</p>;
 
