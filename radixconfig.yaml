@@ -65,7 +65,8 @@ spec:
       payload:
         path: /app/args
       variables:
-        MODELS_PATH: '/mnt/azure-storage/models'
+        MODEL_FOLDER: '/mnt/azure-storage/models'
+        WORKER_FOLDER: '/mnt/azure-storage/worker'
       environmentConfig:
         - environment: dev
           volumeMounts:
@@ -98,7 +99,8 @@ spec:
       payload:
         path: /app/args
       variables:
-        MODELS_PATH: '/mnt/azure-storage/models'
+        MODEL_FOLDER: '/mnt/azure-storage/models'
+        WORKER_FOLDER: '/mnt/azure-storage/worker'
       environmentConfig:
         - environment: dev
           volumeMounts:
@@ -115,6 +117,40 @@ spec:
               blobfuse2:
                 protocol: fuse2
                 container: nrchannest
+                uid: 1000
+              streaming:
+                enabled: false
+    - name: pepm-nrvargrest
+      image: ghcr.io/equinor/pepm-worker-api/pepm-nrvargrest:latest
+      schedulerPort: 8090
+      resources:
+        requests:
+          memory: '4096Mi'
+          cpu: '1000m'
+        limits:
+          memory: '8192Mi'
+          cpu: '2000m'
+      payload:
+        path: /app/args
+      variables:
+        MODEL_FOLDER: '/mnt/azure-storage/models'
+        WORKER_FOLDER: '/mnt/azure-storage/worker'
+      environmentConfig:
+        - environment: dev
+          volumeMounts:
+            - name: pepm-nrvargrest-model-storage-dev
+              path: /mnt/azure-storage/models
+              blobfuse2:
+                protocol: fuse2
+                container: models
+                uid: 1000
+              streaming:
+                enabled: false
+            - name: pepm-nrvargrest-worker-storage-dev
+              path: /mnt/azure-storage/worker
+              blobfuse2:
+                protocol: fuse2
+                container: nrvargrest
                 uid: 1000
               streaming:
                 enabled: false
