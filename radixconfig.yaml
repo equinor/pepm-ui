@@ -65,7 +65,8 @@ spec:
       payload:
         path: /app/args
       variables:
-        MODELS_PATH: '/mnt/azure-storage/models'
+        MODEL_FOLDER: '/mnt/azure-storage/models'
+        WORKER_FOLDER: '/mnt/azure-storage/worker'
       environmentConfig:
         - environment: dev
           volumeMounts:
@@ -98,7 +99,8 @@ spec:
       payload:
         path: /app/args
       variables:
-        MODELS_PATH: '/mnt/azure-storage/models'
+        MODEL_FOLDER: '/mnt/azure-storage/models'
+        WORKER_FOLDER: '/mnt/azure-storage/worker'
       environmentConfig:
         - environment: dev
           volumeMounts:
@@ -131,7 +133,8 @@ spec:
       payload:
         path: /app/args
       variables:
-        MODELS_PATH: '/mnt/azure-storage/models'
+        MODEL_FOLDER: '/mnt/azure-storage/models'
+        WORKER_FOLDER: '/mnt/azure-storage/worker'
       environmentConfig:
         - environment: dev
           volumeMounts:
