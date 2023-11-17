@@ -18,11 +18,11 @@ spec:
         - name: http
           port: 3000
       variables:
-        REACT_APP_AAD_TENANT_ID: ''
-        REACT_APP_AAD_CLIENT_ID: ''
-        REACT_APP_AAD_REDIRECT_URI: ''
-        REACT_APP_BACKEND_URL: ''
-        REACT_APP_BACKEND_API_SCOPE: ''
+        REACT_APP_AAD_TENANT_ID: ""
+        REACT_APP_AAD_CLIENT_ID: ""
+        REACT_APP_AAD_REDIRECT_URI: ""
+        REACT_APP_BACKEND_URL: ""
+        REACT_APP_BACKEND_API_SCOPE: ""
       environmentConfig:
         - environment: dev
         - environment: test
@@ -42,31 +42,31 @@ spec:
         - environment: dev
           imageTagName: latest
           variables:
-            ASPNETCORE_ENVIRONMENT: 'Development'
+            ASPNETCORE_ENVIRONMENT: "Development"
         - environment: test
           imageTagName: latest
           variables:
-            ASPNETCORE_ENVIRONMENT: 'Test'
+            ASPNETCORE_ENVIRONMENT: "Test"
         - environment: prod
           imageTagName: latest
           variables:
-            ASPNETCORE_ENVIRONMENT: 'Production'
+            ASPNETCORE_ENVIRONMENT: "Production"
   jobs:
     - name: pepm-nrresqml
       image: ghcr.io/equinor/pepm-worker-api/pepm-nrresqml:latest
       schedulerPort: 8090
       resources:
         requests:
-          memory: '2048Mi'
-          cpu: '1000m'
+          memory: "2048Mi"
+          cpu: "1000m"
         limits:
-          memory: '4096Mi'
-          cpu: '2000m'
+          memory: "4096Mi"
+          cpu: "2000m"
       payload:
         path: /app/args
       variables:
-        MODEL_FOLDER: '/mnt/azure-storage/models'
-        WORKER_FOLDER: '/mnt/azure-storage/worker'
+        MODEL_FOLDER: "/mnt/azure-storage/models"
+        WORKER_FOLDER: "/mnt/azure-storage/worker"
       environmentConfig:
         - environment: dev
           volumeMounts:
@@ -76,6 +76,7 @@ spec:
                 protocol: fuse2
                 container: models
                 uid: 1000
+                accessMode: ReadWriteMany
               streaming:
                 enabled: false
             - name: pepm-nrresqml-worker-storage-dev
@@ -84,6 +85,7 @@ spec:
                 protocol: fuse2
                 container: nrresqml
                 uid: 1000
+                accessMode: ReadWriteMany
               streaming:
                 enabled: false
     - name: pepm-nrchannest
@@ -91,16 +93,16 @@ spec:
       schedulerPort: 8090
       resources:
         requests:
-          memory: '4096Mi'
-          cpu: '1000m'
+          memory: "4096Mi"
+          cpu: "1000m"
         limits:
-          memory: '8192Mi'
-          cpu: '2000m'
+          memory: "8192Mi"
+          cpu: "2000m"
       payload:
         path: /app/args
       variables:
-        MODEL_FOLDER: '/mnt/azure-storage/models'
-        WORKER_FOLDER: '/mnt/azure-storage/worker'
+        MODEL_FOLDER: "/mnt/azure-storage/models"
+        WORKER_FOLDER: "/mnt/azure-storage/worker"
       environmentConfig:
         - environment: dev
           volumeMounts:
@@ -110,6 +112,7 @@ spec:
                 protocol: fuse2
                 container: models
                 uid: 1000
+                accessMode: ReadWriteMany
               streaming:
                 enabled: false
             - name: pepm-nrchannest-worker-storage-dev
@@ -118,6 +121,7 @@ spec:
                 protocol: fuse2
                 container: nrchannest
                 uid: 1000
+                accessMode: ReadWriteMany
               streaming:
                 enabled: false
     - name: pepm-nrvargrest
@@ -125,16 +129,16 @@ spec:
       schedulerPort: 8090
       resources:
         requests:
-          memory: '4096Mi'
-          cpu: '1000m'
+          memory: "4096Mi"
+          cpu: "1000m"
         limits:
-          memory: '8192Mi'
-          cpu: '2000m'
+          memory: "8192Mi"
+          cpu: "2000m"
       payload:
         path: /app/args
       variables:
-        MODEL_FOLDER: '/mnt/azure-storage/models'
-        WORKER_FOLDER: '/mnt/azure-storage/worker'
+        MODEL_FOLDER: "/mnt/azure-storage/models"
+        WORKER_FOLDER: "/mnt/azure-storage/worker"
       environmentConfig:
         - environment: dev
           volumeMounts:
@@ -144,6 +148,7 @@ spec:
                 protocol: fuse2
                 container: models
                 uid: 1000
+                accessMode: ReadWriteMany
               streaming:
                 enabled: false
             - name: pepm-nrvargrest-worker-storage-dev
@@ -152,6 +157,7 @@ spec:
                 protocol: fuse2
                 container: nrvargrest
                 uid: 1000
+                accessMode: ReadWriteMany
               streaming:
                 enabled: false
   privateImageHubs:
