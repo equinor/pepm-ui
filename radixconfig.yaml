@@ -78,8 +78,8 @@ spec:
                 uid: 1000
                 accessMode: ReadWriteMany
                 useAdls: true
-              streaming:
-                enabled: false
+                streaming:
+                  enabled: false
             - name: pepm-nrresqml-worker-storage-dev
               path: /mnt/azure-storage/worker
               blobfuse2:
@@ -88,8 +88,8 @@ spec:
                 uid: 1000
                 accessMode: ReadWriteMany
                 useAdls: true
-              streaming:
-                enabled: false
+                streaming:
+                  enabled: false
     - name: pepm-nrchannest
       image: ghcr.io/equinor/pepm-worker-api/pepm-nrchannest:latest
       schedulerPort: 8090
@@ -116,6 +116,8 @@ spec:
                 uid: 1000
                 accessMode: ReadWriteMany
                 useAdls: true
+                streaming:
+                  enabled: false
 
             - name: pepm-nrchannest-worker-storage-dev
               path: /mnt/azure-storage/worker
@@ -125,6 +127,8 @@ spec:
                 uid: 1000
                 accessMode: ReadWriteMany
                 useAdls: true
+                streaming:
+                  enabled: false
 
     - name: pepm-nrvargrest
       image: ghcr.io/equinor/pepm-worker-api/pepm-nrvargrest:latest
@@ -152,6 +156,8 @@ spec:
                 uid: 1000
                 accessMode: ReadWriteMany
                 useAdls: true
+                streaming:
+                  enabled: false
 
             - name: pepm-nrvargrest-worker-storage-dev
               path: /mnt/azure-storage/worker
@@ -161,6 +167,8 @@ spec:
                 uid: 1000
                 accessMode: ReadWriteMany
                 useAdls: true
+                streaming:
+                  enabled: false
 
   privateImageHubs:
     ghcr.io:
