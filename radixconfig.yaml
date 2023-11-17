@@ -77,6 +77,7 @@ spec:
                 container: models
                 uid: 1000
                 accessMode: ReadWriteMany
+                useAdls: true
               streaming:
                 enabled: false
             - name: pepm-nrresqml-worker-storage-dev
@@ -86,6 +87,7 @@ spec:
                 container: nrresqml
                 uid: 1000
                 accessMode: ReadWriteMany
+                useAdls: true
               streaming:
                 enabled: false
     - name: pepm-nrchannest
@@ -113,8 +115,8 @@ spec:
                 container: models
                 uid: 1000
                 accessMode: ReadWriteMany
-              streaming:
-                enabled: false
+                useAdls: true
+
             - name: pepm-nrchannest-worker-storage-dev
               path: /mnt/azure-storage/worker
               blobfuse2:
@@ -122,8 +124,8 @@ spec:
                 container: nrchannest
                 uid: 1000
                 accessMode: ReadWriteMany
-              streaming:
-                enabled: false
+                useAdls: true
+
     - name: pepm-nrvargrest
       image: ghcr.io/equinor/pepm-worker-api/pepm-nrvargrest:latest
       schedulerPort: 8090
@@ -149,8 +151,8 @@ spec:
                 container: models
                 uid: 1000
                 accessMode: ReadWriteMany
-              streaming:
-                enabled: false
+                useAdls: true
+
             - name: pepm-nrvargrest-worker-storage-dev
               path: /mnt/azure-storage/worker
               blobfuse2:
@@ -158,8 +160,8 @@ spec:
                 container: nrvargrest
                 uid: 1000
                 accessMode: ReadWriteMany
-              streaming:
-                enabled: false
+                useAdls: true
+
   privateImageHubs:
     ghcr.io:
       username: hakoneriksson
