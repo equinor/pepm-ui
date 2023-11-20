@@ -5,6 +5,8 @@
 
 import type { AnalogueList } from './AnalogueList';
 import type { AnalogueModelSourceType } from './AnalogueModelSourceType';
+import type { MetadataDto } from './MetadataDto';
+import type { ParameterList } from './ParameterList';
 import type { UploadList } from './UploadList';
 
 export type AnalogueModelDetail = {
@@ -15,5 +17,7 @@ export type AnalogueModelDetail = {
     sourceType: AnalogueModelSourceType;
     analogues: Array<AnalogueList>;
     fileUploads: Array<UploadList>;
+    parameters?: Array<ParameterList> | null;
+    metadata?: Array<MetadataDto> | null;
 };
 
