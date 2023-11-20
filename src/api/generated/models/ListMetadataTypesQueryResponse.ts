@@ -3,11 +3,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type UploadChunkCommandResponse = {
+import type { MetadataTypeDto } from './MetadataTypeDto';
+
+export type ListMetadataTypesQueryResponse = {
     success?: boolean;
     count?: number | null;
     message?: string | null;
     validationErrors?: Array<string> | null;
-    data: string;
+    data: Array<MetadataTypeDto>;
 };
 

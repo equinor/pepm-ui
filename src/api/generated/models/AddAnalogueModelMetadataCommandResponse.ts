@@ -3,11 +3,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type UploadChunkCommandResponse = {
+import type { AddAnalogueModelMetadataDto } from './AddAnalogueModelMetadataDto';
+
+export type AddAnalogueModelMetadataCommandResponse = {
     success?: boolean;
     count?: number | null;
     message?: string | null;
     validationErrors?: Array<string> | null;
-    data: string;
+    data: AddAnalogueModelMetadataDto;
 };
 
