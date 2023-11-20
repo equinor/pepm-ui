@@ -2,6 +2,7 @@ import { useMsal } from '@azure/msal-react';
 import { Button, Table, Typography } from '@equinor/eds-core-react';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
+import { OpenAPI } from '../../../api/generated';
 import { AnalogueModelsService } from '../../../api/generated/services/AnalogueModelsService';
 import { useAccessToken } from '../../../hooks/useAccessToken';
 
@@ -12,6 +13,7 @@ export const ModelMetadataView = () => {
   const { modelId } = useParams();
   const { instance, accounts } = useMsal();
   const token = useAccessToken(instance, accounts[0]);
+  if (token) OpenAPI.TOKEN = token;
 
   const { isLoading, data } = useQuery({
     queryKey: ['analogue-models', modelId],
@@ -20,9 +22,6 @@ export const ModelMetadataView = () => {
     enabled: !!token,
   });
   if (isLoading || !data?.success) return <p>Loading ...</p>;
-
-  // TODO
-  // Map rows to model data
 
   return (
     <div className="metadata-view">

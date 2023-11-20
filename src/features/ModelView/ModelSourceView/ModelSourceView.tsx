@@ -2,13 +2,18 @@ import { useMsal } from '@azure/msal-react';
 import { Table, Typography } from '@equinor/eds-core-react';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-import { AnalogueModelsService, UploadList } from '../../../api/generated';
+import {
+  AnalogueModelsService,
+  OpenAPI,
+  UploadList,
+} from '../../../api/generated';
 import { useAccessToken } from '../../../hooks/useAccessToken';
 
 export const ModelSourceView = () => {
   const { modelId } = useParams();
   const { instance, accounts } = useMsal();
   const token = useAccessToken(instance, accounts[0]);
+  if (token) OpenAPI.TOKEN = token;
 
   const { isLoading, data } = useQuery({
     queryKey: ['analogue-models', modelId],
