@@ -69,6 +69,8 @@ spec:
       variables:
         MODEL_FOLDER: "/mnt/azure-storage/models"
         WORKER_FOLDER: "/mnt/azure-storage/worker"
+      notifications:
+        webhook: http://api:5002/api/jobs/status
       environmentConfig:
         - environment: dev
           volumeMounts:
@@ -92,8 +94,6 @@ spec:
                 useAdls: true
                 streaming:
                   enabled: false
-      notifications:
-        webhook: http://api:5002/api/jobs/status
     - name: pepm-nrchannest
       image: ghcr.io/equinor/pepm-worker-api/pepm-nrchannest:latest
       schedulerPort: 8090
