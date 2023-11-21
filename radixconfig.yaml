@@ -33,6 +33,8 @@ spec:
       ports:
         - name: http
           port: 5000
+        - name: job-monitoring
+          port: 5002
       secrets:
         - AzureAd__ClientId
         - AzureAd__ClientSecret
@@ -90,6 +92,8 @@ spec:
                 useAdls: true
                 streaming:
                   enabled: false
+      notifications:
+        webhook: http://api:5002/api/jobs/status
     - name: pepm-nrchannest
       image: ghcr.io/equinor/pepm-worker-api/pepm-nrchannest:latest
       schedulerPort: 8090
