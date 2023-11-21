@@ -40,6 +40,7 @@ spec:
         - AzureAd__ClientSecret
         - ConnectionStrings__PepmConnectionString
         - ConnectionStrings__AzureBlobStorage
+        - ApplicationInsights__ConnectionString
       environmentConfig:
         - environment: dev
           imageTagName: latest
