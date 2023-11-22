@@ -15,17 +15,26 @@ interface Tab extends Required<Pick<NonIndexRouteObject, 'path' | 'element'>> {
 }
 
 const tabs: Tab[] = [
-  {
-    title: 'Models',
-    path: 'models',
-    element: <Browse />,
-  },
+  { title: 'Models', path: '/', element: <Browse /> },
   { title: 'API', path: 'api', element: <Api /> },
   { title: 'About', path: 'about', element: <About /> },
 ];
-const appRoutes = (tabs as NonIndexRouteObject[]).concat([
+
+const appRoutes = [
   {
-    path: 'model/:modelId/',
+    index: true,
+    element: <Browse />,
+  },
+  {
+    path: 'api',
+    element: <Api />,
+  },
+  {
+    path: 'about',
+    element: <About />,
+  },
+  {
+    path: ':modelId/',
     element: <Model />,
     children: [
       {
@@ -48,7 +57,7 @@ const appRoutes = (tabs as NonIndexRouteObject[]).concat([
       },
     ],
   },
-]);
+];
 
 const router = createBrowserRouter([
   {

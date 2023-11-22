@@ -82,7 +82,7 @@ export const Table = ({ refetchKey }: { refetchKey: number }) => {
             cell: ({ row }) => (
               <Button
                 onClick={() => {
-                  navigate(`/model/${row.original.analogueModelId}/details`);
+                  navigate(`/${row.original.analogueModelId}/details`);
                 }}
               >
                 Go to model
