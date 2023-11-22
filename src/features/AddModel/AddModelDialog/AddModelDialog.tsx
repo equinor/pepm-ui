@@ -1,7 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import { Button, Typography } from '@equinor/eds-core-react';
 import { useEffect, useState } from 'react';
-import { AnalogueList } from '../../../api/generated/models/AnalogueList';
+import { AnalogueList, MetadataDto } from '../../../api/generated';
 import { ModelInputFilesTable } from '../ModelInputFilesTable/ModelInputFilesTable';
 import { ModelMetadata } from '../ModelMetadata/ModelMetadata';
 import * as Styled from './AddModelDialog.styled';
@@ -10,15 +10,21 @@ interface AddModelDialogProps {
   isOpen: boolean;
   confirm: (file: File, metadata: Partial<MetadataProps>) => Promise<void>;
   cancel: () => void;
+  uploading: boolean;
 }
 
 export default interface MetadataProps {
   name: string;
   description: string;
-  field: string[];
-  zone?: string[];
-  formation: string[];
+  field: MetadataDto[];
+  zone?: MetadataDto[];
+  formation: MetadataDto[];
   analogue?: AnalogueList[];
+}
+
+interface FilesProps {
+  NC?: File;
+  INI?: File;
 }
 
 export type ErrorType = {
@@ -29,24 +35,30 @@ export type ErrorType = {
   file?: string;
 };
 
+const defaultMetadata: MetadataProps = {
+  name: '',
+  description: '',
+  field: [],
+  zone: [],
+  formation: [],
+  analogue: [],
+};
+
+const defaultFiles = {
+  NC: undefined,
+  INI: undefined,
+};
+
 export const AddModelDialog = ({
   isOpen,
   confirm,
   cancel,
+  uploading,
 }: AddModelDialogProps) => {
   const [isFileDisplay, setFileDisplay] = useState<boolean>(false);
-  const [files, setFiles] = useState<{ NC?: File; INI?: File }>({
-    NC: undefined,
-    INI: undefined,
-  });
-  const [metadata, setMetadata] = useState<Partial<MetadataProps>>({
-    name: '',
-    description: '',
-    field: [],
-    zone: [],
-    formation: [],
-    analogue: [],
-  });
+  const [files, setFiles] = useState<FilesProps>(defaultFiles);
+  const [metadata, setMetadata] =
+    useState<Partial<MetadataProps>>(defaultMetadata);
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [fileSize, setFileSize] = useState(0);
@@ -95,8 +107,17 @@ export const AddModelDialog = ({
     setSubmitting(true);
   };
 
+  const cleanupStates = () => {
+    setMetadata(defaultMetadata);
+    setFiles(defaultFiles);
+    setrawFile(undefined);
+    setFileSize(0);
+    setSubmitting(false);
+  };
+
   const finishSubmit = () => {
     if (files.NC) confirm(files.NC, metadata);
+    cleanupStates();
   };
 
   useEffect(() => {
@@ -146,10 +167,20 @@ export const AddModelDialog = ({
         )}
       </Styled.DialogCustomContent>
       <Styled.DialogActions>
-        <Button onClick={handleSubmit}>Confirm and start uploading</Button>
-        <Button variant="outlined" onClick={cancel}>
-          Cancel
-        </Button>
+        {uploading && (
+          <Typography>
+            You have to wait until current upload has finnished before a new one
+            can start.{' '}
+          </Typography>
+        )}
+        <div>
+          <Button onClick={handleSubmit} disabled={uploading}>
+            Confirm and start uploading
+          </Button>
+          <Button variant="outlined" onClick={cancel}>
+            Cancel
+          </Button>
+        </div>
       </Styled.DialogActions>
     </Styled.Dialog>
   );

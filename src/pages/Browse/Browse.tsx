@@ -27,11 +27,15 @@ enum UploadProcess {
   FAILED = 'File upload failed.',
 }
 
+const defaultCounterValue = 1;
+const defaultBeginningOfchunk = 0;
 export const Browse = () => {
   const [progress, setProgress] = useState(0);
-  const [counter, setCounter] = useState(1);
+  const [counter, setCounter] = useState<number>(defaultCounterValue);
   const [fileToBeUpload, setFileToBeUpload] = useState<File>();
-  const [beginingOfTheChunk, setBeginingOfTheChunk] = useState(0);
+  const [beginingOfTheChunk, setBeginingOfTheChunk] = useState<number>(
+    defaultBeginningOfchunk,
+  );
   const [endOfTheChunk, setEndOfTheChunk] = useState<number>();
   const [fileSize, setFileSize] = useState(0);
   const [chunkSize, setChunkSize] = useState(0);
@@ -41,6 +45,7 @@ export const Browse = () => {
   const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false);
   const [uploadStatus, setUploadStatus] = useState<string>();
   const [refetch, setRefetch] = useState<number>(0);
+  const [uploading, setUploading] = useState<boolean>(false);
 
   const createModel = useMutation({
     mutationFn: AnalogueModelsService.postApiAnalogueModels,
@@ -74,6 +79,7 @@ export const Browse = () => {
 
   async function uploadModel(file: File, metadata: Partial<MetadataProps>) {
     setUploadStatus(UploadProcess.STARTED);
+    setUploading(true);
     const ModelBody: CreateAnalogueModelCommand = {
       name: metadata.name ? metadata.name : '',
       description: metadata.description,
@@ -83,6 +89,10 @@ export const Browse = () => {
     const modelUpload = await createModel.mutateAsync(ModelBody);
 
     if (createModel.error === null && modelUpload.success) {
+      if (counter >= chunkCount) {
+        setCounter(defaultCounterValue);
+        setBeginingOfTheChunk(defaultBeginningOfchunk);
+      }
       const id = modelUpload.data.analogueModelId;
       setModelId(id);
       setRefetch(refetch + 1);
@@ -152,7 +162,6 @@ export const Browse = () => {
           const finishedUpload = await uploadFinished.mutateAsync(finishBody);
           if (uploadFinished.error === null && finishedUpload.success) {
             setProgress(100);
-            console.log('Start Converting');
 
             const convert = await convertModelFile.mutateAsync({
               modelId: modelId,
@@ -160,19 +169,19 @@ export const Browse = () => {
 
             // eslint-disable-next-line max-depth
             if (convertModelFile.error === null && convert.success) {
-              console.log('CONVERT FINISHED');
               setUploadStatus(UploadProcess.SUCCESS);
+              setProgress(0);
+              setUploading(false);
             } else {
-              console.log('CONVERT FAILED');
               setUploadStatus(UploadProcess.FAILED);
+              setProgress(0);
+              setUploading(false);
             }
           }
         } else {
           const percentage = (counter / chunkCount) * 100;
           setProgress(percentage);
         }
-      } else {
-        console.log('Error Occurred:', uploadChunks.message);
       }
     } catch (error) {
       console.log('error', error);
@@ -203,6 +212,7 @@ export const Browse = () => {
         isOpen={isAddModelDialog}
         confirm={uploadModel}
         cancel={toggleDialog}
+        uploading={uploading}
       />
 
       <Typography variant="h2">File Upload Progress</Typography>

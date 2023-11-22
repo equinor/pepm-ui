@@ -22,7 +22,13 @@ const StyledDialogCustomContent = styled(Dialog.CustomContent)`
 
 const StyledDialogActions = styled(Dialog.Actions)`
   display: flex;
+  flex-direction: column;
   gap: ${spacings.SMALL};
+
+  > div {
+    display: flex;
+    gap: ${spacings.SMALL};
+  }
 `;
 
 export {

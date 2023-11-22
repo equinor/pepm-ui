@@ -7,8 +7,16 @@ import {
 } from '@equinor/eds-core-react';
 import MetadataProps, { ErrorType } from '../AddModelDialog/AddModelDialog';
 
+import { useMsal } from '@azure/msal-react';
 import { useQuery } from '@tanstack/react-query';
-import { AnalogueList, AnaloguesService } from '../../../api/generated';
+import {
+  AnalogueList,
+  AnaloguesService,
+  MetadataDto,
+  MetadataService,
+  OpenAPI,
+} from '../../../api/generated';
+import { useAccessToken } from '../../../hooks/useAccessToken';
 import * as Styled from './ModelMetadata.styled';
 
 export const ModelMetadata = ({
@@ -20,30 +28,25 @@ export const ModelMetadata = ({
   metadata: Partial<MetadataProps> | undefined;
   setMetadata: (metadata: Partial<MetadataProps>) => void;
 }) => {
-  const fields = {
-    field: [
-      'Breidablikk',
-      'Gullfaks',
-      'Heidrun',
-      'Johan Sverdrup',
-      'Oseberg',
-      'Tordis',
-    ],
-    zone: ['Norwegian sea', 'North sea', 'Barents sea'],
-    formation: ['Formation1', 'Formation2', 'Formation3', 'Formation4'],
-    analogue: ['Analouge1', 'Analouge2', 'Analouge3', 'Analouge4'],
-  };
+  const { instance, accounts } = useMsal();
+  const token = useAccessToken(instance, accounts[0]);
+  if (token) OpenAPI.TOKEN = token;
 
   const { isLoading, data } = useQuery({
+    queryKey: ['metadata'],
+    queryFn: () => MetadataService.getApiMetadata(),
+    enabled: !!token,
+  });
+
+  const analougeData = useQuery({
     queryKey: ['apiParameters'],
     queryFn: () => AnaloguesService.getApiAnalogues(),
+    enabled: !!token,
   });
 
   if (isLoading || !data?.success) return <p>Loading ...</p>;
-
-  const handleInput = (e: AutocompleteChanges<string>, target: string) => {
-    setMetadata({ ...metadata, [target]: e.selectedItems });
-  };
+  if (analougeData.isLoading || !analougeData?.data?.success)
+    return <p>Loading ...</p>;
 
   return (
     <Styled.ModelMetadata className="model-metadata">
@@ -53,7 +56,7 @@ export const ModelMetadata = ({
           <Styled.TextInput
             className={`${errors.name && 'model-required'}`}
             id="model-name"
-            label="Model Name (optional)"
+            label="Model Name"
             value={metadata?.name}
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
               setMetadata({ ...metadata, name: e.currentTarget.value })
@@ -65,7 +68,7 @@ export const ModelMetadata = ({
           <Styled.TextInput
             className={`${errors.description && 'model-required'}`}
             id="model-description"
-            label="Model description (optional)"
+            label="Model description"
             value={metadata?.description}
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
               setMetadata({ ...metadata, description: e.currentTarget.value })
@@ -83,10 +86,11 @@ export const ModelMetadata = ({
               <Autocomplete
                 className={`${errors.field && 'model-required'}`}
                 label="Field"
-                options={fields.field}
+                options={data.data.filter((d) => d.metadataType === 'Field')}
+                optionLabel={(option) => option.value}
                 selectedOptions={metadata?.field}
-                onOptionsChange={(e: AutocompleteChanges<string>) =>
-                  handleInput(e, 'field')
+                onOptionsChange={(e: AutocompleteChanges<MetadataDto>) =>
+                  setMetadata({ ...metadata, field: e.selectedItems })
                 }
               ></Autocomplete>
               {errors.field && <Label label="This field is required"></Label>}
@@ -95,11 +99,14 @@ export const ModelMetadata = ({
               <Autocomplete
                 className={`${errors.formation && 'model-required'}`}
                 label="Formation"
-                options={fields.formation}
+                options={data.data.filter(
+                  (d) => d.metadataType === 'Formation',
+                )}
+                optionLabel={(option) => option.value}
                 selectedOptions={metadata?.formation}
                 multiple
-                onOptionsChange={(e: AutocompleteChanges<string>) =>
-                  handleInput(e, 'formation')
+                onOptionsChange={(e: AutocompleteChanges<MetadataDto>) =>
+                  setMetadata({ ...metadata, formation: e.selectedItems })
                 }
               ></Autocomplete>
               {errors.formation && (
@@ -110,7 +117,7 @@ export const ModelMetadata = ({
           <Styled.AutocompleteRow>
             <Autocomplete
               label="Analogue (optional)"
-              options={data.data}
+              options={analougeData.data.data}
               optionLabel={(option) => option.name}
               selectedOptions={metadata?.analogue}
               multiple
@@ -120,9 +127,10 @@ export const ModelMetadata = ({
             ></Autocomplete>
             <Autocomplete
               label="Zone (optional)"
-              options={fields.zone}
+              options={data.data.filter((d) => d.metadataType === 'Zone')}
+              optionLabel={(option) => option.value}
               selectedOptions={metadata?.zone}
-              onOptionsChange={(e: AutocompleteChanges<string>) =>
+              onOptionsChange={(e: AutocompleteChanges<MetadataDto>) =>
                 setMetadata({ ...metadata, zone: e.selectedItems })
               }
             ></Autocomplete>
