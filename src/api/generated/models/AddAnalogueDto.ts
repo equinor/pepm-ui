@@ -3,8 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export enum UploadStatus {
-    STARTED = 'Started',
-    COMPLETED = 'Completed',
-    FAILED = 'Failed',
-}
+export type AddAnalogueDto = {
+    analogueId: string;
+};
+

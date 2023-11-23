@@ -7,12 +7,17 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
+export type { AddAnalogueDto } from './models/AddAnalogueDto';
+export type { AddAnalogueModelAnalogueCommandForm } from './models/AddAnalogueModelAnalogueCommandForm';
+export type { AddAnalogueModelAnalogueCommandResponse } from './models/AddAnalogueModelAnalogueCommandResponse';
+export type { AddAnalogueModelAnalogueDto } from './models/AddAnalogueModelAnalogueDto';
 export type { AddAnalogueModelMetadataCommandForm } from './models/AddAnalogueModelMetadataCommandForm';
 export type { AddAnalogueModelMetadataCommandResponse } from './models/AddAnalogueModelMetadataCommandResponse';
 export type { AddAnalogueModelMetadataDto } from './models/AddAnalogueModelMetadataDto';
 export type { AddAnalogueModelParameterCommandForm } from './models/AddAnalogueModelParameterCommandForm';
 export type { AddAnalogueModelParameterCommandResponse } from './models/AddAnalogueModelParameterCommandResponse';
 export type { AddAnalogueModelParameterDto } from './models/AddAnalogueModelParameterDto';
+export type { AddAnalogueResponseDto } from './models/AddAnalogueResponseDto';
 export type { AddMetadataDto } from './models/AddMetadataDto';
 export type { AddMetadataResponseDto } from './models/AddMetadataResponseDto';
 export type { AddParameterDto } from './models/AddParameterDto';
@@ -66,6 +71,7 @@ export type { PatchParameterCommandResponse } from './models/PatchParameterComma
 export type { PatchParameterDto } from './models/PatchParameterDto';
 export type { PrepareChunkedUploadCommandResponse } from './models/PrepareChunkedUploadCommandResponse';
 export type { PrepareChunkedUploadDto } from './models/PrepareChunkedUploadDto';
+export type { RadixJobDto } from './models/RadixJobDto';
 export type { UpdateAnalogueModelCommandBody } from './models/UpdateAnalogueModelCommandBody';
 export type { UpdateAnalogueModelCommandResponse } from './models/UpdateAnalogueModelCommandResponse';
 export type { UpdateAnalogueModelDto } from './models/UpdateAnalogueModelDto';
@@ -82,6 +88,7 @@ export { UploadFileType } from './models/UploadFileType';
 export type { UploadList } from './models/UploadList';
 export { UploadStatus } from './models/UploadStatus';
 
+export { AnalogueModelAnaloguesService } from './services/AnalogueModelAnaloguesService';
 export { AnalogueModelMetadataService } from './services/AnalogueModelMetadataService';
 export { AnalogueModelParametersService } from './services/AnalogueModelParametersService';
 export { AnalogueModelsService } from './services/AnalogueModelsService';
