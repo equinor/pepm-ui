@@ -8,6 +8,7 @@ import {
   UploadList,
 } from '../../../api/generated';
 import { useAccessToken } from '../../../hooks/useAccessToken';
+import * as Styled from './ModelSourceView.styled';
 
 export const ModelSourceView = () => {
   const { modelId } = useParams();
@@ -24,10 +25,8 @@ export const ModelSourceView = () => {
 
   if (isLoading || !data?.success) return <p>Loading ...</p>;
 
-  // TODO
-  // Add uploaded by and upload time
   return (
-    <div className="source-view">
+    <Styled.FileTable>
       <Typography variant="h3">Source</Typography>
       <p>Uploaded by ABCD@equinor.com on Sep 13, 2023</p>
       <Table>
@@ -59,6 +58,6 @@ export const ModelSourceView = () => {
           )}
         </Table.Body>
       </Table>
-    </div>
+    </Styled.FileTable>
   );
 };

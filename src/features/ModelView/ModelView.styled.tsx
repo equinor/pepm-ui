@@ -25,29 +25,6 @@ export const InnerMetadataWrapper = styled.div`
     margin-top: ${spacings.MEDIUM_SMALL};
   }
 
-  .metadata-view {
-    width: 100%;
-    min-width: 256px;
-
-    > div {
-      > table {
-        width: 85%;
-
-        > tbody {
-          > tr {
-            > .table-row {
-            }
-
-            > .table-first-col {
-              width: 20%;
-              padding-right: ${spacings.X_LARGE};
-            }
-          }
-        }
-      }
-    }
-  }
-
   .source-view {
     width: 100%;
     min-width: 256px;
