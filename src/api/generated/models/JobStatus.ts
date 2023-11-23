@@ -6,9 +6,8 @@
 export enum JobStatus {
     UNKNOWN = 'Unknown',
     CREATED = 'Created',
-    STARTED = 'Started',
+    WAITING = 'Waiting',
     RUNNING = 'Running',
-    SUCCESSFUL = 'Successful',
     SUCCEEDED = 'Succeeded',
     FAILED = 'Failed',
 }

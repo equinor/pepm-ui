@@ -2,28 +2,28 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { AddAnalogueModelMetadataCommandForm } from '../models/AddAnalogueModelMetadataCommandForm';
-import type { AddAnalogueModelMetadataCommandResponse } from '../models/AddAnalogueModelMetadataCommandResponse';
+import type { AddAnalogueModelAnalogueCommandForm } from '../models/AddAnalogueModelAnalogueCommandForm';
+import type { AddAnalogueModelAnalogueCommandResponse } from '../models/AddAnalogueModelAnalogueCommandResponse';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
-export class AnalogueModelMetadataService {
+export class AnalogueModelAnaloguesService {
 
     /**
      * @param id
      * @param requestBody
-     * @returns AddAnalogueModelMetadataCommandResponse Success
+     * @returns AddAnalogueModelAnalogueCommandResponse Success
      * @throws ApiError
      */
-    public static putApiAnalogueModelsMetadata(
+    public static putApiAnalogueModelsAnalogues(
         id: string,
-        requestBody?: AddAnalogueModelMetadataCommandForm,
-    ): CancelablePromise<AddAnalogueModelMetadataCommandResponse> {
+        requestBody?: AddAnalogueModelAnalogueCommandForm,
+    ): CancelablePromise<AddAnalogueModelAnalogueCommandResponse> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/api/analogue-models/{id}/metadata',
+            url: '/api/analogue-models/{id}/analogues',
             path: {
                 'id': id,
             },
