@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
 import {
   Button,
@@ -8,6 +9,12 @@ import {
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import {
+  AddAnalogueDto,
+  AddAnalogueModelAnalogueCommandForm,
+  AddAnalogueModelMetadataCommandForm,
+  AddMetadataDto,
+  AnalogueModelAnaloguesService,
+  AnalogueModelMetadataService,
   AnalogueModelsService,
   ConvertAnalogueModelCommand,
   CreateAnalogueModelCommand,
@@ -69,12 +76,97 @@ export const Browse = () => {
     },
   });
 
+  const uploadModelMetadata = useMutation({
+    mutationFn: ({
+      id,
+      requestBody,
+    }: {
+      id: string;
+      requestBody: AddAnalogueModelMetadataCommandForm;
+    }) => {
+      return AnalogueModelMetadataService.putApiAnalogueModelsMetadata(
+        id,
+        requestBody,
+      );
+    },
+  });
+
+  const uploadModelAnalouges = useMutation({
+    mutationFn: ({
+      id,
+      requestBody,
+    }: {
+      id: string;
+      requestBody: AddAnalogueModelAnalogueCommandForm;
+    }) => {
+      return AnalogueModelAnaloguesService.putApiAnalogueModelsAnalogues(
+        id,
+        requestBody,
+      );
+    },
+  });
+
   function clearStatus() {
     setUploadStatus(undefined);
   }
 
   function toggleDialog() {
     setAddModelDialog(!isAddModelDialog);
+  }
+
+  async function uploadMetadata(
+    modelId: string,
+    metadata: Partial<MetadataProps>,
+  ) {
+    const metadataList: AddMetadataDto[] = [];
+    const analougueList: AddAnalogueDto[] = [];
+
+    metadata.zone?.forEach((item) => {
+      const obj = {
+        metadataId: item.metadataId,
+      };
+      metadataList.push(obj);
+    });
+
+    metadata.field?.forEach((item) => {
+      const obj = {
+        metadataId: item.metadataId,
+      };
+      metadataList.push(obj);
+    });
+    metadata.formation?.forEach((item) => {
+      const obj = {
+        metadataId: item.metadataId,
+      };
+      metadataList.push(obj);
+    });
+
+    metadata.analogue?.forEach((item) => {
+      const obj = {
+        analogueId: item.analogueId,
+      };
+      analougueList.push(obj);
+    });
+
+    const readyMetadata: AddAnalogueModelMetadataCommandForm = {
+      metadata: metadataList,
+    };
+
+    const readyAnalogue: AddAnalogueModelAnalogueCommandForm = {
+      analogues: analougueList,
+    };
+
+    await uploadModelMetadata.mutateAsync({
+      id: modelId,
+      requestBody: readyMetadata,
+    });
+
+    await uploadModelAnalouges.mutateAsync({
+      id: modelId,
+      requestBody: readyAnalogue,
+    });
+
+    setRefetch(refetch + 1);
   }
 
   async function uploadModel(file: File, metadata: Partial<MetadataProps>) {
@@ -89,13 +181,14 @@ export const Browse = () => {
     const modelUpload = await createModel.mutateAsync(ModelBody);
 
     if (createModel.error === null && modelUpload.success) {
+      const id = modelUpload.data.analogueModelId;
+      setModelId(id);
+      uploadMetadata(id, metadata);
+
       if (counter >= chunkCount) {
         setCounter(defaultCounterValue);
         setBeginingOfTheChunk(defaultBeginningOfchunk);
       }
-      const id = modelUpload.data.analogueModelId;
-      setModelId(id);
-      setRefetch(refetch + 1);
 
       if (file === undefined) return;
 
