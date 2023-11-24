@@ -13,12 +13,14 @@ import {
   AddAnalogueModelAnalogueCommandForm,
   AddAnalogueModelMetadataCommandForm,
   AddMetadataDto,
+  AnalogueList,
   AnalogueModelAnaloguesService,
   AnalogueModelMetadataService,
   AnalogueModelsService,
   ConvertAnalogueModelCommand,
   CreateAnalogueModelCommand,
   JobsService,
+  MetadataDto,
   UploadFileType,
   UploadsService,
 } from '../../api/generated';
@@ -114,39 +116,26 @@ export const Browse = () => {
     setAddModelDialog(!isAddModelDialog);
   }
 
-  async function uploadMetadata(
-    modelId: string,
-    metadata: Partial<MetadataProps>,
-  ) {
-    const metadataList: AddMetadataDto[] = [];
-    const analougueList: AddAnalogueDto[] = [];
+  const metadataList: AddMetadataDto[] = [];
+  const analougueList: AddAnalogueDto[] = [];
 
-    metadata.zone?.forEach((item) => {
-      const obj = {
-        metadataId: item.metadataId,
-      };
-      metadataList.push(obj);
-    });
+  function addMetadataFields(metadata?: MetadataDto[]) {
+    if (!metadata) return;
+    const obj = metadata.map((x) => ({ metadataId: x.metadataId }));
+    metadataList.push(...obj);
+  }
 
-    metadata.field?.forEach((item) => {
-      const obj = {
-        metadataId: item.metadataId,
-      };
-      metadataList.push(obj);
-    });
-    metadata.formation?.forEach((item) => {
-      const obj = {
-        metadataId: item.metadataId,
-      };
-      metadataList.push(obj);
-    });
+  function addAnalogueFields(metadata?: AnalogueList[]) {
+    if (!metadata) return;
+    const obj = metadata.map((x) => ({ analogueId: x.analogueId }));
+    analougueList.push(...obj);
+  }
 
-    metadata.analogue?.forEach((item) => {
-      const obj = {
-        analogueId: item.analogueId,
-      };
-      analougueList.push(obj);
-    });
+  async function uploadMetadata(modelId: string, metadata: MetadataProps) {
+    addMetadataFields(metadata.zone);
+    addMetadataFields(metadata.field);
+    addMetadataFields(metadata.formation);
+    addAnalogueFields(metadata.analogue);
 
     const readyMetadata: AddAnalogueModelMetadataCommandForm = {
       metadata: metadataList,
@@ -169,7 +158,7 @@ export const Browse = () => {
     setRefetch(refetch + 1);
   }
 
-  async function uploadModel(file: File, metadata: Partial<MetadataProps>) {
+  async function uploadModel(file: File, metadata: MetadataProps) {
     setUploadStatus(UploadProcess.STARTED);
     setUploading(true);
     const ModelBody: CreateAnalogueModelCommand = {

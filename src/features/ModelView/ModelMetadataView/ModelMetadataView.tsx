@@ -1,9 +1,8 @@
-/* eslint-disable max-lines-per-function */
 import { useMsal } from '@azure/msal-react';
 import { Button, Table, Typography } from '@equinor/eds-core-react';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-import { OpenAPI } from '../../../api/generated';
+import { MetadataDto, OpenAPI } from '../../../api/generated';
 import { AnalogueModelsService } from '../../../api/generated/services/AnalogueModelsService';
 import { useAccessToken } from '../../../hooks/useAccessToken';
 import * as Styled from './ModelMetadataView.styled';
@@ -31,38 +30,11 @@ export const ModelMetadataView = () => {
           <Table.Body>
             <Table.Row>
               <Table.Cell className="table-first-col">Field</Table.Cell>
-              <Table.Cell className="table-second-col">
-                {data.data.metadata?.filter((m) => m.metadataType === 'Field')
-                  .length ? (
-                  data.data.metadata
-                    ?.filter((m) => m.metadataType === 'Field')
-                    .map((m) => (
-                      <Typography key={m.metadataId}>
-                        {m.value + ', '}
-                      </Typography>
-                    ))
-                ) : (
-                  <Typography> - No Field selected - </Typography>
-                )}
-              </Table.Cell>
+              <DataCell metadata={data.data.metadata} type="Field" />
             </Table.Row>
             <Table.Row>
               <Table.Cell className="table-first-col">Fomation</Table.Cell>
-              <Table.Cell className="table-second-col">
-                {data.data.metadata?.filter(
-                  (m) => m.metadataType === 'Formation',
-                ).length ? (
-                  data.data.metadata
-                    ?.filter((m) => m.metadataType === 'Formation')
-                    .map((m) => (
-                      <Typography key={m.metadataId}>
-                        {m.value + ',   '}
-                      </Typography>
-                    ))
-                ) : (
-                  <Typography> - No Formation selected - </Typography>
-                )}
-              </Table.Cell>
+              <DataCell metadata={data.data.metadata} type="Formation" />
             </Table.Row>
             <Table.Row>
               <Table.Cell className="table-first-col">Analouge</Table.Cell>
@@ -78,18 +50,7 @@ export const ModelMetadataView = () => {
             </Table.Row>
             <Table.Row>
               <Table.Cell className="table-first-col">Zone</Table.Cell>
-              <Table.Cell className="table-second-col">
-                {data.data.metadata?.filter((m) => m.metadataType === 'Zone')
-                  .length ? (
-                  data.data.metadata
-                    ?.filter((m) => m.metadataType === 'Zone')
-                    .map((m) => (
-                      <Typography key={m.metadataId}>{m.value}</Typography>
-                    ))
-                ) : (
-                  <Typography> - No Zone selected - </Typography>
-                )}
-              </Table.Cell>
+              <DataCell metadata={data.data.metadata} type="Zone" />
             </Table.Row>
           </Table.Body>
         </Table>
@@ -99,5 +60,25 @@ export const ModelMetadataView = () => {
         Edit description and metadata
       </Button>
     </Styled.Metadata>
+  );
+};
+
+const DataCell = ({
+  metadata,
+  type,
+}: {
+  metadata?: MetadataDto[] | null;
+  type: string;
+}) => {
+  return (
+    <Table.Cell className="table-second-col">
+      {metadata?.filter((m) => m.metadataType === type).length ? (
+        metadata
+          ?.filter((m) => m.metadataType === type)
+          .map((m) => <Typography key={m.metadataId}>{m.value}</Typography>)
+      ) : (
+        <Typography> - No Zone selected - </Typography>
+      )}
+    </Table.Cell>
   );
 };
