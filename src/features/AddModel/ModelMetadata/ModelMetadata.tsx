@@ -25,8 +25,8 @@ export const ModelMetadata = ({
   setMetadata,
 }: {
   errors: ErrorType;
-  metadata: Partial<MetadataProps> | undefined;
-  setMetadata: (metadata: Partial<MetadataProps>) => void;
+  metadata: MetadataProps;
+  setMetadata: (metadata: MetadataProps) => void;
 }) => {
   const { instance, accounts } = useMsal();
   const token = useAccessToken(instance, accounts[0]);

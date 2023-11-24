@@ -8,7 +8,7 @@ import * as Styled from './AddModelDialog.styled';
 
 interface AddModelDialogProps {
   isOpen: boolean;
-  confirm: (file: File, metadata: Partial<MetadataProps>) => Promise<void>;
+  confirm: (file: File, metadata: MetadataProps) => Promise<void>;
   cancel: () => void;
   uploading: boolean;
 }
@@ -57,8 +57,7 @@ export const AddModelDialog = ({
 }: AddModelDialogProps) => {
   const [isFileDisplay, setFileDisplay] = useState<boolean>(false);
   const [files, setFiles] = useState<FilesProps>(defaultFiles);
-  const [metadata, setMetadata] =
-    useState<Partial<MetadataProps>>(defaultMetadata);
+  const [metadata, setMetadata] = useState<MetadataProps>(defaultMetadata);
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [fileSize, setFileSize] = useState(0);
