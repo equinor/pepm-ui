@@ -1,6 +1,6 @@
 /* eslint-disable max-lines-per-function */
 import { useMsal } from '@azure/msal-react';
-import { Button, Chip, Scrim, SideSheet } from '@equinor/eds-core-react';
+import { Button, Scrim, SideSheet } from '@equinor/eds-core-react';
 import { EdsDataGrid } from '@equinor/eds-data-grid-react';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -27,11 +27,13 @@ export const Table = ({ refetchKey }: { refetchKey: number }) => {
   if (isLoading || !data?.success) return <p>Loading...</p>;
 
   return (
-    <Styled.StyledDiv>
+    <Styled.Table>
       <EdsDataGrid
         enableSorting
         enablePagination
+        enableColumnFiltering
         emptyMessage="Empty :("
+        columnResizeMode="onChange"
         rows={data.data}
         pageSize={5}
         columns={[
@@ -45,31 +47,25 @@ export const Table = ({ refetchKey }: { refetchKey: number }) => {
             accessorKey: 'description',
             header: 'Description',
             id: 'description',
-          },
-          {
-            accessorKey: 'isApproved',
-            header: 'Result',
-            cell: () => <Chip>{'Approved'}</Chip>,
-          },
-          {
-            accessorKey: 'modified',
-            header: 'Last Modified',
-            cell: () => <div>{'<Last Modified>'}</div>,
+            enableColumnFilter: false,
           },
           {
             accessorKey: 'analogue',
             header: 'Analogue',
             cell: () => <div>{'<Analogue>'}</div>,
+            enableColumnFilter: false,
           },
           {
             accessorKey: 'formation',
             header: 'Formation',
             cell: () => <div>{'<Formation>'}</div>,
+            enableColumnFilter: false,
           },
           {
             accessorKey: 'field',
             header: 'Field',
             cell: () => <div>{'<Field>'}</div>,
+            enableColumnFilter: false,
           },
           {
             accessorKey: 'isProcessed',
@@ -79,6 +75,7 @@ export const Table = ({ refetchKey }: { refetchKey: number }) => {
 
           {
             accessorKey: 'navigate',
+            enableColumnFilter: false,
             cell: ({ row }) => (
               <Button
                 onClick={() => {
@@ -93,6 +90,7 @@ export const Table = ({ refetchKey }: { refetchKey: number }) => {
           },
           {
             accessorKey: 'areas',
+            enableColumnFilter: false,
             cell: ({ row }) => (
               <Button
                 onClick={() => {
@@ -115,6 +113,6 @@ export const Table = ({ refetchKey }: { refetchKey: number }) => {
           </SideSheet>
         </Scrim>
       )}
-    </Styled.StyledDiv>
+    </Styled.Table>
   );
 };

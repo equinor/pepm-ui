@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 import { spacings } from '../tokens/spacings';
 
-export const StyledDiv = styled.div`
+export const Table = styled.div`
   overflow-x: auto;
   padding-bottom: ${spacings.MEDIUM};
 
-  > .table-wrapper {
+  > div {
     > table {
-      width: auto !important;
+      width: 100% !important;
     }
   }
 `;
