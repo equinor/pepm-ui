@@ -45,10 +45,7 @@ export const ComputeObject = () => {
       modelId: modelId,
     };
 
-    const runCompute = await computeObject.mutateAsync(requestBody);
-
-    console.log(runCompute);
-    console.log(computeObject);
+    await computeObject.mutateAsync(requestBody);
   };
 
   return (
