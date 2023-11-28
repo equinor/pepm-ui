@@ -132,9 +132,7 @@ export const Browse = () => {
   }
 
   async function uploadMetadata(modelId: string, metadata: MetadataProps) {
-    addMetadataFields(metadata.zone);
-    addMetadataFields(metadata.field);
-    addMetadataFields(metadata.formation);
+    addMetadataFields(metadata.metadata);
     addAnalogueFields(metadata.analogue);
 
     const readyMetadata: AddAnalogueModelMetadataCommandForm = {
