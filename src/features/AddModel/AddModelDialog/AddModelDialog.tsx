@@ -16,9 +16,7 @@ interface AddModelDialogProps {
 export default interface MetadataProps {
   name: string;
   description: string;
-  field: MetadataDto[];
-  zone?: MetadataDto[];
-  formation: MetadataDto[];
+  metadata: MetadataDto[];
   analogue?: AnalogueList[];
 }
 
@@ -38,9 +36,7 @@ export type ErrorType = {
 const defaultMetadata: MetadataProps = {
   name: '',
   description: '',
-  field: [],
-  zone: [],
-  formation: [],
+  metadata: [],
   analogue: [],
 };
 
@@ -83,13 +79,18 @@ export const AddModelDialog = ({
       errors.description = 'Description not provided';
     }
 
-    if (inputValues?.field === undefined || inputValues?.field?.length === 0) {
+    if (
+      inputValues?.metadata === undefined ||
+      inputValues?.metadata?.filter((m) => m.metadataType === 'Field').length <=
+        0
+    ) {
       errors.field = 'Field not selected';
     }
 
     if (
-      inputValues?.formation === undefined ||
-      inputValues?.formation?.length === 0
+      inputValues?.metadata === undefined ||
+      inputValues?.metadata?.filter((m) => m.metadataType === 'Formation')
+        .length <= 0
     ) {
       errors.formation = 'Formation not selected';
     }
