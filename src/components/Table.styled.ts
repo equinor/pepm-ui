@@ -7,7 +7,7 @@ export const Table = styled.div`
 
   > div {
     > table {
-      width: 100% !important;
+      width: 90% !important;
     }
   }
 `;

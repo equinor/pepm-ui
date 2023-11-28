@@ -50,24 +50,6 @@ export const Table = ({ refetchKey }: { refetchKey: number }) => {
             enableColumnFilter: false,
           },
           {
-            accessorKey: 'analogue',
-            header: 'Analogue',
-            cell: () => <div>{'<Analogue>'}</div>,
-            enableColumnFilter: false,
-          },
-          {
-            accessorKey: 'formation',
-            header: 'Formation',
-            cell: () => <div>{'<Formation>'}</div>,
-            enableColumnFilter: false,
-          },
-          {
-            accessorKey: 'field',
-            header: 'Field',
-            cell: () => <div>{'<Field>'}</div>,
-            enableColumnFilter: false,
-          },
-          {
             accessorKey: 'isProcessed',
             header: 'Status',
             id: 'isProcessed',
