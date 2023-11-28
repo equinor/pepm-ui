@@ -92,7 +92,6 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
   };
 
   const handleSave = (formValues: FieldValues) => {
-    console.log(formValues);
     setSaveAlert(true);
   };
 
