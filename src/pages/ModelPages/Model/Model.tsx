@@ -30,7 +30,6 @@ export const Model = () => {
         </Styled.SidebarWrapper>
         <Styled.ContentWrapper>
           <ModelNameFrame model={data?.data} />
-
           <Outlet />
         </Styled.ContentWrapper>
       </Styled.Wrapper>
