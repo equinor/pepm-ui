@@ -56,6 +56,13 @@ export const Browse = () => {
   const [refetch, setRefetch] = useState<number>(0);
   const [uploading, setUploading] = useState<boolean>(false);
 
+  const defaultMetadata: MetadataProps = {
+    name: '',
+    description: '',
+    metadata: [],
+    analogue: [],
+  };
+
   const createModel = useMutation({
     mutationFn: AnalogueModelsService.postApiAnalogueModels,
   });
@@ -264,6 +271,7 @@ export const Browse = () => {
         }
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log('error', error);
     }
   };
@@ -276,6 +284,7 @@ export const Browse = () => {
   }, [fileToBeUpload, progress]);
 
   useEffect(() => {
+    // eslint-disable-next-line no-console
     console.log(progress);
   }, [progress]);
 
@@ -293,6 +302,7 @@ export const Browse = () => {
         confirm={uploadModel}
         cancel={toggleDialog}
         uploading={uploading}
+        defaultMetadata={defaultMetadata}
       />
 
       <Typography variant="h2">File Upload Progress</Typography>

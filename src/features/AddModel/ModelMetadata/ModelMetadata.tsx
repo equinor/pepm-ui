@@ -44,6 +44,31 @@ export const ModelMetadata = ({
     enabled: !!token,
   });
 
+  const setSelectedMetadataOptions = (type: string) => {
+    if (!isLoading && data?.data) {
+      const dataProps = data.data.filter((z) => z.metadataType === type);
+
+      const selectedProps = metadata?.metadata.filter(
+        (m) => m.metadataType === type,
+      );
+
+      return dataProps.filter(
+        (c) =>
+          selectedProps.findIndex((x: MetadataDto) => x.value === c.value) > -1,
+      );
+    }
+  };
+
+  const setSelectedAnalogueOptions = () => {
+    if (analougeData.data?.success && metadata.analogue) {
+      const analogue = metadata?.analogue;
+
+      return analougeData.data?.data.filter(
+        (c) => analogue.findIndex((x: AnalogueList) => x.name === c.name) > -1,
+      );
+    }
+  };
+
   function handleAddMetadata(
     e: AutocompleteChanges<MetadataDto>,
     propType: string,
@@ -51,6 +76,7 @@ export const ModelMetadata = ({
     const metadataList: MetadataDto[] = metadata.metadata.filter(
       (i) => i.metadataType !== propType,
     );
+
     const newList = [...metadataList, ...e.selectedItems];
     setMetadata({
       ...metadata,
@@ -102,9 +128,7 @@ export const ModelMetadata = ({
                 label="Field"
                 options={data.data.filter((d) => d.metadataType === 'Field')}
                 optionLabel={(option) => option.value}
-                selectedOptions={metadata?.metadata.filter(
-                  (m) => m.metadataType === 'Field',
-                )}
+                selectedOptions={setSelectedMetadataOptions('Field')}
                 multiple
                 onOptionsChange={(e: AutocompleteChanges<MetadataDto>) =>
                   handleAddMetadata(e, 'Field')
@@ -120,9 +144,7 @@ export const ModelMetadata = ({
                   (d) => d.metadataType === 'Formation',
                 )}
                 optionLabel={(option) => option.value}
-                selectedOptions={metadata?.metadata.filter(
-                  (m) => m.metadataType === 'Formation',
-                )}
+                selectedOptions={setSelectedMetadataOptions('Formation')}
                 multiple
                 onOptionsChange={(e: AutocompleteChanges<MetadataDto>) =>
                   handleAddMetadata(e, 'Formation')
@@ -134,31 +156,39 @@ export const ModelMetadata = ({
             </Styled.Required>
           </Styled.AutocompleteRow>
           <Styled.AutocompleteRow>
-            <Autocomplete
-              label="Analogue (optional)"
-              options={analougeData.data.data}
-              optionLabel={(option) => option.name}
-              selectedOptions={metadata?.analogue}
-              multiple
-              onOptionsChange={(e: AutocompleteChanges<AnalogueList>) =>
-                setMetadata({
-                  ...metadata,
-                  analogue: e.selectedItems,
-                })
-              }
-            ></Autocomplete>
-            <Autocomplete
-              label="Zone (optional)"
-              options={data.data.filter((d) => d.metadataType === 'Zone')}
-              optionLabel={(option) => option.value}
-              selectedOptions={metadata?.metadata.filter(
-                (m) => m.metadataType === 'Zone',
+            <Styled.Required>
+              <Autocomplete
+                className={`${errors.analogue && 'model-required'}`}
+                label="Analogue"
+                options={analougeData.data.data}
+                optionLabel={(option) => option.name}
+                selectedOptions={setSelectedAnalogueOptions()}
+                multiple
+                onOptionsChange={(e: AutocompleteChanges<AnalogueList>) =>
+                  setMetadata({
+                    ...metadata,
+                    analogue: e.selectedItems,
+                  })
+                }
+              ></Autocomplete>
+              {errors.analogue && (
+                <Label label="This field is required"></Label>
               )}
-              multiple
-              onOptionsChange={(e: AutocompleteChanges<MetadataDto>) =>
-                handleAddMetadata(e, 'Zone')
-              }
-            ></Autocomplete>
+            </Styled.Required>
+            <Styled.Required>
+              <Autocomplete
+                className={`${errors.zone && 'model-required'}`}
+                label="Zone"
+                options={data.data.filter((d) => d.metadataType === 'Zone')}
+                optionLabel={(option) => option.value}
+                selectedOptions={setSelectedMetadataOptions('Zone')}
+                multiple
+                onOptionsChange={(e: AutocompleteChanges<MetadataDto>) =>
+                  handleAddMetadata(e, 'Zone')
+                }
+              ></Autocomplete>
+              {errors.zone && <Label label="This field is required"></Label>}
+            </Styled.Required>
           </Styled.AutocompleteRow>
         </Styled.AutocompleteWrapper>
       </Styled.Form>

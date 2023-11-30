@@ -1,10 +1,26 @@
+/* eslint-disable max-lines-per-function */
 import { useMsal } from '@azure/msal-react';
 import { Button, Table, Typography } from '@equinor/eds-core-react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { MetadataDto, OpenAPI } from '../../../api/generated';
+import {
+  AddAnalogueDto,
+  AddAnalogueModelAnalogueCommandForm,
+  AddAnalogueModelMetadataCommandForm,
+  AddMetadataDto,
+  AnalogueList,
+  AnalogueModelAnaloguesService,
+  AnalogueModelMetadataService,
+  MetadataDto,
+  OpenAPI,
+  UpdateAnalogueModelCommandBody,
+} from '../../../api/generated';
 import { AnalogueModelsService } from '../../../api/generated/services/AnalogueModelsService';
 import { useAccessToken } from '../../../hooks/useAccessToken';
+import MetadataProps, {
+  AddModelDialog,
+} from '../../AddModel/AddModelDialog/AddModelDialog';
 import * as Styled from './ModelMetadataView.styled';
 
 export const ModelMetadataView = () => {
@@ -13,12 +29,119 @@ export const ModelMetadataView = () => {
   const token = useAccessToken(instance, accounts[0]);
   if (token) OpenAPI.TOKEN = token;
 
+  const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false);
+  const [refetchKey, setRefetchKey] = useState<number>(0);
   const { isLoading, data } = useQuery({
-    queryKey: ['analogue-models', modelId],
+    queryKey: ['analogue-models', modelId, refetchKey],
     queryFn: () =>
       AnalogueModelsService.getApiAnalogueModels1(modelId as string),
     enabled: !!token,
   });
+
+  const defaultMetadata: MetadataProps = {
+    name: data?.data.name ? data?.data.name : '',
+    description: data?.data.description ? data?.data.description : '',
+    metadata: data?.data.metadata ? data?.data.metadata : [],
+    analogue: data?.data.analogues ? data?.data.analogues : [],
+  };
+
+  function toggleDialog() {
+    setAddModelDialog(!isAddModelDialog);
+  }
+
+  const updateNameDescription = useMutation({
+    mutationFn: ({
+      id,
+      requestBody,
+    }: {
+      id: string;
+      requestBody: UpdateAnalogueModelCommandBody;
+    }) => {
+      return AnalogueModelsService.putApiAnalogueModels(id, requestBody);
+    },
+  });
+
+  const uploadModelMetadata = useMutation({
+    mutationFn: ({
+      id,
+      requestBody,
+    }: {
+      id: string;
+      requestBody: AddAnalogueModelMetadataCommandForm;
+    }) => {
+      return AnalogueModelMetadataService.putApiAnalogueModelsMetadata(
+        id,
+        requestBody,
+      );
+    },
+  });
+
+  const uploadModelAnalouges = useMutation({
+    mutationFn: ({
+      id,
+      requestBody,
+    }: {
+      id: string;
+      requestBody: AddAnalogueModelAnalogueCommandForm;
+    }) => {
+      return AnalogueModelAnaloguesService.putApiAnalogueModelsAnalogues(
+        id,
+        requestBody,
+      );
+    },
+  });
+
+  const metadataList: AddMetadataDto[] = [];
+  const analougueList: AddAnalogueDto[] = [];
+
+  function addMetadataFields(metadata?: MetadataDto[]) {
+    if (!metadata) return;
+    const obj = metadata.map((x) => ({ metadataId: x.metadataId }));
+    metadataList.push(...obj);
+  }
+
+  function addAnalogueFields(metadata?: AnalogueList[]) {
+    if (!metadata) return;
+    const obj = metadata.map((x) => ({ analogueId: x.analogueId }));
+    analougueList.push(...obj);
+  }
+
+  const updateModelMetadata = async (metadata: MetadataProps) => {
+    const id = data?.data.analogueModelId ? data?.data.analogueModelId : '';
+    const modelMetadata = {
+      name: metadata.name,
+      description: metadata.description,
+      sourceType: 'Deltares',
+    };
+
+    await updateNameDescription.mutateAsync({
+      id: id,
+      requestBody: modelMetadata,
+    });
+
+    addMetadataFields(metadata.metadata);
+    addAnalogueFields(metadata.analogue);
+
+    const readyMetadata: AddAnalogueModelMetadataCommandForm = {
+      metadata: metadataList,
+    };
+    const readyAnalogue: AddAnalogueModelAnalogueCommandForm = {
+      analogues: analougueList,
+    };
+
+    await uploadModelMetadata.mutateAsync({
+      id: id,
+      requestBody: readyMetadata,
+    });
+    await uploadModelAnalouges.mutateAsync({
+      id: id,
+      requestBody: readyAnalogue,
+    });
+
+    setRefetchKey(refetchKey + 1);
+    toggleDialog();
+  };
+
   if (isLoading || !data?.success) return <p>Loading ...</p>;
 
   return (
@@ -56,9 +179,20 @@ export const ModelMetadataView = () => {
         </Table>
       </Styled.MetadataTable>
 
-      <Button variant="outlined" className="edit-metadata-button">
+      <Button
+        onClick={toggleDialog}
+        variant="outlined"
+        className="edit-metadata-button"
+      >
         Edit description and metadata
       </Button>
+      <AddModelDialog
+        isOpen={isAddModelDialog}
+        edit={updateModelMetadata}
+        cancel={toggleDialog}
+        defaultMetadata={defaultMetadata}
+        isEdit={true}
+      />
     </Styled.Metadata>
   );
 };

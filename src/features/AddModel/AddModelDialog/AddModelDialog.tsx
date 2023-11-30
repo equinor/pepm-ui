@@ -8,9 +8,12 @@ import * as Styled from './AddModelDialog.styled';
 
 interface AddModelDialogProps {
   isOpen: boolean;
-  confirm: (file: File, metadata: MetadataProps) => Promise<void>;
+  confirm?: (file: File, metadata: MetadataProps) => Promise<void>;
+  edit?: (metadata: MetadataProps) => Promise<void>;
   cancel: () => void;
-  uploading: boolean;
+  uploading?: boolean;
+  defaultMetadata: MetadataProps;
+  isEdit?: boolean;
 }
 
 export default interface MetadataProps {
@@ -31,13 +34,8 @@ export type ErrorType = {
   field?: string;
   formation?: string;
   file?: string;
-};
-
-const defaultMetadata: MetadataProps = {
-  name: '',
-  description: '',
-  metadata: [],
-  analogue: [],
+  analogue?: string;
+  zone?: string;
 };
 
 const defaultFiles = {
@@ -48,8 +46,11 @@ const defaultFiles = {
 export const AddModelDialog = ({
   isOpen,
   confirm,
+  edit,
   cancel,
   uploading,
+  defaultMetadata,
+  isEdit,
 }: AddModelDialogProps) => {
   const [isFileDisplay, setFileDisplay] = useState<boolean>(false);
   const [files, setFiles] = useState<FilesProps>(defaultFiles);
@@ -58,6 +59,18 @@ export const AddModelDialog = ({
   const [submitting, setSubmitting] = useState(false);
   const [fileSize, setFileSize] = useState(0);
   const [rawFile, setrawFile] = useState<File>();
+
+  useEffect(() => {
+    if (Object.keys(errors).length === 0 && submitting) {
+      finishSubmit();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [errors, submitting]);
+
+  useEffect(() => {
+    if (rawFile === undefined) return;
+    setFileSize(rawFile.size);
+  }, [rawFile]);
 
   function toggleINIFileContent() {
     setFileDisplay(!isFileDisplay);
@@ -95,7 +108,22 @@ export const AddModelDialog = ({
       errors.formation = 'Formation not selected';
     }
 
-    if (!files.NC) {
+    if (
+      inputValues?.analogue === undefined ||
+      inputValues?.analogue?.length <= 0
+    ) {
+      errors.analogue = 'Analogues not selected';
+    }
+
+    if (
+      inputValues?.metadata === undefined ||
+      inputValues?.metadata?.filter((m) => m.metadataType === 'Zone').length <=
+        0
+    ) {
+      errors.zone = 'Zone not selected';
+    }
+
+    if (!files.NC && !isEdit) {
       errors.file = 'NC file missing';
     }
 
@@ -108,7 +136,7 @@ export const AddModelDialog = ({
   };
 
   const cleanupStates = () => {
-    setMetadata(defaultMetadata);
+    if (!isEdit) setMetadata(defaultMetadata);
     setFiles(defaultFiles);
     setrawFile(undefined);
     setFileSize(0);
@@ -116,21 +144,13 @@ export const AddModelDialog = ({
   };
 
   const finishSubmit = () => {
-    if (files.NC) confirm(files.NC, metadata);
+    if (files.NC && !isEdit && confirm) {
+      confirm(files.NC, metadata);
+    } else if (isEdit && edit) {
+      edit(metadata);
+    }
     cleanupStates();
   };
-
-  useEffect(() => {
-    if (Object.keys(errors).length === 0 && submitting) {
-      finishSubmit();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [errors, submitting]);
-
-  useEffect(() => {
-    if (rawFile === undefined) return;
-    setFileSize(rawFile.size);
-  }, [rawFile]);
 
   const fileAdded = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
@@ -146,16 +166,18 @@ export const AddModelDialog = ({
         <Styled.Dialog.Title>Add new model</Styled.Dialog.Title>
       </Styled.Dialog.Header>
       <Styled.DialogCustomContent scrollable>
-        <ModelInputFilesTable
-          files={files}
-          setFiles={setFiles}
-          fileDisplay={{
-            isVisible: isFileDisplay,
-            toggle: toggleINIFileContent,
-          }}
-          fileSize={fileSize}
-          fileChange={fileAdded}
-        />
+        {!isEdit && (
+          <ModelInputFilesTable
+            files={files}
+            setFiles={setFiles}
+            fileDisplay={{
+              isVisible: isFileDisplay,
+              toggle: toggleINIFileContent,
+            }}
+            fileSize={fileSize}
+            fileChange={fileAdded}
+          />
+        )}
         {isFileDisplay && <INIFileContent />}
         <ModelMetadata
           errors={errors}
@@ -175,7 +197,7 @@ export const AddModelDialog = ({
         )}
         <div>
           <Button onClick={handleSubmit} disabled={uploading}>
-            Confirm and start uploading
+            {!isEdit ? 'Confirm and start uploading' : 'Save changes'}
           </Button>
           <Button variant="outlined" onClick={cancel}>
             Cancel
