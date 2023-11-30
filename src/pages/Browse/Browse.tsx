@@ -1,11 +1,6 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
-import {
-  Button,
-  LinearProgress,
-  Snackbar,
-  Typography,
-} from '@equinor/eds-core-react';
+import { Button, Snackbar, Typography } from '@equinor/eds-core-react';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import {
@@ -159,8 +154,6 @@ export const Browse = () => {
       id: modelId,
       requestBody: readyAnalogue,
     });
-
-    setRefetch(refetch + 1);
   }
 
   async function uploadModel(file: File, metadata: MetadataProps) {
@@ -177,6 +170,7 @@ export const Browse = () => {
     if (createModel.error === null && modelUpload.success) {
       const id = modelUpload.data.analogueModelId;
       setModelId(id);
+      setRefetch(refetch + 1);
       uploadMetadata(id, metadata);
 
       if (counter >= chunkCount) {
@@ -295,7 +289,11 @@ export const Browse = () => {
         <div className="btn-div">
           <Button onClick={toggleDialog}>Add new model</Button>
         </div>
-        <Table refetchKey={refetch} />
+        <Table
+          refetchKey={refetch}
+          progress={progress}
+          activeUploadId={modelId}
+        />
       </Styled.BrowseWrapper>
       <AddModelDialog
         isOpen={isAddModelDialog}
@@ -304,9 +302,6 @@ export const Browse = () => {
         uploading={uploading}
         defaultMetadata={defaultMetadata}
       />
-
-      <Typography variant="h2">File Upload Progress</Typography>
-      <LinearProgress variant="determinate" value={progress}></LinearProgress>
 
       <Snackbar
         open={!!uploadStatus}
