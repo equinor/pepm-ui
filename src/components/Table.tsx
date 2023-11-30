@@ -1,6 +1,11 @@
 /* eslint-disable max-lines-per-function */
 import { useMsal } from '@azure/msal-react';
-import { Button, Scrim, SideSheet } from '@equinor/eds-core-react';
+import {
+  Button,
+  LinearProgress,
+  Scrim,
+  SideSheet,
+} from '@equinor/eds-core-react';
 import { EdsDataGrid } from '@equinor/eds-data-grid-react';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -10,7 +15,15 @@ import { useAccessToken } from '../hooks/useAccessToken';
 import { AreaCoordinates } from './AreaCoordinates/AreaCoordinates';
 import * as Styled from './Table.styled';
 
-export const Table = ({ refetchKey }: { refetchKey: number }) => {
+export const Table = ({
+  refetchKey,
+  progress,
+  activeUploadId,
+}: {
+  refetchKey: number;
+  progress: number;
+  activeUploadId: string;
+}) => {
   const { instance, accounts } = useMsal();
   const token = useAccessToken(instance, accounts[0]);
   if (token) OpenAPI.TOKEN = token;
@@ -25,6 +38,20 @@ export const Table = ({ refetchKey }: { refetchKey: number }) => {
   });
 
   if (isLoading || !data?.success) return <p>Loading...</p>;
+
+  const isActiveModel = (id: string) => {
+    let isActive = false;
+    let started = false;
+    if (progress < 100 && id === activeUploadId) {
+      isActive = true;
+      started = true;
+    }
+    if (progress === 0 && started && id === activeUploadId) {
+      isActive = false;
+      started = false;
+    }
+    return isActive;
+  };
 
   return (
     <Styled.Table>
@@ -51,8 +78,28 @@ export const Table = ({ refetchKey }: { refetchKey: number }) => {
           },
           {
             accessorKey: 'isProcessed',
-            header: 'Status',
             id: 'isProcessed',
+
+            header: 'Upload status',
+            enableColumnFilter: false,
+            cell: ({ row }) => (
+              <>
+                {isActiveModel(row.original.analogueModelId) ? (
+                  <LinearProgress
+                    variant="determinate"
+                    value={progress}
+                  ></LinearProgress>
+                ) : (
+                  <>
+                    {row.original.isProcessed ? (
+                      <>Success</>
+                    ) : (
+                      <>Processing/Failed</>
+                    )}
+                  </>
+                )}
+              </>
+            ),
           },
 
           {
