@@ -44,21 +44,6 @@ export const ModelMetadata = ({
     enabled: !!token,
   });
 
-  const setSelectedMetadataOptions = (type: string) => {
-    if (!isLoading && data?.data) {
-      const dataProps = data.data.filter((z) => z.metadataType === type);
-
-      const selectedProps = metadata?.metadata.filter(
-        (m) => m.metadataType === type,
-      );
-
-      return dataProps.filter(
-        (c) =>
-          selectedProps.findIndex((x: MetadataDto) => x.value === c.value) > -1,
-      );
-    }
-  };
-
   const setSelectedAnalogueOptions = () => {
     if (analougeData.data?.success && metadata.analogue) {
       const analogue = metadata?.analogue;
@@ -123,33 +108,25 @@ export const ModelMetadata = ({
         <Styled.AutocompleteWrapper>
           <Styled.AutocompleteRow>
             <Styled.Required>
-              <Autocomplete
+              <MetadataSelect
                 className={`${errors.field && 'model-required'}`}
-                label="Field"
-                options={data.data.filter((d) => d.metadataType === 'Field')}
-                optionLabel={(option) => option.value}
-                selectedOptions={setSelectedMetadataOptions('Field')}
-                multiple
-                onOptionsChange={(e: AutocompleteChanges<MetadataDto>) =>
-                  handleAddMetadata(e, 'Field')
-                }
-              ></Autocomplete>
+                type="Field"
+                data={data.data}
+                metadata={metadata.metadata}
+                isLoading={isLoading}
+                handleAddMetadata={handleAddMetadata}
+              />
               {errors.field && <Label label="This field is required"></Label>}
             </Styled.Required>
             <Styled.Required>
-              <Autocomplete
+              <MetadataSelect
                 className={`${errors.formation && 'model-required'}`}
-                label="Formation"
-                options={data.data.filter(
-                  (d) => d.metadataType === 'Formation',
-                )}
-                optionLabel={(option) => option.value}
-                selectedOptions={setSelectedMetadataOptions('Formation')}
-                multiple
-                onOptionsChange={(e: AutocompleteChanges<MetadataDto>) =>
-                  handleAddMetadata(e, 'Formation')
-                }
-              ></Autocomplete>
+                type="Formation"
+                data={data.data}
+                metadata={metadata.metadata}
+                isLoading={isLoading}
+                handleAddMetadata={handleAddMetadata}
+              />
               {errors.formation && (
                 <Label label="This field is required"></Label>
               )}
@@ -176,22 +153,65 @@ export const ModelMetadata = ({
               )}
             </Styled.Required>
             <Styled.Required>
-              <Autocomplete
+              <MetadataSelect
                 className={`${errors.zone && 'model-required'}`}
-                label="Zone"
-                options={data.data.filter((d) => d.metadataType === 'Zone')}
-                optionLabel={(option) => option.value}
-                selectedOptions={setSelectedMetadataOptions('Zone')}
-                multiple
-                onOptionsChange={(e: AutocompleteChanges<MetadataDto>) =>
-                  handleAddMetadata(e, 'Zone')
-                }
-              ></Autocomplete>
+                type="Zone"
+                data={data.data}
+                metadata={metadata.metadata}
+                isLoading={isLoading}
+                handleAddMetadata={handleAddMetadata}
+              />
               {errors.zone && <Label label="This field is required"></Label>}
             </Styled.Required>
           </Styled.AutocompleteRow>
         </Styled.AutocompleteWrapper>
       </Styled.Form>
     </Styled.ModelMetadata>
+  );
+};
+
+const MetadataSelect = ({
+  type,
+  data,
+  metadata,
+  isLoading,
+  className,
+  handleAddMetadata,
+}: {
+  type: string;
+  data: MetadataDto[];
+  metadata: MetadataDto[];
+  isLoading: boolean;
+  className: string;
+  handleAddMetadata: (
+    e: AutocompleteChanges<MetadataDto>,
+    type: string,
+  ) => void;
+}) => {
+  const setSelectedMetadataOptions = (type: string) => {
+    if (!isLoading && data) {
+      const dataProps = data.filter((z) => z.metadataType === type);
+
+      const selectedProps = metadata.filter((m) => m.metadataType === type);
+
+      return dataProps.filter(
+        (c) =>
+          selectedProps.findIndex((x: MetadataDto) => x.value === c.value) > -1,
+      );
+    }
+  };
+
+  return (
+    <Autocomplete
+      className={className}
+      label={type}
+      options={data.filter((d) => d.metadataType === type)}
+      optionLabel={(option) => option.value}
+      selectedOptions={setSelectedMetadataOptions(type)}
+      multiple
+      onOptionsChange={(e: AutocompleteChanges<MetadataDto>) =>
+        handleAddMetadata(e, type)
+      }
+    ></Autocomplete>
   );
 };

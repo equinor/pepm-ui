@@ -209,7 +209,9 @@ const DataCell = ({
       {metadata?.filter((m) => m.metadataType === type).length ? (
         metadata
           ?.filter((m) => m.metadataType === type)
-          .map((m) => <Typography key={m.metadataId}>{m.value}</Typography>)
+          .map((m) => (
+            <Typography key={m.metadataId}>{m.value + ', '}</Typography>
+          ))
       ) : (
         <Typography> - No Zone selected - </Typography>
       )}
