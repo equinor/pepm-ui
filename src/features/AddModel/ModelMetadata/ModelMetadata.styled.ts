@@ -38,23 +38,10 @@ export const InputfieldRequired = styled.div`
   > label {
     color: red;
   }
-
-  > .model-required {
-    > div {
-      border: solid 2px red;
-    }
-  }
 `;
 
 export const Required = styled.div`
   > label {
     color: red;
-  }
-  > .model-required {
-    > div {
-      > div {
-        border: solid 2px red;
-      }
-    }
   }
 `;

@@ -79,7 +79,7 @@ export const ModelMetadata = ({
       <Styled.Form>
         <Styled.InputfieldRequired>
           <Styled.TextInput
-            className={`${errors.name && 'model-required'}`}
+            variant={errors.name ? 'error' : undefined}
             id="model-name"
             label="Model Name"
             value={metadata?.name}
@@ -91,7 +91,7 @@ export const ModelMetadata = ({
         </Styled.InputfieldRequired>
         <Styled.InputfieldRequired>
           <Styled.TextInput
-            className={`${errors.description && 'model-required'}`}
+            variant={errors.description ? 'error' : undefined}
             id="model-description"
             label="Model description"
             value={metadata?.description}
@@ -109,7 +109,7 @@ export const ModelMetadata = ({
           <Styled.AutocompleteRow>
             <Styled.Required>
               <MetadataSelect
-                className={`${errors.field && 'model-required'}`}
+                errors={errors.field}
                 type="Field"
                 data={data.data}
                 metadata={metadata.metadata}
@@ -120,8 +120,8 @@ export const ModelMetadata = ({
             </Styled.Required>
             <Styled.Required>
               <MetadataSelect
-                className={`${errors.formation && 'model-required'}`}
                 type="Formation"
+                errors={errors.formation}
                 data={data.data}
                 metadata={metadata.metadata}
                 isLoading={isLoading}
@@ -135,7 +135,7 @@ export const ModelMetadata = ({
           <Styled.AutocompleteRow>
             <Styled.Required>
               <Autocomplete
-                className={`${errors.analogue && 'model-required'}`}
+                variant={errors.analogue ? 'error' : undefined}
                 label="Analogue"
                 options={analougeData.data.data}
                 optionLabel={(option) => option.name}
@@ -154,8 +154,8 @@ export const ModelMetadata = ({
             </Styled.Required>
             <Styled.Required>
               <MetadataSelect
-                className={`${errors.zone && 'model-required'}`}
                 type="Zone"
+                errors={errors.zone}
                 data={data.data}
                 metadata={metadata.metadata}
                 isLoading={isLoading}
@@ -172,17 +172,17 @@ export const ModelMetadata = ({
 
 const MetadataSelect = ({
   type,
+  errors,
   data,
   metadata,
   isLoading,
-  className,
   handleAddMetadata,
 }: {
   type: string;
+  errors: string | undefined;
   data: MetadataDto[];
   metadata: MetadataDto[];
   isLoading: boolean;
-  className: string;
   handleAddMetadata: (
     e: AutocompleteChanges<MetadataDto>,
     type: string,
@@ -203,7 +203,7 @@ const MetadataSelect = ({
 
   return (
     <Autocomplete
-      className={className}
+      variant={errors ? 'error' : undefined}
       label={type}
       options={data.filter((d) => d.metadataType === type)}
       optionLabel={(option) => option.value}
