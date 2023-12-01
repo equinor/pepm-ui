@@ -19,25 +19,7 @@ export const CoordinateGroup = styled.div`
   display: flex;
   flex-direction: column;
 
-  > .autocomplete-error {
-    color: red;
-  }
-
-  > .autocomplete-error {
-    > div {
-      > div {
-        border: solid 2px red;
-      }
-    }
-  }
-
-  > .input-error {
-    > div {
-      > input {
-        border: solid 2px red;
-      }
-    }
-
+  > .error {
     color: red;
   }
 `;

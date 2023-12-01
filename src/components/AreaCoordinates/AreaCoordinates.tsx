@@ -18,18 +18,7 @@ import { AnalogueModelsService } from '../../api/generated/services/AnalogueMode
 import optionTypes from '../../features/Compute/ComputeVariogram/CaseCard/CaseCard';
 import * as Styled from './AreaCoordinates.styled';
 
-// const areaSchema = z.object({
-//   id: z.number(),
-//   name: z.string().min(1, { message: 'Ares is required' }),
-// });
-
 const schema = z.object({
-  // area: z.array(
-  //   z.object({
-  //     id: z.number(),
-  //     name: z.string().min(1, { message: 'Ares is required' }),
-  //   }),
-  // ),
   area: z.string().min(1, { message: 'Ares is required' }),
 
   topX: z
@@ -50,9 +39,6 @@ const schema = z.object({
     .max(12, { message: 'Coordinate is too long, max 12 characters' }),
 });
 
-// type innput = z.input<typeof schema>;
-// type output = z.infer<typeof schema>;
-
 export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
   const [showSaveAlert, setSaveAlert] = useState(false);
   const { data, isLoading } = useQuery({
@@ -70,7 +56,6 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     { id: 12, name: 'Distal' },
   ];
 
-  // const selectedArea: optionTypes[] = [{ id: 10, name: 'Proximal' }];
   const areaCoordinats = {
     area: '',
     topX: '',
@@ -111,47 +96,53 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
             <Typography variant="h6">Area to define</Typography>
 
             <Autocomplete
-              className={errors.area && 'autocomplete-error'}
-              {
-                ...register('area')
-                // ,
-                // {
-                //   setValueAs: (value: any) => Array(value),
-                // }
-              }
+              variant={errors.area ? 'error' : undefined}
+              {...register('area')}
               label={'Select area'}
               options={modelAreas}
               optionLabel={(option) => option.name}
               onOptionsChange={handleSelectChange}
             ></Autocomplete>
-            <div className={errors.area && 'autocomplete-error'}>
+            <div className={errors.area && 'error'}>
               {errors.area && errors.area?.message}
             </div>
           </Styled.CoordinateGroup>
 
           <Styled.CoordinateGroup>
             <Typography variant="h6">Top Left Corner</Typography>
-            <div className={errors.topX && 'input-error'}>
+            <div className={errors.topX && 'error'}>
               <Label label="X-coordinate" />
-              <Input {...register('topX')} />
+              <Input
+                {...register('topX')}
+                variant={errors.topX ? 'error' : undefined}
+              />
               {errors.topX && errors.topX?.message}
             </div>
-            <div className={errors.topY && 'input-error'}>
+            <div className={errors.topY && 'error'}>
               <Label label="Y-coordinate" />
-              <Input {...register('topY')} />
+              <Input
+                {...register('topY')}
+                variant={errors.topY ? 'error' : undefined}
+              />
               {errors.topY && errors.topY?.message}
             </div>
           </Styled.CoordinateGroup>
           <Styled.CoordinateGroup>
             <Typography variant="h6">Bottom Right Corner </Typography>
-            <div className={errors.bottomX && 'input-error'}>
+            <div className={errors.bottomX && 'error'}>
               <Label label="X-coordinate" />
-              <Input {...register('bottomX')} />
+              <Input
+                {...register('bottomX')}
+                variant={errors.bottomX ? 'error' : undefined}
+              />
               {errors.bottomX && errors.bottomX?.message}
             </div>
-            <div className={errors.bottomY && 'input-error'}>
+            <div className={errors.bottomY && 'error'}>
               <Label label="Y-coordinate" />
-              <Input {...register('bottomY')} />
+              <Input
+                {...register('bottomY')}
+                variant={errors.bottomY ? 'error' : undefined}
+              />
               {errors.bottomY && errors.bottomY?.message}
             </div>
           </Styled.CoordinateGroup>
