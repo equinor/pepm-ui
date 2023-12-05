@@ -1,7 +1,7 @@
 import { Button } from '@equinor/eds-core-react';
 import styled from 'styled-components';
-import { spacings } from '../../../../tokens/spacings';
-import { theme } from '../../../../tokens/theme';
+import { spacings } from '../../../tokens/spacings';
+import { theme } from '../../../tokens/theme';
 
 export const Case = styled.div`
   display: flex;
@@ -11,10 +11,10 @@ export const Case = styled.div`
   column-gap: ${spacings.MEDIUM};
   row-gap: ${spacings.XXX_LARGE};
 
-  width: 75%;
+  width: 85%;
 
-  @media (max-width: 1450px) {
-    width: 95%;
+  @media (max-width: 1550px) {
+    width: 100%;
   }
 
   border-left: solid ${spacings.XX_SMALL} ${theme.light.ui.background.medium};

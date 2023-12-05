@@ -1,12 +1,12 @@
 import { Button, Typography } from '@equinor/eds-core-react';
-import { CaseInfoTyoe } from '../../../../pages/ModelPages/Compute/ComputeVariogram/ComputeVariogram';
-import * as Styled from './ComputeCaseInfoActions.styled';
+import { CaseInfoTyoe } from '../../../pages/ModelPages/Compute/ComputeVariogram/ComputeVariogram';
+import * as Styled from './ComputeHeader.styled';
 
-export const ComputeCaseInfoActions = ({
+export const ComputeHeader = ({
   addCase,
   caseInfo,
 }: {
-  addCase: () => void;
+  addCase: (id: string) => void;
   caseInfo: CaseInfoTyoe;
 }) => {
   return (
@@ -16,7 +16,7 @@ export const ComputeCaseInfoActions = ({
         <Typography variant="body_long">{caseInfo.info}</Typography>
       </Styled.Text>
       <Styled.Buttons>
-        <Button variant="outlined" onClick={addCase}>
+        <Button variant="outlined" onClick={() => addCase('1')}>
           {caseInfo.addText}
         </Button>
         <Button>{caseInfo.runText}</Button>

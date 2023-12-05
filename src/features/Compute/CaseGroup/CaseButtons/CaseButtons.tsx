@@ -1,7 +1,7 @@
 import { Button } from '@equinor/eds-core-react';
-import * as Styled from './CaseCardButtons.styled';
+import * as Styled from './CaseButtons.styled';
 
-export const CaseCardButtons = ({
+export const CaseButtons = ({
   id,
   removeCase,
   runCase,

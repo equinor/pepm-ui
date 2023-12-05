@@ -14,7 +14,7 @@ export const CaseCardComponent = ({
         <Styled.Title>
           <Typography variant="h4">{title}</Typography>
         </Styled.Title>
-        {children}
+        <Styled.Content>{children}</Styled.Content>
       </Styled.Wrapper>
     </Styled.CaseBorder>
   );

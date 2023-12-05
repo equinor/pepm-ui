@@ -1,12 +1,19 @@
+/* eslint-disable max-lines-per-function */
 import { Typography } from '@equinor/eds-core-react';
 import { useState } from 'react';
-import { CaseCard } from '../../../../features/Compute/ComputeVariogram/CaseCard/CaseCard';
-import { ComputeCaseInfoActions } from '../../../../features/Compute/ComputeVariogram/ComputeCaseInfoActions/ComputeCaseInfoActions';
-import * as Styled from './ComputeVariogram.styled';
+import { CaseGroup } from '../../../../features/Compute/CaseGroup/CaseGroup';
+import { ComputeHeader } from '../../../../features/Compute/ComputeHeader/ComputeHeader';
+import * as Styled from '../Compute.styled';
 
 export interface Casetype {
   id: string;
   name: string;
+}
+
+export interface CaseGroupType {
+  id: string;
+  type: string;
+  cases: Casetype[];
 }
 
 export interface CaseInfoTyoe {
@@ -17,8 +24,25 @@ export interface CaseInfoTyoe {
 }
 
 export const ComputeVariogram = () => {
+  const [caseGroup, setCaseGroup] = useState<CaseGroupType[]>([
+    {
+      id: '1',
+      type: 'Net-to-gross',
+      cases: [{ id: '1', name: 'Case 1' }],
+    },
+    {
+      id: '2',
+      type: 'Continuous parameter',
+      cases: [
+        { id: '1', name: 'Case 1' },
+        { id: '2', name: 'Case 2' },
+      ],
+    },
+  ]);
+
   const [cases, setCases] = useState<Casetype[]>([
-    { id: '1', name: 'Variogram Case 1' },
+    { id: '1', name: 'Net-to-gross' },
+    { id: '2', name: 'Continuous parameter' },
   ]);
 
   const variogramCaseInfo: CaseInfoTyoe = {
@@ -28,12 +52,25 @@ export const ComputeVariogram = () => {
     runText: 'Run all variograms',
   };
 
-  const addCase = () => {
+  const addCase = (id: string) => {
     const newCase: Casetype = {
       id: `${Math.floor(Math.random() * 100)}`,
-      name: `Variogram Case ${cases.length + 1}`,
+      name: `Case ${cases.length + 1}`,
     };
-    setCases([...cases, newCase]);
+    const newList = [...caseGroup[0].cases, newCase];
+    const item = [...caseGroup].filter((g) => g.id === id);
+
+    item[0].cases = newList;
+
+    setCaseGroup(item);
+  };
+  const addCaseGroup = () => {
+    const newCaseGroup: CaseGroupType = {
+      id: `${Math.floor(Math.random() * 100)}`,
+      type: 'Net-to-gross',
+      cases: [{ id: '1', name: 'Case 1' }],
+    };
+    setCaseGroup([...caseGroup, newCaseGroup]);
   };
 
   const removeCase = (id: string) => {
@@ -43,22 +80,17 @@ export const ComputeVariogram = () => {
 
   return (
     <Styled.Case>
-      <ComputeCaseInfoActions addCase={addCase} caseInfo={variogramCaseInfo} />
-      {cases.length !== 0 ? (
-        cases.map((c) => (
-          <CaseCard
-            key={c.id}
-            id={c.id}
-            name={c.name}
-            caseType={'variogram'}
-            removeCase={removeCase}
-          />
-        ))
+      <ComputeHeader
+        addCase={() => addCase('2')}
+        caseInfo={variogramCaseInfo}
+      />
+      {caseGroup.length !== 0 ? (
+        <CaseGroup caseGroup={caseGroup} removeCase={removeCase} />
       ) : (
         <Typography>Add a Case</Typography>
       )}
-      <Styled.AddCaseButton variant="outlined" onClick={addCase}>
-        Add variogram case
+      <Styled.AddCaseButton variant="outlined" onClick={addCaseGroup}>
+        Add Net-to-gross case group
       </Styled.AddCaseButton>
     </Styled.Case>
   );

@@ -1,17 +1,29 @@
+/* eslint-disable max-lines-per-function */
 import { Typography } from '@equinor/eds-core-react';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { EstimateChannelCommand } from '../../../../api/generated/models/EstimateChannelCommand';
 import { JobsService } from '../../../../api/generated/services/JobsService';
-import { CaseCard } from '../../../../features/Compute/ComputeVariogram/CaseCard/CaseCard';
-import { ComputeCaseInfoActions } from '../../../../features/Compute/ComputeVariogram/ComputeCaseInfoActions/ComputeCaseInfoActions';
-import { CaseInfoTyoe, Casetype } from '../ComputeVariogram/ComputeVariogram';
-import * as Styled from '../ComputeVariogram/ComputeVariogram.styled';
+import { CaseGroup } from '../../../../features/Compute/CaseGroup/CaseGroup';
+import { ComputeHeader } from '../../../../features/Compute/ComputeHeader/ComputeHeader';
+import * as Styled from '../Compute.styled';
+import {
+  CaseGroupType,
+  CaseInfoTyoe,
+  Casetype,
+} from '../ComputeVariogram/ComputeVariogram';
 
 export const ComputeObject = () => {
+  const [caseGroup, setCaseGroup] = useState<CaseGroupType[]>([
+    {
+      id: '1',
+      type: 'Channel',
+      cases: [{ id: '1', name: 'Case 1' }],
+    },
+  ]);
   const [cases, setCases] = useState<Casetype[]>([
-    { id: '1', name: 'Variogram Case 1' },
+    { id: '1', name: 'Channel' },
   ]);
   const { modelId } = useParams<{ modelId: string }>();
 
@@ -26,12 +38,25 @@ export const ComputeObject = () => {
     runText: 'Run all object cases',
   };
 
-  const addCase = () => {
-    const newCase: Casetype = {
-      id: `${Math.floor(Math.random() * 100)}`,
-      name: `Object Case ${cases.length + 1}`,
-    };
-    setCases([...cases, newCase]);
+  const addCase = (id?: string) => {
+    if (caseGroup.length === 0) {
+      const newCaseGroup: CaseGroupType = {
+        id: `${Math.floor(Math.random() * 100)}`,
+        type: 'Channel',
+        cases: [{ id: '1', name: 'Case 1' }],
+      };
+      setCaseGroup([...caseGroup, newCaseGroup]);
+    } else {
+      const newCase: Casetype = {
+        id: `${Math.floor(Math.random() * 100)}`,
+        name: `Object Case ${cases.length + 1}`,
+      };
+
+      const newList = [...caseGroup[0].cases, newCase];
+      [...caseGroup][0].cases = newList;
+
+      setCases(newList);
+    }
   };
 
   const removeCase = (id: string) => {
@@ -50,18 +75,13 @@ export const ComputeObject = () => {
 
   return (
     <Styled.Case>
-      <ComputeCaseInfoActions addCase={addCase} caseInfo={ObjectCaseInfo} />
+      <ComputeHeader addCase={addCase} caseInfo={ObjectCaseInfo} />
       {cases.length !== 0 ? (
-        cases.map((c) => (
-          <CaseCard
-            key={c.id}
-            id={c.id}
-            name={c.name}
-            caseType={'object'}
-            removeCase={removeCase}
-            runCase={runComputeObject}
-          />
-        ))
+        <CaseGroup
+          caseGroup={caseGroup}
+          removeCase={removeCase}
+          runCase={runComputeObject}
+        />
       ) : (
         <Typography>Add a Case</Typography>
       )}

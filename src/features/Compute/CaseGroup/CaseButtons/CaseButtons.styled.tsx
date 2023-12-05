@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { spacings } from '../../../../../tokens/spacings';
+import { spacings } from '../../../../tokens/spacings';
 
 export const ButtonDiv = styled.div`
   display: flex;

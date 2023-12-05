@@ -17,6 +17,14 @@ export const Title = styled.div`
   column-gap: ${spacings.MEDIUM};
 `;
 
+export const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  padding: ${spacings.LARGE};
+  background-color: ${theme.light.ui.background.light};
+`;
+
 export const CaseBorder = styled.div`
   display: flex;
   flex-direction: column;
