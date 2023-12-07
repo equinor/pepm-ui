@@ -71,15 +71,78 @@ export const Table = ({
           },
           { accessorKey: 'name', header: 'Name', id: 'name' },
           {
-            accessorKey: 'description',
-            header: 'Description',
-            id: 'description',
+            accessorKey: 'analogues',
+            id: 'analogues',
+            header: 'Analogue',
             enableColumnFilter: false,
+            size: 120,
+            cell: ({ row }) => (
+              <>
+                {row.original.analogues.map((a) => (
+                  <p key={a.analogueId}>
+                    {a.name} {', '}
+                  </p>
+                ))}
+              </>
+            ),
           },
+          {
+            accessorKey: 'formation',
+            id: 'formation',
+            header: 'Formation',
+            enableColumnFilter: false,
+            size: 120,
+            cell: ({ row }) => (
+              <>
+                {row.original.metadata
+                  .filter((data) => data.metadataType === 'Formation')
+                  .map((f) => (
+                    <p key={f.metadataId}>
+                      {f.value} {', '}
+                    </p>
+                  ))}
+              </>
+            ),
+          },
+          {
+            accessorKey: 'zone',
+            id: 'zone',
+            header: 'Zone',
+            enableColumnFilter: false,
+            size: 120,
+            cell: ({ row }) => (
+              <>
+                {row.original.metadata
+                  .filter((data) => data.metadataType === 'Zone')
+                  .map((z) => (
+                    <p key={z.metadataId}>
+                      {z.value} {', '}
+                    </p>
+                  ))}
+              </>
+            ),
+          },
+          {
+            accessorKey: 'field',
+            id: 'field',
+            header: 'Field',
+            enableColumnFilter: false,
+            cell: ({ row }) => (
+              <>
+                {row.original.metadata
+                  .filter((data) => data.metadataType === 'Field')
+                  .map((filed) => (
+                    <p key={filed.metadataId}>
+                      {filed.value} {', '}
+                    </p>
+                  ))}
+              </>
+            ),
+          },
+
           {
             accessorKey: 'isProcessed',
             id: 'isProcessed',
-
             header: 'Upload status',
             enableColumnFilter: false,
             cell: ({ row }) => (
@@ -105,33 +168,32 @@ export const Table = ({
           {
             accessorKey: 'navigate',
             enableColumnFilter: false,
+            enableResizing: false,
+            size: 200,
+            minSize: 200,
             cell: ({ row }) => (
-              <Button
-                onClick={() => {
-                  navigate(`/${row.original.analogueModelId}/details`);
-                }}
-              >
-                Go to model
-              </Button>
+              <Styled.Buttons>
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    navigate(`/${row.original.analogueModelId}/details`);
+                  }}
+                >
+                  Open
+                </Button>
+                <Button
+                  variant="ghost"
+                  onClick={() => {
+                    setActiveModel(row.original.analogueModelId);
+                    setToggle(!toggle);
+                  }}
+                >
+                  Set Areas
+                </Button>
+              </Styled.Buttons>
             ),
             header: '',
             id: 'navigate',
-          },
-          {
-            accessorKey: 'areas',
-            enableColumnFilter: false,
-            cell: ({ row }) => (
-              <Button
-                onClick={() => {
-                  setActiveModel(row.original.analogueModelId);
-                  setToggle(!toggle);
-                }}
-              >
-                Set Areas
-              </Button>
-            ),
-            header: '',
-            id: 'areas',
           },
         ]}
       />
