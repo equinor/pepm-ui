@@ -78,6 +78,7 @@ export type { PatchParameterDto } from './models/PatchParameterDto';
 export type { PrepareChunkedUploadCommandResponse } from './models/PrepareChunkedUploadCommandResponse';
 export type { PrepareChunkedUploadDto } from './models/PrepareChunkedUploadDto';
 export type { RadixJobDto } from './models/RadixJobDto';
+export type { UpdateAnalogueModelAreaCommandForm } from './models/UpdateAnalogueModelAreaCommandForm';
 export type { UpdateAnalogueModelCommandBody } from './models/UpdateAnalogueModelCommandBody';
 export type { UpdateAnalogueModelCommandResponse } from './models/UpdateAnalogueModelCommandResponse';
 export type { UpdateAnalogueModelDto } from './models/UpdateAnalogueModelDto';

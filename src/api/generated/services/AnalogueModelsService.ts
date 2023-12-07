@@ -10,6 +10,7 @@ import type { GetAnalogueModelListQueryResponse } from '../models/GetAnalogueMod
 import type { GetAnalogueModelQueryResponse } from '../models/GetAnalogueModelQueryResponse';
 import type { Operation } from '../models/Operation';
 import type { PatchAnalogueModelCommandResponse } from '../models/PatchAnalogueModelCommandResponse';
+import type { UpdateAnalogueModelAreaCommandForm } from '../models/UpdateAnalogueModelAreaCommandForm';
 import type { UpdateAnalogueModelCommandBody } from '../models/UpdateAnalogueModelCommandBody';
 import type { UpdateAnalogueModelCommandResponse } from '../models/UpdateAnalogueModelCommandResponse';
 import type { UploadAnalogueModelCommandResponse } from '../models/UploadAnalogueModelCommandResponse';
@@ -209,6 +210,30 @@ export class AnalogueModelsService {
             url: '/api/analogue-models/{id}/model-areas',
             path: {
                 'id': id,
+            },
+            body: requestBody,
+            mediaType: 'application/json-patch+json',
+        });
+    }
+
+    /**
+     * @param id
+     * @param modelAreaId
+     * @param requestBody
+     * @returns AddAnalogueModelAreaCommandResponse Success
+     * @throws ApiError
+     */
+    public static putApiAnalogueModelsModelAreas(
+        id: string,
+        modelAreaId: string,
+        requestBody?: UpdateAnalogueModelAreaCommandForm,
+    ): CancelablePromise<AddAnalogueModelAreaCommandResponse> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/api/analogue-models/{id}/model-areas/{modelAreaId}',
+            path: {
+                'id': id,
+                'modelAreaId': modelAreaId,
             },
             body: requestBody,
             mediaType: 'application/json-patch+json',
