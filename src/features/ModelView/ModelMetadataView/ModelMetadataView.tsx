@@ -11,16 +11,16 @@ import {
   AddMetadataDto,
   AnalogueList,
   AnalogueModelAnaloguesService,
+  AnalogueModelDetail,
   AnalogueModelMetadataService,
+  AnalogueModelSourceType,
   MetadataDto,
   OpenAPI,
   UpdateAnalogueModelCommandBody,
 } from '../../../api/generated';
 import { AnalogueModelsService } from '../../../api/generated/services/AnalogueModelsService';
 import { useAccessToken } from '../../../hooks/useAccessToken';
-import MetadataProps, {
-  AddModelDialog,
-} from '../../AddModel/AddModelDialog/AddModelDialog';
+import { AddModelDialog } from '../../AddModel/AddModelDialog/AddModelDialog';
 import * as Styled from './ModelMetadataView.styled';
 
 export const ModelMetadataView = () => {
@@ -38,11 +38,17 @@ export const ModelMetadataView = () => {
     enabled: !!token,
   });
 
-  const defaultMetadata: MetadataProps = {
+  const defaultMetadata: AnalogueModelDetail = {
+    analogueModelId: data?.data.analogueModelId
+      ? data?.data.analogueModelId
+      : '',
+    isProcessed: data?.data.isProcessed ? data?.data.isProcessed : false,
+    sourceType: AnalogueModelSourceType.DELTARES,
+    fileUploads: data?.data.fileUploads ? data?.data.fileUploads : [],
     name: data?.data.name ? data?.data.name : '',
     description: data?.data.description ? data?.data.description : '',
     metadata: data?.data.metadata ? data?.data.metadata : [],
-    analogue: data?.data.analogues ? data?.data.analogues : [],
+    analogues: data?.data.analogues ? data?.data.analogues : [],
   };
 
   function toggleDialog() {
@@ -106,7 +112,7 @@ export const ModelMetadataView = () => {
     analougueList.push(...obj);
   }
 
-  const updateModelMetadata = async (metadata: MetadataProps) => {
+  const updateModelMetadata = async (metadata: AnalogueModelDetail) => {
     const id = data?.data.analogueModelId ? data?.data.analogueModelId : '';
     const modelMetadata = {
       name: metadata.name,
@@ -120,7 +126,7 @@ export const ModelMetadataView = () => {
     });
 
     addMetadataFields(metadata.metadata);
-    addAnalogueFields(metadata.analogue);
+    addAnalogueFields(metadata.analogues);
 
     const readyMetadata: AddAnalogueModelMetadataCommandForm = {
       metadata: metadataList,
@@ -192,6 +198,7 @@ export const ModelMetadataView = () => {
         cancel={toggleDialog}
         defaultMetadata={defaultMetadata}
         isEdit={true}
+        existingData={data.data}
       />
     </Styled.Metadata>
   );

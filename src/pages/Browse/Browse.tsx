@@ -10,7 +10,9 @@ import {
   AddMetadataDto,
   AnalogueList,
   AnalogueModelAnaloguesService,
+  AnalogueModelDetail,
   AnalogueModelMetadataService,
+  AnalogueModelSourceType,
   AnalogueModelsService,
   ConvertAnalogueModelCommand,
   CreateAnalogueModelCommand,
@@ -20,9 +22,7 @@ import {
   UploadsService,
 } from '../../api/generated';
 import { Table } from '../../components/Table';
-import MetadataProps, {
-  AddModelDialog,
-} from '../../features/AddModel/AddModelDialog/AddModelDialog';
+import { AddModelDialog } from '../../features/AddModel/AddModelDialog/AddModelDialog';
 import * as Styled from './Browse.styled';
 
 enum UploadProcess {
@@ -51,11 +51,15 @@ export const Browse = () => {
   const [refetch, setRefetch] = useState<number>(0);
   const [uploading, setUploading] = useState<boolean>(false);
 
-  const defaultMetadata: MetadataProps = {
+  const defaultMetadata: AnalogueModelDetail = {
+    analogueModelId: '',
     name: '',
     description: '',
+    isProcessed: false,
+    sourceType: AnalogueModelSourceType.DELTARES,
+    fileUploads: [],
     metadata: [],
-    analogue: [],
+    analogues: [],
   };
 
   const createModel = useMutation({
@@ -133,9 +137,12 @@ export const Browse = () => {
     analougueList.push(...obj);
   }
 
-  async function uploadMetadata(modelId: string, metadata: MetadataProps) {
+  async function uploadMetadata(
+    modelId: string,
+    metadata: AnalogueModelDetail,
+  ) {
     addMetadataFields(metadata.metadata);
-    addAnalogueFields(metadata.analogue);
+    addAnalogueFields(metadata.analogues);
 
     const readyMetadata: AddAnalogueModelMetadataCommandForm = {
       metadata: metadataList,
@@ -156,7 +163,7 @@ export const Browse = () => {
     });
   }
 
-  async function uploadModel(file: File, metadata: MetadataProps) {
+  async function uploadModel(file: File, metadata: AnalogueModelDetail) {
     setUploadStatus(UploadProcess.STARTED);
     setUploading(true);
     const ModelBody: CreateAnalogueModelCommand = {

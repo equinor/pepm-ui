@@ -12,7 +12,7 @@ export const MetadataSelect = ({
   type: string;
   errors: string | undefined;
   data: MetadataDto[];
-  metadata: MetadataDto[];
+  metadata: MetadataDto[] | undefined;
   isLoading: boolean;
   handleAddMetadata: (
     e: AutocompleteChanges<MetadataDto>,
@@ -20,7 +20,7 @@ export const MetadataSelect = ({
   ) => void;
 }) => {
   const setSelectedMetadataOptions = (type: string) => {
-    if (!isLoading && data) {
+    if (!isLoading && data && metadata) {
       const dataProps = data.filter((z) => z.metadataType === type);
 
       const selectedProps = metadata.filter((m) => m.metadataType === type);

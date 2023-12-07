@@ -5,12 +5,13 @@ import {
   Label,
   Typography,
 } from '@equinor/eds-core-react';
-import MetadataProps, { ErrorType } from '../AddModelDialog/AddModelDialog';
+import { ErrorType } from '../AddModelDialog/AddModelDialog';
 
 import { useMsal } from '@azure/msal-react';
 import { useQuery } from '@tanstack/react-query';
 import {
   AnalogueList,
+  AnalogueModelDetail,
   AnaloguesService,
   MetadataDto,
   MetadataService,
@@ -26,8 +27,8 @@ export const ModelMetadata = ({
   setMetadata,
 }: {
   errors: ErrorType;
-  metadata: MetadataProps;
-  setMetadata: (metadata: MetadataProps) => void;
+  metadata: AnalogueModelDetail;
+  setMetadata: (metadata: AnalogueModelDetail) => void;
 }) => {
   const { instance, accounts } = useMsal();
   const token = useAccessToken(instance, accounts[0]);
@@ -46,8 +47,8 @@ export const ModelMetadata = ({
   });
 
   const setSelectedAnalogueOptions = () => {
-    if (analougeData.data?.success && metadata.analogue) {
-      const analogue = metadata?.analogue;
+    if (analougeData.data?.success && metadata.analogues) {
+      const analogue = metadata?.analogues;
 
       return analougeData.data?.data.filter(
         (c) => analogue.findIndex((x: AnalogueList) => x.name === c.name) > -1,
@@ -59,6 +60,7 @@ export const ModelMetadata = ({
     e: AutocompleteChanges<MetadataDto>,
     propType: string,
   ) {
+    if (!metadata.metadata) return;
     const metadataList: MetadataDto[] = metadata.metadata.filter(
       (i) => i.metadataType !== propType,
     );
@@ -140,7 +142,7 @@ export const ModelMetadata = ({
           <Styled.AutocompleteRow>
             <Styled.Required>
               <Autocomplete
-                variant={errors.analogue ? 'error' : undefined}
+                variant={errors.analogues ? 'error' : undefined}
                 label="Analogue"
                 options={analougeData.data.data}
                 optionLabel={(option) => option.name}
@@ -149,11 +151,11 @@ export const ModelMetadata = ({
                 onOptionsChange={(e: AutocompleteChanges<AnalogueList>) =>
                   setMetadata({
                     ...metadata,
-                    analogue: e.selectedItems,
+                    analogues: e.selectedItems,
                   })
                 }
               ></Autocomplete>
-              {errors.analogue && (
+              {errors.analogues && (
                 <Label label="This field is required"></Label>
               )}
             </Styled.Required>
