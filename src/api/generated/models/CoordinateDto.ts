@@ -3,9 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type RadixJobDto = {
-    jobId?: string | null;
-    name?: string | null;
-    status?: string | null;
+export type CoordinateDto = {
+    'x': number;
+    'y': number;
+    'm': number;
 };
 

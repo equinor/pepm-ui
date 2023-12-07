@@ -2,6 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { AddAnalogueModelAreaCommandForm } from '../models/AddAnalogueModelAreaCommandForm';
+import type { AddAnalogueModelAreaCommandResponse } from '../models/AddAnalogueModelAreaCommandResponse';
 import type { CreateAnalogueModelCommand } from '../models/CreateAnalogueModelCommand';
 import type { CreateAnalogueModelCommandResponse } from '../models/CreateAnalogueModelCommandResponse';
 import type { GetAnalogueModelListQueryResponse } from '../models/GetAnalogueModelListQueryResponse';
@@ -189,6 +191,27 @@ export class AnalogueModelsService {
             },
             formData: formData,
             mediaType: 'multipart/form-data',
+        });
+    }
+
+    /**
+     * @param id
+     * @param requestBody
+     * @returns AddAnalogueModelAreaCommandResponse Success
+     * @throws ApiError
+     */
+    public static postApiAnalogueModelsModelAreas(
+        id: string,
+        requestBody?: AddAnalogueModelAreaCommandForm,
+    ): CancelablePromise<AddAnalogueModelAreaCommandResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/analogue-models/{id}/model-areas',
+            path: {
+                'id': id,
+            },
+            body: requestBody,
+            mediaType: 'application/json-patch+json',
         });
     }
 
