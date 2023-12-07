@@ -3,9 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type RadixJobDto = {
-    jobId?: string | null;
-    name?: string | null;
-    status?: string | null;
+export type ModelAreaTypeDto = {
+    modelAreaTypeId: string;
+    name: string;
+    description: string;
 };
 
