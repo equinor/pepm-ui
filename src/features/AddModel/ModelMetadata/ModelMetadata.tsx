@@ -17,6 +17,7 @@ import {
   OpenAPI,
 } from '../../../api/generated';
 import { useAccessToken } from '../../../hooks/useAccessToken';
+import { MetadataSelect } from './MetadataSelect/MetadataSelect';
 import * as Styled from './ModelMetadata.styled';
 
 export const ModelMetadata = ({
@@ -69,8 +70,12 @@ export const ModelMetadata = ({
     });
   }
 
-  if (isLoading || !data?.success) return <p>Loading ...</p>;
-  if (analougeData.isLoading || !analougeData?.data?.success)
+  if (
+    isLoading ||
+    !data?.success ||
+    analougeData.isLoading ||
+    !analougeData?.data?.success
+  )
     return <p>Loading ...</p>;
 
   return (
@@ -167,51 +172,5 @@ export const ModelMetadata = ({
         </Styled.AutocompleteWrapper>
       </Styled.Form>
     </Styled.ModelMetadata>
-  );
-};
-
-const MetadataSelect = ({
-  type,
-  errors,
-  data,
-  metadata,
-  isLoading,
-  handleAddMetadata,
-}: {
-  type: string;
-  errors: string | undefined;
-  data: MetadataDto[];
-  metadata: MetadataDto[];
-  isLoading: boolean;
-  handleAddMetadata: (
-    e: AutocompleteChanges<MetadataDto>,
-    type: string,
-  ) => void;
-}) => {
-  const setSelectedMetadataOptions = (type: string) => {
-    if (!isLoading && data) {
-      const dataProps = data.filter((z) => z.metadataType === type);
-
-      const selectedProps = metadata.filter((m) => m.metadataType === type);
-
-      return dataProps.filter(
-        (c) =>
-          selectedProps.findIndex((x: MetadataDto) => x.value === c.value) > -1,
-      );
-    }
-  };
-
-  return (
-    <Autocomplete
-      variant={errors ? 'error' : undefined}
-      label={type}
-      options={data.filter((d) => d.metadataType === type)}
-      optionLabel={(option) => option.value}
-      selectedOptions={setSelectedMetadataOptions(type)}
-      multiple
-      onOptionsChange={(e: AutocompleteChanges<MetadataDto>) =>
-        handleAddMetadata(e, type)
-      }
-    ></Autocomplete>
   );
 };
