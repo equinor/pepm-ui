@@ -7,7 +7,17 @@ export const Table = styled.div`
 
   > div {
     > table {
-      width: 90% !important;
+      min-width: 90% !important;
+    }
+    > div {
+      min-width: 90% !important;
     }
   }
+`;
+
+export const Buttons = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  column-gap: ${spacings.SMALL};
 `;
