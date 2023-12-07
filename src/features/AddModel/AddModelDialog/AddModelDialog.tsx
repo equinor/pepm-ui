@@ -1,19 +1,24 @@
 /* eslint-disable max-lines-per-function */
 import { Button, Typography } from '@equinor/eds-core-react';
 import { useEffect, useState } from 'react';
-import { AnalogueList, MetadataDto } from '../../../api/generated';
+import {
+  AnalogueList,
+  AnalogueModelDetail,
+  MetadataDto,
+} from '../../../api/generated';
 import { ModelInputFilesTable } from '../ModelInputFilesTable/ModelInputFilesTable';
 import { ModelMetadata } from '../ModelMetadata/ModelMetadata';
 import * as Styled from './AddModelDialog.styled';
 
 interface AddModelDialogProps {
   isOpen: boolean;
-  confirm?: (file: File, metadata: MetadataProps) => Promise<void>;
-  edit?: (metadata: MetadataProps) => Promise<void>;
+  confirm?: (file: File, metadata: AnalogueModelDetail) => Promise<void>;
+  edit?: (metadata: AnalogueModelDetail) => Promise<void>;
   cancel: () => void;
   uploading?: boolean;
-  defaultMetadata: MetadataProps;
+  defaultMetadata: AnalogueModelDetail;
   isEdit?: boolean;
+  existingData?: AnalogueModelDetail;
 }
 
 export default interface MetadataProps {
@@ -34,7 +39,7 @@ export type ErrorType = {
   field?: string;
   formation?: string;
   file?: string;
-  analogue?: string;
+  analogues?: string;
   zone?: string;
 };
 
@@ -51,10 +56,12 @@ export const AddModelDialog = ({
   uploading,
   defaultMetadata,
   isEdit,
+  existingData,
 }: AddModelDialogProps) => {
   const [isFileDisplay, setFileDisplay] = useState<boolean>(false);
   const [files, setFiles] = useState<FilesProps>(defaultFiles);
-  const [metadata, setMetadata] = useState<MetadataProps>(defaultMetadata);
+  const [metadata, setMetadata] =
+    useState<AnalogueModelDetail>(defaultMetadata);
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [fileSize, setFileSize] = useState(0);
@@ -72,13 +79,19 @@ export const AddModelDialog = ({
     setFileSize(rawFile.size);
   }, [rawFile]);
 
+  useEffect(() => {
+    if (existingData) setMetadata(existingData);
+  }, [existingData]);
+
   function toggleINIFileContent() {
     setFileDisplay(!isFileDisplay);
   }
 
   const INIFileContent = () => <p>Not implemented yet...</p>;
 
-  const validateValues = (inputValues: Partial<MetadataProps> | undefined) => {
+  const validateValues = (
+    inputValues: Partial<AnalogueModelDetail> | undefined,
+  ) => {
     const errors: ErrorType = {};
 
     if (inputValues?.name === undefined || inputValues?.name === '') {
@@ -109,10 +122,10 @@ export const AddModelDialog = ({
     }
 
     if (
-      inputValues?.analogue === undefined ||
-      inputValues?.analogue?.length <= 0
+      inputValues?.analogues === undefined ||
+      inputValues?.analogues?.length <= 0
     ) {
-      errors.analogue = 'Analogues not selected';
+      errors.analogues = 'Analogues not selected';
     }
 
     if (
