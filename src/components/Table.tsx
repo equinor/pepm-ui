@@ -19,10 +19,12 @@ export const Table = ({
   refetchKey,
   progress,
   activeUploadId,
+  transforming,
 }: {
   refetchKey: number;
   progress: number;
   activeUploadId: string;
+  transforming: boolean;
 }) => {
   const { instance, accounts } = useMsal();
   const token = useAccessToken(instance, accounts[0]);
@@ -53,6 +55,14 @@ export const Table = ({
     return isActive;
   };
 
+  const isTransforming = (id: string, status: boolean) => {
+    if (transforming && id === activeUploadId) {
+      return <>Transforming model</>;
+    } else {
+      return status && <>Ready</>;
+    }
+  };
+
   return (
     <Styled.Table>
       <EdsDataGrid
@@ -69,7 +79,7 @@ export const Table = ({
             header: 'Model ID',
             id: 'analogueModelId',
           },
-          { accessorKey: 'name', header: 'Name', id: 'name' },
+          { accessorKey: 'name', header: 'Model name', id: 'name' },
           {
             accessorKey: 'analogues',
             id: 'analogues',
@@ -77,13 +87,11 @@ export const Table = ({
             enableColumnFilter: false,
             size: 120,
             cell: ({ row }) => (
-              <>
+              <Styled.List>
                 {row.original.analogues.map((a) => (
-                  <p key={a.analogueId}>
-                    {a.name} {', '}
-                  </p>
+                  <p key={a.analogueId}>{a.name + ', '}</p>
                 ))}
-              </>
+              </Styled.List>
             ),
           },
           {
@@ -93,15 +101,13 @@ export const Table = ({
             enableColumnFilter: false,
             size: 120,
             cell: ({ row }) => (
-              <>
+              <Styled.List>
                 {row.original.metadata
                   .filter((data) => data.metadataType === 'Formation')
                   .map((f) => (
-                    <p key={f.metadataId}>
-                      {f.value} {', '}
-                    </p>
+                    <p key={f.metadataId}>{f.value + ', '}</p>
                   ))}
-              </>
+              </Styled.List>
             ),
           },
           {
@@ -111,15 +117,13 @@ export const Table = ({
             enableColumnFilter: false,
             size: 120,
             cell: ({ row }) => (
-              <>
+              <Styled.List>
                 {row.original.metadata
                   .filter((data) => data.metadataType === 'Zone')
                   .map((z) => (
-                    <p key={z.metadataId}>
-                      {z.value} {', '}
-                    </p>
+                    <p key={z.metadataId}>{z.value + ', '}</p>
                   ))}
-              </>
+              </Styled.List>
             ),
           },
           {
@@ -128,36 +132,36 @@ export const Table = ({
             header: 'Field',
             enableColumnFilter: false,
             cell: ({ row }) => (
-              <>
+              <Styled.List>
                 {row.original.metadata
                   .filter((data) => data.metadataType === 'Field')
                   .map((filed) => (
-                    <p key={filed.metadataId}>
-                      {filed.value} {', '}
-                    </p>
+                    <p key={filed.metadataId}>{filed.value + ', '}</p>
                   ))}
-              </>
+              </Styled.List>
             ),
           },
 
           {
             accessorKey: 'isProcessed',
             id: 'isProcessed',
-            header: 'Upload status',
+            header: 'Status',
             enableColumnFilter: false,
             cell: ({ row }) => (
               <>
                 {isActiveModel(row.original.analogueModelId) ? (
-                  <LinearProgress
-                    variant="determinate"
-                    value={progress}
-                  ></LinearProgress>
+                  <Styled.Upload>
+                    <p>Uploading {Math.round(progress)}%</p>
+                    <LinearProgress
+                      variant="determinate"
+                      value={progress}
+                    ></LinearProgress>
+                  </Styled.Upload>
                 ) : (
                   <>
-                    {row.original.isProcessed ? (
-                      <>Success</>
-                    ) : (
-                      <>Processing/Failed</>
+                    {isTransforming(
+                      row.original.analogueModelId,
+                      row.original.isProcessed,
                     )}
                   </>
                 )}
@@ -167,6 +171,8 @@ export const Table = ({
 
           {
             accessorKey: 'navigate',
+            header: 'Actions',
+            id: 'navigate',
             enableColumnFilter: false,
             enableResizing: false,
             size: 200,
@@ -175,6 +181,7 @@ export const Table = ({
               <Styled.Buttons>
                 <Button
                   variant="outlined"
+                  disabled={isActiveModel(row.original.analogueModelId)}
                   onClick={() => {
                     navigate(`/${row.original.analogueModelId}/details`);
                   }}
@@ -183,6 +190,7 @@ export const Table = ({
                 </Button>
                 <Button
                   variant="ghost"
+                  disabled={isActiveModel(row.original.analogueModelId)}
                   onClick={() => {
                     setActiveModel(row.original.analogueModelId);
                     setToggle(!toggle);
@@ -192,8 +200,6 @@ export const Table = ({
                 </Button>
               </Styled.Buttons>
             ),
-            header: '',
-            id: 'navigate',
           },
         ]}
       />
