@@ -21,3 +21,22 @@ export const Buttons = styled.div`
   justify-content: center;
   column-gap: ${spacings.SMALL};
 `;
+
+export const List = styled.div`
+  display: flex;
+  flex-direction: row;
+  overflow: auto;
+  > p {
+    padding-right: ${spacings.X_SMALL};
+  }
+`;
+
+export const Upload = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: ${spacings.X_SMALL};
+  > p {
+    margin: 0;
+  }
+`;

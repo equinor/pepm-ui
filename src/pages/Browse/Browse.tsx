@@ -27,7 +27,7 @@ import * as Styled from './Browse.styled';
 
 enum UploadProcess {
   STARTED = 'We are uploading your new model. Please keep this browser tab open.',
-  SUCCESS = 'Model successfully uploaded. You may close this browser tab now.',
+  SUCCESS = 'Model successfully uploaded and is now beeing processed. You may close this browser tab now.',
   FAILED = 'File upload failed.',
 }
 
@@ -50,6 +50,7 @@ export const Browse = () => {
   const [uploadStatus, setUploadStatus] = useState<string>();
   const [refetch, setRefetch] = useState<number>(0);
   const [uploading, setUploading] = useState<boolean>(false);
+  const [transforming, setTransforming] = useState<boolean>(false);
 
   const defaultMetadata: AnalogueModelDetail = {
     analogueModelId: '',
@@ -178,6 +179,7 @@ export const Browse = () => {
       const id = modelUpload.data.analogueModelId;
       setModelId(id);
       setRefetch(refetch + 1);
+      setProgress(1);
       uploadMetadata(id, metadata);
 
       if (counter >= chunkCount) {
@@ -257,6 +259,7 @@ export const Browse = () => {
 
             // eslint-disable-next-line max-depth
             if (convertModelFile.error === null && convert.success) {
+              setTransforming(true);
               setUploadStatus(UploadProcess.SUCCESS);
               setProgress(0);
               setUploading(false);
@@ -284,11 +287,6 @@ export const Browse = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fileToBeUpload, progress]);
 
-  useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log(progress);
-  }, [progress]);
-
   return (
     <>
       <Styled.BrowseWrapper>
@@ -300,6 +298,7 @@ export const Browse = () => {
           refetchKey={refetch}
           progress={progress}
           activeUploadId={modelId}
+          transforming={transforming}
         />
       </Styled.BrowseWrapper>
       <AddModelDialog
