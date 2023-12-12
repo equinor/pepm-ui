@@ -6,13 +6,9 @@ import {
   Autocomplete,
   AutocompleteChanges,
   Button,
-  Icon,
-  Input,
-  Label,
   Snackbar,
   Typography,
 } from '@equinor/eds-core-react';
-import { error_filled as ERROR_FILLED } from '@equinor/eds-icons';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import {
@@ -24,6 +20,7 @@ import {
 } from '../../api/generated';
 import { AnalogueModelsService } from '../../api/generated/services/AnalogueModelsService';
 import * as Styled from './AreaCoordinates.styled';
+import { CoordinateInput } from './CoordinateInput/CoordinateInput';
 
 type ErrorType = {
   area?: string;
@@ -33,7 +30,7 @@ type ErrorType = {
   y1?: string;
 };
 
-type AreaCoordinateType = {
+export type AreaCoordinateType = {
   modelAreaId: string;
   coordinates: CoordinateDto[];
 };
@@ -398,83 +395,47 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
           <Styled.CoordinateGroup>
             <Typography variant="h6">Top Left Corner</Typography>
             <Styled.CoordinateInputs>
-              <div>
-                <Label label="X start" />
-                <Input
-                  value={areaCoordinate?.coordinates[0].x}
-                  onChange={(input: { target: any }) =>
-                    setCoordinates(input.target, 0, 'x')
-                  }
-                  rightAdornments={
-                    errors?.x0 ? (
-                      <Icon data={ERROR_FILLED} color="red" size={24}></Icon>
-                    ) : (
-                      'meters'
-                    )
-                  }
-                  variant={errors?.x0 ? 'error' : undefined}
-                  disabled={activeArea?.modelAreaTypeId === ''}
-                />
-              </div>
-              <div>
-                <Label label="Y start" />
-                <Input
-                  value={areaCoordinate?.coordinates[0].y}
-                  onChange={(input: { target: any }) =>
-                    setCoordinates(input.target, 0, 'y')
-                  }
-                  rightAdornments={
-                    errors?.y0 ? (
-                      <Icon data={ERROR_FILLED} color="red" size={24}></Icon>
-                    ) : (
-                      'meters'
-                    )
-                  }
-                  variant={errors?.y0 ? 'error' : undefined}
-                  disabled={activeArea?.modelAreaTypeId === ''}
-                />
-              </div>
+              <CoordinateInput
+                label="X start"
+                error={errors.x0 ? true : false}
+                areaCoordinate={areaCoordinate}
+                setCoordinates={setCoordinates}
+                position={0}
+                axis="x"
+                activeArea={activeArea}
+              />
+              <CoordinateInput
+                label="Y start"
+                error={errors.y0 ? true : false}
+                areaCoordinate={areaCoordinate}
+                setCoordinates={setCoordinates}
+                position={0}
+                axis="y"
+                activeArea={activeArea}
+              />
             </Styled.CoordinateInputs>
           </Styled.CoordinateGroup>
           <Styled.CoordinateGroup>
             <Typography variant="h6">Bottom Right Corner </Typography>
             <Styled.CoordinateInputs>
-              <div>
-                <Label label="X end" />
-                <Input
-                  value={areaCoordinate?.coordinates[1].x}
-                  onChange={(input: { target: any }) =>
-                    setCoordinates(input.target, 1, 'x')
-                  }
-                  rightAdornments={
-                    errors?.x1 ? (
-                      <Icon data={ERROR_FILLED} color="red" size={24}></Icon>
-                    ) : (
-                      'meters'
-                    )
-                  }
-                  variant={errors?.x1 ? 'error' : undefined}
-                  disabled={activeArea?.modelAreaTypeId === ''}
-                />
-              </div>
-              <div>
-                <Label label="Y end" />
-                <Input
-                  value={areaCoordinate?.coordinates[1].y}
-                  onChange={(input: { target: any }) =>
-                    setCoordinates(input.target, 1, 'y')
-                  }
-                  rightAdornments={
-                    errors?.y1 ? (
-                      <Icon data={ERROR_FILLED} color="red" size={24}></Icon>
-                    ) : (
-                      'meters'
-                    )
-                  }
-                  variant={errors?.y1 ? 'error' : undefined}
-                  disabled={activeArea?.modelAreaTypeId === ''}
-                />
-              </div>
+              <CoordinateInput
+                label="X end"
+                error={errors.x1 ? true : false}
+                areaCoordinate={areaCoordinate}
+                setCoordinates={setCoordinates}
+                position={1}
+                axis="x"
+                activeArea={activeArea}
+              />
+              <CoordinateInput
+                label="Y end"
+                error={errors.y1 ? true : false}
+                areaCoordinate={areaCoordinate}
+                setCoordinates={setCoordinates}
+                position={1}
+                axis="y"
+                activeArea={activeArea}
+              />
             </Styled.CoordinateInputs>
 
             <div>
