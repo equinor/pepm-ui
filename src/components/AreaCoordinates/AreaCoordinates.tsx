@@ -137,6 +137,9 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     setSubmitting(false);
     setErrors({});
 
+    // If area dropdown is set to empty:
+    //    Active area is set to default
+    //    Coordinates are set to default
     if (changes.selectedItems.length <= 0) {
       setActiveArea(defaultArea);
       setAreaCoordinate({
@@ -157,15 +160,23 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
       return;
     }
 
-    const areasWithCoordinates =
+    const selectableAreas =
       model.data?.data?.modelAreas && model.data?.data?.modelAreas;
 
-    const selectedArea = areasWithCoordinates?.filter(
+    const selectedArea = selectableAreas?.filter(
       (area) => area.modelAreaType === changes.selectedItems[0].name,
     );
+    console.log(selectedArea?.length);
 
+    // Area has no previous coordinates set
+    //    Initialize
     if (selectedArea?.length === 0) {
+      console.log(areaCoordinate);
+
       if (activeArea) {
+        // Clear possible old states, set default coordinates
+        // Set Active area to the selected area
+        // Set new area to send a POST request
         setAreaCoordinate({
           modelAreaId: '',
           coordinates: [
@@ -184,7 +195,11 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
       }
       setActiveArea(changes.selectedItems[0]);
       setNewArea(changes.selectedItems[0]);
-    } else if (selectedArea && selectedArea?.length > 0) {
+    }
+    // Model has previous coordinates
+    // New area is undefint, PUT request will be sendt
+    // Populate state with existing data
+    else if (selectedArea && selectedArea?.length > 0) {
       setNewArea(undefined);
       const newState: AreaCoordinateType = {
         modelAreaId: selectedArea[0].modelAreaId,
@@ -283,6 +298,27 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     return errors;
   };
 
+  const clearAndUpdate = () => {
+    setActiveArea(defaultArea);
+    setAreaCoordinate({
+      modelAreaId: '',
+      coordinates: [
+        {
+          x: 0,
+          y: 0,
+          m: 0,
+        },
+        {
+          x: 0,
+          y: 0,
+          m: 1,
+        },
+      ],
+    });
+    setUpdated(updated + 1);
+    setSaveAlert(true);
+  };
+
   const postModelArea = async () => {
     if (activeArea && areaCoordinate) {
       const postRequestBody: AddAnalogueModelAreaCommandForm = {
@@ -296,25 +332,19 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
       });
 
       if (coordinateRes.success) {
-        setActiveArea(defaultArea);
-        setAreaCoordinate({
-          modelAreaId: '',
-          coordinates: [
-            {
-              x: 0,
-              y: 0,
-              m: 0,
-            },
-            {
-              x: 0,
-              y: 0,
-              m: 1,
-            },
-          ],
-        });
-        setUpdated(updated + 1);
-        setSaveAlert(true);
+        clearAndUpdate();
       }
+    }
+  };
+
+  const putModelArea = async () => {
+    const coordinateRes = await putAreaCoordinates.mutateAsync({
+      id: modelId,
+      modelAreaId: areaCoordinate.modelAreaId,
+      requestBody: { coordinates: areaCoordinate.coordinates },
+    });
+    if (coordinateRes.success) {
+      clearAndUpdate();
     }
   };
 
@@ -330,18 +360,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     if (newArea) {
       postModelArea();
     } else {
-      const coordinateRes = await putAreaCoordinates.mutateAsync({
-        id: modelId,
-        modelAreaId: areaCoordinate.modelAreaId,
-        requestBody: { coordinates: areaCoordinate.coordinates },
-      });
-      if (coordinateRes.success) {
-        setUpdated(updated + 1);
-        setActiveArea(defaultArea);
-        setAreaCoordinate(defaultState);
-        setSaveAlert(true);
-        setNewArea(undefined);
-      }
+      putModelArea();
     }
   };
 
