@@ -84,7 +84,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     setSaveAlert(false);
   }
 
-  function isNumber(value: any) {
+  function NotANumber(value: any) {
     return isNaN(value);
   }
 
@@ -242,16 +242,16 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     if (area && area.coordinates[0].y === area.coordinates[1].y) {
       errors.y0 = 'Y coodridnates can´t be equal.';
     }
-    if (area && isNumber(area.coordinates[0].x)) {
+    if (area && NotANumber(area.coordinates[0].x)) {
       errors.x0 = 'Coodridnates can´t be string, just numbers is alowed.';
     }
-    if (area && isNumber(area.coordinates[0].y)) {
+    if (area && NotANumber(area.coordinates[0].y)) {
       errors.y0 = 'Coodridnates can´t be string, just numbers is alowed.';
     }
-    if (area && isNumber(area.coordinates[1].x)) {
+    if (area && NotANumber(area.coordinates[1].x)) {
       errors.x1 = 'Coodridnates can´t be string, just numbers is alowed.';
     }
-    if (area && isNumber(area.coordinates[1].y)) {
+    if (area && NotANumber(area.coordinates[1].y)) {
       errors.y1 = 'Coodridnates can´t be string, just numbers is alowed.';
     }
     if (area && (area.coordinates[1].x === 0 || area.coordinates[1].y === 0)) {
