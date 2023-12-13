@@ -201,17 +201,21 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     // Populate state with existing data
     else if (selectedArea && selectedArea?.length > 0) {
       setNewArea(undefined);
+
+      const m0 = selectedArea[0].coordinates.filter((c) => c.m === 0);
+      const m1 = selectedArea[0].coordinates.filter((c) => c.m === 1);
+
       const newState: AreaCoordinateType = {
         modelAreaId: selectedArea[0].modelAreaId,
         coordinates: [
           {
-            x: selectedArea[0].coordinates[0].x,
-            y: selectedArea[0].coordinates[0].y,
+            x: m0[0].x,
+            y: m0[0].y,
             m: 0,
           },
           {
-            x: selectedArea[0].coordinates[1].x,
-            y: selectedArea[0].coordinates[1].y,
+            x: m1[0].x,
+            y: m1[0].y,
             m: 1,
           },
         ],
@@ -229,7 +233,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
   const validateCoordinates = (area: AreaCoordinateType | undefined) => {
     const errors: ErrorType = {};
     if (!activeArea || activeArea.modelAreaTypeId === '') {
-      errors.area = 'Moedl area needs to be selected';
+      errors.area = 'Model area needs to be selected';
     }
 
     if (area && area.coordinates[0].x === area.coordinates[1].x) {
