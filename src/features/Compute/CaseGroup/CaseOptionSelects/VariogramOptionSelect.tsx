@@ -2,7 +2,7 @@
 import { Autocomplete, AutocompleteChanges } from '@equinor/eds-core-react';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { ParameterList } from '../../../../api/generated';
+import { ModelAreaDto, ParameterList } from '../../../../api/generated';
 import { ParametersService } from '../../../../api/generated/services/ParametersService';
 import { default as optionTypes } from '../CaseGroup';
 import { GrainSizeSelect } from '../CaseOptionSelects/GrainSizeSelect/GrainSizeSelect';
@@ -34,10 +34,12 @@ export const VariogramOptionSelect = ({
   setVariogramModels,
   selectedVariogramModels,
 }: {
-  modelAreas: optionTypes[];
+  modelAreas?: ModelAreaDto[];
   caseType: string;
-  setModelArea: React.Dispatch<React.SetStateAction<optionTypes | undefined>>;
-  selectedModelArea: optionTypes | undefined;
+  setModelArea: React.Dispatch<
+    React.SetStateAction<ModelAreaDto[] | undefined>
+  >;
+  selectedModelArea: ModelAreaDto[] | undefined;
 
   selectedGrainSize?: optionTypes[];
   setGrainSize?: React.Dispatch<
@@ -53,7 +55,7 @@ export const VariogramOptionSelect = ({
   >;
   selectedVariogramModels: optionTypes[] | undefined;
 }) => {
-  const { isLoading, data } = useQuery({
+  const { data } = useQuery({
     queryKey: ['apiParameters'],
     queryFn: () => ParametersService.getApiParameters(),
   });
@@ -61,18 +63,26 @@ export const VariogramOptionSelect = ({
   const [architecturalElements, setArchitecturalElements] =
     useState<optionTypes>();
 
-  if (isLoading || !data?.success) return <p>Loading ...</p>;
-  console.log(caseType);
   console.log(architecturalElements);
 
   return (
     <Styled.AutocompleteWrapper>
       <Autocomplete
         label="Model area"
-        options={modelAreas}
-        optionLabel={(modelArea) => modelArea.name}
-        onOptionsChange={(changes: AutocompleteChanges<optionTypes>) =>
-          setModelArea(changes.selectedItems[0])
+        options={
+          modelAreas
+            ? modelAreas
+            : [
+                {
+                  modelAreaId: '0',
+                  modelAreaType: 'Not set',
+                  coordinates: [],
+                },
+              ]
+        }
+        optionLabel={(modelArea) => modelArea.modelAreaType}
+        onOptionsChange={(changes: AutocompleteChanges<ModelAreaDto>) =>
+          setModelArea(changes.selectedItems)
         }
       ></Autocomplete>
 
@@ -89,7 +99,7 @@ export const VariogramOptionSelect = ({
         <ParameterSelect
           label={'Parameter'}
           type={'parameters'}
-          options={data.data}
+          options={data && data.data}
           selectedParameters={selectedParameters}
           setParameters={setParameters}
         />

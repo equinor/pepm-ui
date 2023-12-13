@@ -1,5 +1,6 @@
 /* eslint-disable max-lines-per-function */
 import { useState } from 'react';
+import { ModelAreaDto } from '../../../../api/generated';
 import { ParameterList } from '../../../../api/generated/models/ParameterList';
 import { CaseButtons } from '../CaseButtons/CaseButtons';
 import optionTypes from '../CaseGroup';
@@ -12,18 +13,20 @@ export const CaseRow = ({
   id,
   runCase,
   removeCase,
+  modelAreas,
 }: {
   caseType: string;
   id: string;
   runCase?: () => void;
   removeCase: (id: string) => void;
+  modelAreas?: ModelAreaDto[];
 }) => {
-  const modelAreas: optionTypes[] = [
-    { id: 10, name: 'Proximal' },
-    { id: 11, name: 'Left' },
-    { id: 12, name: 'Distal' },
-    { id: 17, name: 'Whole model' },
-  ];
+  // const modelAreas: optionTypes[] = [
+  //   { id: 10, name: 'Proximal' },
+  //   { id: 11, name: 'Left' },
+  //   { id: 12, name: 'Distal' },
+  //   { id: 17, name: 'Whole model' },
+  // ];
 
   const modelOptions: optionTypes[] = [
     { id: 4, name: 'Spherical' },
@@ -36,7 +39,7 @@ export const CaseRow = ({
   const [selectedParameters, setParameters] = useState<ParameterList[]>();
   const [selectedVariogramModels, setVariogramModels] =
     useState<optionTypes[]>();
-  const [selectedModelArea, setModelArea] = useState<optionTypes>();
+  const [selectedModelArea, setModelArea] = useState<ModelAreaDto[]>();
 
   return (
     <Styled.Case>

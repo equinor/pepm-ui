@@ -10,7 +10,7 @@ export const ParameterSelect = ({
 }: {
   label: string;
   type: string;
-  options: ParameterList[];
+  options?: ParameterList[];
   selectedParameters?: ParameterList[];
   setParameters: React.Dispatch<
     React.SetStateAction<ParameterList[] | undefined>
@@ -23,7 +23,18 @@ export const ParameterSelect = ({
   return (
     <Autocomplete
       label={label}
-      options={options}
+      options={
+        options
+          ? options
+          : [
+              {
+                parameterId: '123',
+                identifier: '',
+                name: 'Not set',
+                description: '',
+              },
+            ]
+      }
       optionLabel={(option) => option.name}
       onOptionsChange={onParameterChange}
       selectedOptions={selectedParameters}

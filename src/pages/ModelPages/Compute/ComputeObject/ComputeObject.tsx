@@ -1,9 +1,8 @@
 /* eslint-disable max-lines-per-function */
 import { Typography } from '@equinor/eds-core-react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { AnalogueModelsService } from '../../../../api/generated';
 import { EstimateChannelCommand } from '../../../../api/generated/models/EstimateChannelCommand';
 import { JobsService } from '../../../../api/generated/services/JobsService';
 import { CaseGroup } from '../../../../features/Compute/CaseGroup/CaseGroup';
@@ -17,12 +16,6 @@ import {
 
 export const ComputeObject = () => {
   const { modelId } = useParams<{ modelId: string }>();
-
-  const { isLoading, data } = useQuery({
-    queryKey: ['analogue-models', modelId],
-    queryFn: () =>
-      AnalogueModelsService.getApiAnalogueModels1(modelId as string),
-  });
 
   const [caseGroup, setCaseGroup] = useState<CaseGroupType[]>([
     {
@@ -80,8 +73,6 @@ export const ComputeObject = () => {
 
     await computeObject.mutateAsync(requestBody);
   };
-
-  if (isLoading || !data?.success) return <p>Loading ...</p>;
 
   return (
     <Styled.Case>
