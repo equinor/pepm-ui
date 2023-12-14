@@ -11,15 +11,14 @@ import type { ParameterList } from './ParameterList';
 import type { UploadList } from './UploadList';
 
 export type AnalogueModelDetail = {
-    analogueModelId: string;
-    name: string;
-    description: string;
-    isProcessed: boolean;
-    sourceType: AnalogueModelSourceType;
-    analogues: Array<AnalogueList>;
-    fileUploads: Array<UploadList>;
-    parameters?: Array<ParameterList> | null;
-    metadata?: Array<MetadataDto> | null;
-    modelAreas?: Array<ModelAreaDto> | null;
+  analogueModelId: string;
+  name: string;
+  description: string;
+  isProcessed: boolean;
+  sourceType: AnalogueModelSourceType;
+  analogues: Array<AnalogueList>;
+  fileUploads: Array<UploadList>;
+  parameters?: Array<ParameterList> | null;
+  metadata?: Array<MetadataDto>;
+  modelAreas?: Array<ModelAreaDto>;
 };
-

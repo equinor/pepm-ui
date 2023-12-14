@@ -1,10 +1,6 @@
 /* eslint-disable max-lines-per-function */
 import { Typography } from '@equinor/eds-core-react';
-import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { EstimateChannelCommand } from '../../../../api/generated/models/EstimateChannelCommand';
-import { JobsService } from '../../../../api/generated/services/JobsService';
 import { CaseGroup } from '../../../../features/Compute/CaseGroup/CaseGroup';
 import { ComputeHeader } from '../../../../features/Compute/ComputeHeader/ComputeHeader';
 import * as Styled from '../Compute.styled';
@@ -15,7 +11,7 @@ import {
 } from '../ComputeVariogram/ComputeVariogram';
 
 export const ComputeObject = () => {
-  const { modelId } = useParams<{ modelId: string }>();
+  // const { modelId } = useParams<{ modelId: string }>();
 
   const [caseGroup, setCaseGroup] = useState<CaseGroupType[]>([
     {
@@ -28,9 +24,9 @@ export const ComputeObject = () => {
     { id: '1', name: 'Channel' },
   ]);
 
-  const computeObject = useMutation({
-    mutationFn: JobsService.postApiJobsComputeChannelEstimations,
-  });
+  // const computeObject = useMutation({
+  //   mutationFn: JobsService.postApiJobsComputeChannelEstimations,
+  // });
 
   const ObjectCaseInfo: CaseInfoTyoe = {
     title: 'Object cases',
@@ -65,14 +61,14 @@ export const ComputeObject = () => {
     setCases(newCaseList);
   };
 
-  const runComputeObject = async () => {
-    if (!modelId) return;
-    const requestBody: EstimateChannelCommand = {
-      modelId: modelId,
-    };
+  // const runComputeObject = async () => {
+  //   if (!modelId) return;
+  //   const requestBody: EstimateChannelCommand = {
+  //     modelId: modelId,
+  //   };
 
-    await computeObject.mutateAsync(requestBody);
-  };
+  //   await computeObject.mutateAsync(requestBody);
+  // };
 
   return (
     <Styled.Case>
@@ -81,7 +77,7 @@ export const ComputeObject = () => {
         <CaseGroup
           caseGroup={caseGroup}
           removeCase={removeCase}
-          runCase={runComputeObject}
+          // runCase={runComputeObject}
         />
       ) : (
         <Typography>Add a Case</Typography>

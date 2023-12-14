@@ -166,13 +166,10 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     const selectedArea = selectableAreas?.filter(
       (area) => area.modelAreaType === changes.selectedItems[0].name,
     );
-    console.log(selectedArea?.length);
 
     // Area has no previous coordinates set
     //    Initialize
     if (selectedArea?.length === 0) {
-      console.log(areaCoordinate);
-
       if (activeArea) {
         // Clear possible old states, set default coordinates
         // Set Active area to the selected area

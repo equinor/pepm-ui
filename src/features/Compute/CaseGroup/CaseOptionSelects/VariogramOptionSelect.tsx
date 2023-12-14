@@ -1,126 +1,146 @@
 /* eslint-disable max-lines-per-function */
-import { Autocomplete, AutocompleteChanges } from '@equinor/eds-core-react';
-import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
-import { ModelAreaDto, ParameterList } from '../../../../api/generated';
-import { ParametersService } from '../../../../api/generated/services/ParametersService';
-import { default as optionTypes } from '../CaseGroup';
-import { GrainSizeSelect } from '../CaseOptionSelects/GrainSizeSelect/GrainSizeSelect';
-import { ParameterSelect } from '../CaseOptionSelects/ParameterSelect/ParameterSelect';
+import {
+  ListComputeSettingsInputDto,
+  ListComputeSettingsInputValueDto,
+  ModelAreaDto,
+} from '../../../../api/generated';
 import * as Styled from './CaseOptionSelects.styled';
-import { ModelSelect } from './ModelSelect/ModelSelect';
+import { CaseSettingSelect } from './CaseSettingSelect/CaseSettingSelect';
+import { ModelAreaSelect } from './ModelAreaSelect/ModelAreaSelect';
 
-const grainOptions: optionTypes[] = [
-  { id: 1, name: 'Silt', size: '0.044mm' },
-  { id: 2, name: 'Very fine sand', size: '0.088mm' },
-  { id: 3, name: 'Fine sand', size: '0.177mm' },
-];
-
-const ArchitecturalElementsList: optionTypes[] = [
-  { id: 1, name: 'None' },
-  { id: 2, name: 'Mouth bar' },
-  { id: 3, name: 'Channel fill' },
-];
 export const VariogramOptionSelect = ({
   modelAreas,
   caseType,
-  setModelArea,
   selectedModelArea,
+  selectedIndicatorParameters,
   selectedGrainSize,
+  selectedParameters,
+  selectedArchelFilter,
+  selectedVariogramModels,
+  setModelArea,
+  setIndicatorParameters,
   setGrainSize,
   setParameters,
-  selectedParameters,
-  modelOptions,
+  setArchelFilter,
   setVariogramModels,
-  selectedVariogramModels,
+  NetToGrossSettings,
+  ContiniusParameterSettings,
+  IndicatorSettings,
 }: {
-  modelAreas?: ModelAreaDto[];
+  modelAreas: ModelAreaDto[];
   caseType: string;
-  setModelArea: React.Dispatch<
-    React.SetStateAction<ModelAreaDto[] | undefined>
-  >;
   selectedModelArea: ModelAreaDto[] | undefined;
+  selectedIndicatorParameters?: ListComputeSettingsInputValueDto[];
+  selectedGrainSize?: ListComputeSettingsInputValueDto[];
+  selectedParameters?: ListComputeSettingsInputValueDto[] | undefined;
+  selectedArchelFilter?: ListComputeSettingsInputValueDto[] | undefined;
+  selectedVariogramModels: ListComputeSettingsInputValueDto[] | undefined;
 
-  selectedGrainSize?: optionTypes[];
+  setModelArea: React.Dispatch<React.SetStateAction<ModelAreaDto[]>>;
+  setIndicatorParameters?: React.Dispatch<
+    React.SetStateAction<ListComputeSettingsInputValueDto[] | undefined>
+  >;
   setGrainSize?: React.Dispatch<
-    React.SetStateAction<optionTypes[] | undefined>
+    React.SetStateAction<ListComputeSettingsInputValueDto[] | undefined>
   >;
-  selectedParameters: ParameterList[] | undefined;
-  setParameters: React.Dispatch<
-    React.SetStateAction<ParameterList[] | undefined>
+  setParameters?: React.Dispatch<
+    React.SetStateAction<ListComputeSettingsInputValueDto[] | undefined>
   >;
-  modelOptions: optionTypes[];
+  setArchelFilter?: React.Dispatch<
+    React.SetStateAction<ListComputeSettingsInputValueDto[] | undefined>
+  >;
   setVariogramModels: React.Dispatch<
-    React.SetStateAction<optionTypes[] | undefined>
+    React.SetStateAction<ListComputeSettingsInputValueDto[] | undefined>
   >;
-  selectedVariogramModels: optionTypes[] | undefined;
+  IndicatorSettings?: ListComputeSettingsInputDto[];
+  NetToGrossSettings?: ListComputeSettingsInputDto[];
+  ContiniusParameterSettings?: ListComputeSettingsInputDto[];
 }) => {
-  const { data } = useQuery({
-    queryKey: ['apiParameters'],
-    queryFn: () => ParametersService.getApiParameters(),
-  });
+  // Lage en funksjon som tar inn Liste og Name
+  const indicatorFamilySettings = IndicatorSettings?.filter(
+    (value) => value.name === 'Variogram Family Filter',
+  );
+  const indicatorIndicatorSettings = IndicatorSettings?.filter(
+    (value) => value.name === 'Indicator',
+  );
 
-  const [architecturalElements, setArchitecturalElements] =
-    useState<optionTypes>();
-
-  console.log(architecturalElements);
+  const NetGrossGrainSizeSettings = NetToGrossSettings?.filter(
+    (value) => value.name === 'Net-To-Gross',
+  );
+  const NetGrossVariogramFamilySettings = NetToGrossSettings?.filter(
+    (value) => value.name === 'Variogram Family Filter',
+  );
+  const contParamsVariogramFamilySettings = ContiniusParameterSettings?.filter(
+    (value) => value.name === 'Variogram Family Filter',
+  );
+  const contParamsParamsSettings = ContiniusParameterSettings?.filter(
+    (value) => value.name === 'ContiniousParameter',
+  );
+  const contParamsArchelSettings = ContiniusParameterSettings?.filter(
+    (value) => value.name === 'Archel',
+  );
 
   return (
     <Styled.AutocompleteWrapper>
-      <Autocomplete
-        label="Model area"
-        options={
-          modelAreas
-            ? modelAreas
-            : [
-                {
-                  modelAreaId: '0',
-                  modelAreaType: 'Not set',
-                  coordinates: [],
-                },
-              ]
-        }
-        optionLabel={(modelArea) => modelArea.modelAreaType}
-        onOptionsChange={(changes: AutocompleteChanges<ModelAreaDto>) =>
-          setModelArea(changes.selectedItems)
-        }
-      ></Autocomplete>
+      <ModelAreaSelect
+        modelAreas={modelAreas}
+        selectedModelArea={selectedModelArea}
+        setModelArea={setModelArea}
+      />
+
+      {setIndicatorParameters && caseType === 'Indicator' && (
+        <CaseSettingSelect
+          label={'Parameter'}
+          options={
+            indicatorIndicatorSettings && indicatorIndicatorSettings[0].values
+          }
+          selectedValue={selectedIndicatorParameters}
+          setValue={setIndicatorParameters}
+        />
+      )}
 
       {setGrainSize && caseType === 'Net-to-gross' && (
-        <GrainSizeSelect
+        <CaseSettingSelect
           label={'From grain size'}
-          type={'grainSize'}
-          options={grainOptions}
-          selectedGrainSize={selectedGrainSize}
-          setGrainSize={setGrainSize}
+          options={
+            NetGrossGrainSizeSettings && NetGrossGrainSizeSettings[0].values
+          }
+          selectedValue={selectedGrainSize}
+          setValue={setGrainSize}
         />
       )}
       {caseType === 'Continuous parameter' && (
-        <ParameterSelect
+        <CaseSettingSelect
           label={'Parameter'}
-          type={'parameters'}
-          options={data && data.data}
-          selectedParameters={selectedParameters}
-          setParameters={setParameters}
+          settingType="continuousParameter"
+          options={
+            contParamsParamsSettings && contParamsParamsSettings[0].values
+          }
+          selectedValue={selectedParameters}
+          setValue={setParameters}
         />
       )}
-      <Autocomplete
+      <CaseSettingSelect
         label="Architectural elements filter"
-        disabled={caseType === 'Net-to-gross'}
-        options={ArchitecturalElementsList}
-        optionLabel={(ArchitecturalElementsList) =>
-          ArchitecturalElementsList.name
-        }
-        onOptionsChange={(changes: AutocompleteChanges<optionTypes>) =>
-          setArchitecturalElements(changes.selectedItems[0])
-        }
-      ></Autocomplete>
-      <ModelSelect
+        settingType="archel"
+        caseType={caseType}
+        options={contParamsArchelSettings && contParamsArchelSettings[0].values}
+        selectedValue={selectedArchelFilter}
+        setValue={setArchelFilter}
+      />
+      <CaseSettingSelect
         label={'Variogram model'}
-        type={'variogramModels'}
-        options={modelOptions}
-        selectedVariogramModels={selectedVariogramModels}
-        setVariogramModels={setVariogramModels}
+        options={
+          caseType === 'Net-to-gross'
+            ? NetGrossVariogramFamilySettings &&
+              NetGrossVariogramFamilySettings[0].values
+            : caseType === 'Indicator'
+            ? indicatorFamilySettings && indicatorFamilySettings[0].values
+            : contParamsVariogramFamilySettings &&
+              contParamsVariogramFamilySettings[0].values
+        }
+        selectedValue={selectedVariogramModels}
+        setValue={setVariogramModels}
       />
     </Styled.AutocompleteWrapper>
   );

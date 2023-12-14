@@ -26,6 +26,11 @@ export interface CaseInfoTyoe {
 export const ComputeVariogram = () => {
   const [caseGroup, setCaseGroup] = useState<CaseGroupType[]>([
     {
+      id: '3',
+      type: 'Indicator',
+      cases: [{ id: '1', name: 'Case 1' }],
+    },
+    {
       id: '1',
       type: 'Net-to-gross',
       cases: [{ id: '1', name: 'Case 1' }],
@@ -33,14 +38,12 @@ export const ComputeVariogram = () => {
     {
       id: '2',
       type: 'Continuous parameter',
-      cases: [
-        { id: '1', name: 'Case 1' },
-        { id: '2', name: 'Case 2' },
-      ],
+      cases: [{ id: '1', name: 'Case 1' }],
     },
   ]);
 
   const [cases, setCases] = useState<Casetype[]>([
+    { id: '3', name: 'Indicator' },
     { id: '1', name: 'Net-to-gross' },
     { id: '2', name: 'Continuous parameter' },
   ]);

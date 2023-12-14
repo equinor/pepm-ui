@@ -1,36 +1,23 @@
-import { Autocomplete, AutocompleteChanges } from '@equinor/eds-core-react';
 import { ModelAreaDto } from '../../../../api/generated';
 import * as Styled from './CaseOptionSelects.styled';
+import { ModelAreaSelect } from './ModelAreaSelect/ModelAreaSelect';
 
 export const ObjectOptionSelect = ({
   modelAreas,
+  selectedModelArea,
   setModelArea,
 }: {
-  modelAreas?: ModelAreaDto[];
-  setModelArea: React.Dispatch<
-    React.SetStateAction<ModelAreaDto[] | undefined>
-  >;
+  modelAreas: ModelAreaDto[];
+  selectedModelArea: ModelAreaDto[] | undefined;
+  setModelArea: React.Dispatch<React.SetStateAction<ModelAreaDto[]>>;
 }) => {
   return (
     <Styled.AutocompleteWrapper>
-      <Autocomplete
-        label="Model area"
-        options={
-          modelAreas && modelAreas.length > 0
-            ? modelAreas
-            : [
-                {
-                  modelAreaId: '123',
-                  modelAreaType: 'Model areas not set',
-                  coordinates: [],
-                },
-              ]
-        }
-        optionLabel={(modelArea) => modelArea.modelAreaType}
-        onOptionsChange={(changes: AutocompleteChanges<ModelAreaDto>) =>
-          setModelArea(changes.selectedItems)
-        }
-      ></Autocomplete>
+      <ModelAreaSelect
+        modelAreas={modelAreas}
+        selectedModelArea={selectedModelArea}
+        setModelArea={setModelArea}
+      />
     </Styled.AutocompleteWrapper>
   );
 };
