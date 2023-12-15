@@ -37,6 +37,8 @@ export type { CreateAnalogueDto } from './models/CreateAnalogueDto';
 export type { CreateAnalogueModelCommand } from './models/CreateAnalogueModelCommand';
 export type { CreateAnalogueModelCommandResponse } from './models/CreateAnalogueModelCommandResponse';
 export type { CreateAnalogueModelDto } from './models/CreateAnalogueModelDto';
+export type { CreateComputeCaseCommandForm } from './models/CreateComputeCaseCommandForm';
+export type { CreateComputeCaseInputSettingsForm } from './models/CreateComputeCaseInputSettingsForm';
 export type { CreateMetadataCommandForm } from './models/CreateMetadataCommandForm';
 export type { CreateParameterCommand } from './models/CreateParameterCommand';
 export type { ErrorResponse } from './models/ErrorResponse';
@@ -101,6 +103,7 @@ export type { UploadList } from './models/UploadList';
 export { UploadStatus } from './models/UploadStatus';
 
 export { AnalogueModelAnaloguesService } from './services/AnalogueModelAnaloguesService';
+export { AnalogueModelComputeCasesService } from './services/AnalogueModelComputeCasesService';
 export { AnalogueModelMetadataService } from './services/AnalogueModelMetadataService';
 export { AnalogueModelParametersService } from './services/AnalogueModelParametersService';
 export { AnalogueModelsService } from './services/AnalogueModelsService';
