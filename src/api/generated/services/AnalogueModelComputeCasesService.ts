@@ -2,8 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { AddAnalogueModelParameterCommandResponse } from '../models/AddAnalogueModelParameterCommandResponse';
 import type { CreateComputeCaseCommandForm } from '../models/CreateComputeCaseCommandForm';
+import type { CreateComputeCaseCommandResponse } from '../models/CreateComputeCaseCommandResponse';
+import type { ListComputeCasesByAnalogueModelIdQueryResponse } from '../models/ListComputeCasesByAnalogueModelIdQueryResponse';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -14,13 +15,13 @@ export class AnalogueModelComputeCasesService {
     /**
      * @param id
      * @param requestBody
-     * @returns AddAnalogueModelParameterCommandResponse Success
+     * @returns CreateComputeCaseCommandResponse Success
      * @throws ApiError
      */
     public static postApiAnalogueModelsComputeCases(
         id: string,
         requestBody?: CreateComputeCaseCommandForm,
-    ): CancelablePromise<AddAnalogueModelParameterCommandResponse> {
+    ): CancelablePromise<CreateComputeCaseCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/analogue-models/{id}/compute-cases',
@@ -34,12 +35,12 @@ export class AnalogueModelComputeCasesService {
 
     /**
      * @param id
-     * @returns AddAnalogueModelParameterCommandResponse Success
+     * @returns ListComputeCasesByAnalogueModelIdQueryResponse Success
      * @throws ApiError
      */
     public static getApiAnalogueModelsComputeCases(
         id: string,
-    ): CancelablePromise<AddAnalogueModelParameterCommandResponse> {
+    ): CancelablePromise<ListComputeCasesByAnalogueModelIdQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/analogue-models/{id}/compute-cases',
