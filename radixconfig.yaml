@@ -112,6 +112,8 @@ spec:
         MODEL_FOLDER: "/mnt/azure-storage/models"
         WORKER_FOLDER: "/mnt/azure-storage/worker"
         ARGS_FOLDER: "/app/args"
+      notifications:
+        webhook: http://api:5002/api/jobs/channel-estimation/status
       environmentConfig:
         - environment: dev
           volumeMounts:
