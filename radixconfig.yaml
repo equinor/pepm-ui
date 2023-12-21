@@ -35,6 +35,8 @@ spec:
           port: 5000
         - name: job-monitoring
           port: 5002
+        - name: channel-estimation
+          port: 5003
       secrets:
         - AzureAd__ClientId
         - AzureAd__ClientSecret
@@ -113,7 +115,7 @@ spec:
         WORKER_FOLDER: "/mnt/azure-storage/worker"
         ARGS_FOLDER: "/app/args"
       notifications:
-        webhook: http://api:5002/api/internal/jobs/channel-estimation/status
+        webhook: http://api:5003/api/internal/jobs/channel-estimation/status
       environmentConfig:
         - environment: dev
           volumeMounts:
