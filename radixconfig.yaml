@@ -35,7 +35,7 @@ spec:
           port: 5000
         - name: job-monitoring
           port: 5002
-        - name: channel-estimation
+        - name: channest
           port: 5003
       secrets:
         - AzureAd__ClientId
