@@ -74,7 +74,7 @@ spec:
         WORKER_FOLDER: "/mnt/azure-storage/worker"
         ARGS_FOLDER: "/app/args"
       notifications:
-        webhook: http://api:5002/api/internal/jobs/status
+        webhook: http://api:5002/api/webhooks/nrresqml/status
       environmentConfig:
         - environment: dev
           volumeMounts:
@@ -115,7 +115,7 @@ spec:
         WORKER_FOLDER: "/mnt/azure-storage/worker"
         ARGS_FOLDER: "/app/args"
       notifications:
-        webhook: http://api:5003/api/internal/jobs/channel-estimation/status
+        webhook: http://api:5003/api/webhooks/channest/status
       environmentConfig:
         - environment: dev
           volumeMounts:
