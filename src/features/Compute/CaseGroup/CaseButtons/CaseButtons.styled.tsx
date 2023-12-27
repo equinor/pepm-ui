@@ -7,8 +7,4 @@ export const ButtonDiv = styled.div`
   flex-direction: row;
   column-gap: ${spacings.SMALL};
   align-items: end;
-
-  > button {
-    width: ${spacings.COMPUTE_BUTTON};
-  }
 `;

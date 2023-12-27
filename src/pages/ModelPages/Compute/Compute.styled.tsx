@@ -23,3 +23,18 @@ export const Case = styled.div`
 export const AddCaseButton = styled(Button)`
   width: fit-content;
 `;
+
+export const ButtonDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  justify-content: space-between;
+  column-gap: ${spacings.SMALL};
+`;
+
+export const ButtonGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  column-gap: ${spacings.SMALL};
+`;
