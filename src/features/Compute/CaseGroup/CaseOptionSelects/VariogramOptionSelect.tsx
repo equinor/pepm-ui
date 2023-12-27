@@ -29,14 +29,16 @@ export const VariogramOptionSelect = ({
 }: {
   modelAreas: ModelAreaDto[];
   caseType: string;
-  selectedModelArea: ModelAreaDto[] | undefined;
+  selectedModelArea?: ModelAreaDto[] | undefined;
   selectedIndicatorParameters?: ListComputeSettingsInputValueDto[];
   selectedGrainSize?: ListComputeSettingsInputValueDto[];
   selectedParameters?: ListComputeSettingsInputValueDto[] | undefined;
   selectedArchelFilter?: ListComputeSettingsInputValueDto[] | undefined;
   selectedVariogramModels: ListComputeSettingsInputValueDto[] | undefined;
 
-  setModelArea: React.Dispatch<React.SetStateAction<ModelAreaDto[]>>;
+  setModelArea?: React.Dispatch<
+    React.SetStateAction<ModelAreaDto[] | undefined>
+  >;
   setIndicatorParameters?: React.Dispatch<
     React.SetStateAction<ListComputeSettingsInputValueDto[] | undefined>
   >;
@@ -83,6 +85,7 @@ export const VariogramOptionSelect = ({
   return (
     <Styled.AutocompleteWrapper>
       <ModelAreaSelect
+        disableSelect={false}
         modelAreas={modelAreas}
         selectedModelArea={selectedModelArea}
         setModelArea={setModelArea}

@@ -20,5 +20,5 @@ export type AnalogueModelDetail = {
   fileUploads: Array<UploadList>;
   parameters?: Array<ParameterList> | null;
   metadata?: Array<MetadataDto>;
-  modelAreas?: Array<ModelAreaDto>;
+  modelAreas?: Array<ModelAreaDto> | null;
 };
