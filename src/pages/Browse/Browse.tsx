@@ -59,8 +59,10 @@ export const Browse = () => {
     isProcessed: false,
     sourceType: AnalogueModelSourceType.DELTARES,
     fileUploads: [],
+    parameters: [],
     metadata: [],
     analogues: [],
+    modelAreas: [],
   };
 
   const createModel = useMutation({
