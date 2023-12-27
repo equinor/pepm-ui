@@ -6,7 +6,7 @@
 import type { CreateComputeCaseInputSettingsForm } from './CreateComputeCaseInputSettingsForm';
 
 export type CreateComputeCaseCommandForm = {
-    modelAreaId: string;
+    modelAreaId?: string | null;
     computeMethodId: string;
     computeTypeId: string;
     inputSettings: Array<CreateComputeCaseInputSettingsForm>;

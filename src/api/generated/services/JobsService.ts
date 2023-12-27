@@ -3,13 +3,11 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ConvertAnalogueModelCommand } from '../models/ConvertAnalogueModelCommand';
-import type { ConvertAnalogueModelCommandResponse } from '../models/ConvertAnalogueModelCommandResponse';
 import type { EstimateChannelCommand } from '../models/EstimateChannelCommand';
 import type { GetCurrentJobStatusCommandResponse } from '../models/GetCurrentJobStatusCommandResponse';
 import type { GetCurrentJobStatusListCommand } from '../models/GetCurrentJobStatusListCommand';
 import type { GetJobDetailQueryResponse } from '../models/GetJobDetailQueryResponse';
 import type { GetJobListQueryResponse } from '../models/GetJobListQueryResponse';
-import type { UpdateJobStatusCommand } from '../models/UpdateJobStatusCommand';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -60,23 +58,6 @@ export class JobsService {
             path: {
                 'id': id,
             },
-        });
-    }
-
-    /**
-     * Update current job status for job. This will fetch current status from underlying compute engine and update the status for the supplied Job Name.
-     * @param requestBody
-     * @returns ConvertAnalogueModelCommandResponse Success
-     * @throws ApiError
-     */
-    public static postApiJobsStatus(
-        requestBody?: UpdateJobStatusCommand,
-    ): CancelablePromise<ConvertAnalogueModelCommandResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/jobs/status',
-            body: requestBody,
-            mediaType: 'application/json-patch+json',
         });
     }
 

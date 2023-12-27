@@ -8,6 +8,7 @@ import type { CreateAnalogueModelCommand } from '../models/CreateAnalogueModelCo
 import type { CreateAnalogueModelCommandResponse } from '../models/CreateAnalogueModelCommandResponse';
 import type { GetAnalogueModelListQueryResponse } from '../models/GetAnalogueModelListQueryResponse';
 import type { GetAnalogueModelQueryResponse } from '../models/GetAnalogueModelQueryResponse';
+import type { GetResultDto } from '../models/GetResultDto';
 import type { Operation } from '../models/Operation';
 import type { PatchAnalogueModelCommandResponse } from '../models/PatchAnalogueModelCommandResponse';
 import type { UpdateAnalogueModelAreaCommandForm } from '../models/UpdateAnalogueModelAreaCommandForm';
@@ -24,6 +25,23 @@ export class AnalogueModelsService {
 
     /**
      * Get a list of all AnalogueModels
+     * @param id
+     * @returns GetResultDto Success
+     * @throws ApiError
+     */
+    public static getApiAnalogueModelsResults(
+        id: string,
+    ): CancelablePromise<Array<GetResultDto>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/analogue-models/{id}/results',
+            path: {
+                'id': id,
+            },
+        });
+    }
+
+    /**
      * @returns GetAnalogueModelListQueryResponse Success
      * @throws ApiError
      */

@@ -8,8 +8,9 @@ import type { ComputeCaseInputSettingsDto } from './ComputeCaseInputSettingsDto'
 import type { ComputeCaseModelAreaDto } from './ComputeCaseModelAreaDto';
 
 export type ComputeCaseDto = {
-  computeCaseId: string;
-  computeMethod: ComputeCaseComputeMethodDto;
-  modelArea: ComputeCaseModelAreaDto;
-  inputSettings: Array<ComputeCaseInputSettingsDto>;
+    computeCaseId: string;
+    computeMethod: ComputeCaseComputeMethodDto;
+    modelArea: ComputeCaseModelAreaDto;
+    inputSettings: Array<ComputeCaseInputSettingsDto>;
 };
+

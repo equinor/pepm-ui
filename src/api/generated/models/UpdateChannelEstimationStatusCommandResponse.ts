@@ -3,13 +3,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { ConvertAnalogueModelDto } from './ConvertAnalogueModelDto';
+import type { UpdateChannelEstimationStatusDto } from './UpdateChannelEstimationStatusDto';
 
-export type ConvertAnalogueModelCommandResponse = {
+export type UpdateChannelEstimationStatusCommandResponse = {
     success?: boolean;
     count?: number | null;
     message?: string | null;
     validationErrors?: Array<string> | null;
-    data: ConvertAnalogueModelDto;
+    data: Array<UpdateChannelEstimationStatusDto>;
 };
 

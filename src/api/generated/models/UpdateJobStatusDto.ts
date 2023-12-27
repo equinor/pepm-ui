@@ -6,7 +6,7 @@
 import type { JobStatus } from './JobStatus';
 import type { JobType } from './JobType';
 
-export type ConvertAnalogueModelDto = {
+export type UpdateJobStatusDto = {
     jobId: string;
     name: string;
     jobStatus: JobStatus;
