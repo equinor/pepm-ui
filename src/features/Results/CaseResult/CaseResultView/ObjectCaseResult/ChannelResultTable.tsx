@@ -17,7 +17,12 @@ export const ChannelResultTable = ({
   };
 
   let modelArea = '';
-  if (computeCase && computeCase[0].modelArea !== null)
+  if (
+    computeCase &&
+    computeCase[0] &&
+    computeCase[0].modelArea !== undefined &&
+    computeCase[0].modelArea !== null
+  )
     modelArea = computeCase && computeCase[0].modelArea.name;
 
   if (modelArea === '') modelArea = 'Whole model';

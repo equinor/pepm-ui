@@ -27,10 +27,11 @@ export const CaseResultView = ({
               key={obj.computeCaseId}
               data={obj}
               computeCase={
-                computeCases &&
-                computeCases.filter(
-                  (c) => c.computeCaseId === obj.computeCaseId,
-                )
+                computeCases && computeCases.length > 0
+                  ? computeCases.filter(
+                      (c) => c.computeCaseId === obj.computeCaseId,
+                    )
+                  : []
               }
             ></ChannelResultTable>
           ))}
