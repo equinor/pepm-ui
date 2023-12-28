@@ -7,6 +7,10 @@ export const Wrapper = styled.div`
   border-width: ${spacings.SMALL};
   border-color: ${theme.light.primary.resting};
   border-radius: ${spacings.BORDER_ROUNDED};
+
+  > .result {
+    background-color: ${theme.light.ui.background.default};
+  }
 `;
 
 export const Title = styled.div`

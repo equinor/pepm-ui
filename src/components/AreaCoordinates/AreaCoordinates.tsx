@@ -251,9 +251,8 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     if (area && NotANumber(area.coordinates[1].y)) {
       errors.y1 = 'Coodridnates can´t be string, just numbers is alowed.';
     }
-    if (area && (area.coordinates[1].x === 0 || area.coordinates[1].y === 0)) {
+    if (area && area.coordinates[1].x === 0) {
       errors.x1 = 'Bottom right conrner can not be 0.';
-      errors.y1 = 'Bottom right conrner can not be 0.';
     }
 
     if (
