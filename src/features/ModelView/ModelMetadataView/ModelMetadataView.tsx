@@ -42,13 +42,15 @@ export const ModelMetadataView = () => {
     analogueModelId: data?.data.analogueModelId
       ? data?.data.analogueModelId
       : '',
-    isProcessed: data?.data.isProcessed ? data?.data.isProcessed : false,
-    sourceType: AnalogueModelSourceType.DELTARES,
-    fileUploads: data?.data.fileUploads ? data?.data.fileUploads : [],
     name: data?.data.name ? data?.data.name : '',
     description: data?.data.description ? data?.data.description : '',
-    metadata: data?.data.metadata ? data?.data.metadata : [],
+    isProcessed: data?.data.isProcessed ? data?.data.isProcessed : false,
+    sourceType: AnalogueModelSourceType.DELTARES,
     analogues: data?.data.analogues ? data?.data.analogues : [],
+    fileUploads: data?.data.fileUploads ? data?.data.fileUploads : [],
+    parameters: [],
+    metadata: data?.data.metadata ? data?.data.metadata : [],
+    modelAreas: [],
   };
 
   function toggleDialog() {

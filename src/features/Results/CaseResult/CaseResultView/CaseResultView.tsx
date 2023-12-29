@@ -1,32 +1,40 @@
 import * as Styled from './CaseResultView.styled';
 
 import { Typography } from '@equinor/eds-core-react';
-import {
-  ObjectResultType,
-  VariogramResultListType,
-} from '../../../../pages/ModelPages/Results/Results';
-import { ObjectCaseResult } from './ObjectCaseResult/ObjectCaseResult';
+import { ComputeCaseDto, GetResultDto } from '../../../../api/generated';
+import { ChannelResultTable } from './ObjectCaseResult/ChannelResultTable';
 import { VariogramCaseResult } from './VariogramCaseResult/VariogramCaseResult';
 import ResultIMG from './vargrest_output-0-_variogram_slices_.png';
 
 export const CaseResultView = ({
-  caseList,
   objectList,
+  computeCases,
 }: {
-  caseList: VariogramResultListType[];
-  objectList: ObjectResultType[];
+  objectList?: GetResultDto[];
+  computeCases?: ComputeCaseDto[];
 }) => {
   return (
     <Styled.CaseResultView>
       <Typography variant="h2">Compute results</Typography>
       <Styled.CaseResultList>
         <VariogramCaseResult
-          caseList={caseList}
+          caseList={[]}
           img={ResultIMG}
         ></VariogramCaseResult>
-        {objectList.map((obj) => (
-          <ObjectCaseResult key={obj.identifier} data={obj}></ObjectCaseResult>
-        ))}
+        {objectList &&
+          objectList.map((obj) => (
+            <ChannelResultTable
+              key={obj.computeCaseId}
+              data={obj}
+              computeCase={
+                computeCases && computeCases.length > 0
+                  ? computeCases.filter(
+                      (c) => c.computeCaseId === obj.computeCaseId,
+                    )
+                  : []
+              }
+            ></ChannelResultTable>
+          ))}
       </Styled.CaseResultList>
     </Styled.CaseResultView>
   );

@@ -7,6 +7,10 @@ export const Wrapper = styled.div`
   border-width: ${spacings.SMALL};
   border-color: ${theme.light.primary.resting};
   border-radius: ${spacings.BORDER_ROUNDED};
+
+  > .result {
+    background-color: ${theme.light.ui.background.default};
+  }
 `;
 
 export const Title = styled.div`
@@ -15,6 +19,14 @@ export const Title = styled.div`
 
   padding: ${spacings.LARGE} 0 0 ${spacings.LARGE};
   column-gap: ${spacings.MEDIUM};
+`;
+
+export const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  padding: ${spacings.LARGE};
+  background-color: ${theme.light.ui.background.light};
 `;
 
 export const CaseBorder = styled.div`

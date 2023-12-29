@@ -84,7 +84,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     setSaveAlert(false);
   }
 
-  function isNumber(value: any) {
+  function NotANumber(value: any) {
     return isNaN(value);
   }
 
@@ -166,13 +166,10 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     const selectedArea = selectableAreas?.filter(
       (area) => area.modelAreaType === changes.selectedItems[0].name,
     );
-    console.log(selectedArea?.length);
 
     // Area has no previous coordinates set
     //    Initialize
     if (selectedArea?.length === 0) {
-      console.log(areaCoordinate);
-
       if (activeArea) {
         // Clear possible old states, set default coordinates
         // Set Active area to the selected area
@@ -242,21 +239,20 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     if (area && area.coordinates[0].y === area.coordinates[1].y) {
       errors.y0 = 'Y coodridnates can´t be equal.';
     }
-    if (area && isNumber(area.coordinates[0].x)) {
+    if (area && NotANumber(area.coordinates[0].x)) {
       errors.x0 = 'Coodridnates can´t be string, just numbers is alowed.';
     }
-    if (area && isNumber(area.coordinates[0].y)) {
+    if (area && NotANumber(area.coordinates[0].y)) {
       errors.y0 = 'Coodridnates can´t be string, just numbers is alowed.';
     }
-    if (area && isNumber(area.coordinates[1].x)) {
+    if (area && NotANumber(area.coordinates[1].x)) {
       errors.x1 = 'Coodridnates can´t be string, just numbers is alowed.';
     }
-    if (area && isNumber(area.coordinates[1].y)) {
+    if (area && NotANumber(area.coordinates[1].y)) {
       errors.y1 = 'Coodridnates can´t be string, just numbers is alowed.';
     }
-    if (area && (area.coordinates[1].x === 0 || area.coordinates[1].y === 0)) {
+    if (area && area.coordinates[1].x === 0) {
       errors.x1 = 'Bottom right conrner can not be 0.';
-      errors.y1 = 'Bottom right conrner can not be 0.';
     }
 
     if (
