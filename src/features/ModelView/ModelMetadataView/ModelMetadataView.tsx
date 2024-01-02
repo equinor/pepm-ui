@@ -21,6 +21,7 @@ import {
 import { AnalogueModelsService } from '../../../api/generated/services/AnalogueModelsService';
 import { useAccessToken } from '../../../hooks/useAccessToken';
 import { AddModelDialog } from '../../AddModel/AddModelDialog/AddModelDialog';
+import { TableDataCell } from '../TableDataCell/TableDataCell';
 import * as Styled from './ModelMetadataView.styled';
 
 export const ModelMetadataView = () => {
@@ -161,27 +162,19 @@ export const ModelMetadataView = () => {
           <Table.Body>
             <Table.Row>
               <Table.Cell className="table-first-col">Field</Table.Cell>
-              <DataCell metadata={data.data.metadata} type="Field" />
+              <TableDataCell data={data.data} type="Field" />
             </Table.Row>
             <Table.Row>
               <Table.Cell className="table-first-col">Fomation</Table.Cell>
-              <DataCell metadata={data.data.metadata} type="Formation" />
+              <TableDataCell data={data.data} type="Formation" />
             </Table.Row>
             <Table.Row>
               <Table.Cell className="table-first-col">Analouge</Table.Cell>
-              <Table.Cell className="table-second-col">
-                {data.data.analogues.length > 0 ? (
-                  data.data.analogues.map((m) => (
-                    <Typography key={m.analogueId}>{m.name}</Typography>
-                  ))
-                ) : (
-                  <Typography> - No Analogues selected - </Typography>
-                )}
-              </Table.Cell>
+              <TableDataCell data={data.data} type="Analouge" />
             </Table.Row>
             <Table.Row>
               <Table.Cell className="table-first-col">Zone</Table.Cell>
-              <DataCell metadata={data.data.metadata} type="Zone" />
+              <TableDataCell data={data.data} type="Zone" />
             </Table.Row>
           </Table.Body>
         </Table>
@@ -203,27 +196,5 @@ export const ModelMetadataView = () => {
         existingData={data.data}
       />
     </Styled.Metadata>
-  );
-};
-
-const DataCell = ({
-  metadata,
-  type,
-}: {
-  metadata?: MetadataDto[] | null;
-  type: string;
-}) => {
-  return (
-    <Table.Cell className="table-second-col">
-      {metadata?.filter((m) => m.metadataType === type).length ? (
-        metadata
-          ?.filter((m) => m.metadataType === type)
-          .map((m) => (
-            <Typography key={m.metadataId}>{m.value + ', '}</Typography>
-          ))
-      ) : (
-        <Typography> - No Zone selected - </Typography>
-      )}
-    </Table.Cell>
   );
 };
