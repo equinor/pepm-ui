@@ -8,13 +8,15 @@ import {
 import * as Styled from './CaseButtons.styled';
 
 export const CaseButtons = ({
-  disableRun,
   caseType,
+  disableRun,
+  isProcessed,
   saveCase,
   runCase,
 }: {
-  disableRun: boolean;
   caseType: string;
+  disableRun: boolean;
+  isProcessed?: boolean;
   saveCase: () => void;
   runCase?: () => void;
 }) => {
@@ -42,19 +44,23 @@ export const CaseButtons = ({
         </Button>
       )}
 
-      <Button variant="outlined" onClick={disableRun ? runCase : saveCase}>
-        {disableRun ? (
-          <>
+      {disableRun ? (
+        <Tooltip title={!isProcessed ? 'Model not finished processed.' : ''}>
+          <Button
+            variant="outlined"
+            onClick={disableRun ? runCase : saveCase}
+            disabled={!isProcessed}
+          >
             <Icon data={PLAY} size={18}></Icon>
             Run
-          </>
-        ) : (
-          <>
-            <Icon data={SAVE} size={18}></Icon>
-            Save
-          </>
-        )}
-      </Button>
+          </Button>
+        </Tooltip>
+      ) : (
+        <Button variant="outlined" onClick={disableRun ? runCase : saveCase}>
+          <Icon data={SAVE} size={18}></Icon>
+          Save
+        </Button>
+      )}
     </Styled.ButtonDiv>
   );
 };
