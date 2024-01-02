@@ -13,14 +13,12 @@ export const Model = () => {
   const token = useAccessToken(instance, accounts[0]);
   if (token) OpenAPI.TOKEN = token;
 
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ['analogue-model', modelId],
     queryFn: () =>
       AnalogueModelsService.getApiAnalogueModels1(modelId as string),
     enabled: !!token,
   });
-
-  if (isLoading) <p>Loading.....</p>;
 
   return (
     <>

@@ -148,6 +148,11 @@ export const AddModelDialog = ({
     setSubmitting(true);
   };
 
+  const handleCancle = () => {
+    setMetadata(defaultMetadata);
+    cancel();
+  };
+
   const cleanupStates = () => {
     if (!isEdit) setMetadata(defaultMetadata);
     setFiles(defaultFiles);
@@ -212,7 +217,7 @@ export const AddModelDialog = ({
           <Button onClick={handleSubmit} disabled={uploading}>
             {!isEdit ? 'Confirm and start uploading' : 'Save changes'}
           </Button>
-          <Button variant="outlined" onClick={cancel}>
+          <Button variant="outlined" onClick={handleCancle}>
             Cancel
           </Button>
         </div>
