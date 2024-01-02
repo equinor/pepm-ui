@@ -5,6 +5,8 @@ import { CaseCardComponent } from '../../../../../components/CaseCardComponent/C
 import { ComputeCaseDto, GetResultDto } from '../../../../../api/generated';
 import * as Styled from './ChannelResultTable.styled';
 
+const NumberOfDecimals = 2;
+
 export const ChannelResultTable = ({
   data,
   computeCase,
@@ -26,6 +28,10 @@ export const ChannelResultTable = ({
     modelArea = computeCase && computeCase[0].modelArea.name;
 
   if (modelArea === '') modelArea = 'Whole model';
+
+  const roundResultString = (value: string) => {
+    return parseFloat(value).toFixed(NumberOfDecimals);
+  };
 
   const channelHeightCount = filterValues('channel-height_count');
   const channelHeightMean = filterValues('channel-height_mean');
@@ -53,14 +59,22 @@ export const ChannelResultTable = ({
         <Table.Body key={data.computeCaseId}>
           <Table.Row>
             <Styled.ColumnCell>Channel width</Styled.ColumnCell>
-            <Styled.DataCell>{channelWidthMean[0].value}</Styled.DataCell>
-            <Styled.DataCell>{channelWidthSD[0].value}</Styled.DataCell>
+            <Styled.DataCell>
+              {roundResultString(channelWidthMean[0].value)}
+            </Styled.DataCell>
+            <Styled.DataCell>
+              {roundResultString(channelWidthSD[0].value)}
+            </Styled.DataCell>
             <Styled.DataCell>{channelWidthCount[0].value}</Styled.DataCell>
           </Table.Row>
           <Table.Row>
             <Styled.ColumnCell>Channel height</Styled.ColumnCell>
-            <Styled.DataCell>{channelHeightMean[0].value}</Styled.DataCell>
-            <Styled.DataCell>{channelHeightSD[0].value}</Styled.DataCell>
+            <Styled.DataCell>
+              {roundResultString(channelHeightMean[0].value)}
+            </Styled.DataCell>
+            <Styled.DataCell>
+              {roundResultString(channelHeightSD[0].value)}
+            </Styled.DataCell>
             <Styled.DataCell>{channelHeightCount[0].value}</Styled.DataCell>
           </Table.Row>
         </Table.Body>
