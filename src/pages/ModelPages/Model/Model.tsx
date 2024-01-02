@@ -14,7 +14,7 @@ export const Model = () => {
   if (token) OpenAPI.TOKEN = token;
 
   const { data, isLoading } = useQuery({
-    queryKey: ['analogue-models', modelId],
+    queryKey: ['analogue-model', modelId],
     queryFn: () =>
       AnalogueModelsService.getApiAnalogueModels1(modelId as string),
     enabled: !!token,

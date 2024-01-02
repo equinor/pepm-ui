@@ -61,7 +61,7 @@ export const CaseRow = ({
   const [saved, setSaved] = useState<boolean>(true);
 
   const { data } = useQuery({
-    queryKey: ['analogue-models', modelId],
+    queryKey: ['analogue-model', modelId],
     queryFn: () =>
       AnalogueModelsService.getApiAnalogueModels1(modelId as string),
     enabled: !!token,
@@ -304,6 +304,7 @@ export const CaseRow = ({
         <CaseButtons
           caseType={saveObjectCase ? 'Object' : 'Variogram'}
           disableRun={saved}
+          isProcessed={data?.data.isProcessed}
           saveCase={() => saveCase(id)}
           runCase={runRowCase}
         />

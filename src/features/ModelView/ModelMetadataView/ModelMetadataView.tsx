@@ -32,7 +32,7 @@ export const ModelMetadataView = () => {
   const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false);
   const [refetchKey, setRefetchKey] = useState<number>(0);
   const { isLoading, data } = useQuery({
-    queryKey: ['analogue-models', modelId, refetchKey],
+    queryKey: ['analogue-model', modelId, refetchKey],
     queryFn: () =>
       AnalogueModelsService.getApiAnalogueModels1(modelId as string),
     enabled: !!token,
