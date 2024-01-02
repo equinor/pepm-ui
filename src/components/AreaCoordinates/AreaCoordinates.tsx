@@ -89,7 +89,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
   }
 
   const model = useQuery({
-    queryKey: ['analogue-models', modelId, updated],
+    queryKey: ['analogue-model', modelId, updated],
     queryFn: () => AnalogueModelsService.getApiAnalogueModels1(modelId),
   });
 

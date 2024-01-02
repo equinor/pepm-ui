@@ -40,7 +40,7 @@ export const Results = () => {
   });
 
   const cases = useQuery({
-    queryKey: ['analogue-models', modelId],
+    queryKey: ['model-cases', modelId],
     queryFn: () =>
       AnalogueModelComputeCasesService.getApiAnalogueModelsComputeCases(
         modelId as string,
