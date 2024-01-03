@@ -31,6 +31,7 @@ export type { ComputeCaseComputeMethodDto } from './models/ComputeCaseComputeMet
 export type { ComputeCaseDto } from './models/ComputeCaseDto';
 export type { ComputeCaseInputSettingsDto } from './models/ComputeCaseInputSettingsDto';
 export type { ComputeCaseModelAreaDto } from './models/ComputeCaseModelAreaDto';
+export { ComputeJobStatus } from './models/ComputeJobStatus';
 export type { ConvertAnalogueModelCommand } from './models/ConvertAnalogueModelCommand';
 export type { CoordinateDto } from './models/CoordinateDto';
 export type { CreateAnalogueCommand } from './models/CreateAnalogueCommand';

@@ -6,11 +6,13 @@
 import type { ComputeCaseComputeMethodDto } from './ComputeCaseComputeMethodDto';
 import type { ComputeCaseInputSettingsDto } from './ComputeCaseInputSettingsDto';
 import type { ComputeCaseModelAreaDto } from './ComputeCaseModelAreaDto';
+import type { ComputeJobStatus } from './ComputeJobStatus';
 
 export type ComputeCaseDto = {
     computeCaseId: string;
     computeMethod: ComputeCaseComputeMethodDto;
     modelArea: ComputeCaseModelAreaDto;
     inputSettings: Array<ComputeCaseInputSettingsDto>;
+    jobStatus: ComputeJobStatus;
 };
 
