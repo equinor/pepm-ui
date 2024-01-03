@@ -59,6 +59,7 @@ export const CaseRow = ({
   const [selectedVariogramModels, setVariogramModels] =
     useState<ListComputeSettingsInputValueDto[]>();
   const [saved, setSaved] = useState<boolean>(true);
+  const [caseError, setCaseError] = useState<string>('');
 
   const { data } = useQuery({
     queryKey: ['analogue-model', modelId],
@@ -154,8 +155,7 @@ export const CaseRow = ({
             }
           } else {
             // TODO: Error handeling, inform user
-            // eslint-disable-next-line no-console
-            console.log('Duplicate case');
+            // Possibly not necessary anyway. Might never be reached with new limitations on user.
           }
         } else {
           // Case should have no set model area, is a 'whole model' case
@@ -174,9 +174,7 @@ export const CaseRow = ({
               saveCaseAlert();
             }
           } else {
-            // TODO: Error handeling, inform user
-            // eslint-disable-next-line no-console
-            console.log('Duplicate case');
+            setCaseError('You must select a model area');
           }
         }
       }
@@ -303,6 +301,7 @@ export const CaseRow = ({
             selectedModelArea={selectedRowArea(rowCase.computeCaseId)}
             setModelArea={setModelArea}
             existingCases={caseList}
+            caseError={caseError}
           />
         )}
         <CaseButtons

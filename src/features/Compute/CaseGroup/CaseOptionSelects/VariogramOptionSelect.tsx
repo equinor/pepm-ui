@@ -1,4 +1,5 @@
 /* eslint-disable max-lines-per-function */
+import { useState } from 'react';
 import {
   ComputeCaseDto,
   ListComputeSettingsInputDto,
@@ -61,6 +62,10 @@ export const VariogramOptionSelect = ({
   ContiniusParameterSettings?: ListComputeSettingsInputDto[];
   existingCases: ComputeCaseDto[];
 }) => {
+  // TODO: Case Error handling
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [caseError, setCaseError] = useState<string>('');
+
   // Lage en funksjon som tar inn Liste og Name
   const indicatorFamilySettings = IndicatorSettings?.filter(
     (value) => value.name === 'Variogram Family Filter',
@@ -93,6 +98,7 @@ export const VariogramOptionSelect = ({
         selectedModelArea={selectedModelArea}
         setModelArea={setModelArea}
         existingCases={existingCases}
+        caseError={caseError}
       />
 
       {setIndicatorParameters && caseType === 'Indicator' && (

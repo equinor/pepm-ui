@@ -1,5 +1,9 @@
 /* eslint-disable max-lines-per-function */
-import { Autocomplete, AutocompleteChanges } from '@equinor/eds-core-react';
+import {
+  Autocomplete,
+  AutocompleteChanges,
+  Label,
+} from '@equinor/eds-core-react';
 import { ComputeCaseDto, ModelAreaDto } from '../../../../../api/generated';
 import * as Styled from '../CaseOptionSelects.styled';
 
@@ -9,6 +13,7 @@ export const ModelAreaSelect = ({
   disableSelect,
   existingCases,
   setModelArea,
+  caseError,
 }: {
   modelAreas: ModelAreaDto[];
   selectedModelArea: ModelAreaDto[] | undefined;
@@ -17,6 +22,7 @@ export const ModelAreaSelect = ({
   setModelArea?: React.Dispatch<
     React.SetStateAction<ModelAreaDto[] | undefined>
   >;
+  caseError: string;
 }) => {
   const filterDisabled = (option: ModelAreaDto) => {
     if (!existingCases || existingCases.length === 0 || !option.modelAreaId)
@@ -31,39 +37,45 @@ export const ModelAreaSelect = ({
 
   return (
     <Styled.AutocompleteWrapper>
-      <Autocomplete
-        label="Model area"
-        readOnly={disableSelect}
-        options={modelAreas && modelAreas.length > 0 ? modelAreas : []}
-        selectedOptions={
-          selectedModelArea &&
-          selectedModelArea.length > 0 &&
-          selectedModelArea[0].modelAreaId !== ''
-            ? selectedModelArea
-            : selectedModelArea &&
+      <Styled.AutocompleteRow>
+        <Styled.Required>
+          <Autocomplete
+            label="Model area"
+            readOnly={disableSelect}
+            options={modelAreas && modelAreas.length > 0 ? modelAreas : []}
+            selectedOptions={
+              selectedModelArea &&
               selectedModelArea.length > 0 &&
-              selectedModelArea[0].modelAreaType === ''
-            ? [
-                {
-                  modelAreaId: '',
-                  modelAreaType: 'Whole Model',
-                  coordinates: [],
-                },
-              ]
-            : [
-                {
-                  modelAreaId: '',
-                  modelAreaType: '',
-                  coordinates: [],
-                },
-              ]
-        }
-        optionLabel={(modelArea) => modelArea.modelAreaType}
-        onOptionsChange={(changes: AutocompleteChanges<ModelAreaDto>) =>
-          setModelArea && setModelArea(changes.selectedItems)
-        }
-        optionDisabled={filterDisabled}
-      ></Autocomplete>
+              selectedModelArea[0].modelAreaId !== ''
+                ? selectedModelArea
+                : selectedModelArea &&
+                  selectedModelArea.length > 0 &&
+                  selectedModelArea[0].modelAreaType === ''
+                ? [
+                    {
+                      modelAreaId: '',
+                      modelAreaType: 'Whole Model',
+                      coordinates: [],
+                    },
+                  ]
+                : [
+                    {
+                      modelAreaId: '',
+                      modelAreaType: '',
+                      coordinates: [],
+                    },
+                  ]
+            }
+            optionLabel={(modelArea) => modelArea.modelAreaType}
+            onOptionsChange={(changes: AutocompleteChanges<ModelAreaDto>) =>
+              setModelArea && setModelArea(changes.selectedItems)
+            }
+            optionDisabled={filterDisabled}
+            variant={caseError.length > 0 ? 'error' : undefined}
+          />
+          {caseError.length > 0 && <Label label={caseError}></Label>}
+        </Styled.Required>
+      </Styled.AutocompleteRow>
     </Styled.AutocompleteWrapper>
   );
 };
