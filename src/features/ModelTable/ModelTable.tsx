@@ -10,12 +10,12 @@ import { EdsDataGrid } from '@equinor/eds-data-grid-react';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AnalogueModelsService, OpenAPI } from '../api/generated';
-import { useAccessToken } from '../hooks/useAccessToken';
-import { AreaCoordinates } from './AreaCoordinates/AreaCoordinates';
-import * as Styled from './Table.styled';
+import { AnalogueModelsService, OpenAPI } from '../../api/generated';
+import { AreaCoordinates } from '../../components/AreaCoordinates/AreaCoordinates';
+import { useAccessToken } from '../../hooks/useAccessToken';
+import * as Styled from './ModelTable.styled';
 
-export const Table = ({
+export const ModelTable = ({
   refetchKey,
   progress,
   activeUploadId,

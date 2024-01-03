@@ -21,8 +21,8 @@ import {
   UploadFileType,
   UploadsService,
 } from '../../api/generated';
-import { Table } from '../../components/Table';
 import { AddModelDialog } from '../../features/AddModel/AddModelDialog/AddModelDialog';
+import { ModelTable } from '../../features/ModelTable/ModelTable';
 import * as Styled from './Browse.styled';
 
 enum UploadProcess {
@@ -296,7 +296,7 @@ export const Browse = () => {
         <div className="btn-div">
           <Button onClick={toggleDialog}>Add new model</Button>
         </div>
-        <Table
+        <ModelTable
           refetchKey={refetch}
           progress={progress}
           activeUploadId={modelId}
