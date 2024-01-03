@@ -1,5 +1,6 @@
 /* eslint-disable max-lines-per-function */
 import {
+  ComputeCaseDto,
   ListComputeSettingsInputDto,
   ListComputeSettingsInputValueDto,
   ModelAreaDto,
@@ -26,6 +27,7 @@ export const VariogramOptionSelect = ({
   NetToGrossSettings,
   ContiniusParameterSettings,
   IndicatorSettings,
+  existingCases,
 }: {
   modelAreas: ModelAreaDto[];
   caseType: string;
@@ -57,6 +59,7 @@ export const VariogramOptionSelect = ({
   IndicatorSettings?: ListComputeSettingsInputDto[];
   NetToGrossSettings?: ListComputeSettingsInputDto[];
   ContiniusParameterSettings?: ListComputeSettingsInputDto[];
+  existingCases: ComputeCaseDto[];
 }) => {
   // Lage en funksjon som tar inn Liste og Name
   const indicatorFamilySettings = IndicatorSettings?.filter(
@@ -89,6 +92,7 @@ export const VariogramOptionSelect = ({
         modelAreas={modelAreas}
         selectedModelArea={selectedModelArea}
         setModelArea={setModelArea}
+        existingCases={existingCases}
       />
 
       {setIndicatorParameters && caseType === 'Indicator' && (

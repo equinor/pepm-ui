@@ -253,6 +253,7 @@ export const CaseRow = ({
             setParameters={setParameters}
             setArchelFilter={setArchelFilter}
             setVariogramModels={setVariogramModels}
+            existingCases={caseList}
           />
         )}
 
@@ -271,6 +272,7 @@ export const CaseRow = ({
             setGrainSize={setGrainSize}
             setParameters={setParameters}
             setVariogramModels={setVariogramModels}
+            existingCases={caseList}
           />
         )}
 
@@ -290,6 +292,7 @@ export const CaseRow = ({
             setParameters={setParameters}
             setArchelFilter={setArchelFilter}
             setVariogramModels={setVariogramModels}
+            existingCases={caseList}
           />
         )}
 
@@ -299,6 +302,7 @@ export const CaseRow = ({
             modelAreas={areaList ? areaList : []}
             selectedModelArea={selectedRowArea(rowCase.computeCaseId)}
             setModelArea={setModelArea}
+            existingCases={caseList}
           />
         )}
         <CaseButtons
