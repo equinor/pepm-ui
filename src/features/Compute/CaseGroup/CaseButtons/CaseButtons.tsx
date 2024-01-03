@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import { Button, Icon, Tooltip } from '@equinor/eds-core-react';
 import {
   copy as COPY,
@@ -5,18 +6,21 @@ import {
   play as PLAY,
   save as SAVE,
 } from '@equinor/eds-icons';
+import { ComputeJobStatus } from '../../../../api/generated';
 import * as Styled from './CaseButtons.styled';
 
 export const CaseButtons = ({
   caseType,
-  disableRun,
+  enableRun,
   isProcessed,
+  caseStatus,
   saveCase,
   runCase,
 }: {
   caseType: string;
-  disableRun: boolean;
+  enableRun: boolean;
   isProcessed?: boolean;
+  caseStatus: ComputeJobStatus;
   saveCase: () => void;
   runCase?: () => void;
 }) => {
@@ -44,19 +48,43 @@ export const CaseButtons = ({
         </Button>
       )}
 
-      {disableRun ? (
-        <Tooltip title={!isProcessed ? 'Model not finished processed.' : ''}>
+      {enableRun ? (
+        <Tooltip
+          title={
+            !isProcessed
+              ? 'Model not finished processed.'
+              : caseStatus === 'Created' ||
+                caseStatus === 'Waiting' ||
+                caseStatus === 'Running'
+              ? 'Case are running.'
+              : ''
+          }
+        >
           <Button
             variant="outlined"
-            onClick={disableRun ? runCase : saveCase}
-            disabled={!isProcessed}
+            onClick={enableRun ? runCase : saveCase}
+            disabled={
+              !isProcessed ||
+              caseStatus === 'Created' ||
+              caseStatus === 'Waiting' ||
+              caseStatus === 'Running' ||
+              caseStatus === 'Succeeded'
+            }
           >
-            <Icon data={PLAY} size={18}></Icon>
-            Run
+            {caseStatus !== 'Succeeded' && <Icon data={PLAY} size={18}></Icon>}
+            {caseStatus === 'Created' ||
+            caseStatus === 'Waiting' ||
+            caseStatus === 'Running'
+              ? 'Running ... '
+              : caseStatus === 'Failed'
+              ? 'Run Failed. Re-run Case'
+              : caseStatus === 'Succeeded'
+              ? 'Success'
+              : 'Run'}
           </Button>
         </Tooltip>
       ) : (
-        <Button variant="outlined" onClick={disableRun ? runCase : saveCase}>
+        <Button variant="outlined" onClick={enableRun ? runCase : saveCase}>
           <Icon data={SAVE} size={18}></Icon>
           Save
         </Button>

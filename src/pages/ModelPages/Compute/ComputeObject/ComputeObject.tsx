@@ -53,7 +53,7 @@ export const ComputeObject = () => {
         requestBody,
       );
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.refetchQueries();
     },
   });
@@ -113,7 +113,7 @@ export const ComputeObject = () => {
       <Styled.Case>
         <ComputeHeader caseInfo={ObjectCaseInfo} />
         <CaseGroup
-          caseGroup={channel !== undefined && channel.length > 0 ? channel : []}
+          caseList={channel !== undefined && channel.length > 0 ? channel : []}
           methodName={ObjectCaseInfo.type}
           saveObjectCase={saveObjectCase}
           saveCaseAlert={saveCaseAlert}

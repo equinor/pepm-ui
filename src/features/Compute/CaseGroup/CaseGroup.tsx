@@ -4,6 +4,7 @@ import { add as ADD, play as PLAY } from '@equinor/eds-icons';
 import { useState } from 'react';
 import {
   ComputeCaseDto,
+  ComputeJobStatus,
   CreateComputeCaseCommandResponse,
   CreateComputeCaseInputSettingsForm,
 } from '../../../api/generated';
@@ -12,14 +13,14 @@ import * as Styled from './CaseGroup.styled';
 import { CaseRow } from './CaseRow/CaseRow';
 
 export const CaseGroup = ({
-  caseGroup,
+  caseList,
   methodName,
   localCaseList,
   saveObjectCase,
   saveCaseAlert,
   runCase,
 }: {
-  caseGroup: ComputeCaseDto[];
+  caseList: ComputeCaseDto[];
   methodName: string;
   localCaseList?: ComputeCaseDto[];
   saveObjectCase?: (
@@ -50,6 +51,7 @@ export const CaseGroup = ({
         name: '',
       },
       inputSettings: [],
+      jobStatus: ComputeJobStatus.NOT_STARTED,
     };
 
     if (localObjectCaseList.length < 1) {
@@ -104,18 +106,18 @@ export const CaseGroup = ({
 
       <CaseCardComponent
         title={methodName}
-        key={caseGroup.length > 0 ? caseGroup[0].computeCaseId : null}
+        key={caseList.length > 0 ? caseList[0].computeCaseId : null}
       >
         <Styled.CaseList>
           {methodName === 'Channel' ? (
             <>
-              {caseGroup.concat(localObjectCaseList).map((c, index) => (
+              {caseList.concat(localObjectCaseList).map((c, index) => (
                 <CaseRow
                   rowCase={c}
                   key={index}
                   id={c.computeCaseId}
-                  caseList={caseGroup.concat(localObjectCaseList)}
-                  caseGroup={caseGroup}
+                  allCasesList={caseList.concat(localObjectCaseList)}
+                  caseList={caseList}
                   saveObjectCase={saveObjectCase}
                   saveCaseAlert={saveCaseAlert}
                   runCase={runCase}
@@ -126,15 +128,15 @@ export const CaseGroup = ({
           ) : (
             <>
               {localCaseList &&
-                caseGroup
+                caseList
                   .concat(localCaseList)
                   .map((c, index) => (
                     <CaseRow
                       rowCase={c}
                       key={index}
                       id={c.computeCaseId}
-                      caseList={caseGroup.concat(localCaseList)}
-                      caseGroup={caseGroup}
+                      allCasesList={caseList.concat(localCaseList)}
+                      caseList={caseList}
                       saveObjectCase={saveObjectCase}
                       saveCaseAlert={saveCaseAlert}
                       runCase={runCase}
