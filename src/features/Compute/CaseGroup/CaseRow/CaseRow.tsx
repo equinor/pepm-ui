@@ -23,8 +23,8 @@ import * as Styled from './CaseRow.Styled';
 export const CaseRow = ({
   rowCase,
   id,
+  allCasesList,
   caseList,
-  caseGroup,
   saveObjectCase,
   saveCaseAlert,
   runCase,
@@ -32,8 +32,8 @@ export const CaseRow = ({
 }: {
   rowCase: ComputeCaseDto;
   id: string;
+  allCasesList: ComputeCaseDto[];
   caseList: ComputeCaseDto[];
-  caseGroup: ComputeCaseDto[];
   saveObjectCase?: (
     modelAreaId: string,
     computeMethodId: string,
@@ -113,14 +113,14 @@ export const CaseRow = ({
 
   const saveCase = async (id: string) => {
     // Checks if Case already exists in the db
-    const caseExists = caseGroup.filter((c) => c.computeCaseId === id);
+    const caseExists = caseList.filter((c) => c.computeCaseId === id);
 
     if (caseExists.length > 0) {
       // Handle updates and PUT request
       // Check if model area has changed
       // Check if the new settings already exists
     } else {
-      const row = caseList.filter((c) => c.computeCaseId === id);
+      const row = allCasesList.filter((c) => c.computeCaseId === id);
 
       // Check if the instance is an Object case and right data/methods is provided
       // TODO: Seperate into own method, take type as argument. Support all types not just Channel cases
@@ -135,10 +135,10 @@ export const CaseRow = ({
         ) {
           // filters out cases without defined model area, 'Whole model'
           // Checks if given model area already exists
-          const checkDuplicateType = caseGroup
+          const checkDuplicateType = caseList
             .filter((c) => c.modelArea !== null)
             .filter(
-              (ca) => ca.modelArea.name === selectedModelArea[0].modelAreaType,
+              (cl) => cl.modelArea.name === selectedModelArea[0].modelAreaType,
             );
 
           if (checkDuplicateType.length === 0) {
@@ -160,7 +160,7 @@ export const CaseRow = ({
         } else {
           // Case should have no set model area, is a 'whole model' case
           // Checks if 'whole model' case already exists
-          const checkDuplicate = caseGroup.filter((c) => c.modelArea === null);
+          const checkDuplicate = caseList.filter((c) => c.modelArea === null);
 
           if (checkDuplicate.length <= 0) {
             const res = await saveObjectCase(
@@ -185,7 +185,7 @@ export const CaseRow = ({
 
   const selectedRowArea = useCallback(
     (rowId: string) => {
-      const rowCase = caseList.filter((c) => c.computeCaseId === rowId);
+      const rowCase = allCasesList.filter((c) => c.computeCaseId === rowId);
 
       // Set default selected area to empty
       let defaultArea: ModelAreaDto[] = [
@@ -217,7 +217,7 @@ export const CaseRow = ({
       }
       return defaultArea;
     },
-    [areaList, caseList, selectedModelArea],
+    [areaList, allCasesList, selectedModelArea],
   );
 
   const modelAreas = data && data.data.modelAreas;
@@ -228,10 +228,10 @@ export const CaseRow = ({
         setSaved(false);
       }
     }
-    caseList
-      .filter((c) => !caseGroup.includes(c))
+    allCasesList
+      .filter((c) => !caseList.includes(c))
       .forEach((r) => setNotSaved(r));
-  }, [caseGroup, caseList, id, saved]);
+  }, [caseList, allCasesList, id, saved]);
 
   return (
     <Styled.Case>
@@ -303,10 +303,11 @@ export const CaseRow = ({
         )}
         <CaseButtons
           caseType={saveObjectCase ? 'Object' : 'Variogram'}
-          disableRun={saved}
+          enableRun={saved}
           isProcessed={data?.data.isProcessed}
           saveCase={() => saveCase(id)}
           runCase={runRowCase}
+          caseStatus={rowCase.jobStatus}
         />
       </Styled.CaseRow>
     </Styled.Case>

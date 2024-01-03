@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import {
   AnalogueModelComputeCasesService,
   ComputeCaseDto,
+  ComputeJobStatus,
 } from '../../../../api/generated';
 import { CaseGroup } from '../../../../features/Compute/CaseGroup/CaseGroup';
 import { ComputeHeader } from '../../../../features/Compute/ComputeHeader/ComputeHeader';
@@ -97,6 +98,7 @@ export const ComputeVariogram = () => {
         name: '',
       },
       inputSettings: [],
+      jobStatus: ComputeJobStatus.NOT_STARTED,
     };
 
     if (methodName === 'Indicator' && localIndicatorCaseList.length < 1) {
@@ -167,7 +169,7 @@ export const ComputeVariogram = () => {
         </Styled.ButtonDiv>
 
         <CaseGroup
-          caseGroup={
+          caseList={
             Indicator !== undefined && Indicator.length > 0 ? Indicator : []
           }
           methodName="Indicator"
@@ -177,7 +179,7 @@ export const ComputeVariogram = () => {
           saveCaseAlert={saveCaseAlert}
         />
         <CaseGroup
-          caseGroup={
+          caseList={
             NetToGross !== undefined && NetToGross.length > 0 ? NetToGross : []
           }
           methodName="Net-to-gross"
@@ -188,7 +190,7 @@ export const ComputeVariogram = () => {
         />
 
         <CaseGroup
-          caseGroup={
+          caseList={
             ContiniousParameter !== undefined && ContiniousParameter.length > 0
               ? ContiniousParameter
               : []
