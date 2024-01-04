@@ -25,8 +25,14 @@ export const ModelAreaSelect = ({
   caseError: string;
 }) => {
   const filterDisabled = (option: ModelAreaDto) => {
-    if (!existingCases || existingCases.length === 0 || !option.modelAreaId)
+    if (existingCases.length === 0) {
+      return false;
+    } else if (
+      !option.modelAreaId &&
+      existingCases.find((c) => c.modelArea === null)
+    ) {
       return true;
+    }
 
     const caseExists = existingCases
       .filter((c) => c.modelArea !== null)
