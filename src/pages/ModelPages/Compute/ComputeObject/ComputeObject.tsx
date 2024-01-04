@@ -19,6 +19,7 @@ import * as Styled from '../Compute.styled';
 import { CaseInfoTyoe } from '../ComputeVariogram/ComputeVariogram';
 
 export const ComputeObject = () => {
+  const [refetchKey, setRefetchKey] = useState<number>(0);
   const [showAlert, setAlert] = useState<string>();
   const { modelId } = useParams<{ modelId: string }>();
   const { instance, accounts } = useMsal();
@@ -31,8 +32,12 @@ export const ComputeObject = () => {
     setAlert('New object case saved');
   };
 
+  const uppdateCaseList = () => {
+    setRefetchKey(refetchKey + 1);
+  };
+
   const { data } = useQuery({
-    queryKey: ['model-cases', modelId],
+    queryKey: ['model-cases', modelId, refetchKey],
     queryFn: () =>
       AnalogueModelComputeCasesService.getApiAnalogueModelsComputeCases(
         modelId as string,
@@ -79,7 +84,10 @@ export const ComputeObject = () => {
 
     const res = await computeObject.mutateAsync(requestBody);
 
-    if (res.success) setAlert('Started computing case');
+    if (res.success) {
+      uppdateCaseList();
+      setAlert('Started computing case');
+    }
   };
 
   // Returnerer Cases fra DB
