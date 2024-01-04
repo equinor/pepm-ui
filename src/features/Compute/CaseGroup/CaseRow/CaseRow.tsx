@@ -102,7 +102,7 @@ export const CaseRow = ({
   const wholeModelObject: ModelAreaDto[] = [
     {
       modelAreaId: '',
-      modelAreaType: 'Whole Model',
+      modelAreaType: 'Whole model',
       coordinates: [],
     },
   ];
@@ -162,7 +162,7 @@ export const CaseRow = ({
           // Checks if 'whole model' case already exists
           const checkDuplicate = caseList.filter((c) => c.modelArea === null);
 
-          if (checkDuplicate.length <= 0) {
+          if (checkDuplicate.length <= 0 && selectedModelArea !== undefined) {
             const res = await saveObjectCase(
               '',
               row[0].computeMethod.computeMethodId,
@@ -194,24 +194,31 @@ export const CaseRow = ({
         },
       ];
 
-      // Check if the case exists and if the case has a model area
-      // If the saved case model area is 'null', 'Whole model' is selected and default model area is returned
-      // If case has a saved model area, the area is returned
-      // If 'Selected model area' is defined it is returned
-      if (
+      // 1. Check if the case exists and if the case model area is 'Whole model'
+      // 2. Check if the selected area is defined, returns selected model area
+      // 3. Check if the case exists, if the case model area is NOT 'Whole model', if selected model area is undefined,
+      // and if the existing case model area has an empty string as id. Returns the selected area.
+      // 4. Returns the set area. If all 3 above checks is fails the default empty area is returned.
+
+      if (rowCase.length > 0 && rowCase[0].modelArea === null) {
+        defaultArea = [
+          {
+            modelAreaId: '',
+            modelAreaType: 'Whole model',
+            coordinates: [],
+          },
+        ];
+      } else if (selectedModelArea !== undefined) {
+        defaultArea = selectedModelArea;
+      } else if (
         rowCase.length > 0 &&
         rowCase[0].modelArea !== null &&
-        selectedModelArea === undefined
+        selectedModelArea === undefined &&
+        rowCase[0].modelArea.modelAreaId !== ''
       ) {
         defaultArea = areaList.filter(
           (area) => area.modelAreaId === rowCase[0].modelArea.modelAreaId,
         );
-      } else if (
-        rowCase.length > 0 &&
-        rowCase[0].modelArea !== null &&
-        selectedModelArea
-      ) {
-        defaultArea = selectedModelArea;
       }
       return defaultArea;
     },
