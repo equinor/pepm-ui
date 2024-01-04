@@ -56,11 +56,11 @@ export const ModelAreaSelect = ({
                 ? selectedModelArea
                 : selectedModelArea &&
                   selectedModelArea.length > 0 &&
-                  selectedModelArea[0].modelAreaType === ''
+                  selectedModelArea[0].modelAreaType === 'Whole model'
                 ? [
                     {
                       modelAreaId: '',
-                      modelAreaType: 'Whole Model',
+                      modelAreaType: 'Whole model',
                       coordinates: [],
                     },
                   ]
