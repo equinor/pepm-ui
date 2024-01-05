@@ -234,25 +234,25 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     }
 
     if (area && area.coordinates[0].x === area.coordinates[1].x) {
-      errors.x0 = 'X coodridnates can´t be equal.';
+      errors.x0 = 'X coordinates can´t be equal.';
     }
     if (area && area.coordinates[0].y === area.coordinates[1].y) {
-      errors.y0 = 'Y coodridnates can´t be equal.';
+      errors.y0 = 'Y coordinates can´t be equal.';
     }
     if (area && NotANumber(area.coordinates[0].x)) {
-      errors.x0 = 'Coodridnates can´t be string, just numbers is alowed.';
+      errors.x0 = 'Coordinates can´t be string, just numbers are allowed.';
     }
     if (area && NotANumber(area.coordinates[0].y)) {
-      errors.y0 = 'Coodridnates can´t be string, just numbers is alowed.';
+      errors.y0 = 'Coordinates can´t be string, just numbers are allowed.';
     }
     if (area && NotANumber(area.coordinates[1].x)) {
-      errors.x1 = 'Coodridnates can´t be string, just numbers is alowed.';
+      errors.x1 = 'Coordinates can´t be string, just numbers are allowed.';
     }
     if (area && NotANumber(area.coordinates[1].y)) {
-      errors.y1 = 'Coodridnates can´t be string, just numbers is alowed.';
+      errors.y1 = 'Coordinates can´t be string, just numbers are allowed.';
     }
     if (area && area.coordinates[1].x === 0) {
-      errors.x1 = 'Bottom right conrner can not be 0.';
+      errors.x1 = 'Bottom right corner can not be 0.';
     }
 
     if (
@@ -262,7 +262,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
         // @ts-expect-error Autocomplete
         area.coordinates[0].x === '')
     ) {
-      errors.x0 = 'All fields munst be filled in';
+      errors.x0 = 'All fields must be filled in';
     }
 
     if (
@@ -272,7 +272,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
         // @ts-expect-error Autocomplete
         area.coordinates[0].y === '')
     ) {
-      errors.y0 = 'All fields munst be filled in';
+      errors.y0 = 'All fields must be filled in';
     }
 
     if (
@@ -282,7 +282,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
         // @ts-expect-error Autocomplete
         area.coordinates[1].x === '')
     ) {
-      errors.x1 = 'All fields munst be filled in';
+      errors.x1 = 'All fields must be filled in';
     }
 
     if (
@@ -292,7 +292,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
         // @ts-expect-error Autocomplete
         area.coordinates[1].y === '')
     ) {
-      errors.y1 = 'All fields munst be filled in';
+      errors.y1 = 'All fields must be filled in';
     }
 
     return errors;
