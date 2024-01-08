@@ -37,17 +37,17 @@ spec:
           port: 5002
         - name: channest
           port: 5003
-      secrets:
-        - AzureAd__ClientId
-        - AzureAd__ClientSecret
-        - ConnectionStrings__PepmConnectionString
-        - ConnectionStrings__AzureBlobStorage
-        - ApplicationInsights__ConnectionString
       environmentConfig:
         - environment: dev
           imageTagName: latest
           variables:
             ASPNETCORE_ENVIRONMENT: "Development"
+          secrets:
+            - AzureAd__ClientId
+            - AzureAd__ClientSecret
+            - ConnectionStrings__PepmConnectionString
+            - ConnectionStrings__AzureBlobStorage
+            - ApplicationInsights__ConnectionString
         - environment: test
           imageTagName: latest
           variables:
