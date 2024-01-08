@@ -42,12 +42,23 @@ spec:
           imageTagName: latest
           variables:
             ASPNETCORE_ENVIRONMENT: "Development"
-          secrets:
-            - AzureAd__ClientId
-            - AzureAd__ClientSecret
-            - ConnectionStrings__PepmConnectionString
-            - ConnectionStrings__AzureBlobStorage
-            - ApplicationInsights__ConnectionString
+          secretRefs:
+            azureKeyVaults:
+            - name: s542-dev-kv-00-eun-jk
+              path: /mnt/dev
+              items:
+                - name: ApplicationInsights--ConnectionString
+                  envVar: ApplicationInsights__ConnectionString
+                - name: AzureAd--ClientId
+                  envVar: AzureAd__ClientId
+                - name: AzureAd--ClientSecret
+                  envVar: AzureAd__ClientSecret
+                - name: ConnectionStrings--AzureBlobStorage
+                  envVar: ConnectionStrings__AzureBlobStorage
+                - name: ConnectionStrings--PepmConnectionString
+                  envVar: ConnectionStrings__PepmConnectionString
+                - name: AzureAD--TenantId
+                  envVar: AzureAD__TenantId
         - environment: test
           imageTagName: latest
           variables:
