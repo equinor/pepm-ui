@@ -66,7 +66,7 @@ export const ComputeVariogram = () => {
   };
   const Indicator = methodFilter('Indicator');
   const NetToGross = methodFilter('Net-To-Gross');
-  const ContiniousParameter = methodFilter('Indicator');
+  const ContiniousParameter = methodFilter('ContiniusParameter');
 
   const saveCaseAlert = () => {
     setAlert('New object case saved');

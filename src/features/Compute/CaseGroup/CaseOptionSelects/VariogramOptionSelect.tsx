@@ -29,13 +29,14 @@ export const VariogramOptionSelect = ({
   ContiniusParameterSettings,
   IndicatorSettings,
   existingCases,
+  saved,
 }: {
   modelAreas: ModelAreaDto[];
   caseType: string;
   selectedModelArea?: ModelAreaDto[] | undefined;
   selectedIndicatorParameters?: ListComputeSettingsInputValueDto[];
   selectedGrainSize?: ListComputeSettingsInputValueDto[];
-  selectedParameters?: ListComputeSettingsInputValueDto[] | undefined;
+  selectedParameters?: ListComputeSettingsInputValueDto[];
   selectedArchelFilter?: ListComputeSettingsInputValueDto[] | undefined;
   selectedVariogramModels: ListComputeSettingsInputValueDto[] | undefined;
 
@@ -61,6 +62,7 @@ export const VariogramOptionSelect = ({
   NetToGrossSettings?: ListComputeSettingsInputDto[];
   ContiniusParameterSettings?: ListComputeSettingsInputDto[];
   existingCases: ComputeCaseDto[];
+  saved: boolean;
 }) => {
   // TODO: Case Error handling
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -93,12 +95,13 @@ export const VariogramOptionSelect = ({
   return (
     <Styled.AutocompleteWrapper>
       <ModelAreaSelect
-        disableSelect={false}
+        disableSelect={saved}
         modelAreas={modelAreas}
         selectedModelArea={selectedModelArea}
         setModelArea={setModelArea}
         existingCases={existingCases}
         caseError={caseError}
+        caseType="Variogram"
       />
 
       {setIndicatorParameters && caseType === 'Indicator' && (
@@ -107,7 +110,9 @@ export const VariogramOptionSelect = ({
           options={
             indicatorIndicatorSettings && indicatorIndicatorSettings[0].values
           }
-          selectedValue={selectedIndicatorParameters}
+          selectedValue={
+            selectedIndicatorParameters && selectedIndicatorParameters
+          }
           setValue={setIndicatorParameters}
         />
       )}
@@ -118,7 +123,7 @@ export const VariogramOptionSelect = ({
           options={
             NetGrossGrainSizeSettings && NetGrossGrainSizeSettings[0].values
           }
-          selectedValue={selectedGrainSize}
+          selectedValue={selectedGrainSize && selectedGrainSize}
           setValue={setGrainSize}
         />
       )}

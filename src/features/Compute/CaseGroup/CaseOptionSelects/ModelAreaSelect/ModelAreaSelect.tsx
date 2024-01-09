@@ -12,17 +12,19 @@ export const ModelAreaSelect = ({
   selectedModelArea,
   disableSelect,
   existingCases,
-  setModelArea,
   caseError,
+  caseType,
+  setModelArea,
 }: {
   modelAreas: ModelAreaDto[];
   selectedModelArea: ModelAreaDto[] | undefined;
   disableSelect?: boolean;
   existingCases: ComputeCaseDto[];
+  caseError: string;
+  caseType?: string;
   setModelArea?: React.Dispatch<
     React.SetStateAction<ModelAreaDto[] | undefined>
   >;
-  caseError: string;
 }) => {
   const filterDisabled = (option: ModelAreaDto) => {
     if (existingCases.length === 0) {
@@ -76,7 +78,7 @@ export const ModelAreaSelect = ({
             onOptionsChange={(changes: AutocompleteChanges<ModelAreaDto>) =>
               setModelArea && setModelArea(changes.selectedItems)
             }
-            optionDisabled={filterDisabled}
+            optionDisabled={!caseType ? filterDisabled : undefined}
             variant={caseError.length > 0 ? 'error' : undefined}
           />
           {caseError.length > 0 && <Label label={caseError}></Label>}
