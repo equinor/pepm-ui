@@ -59,6 +59,7 @@ export const CaseRow = ({
   const [selectedVariogramModels, setVariogramModels] =
     useState<ListComputeSettingsInputValueDto[]>();
   const [saved, setSaved] = useState<boolean>(true);
+  const [disableSave, setDisableSave] = useState<boolean>(true);
   const [caseError, setCaseError] = useState<string>('');
 
   const { data } = useQuery({
@@ -227,16 +228,113 @@ export const CaseRow = ({
 
   const modelAreas = data && data.data.modelAreas;
 
+  const selectedParam = useCallback(
+    (rowId: string, type: string) => {
+      const rowCase = allCasesList.filter((c) => c.computeCaseId === rowId);
+      let defaultParameter: ListComputeSettingsInputValueDto[] = [];
+
+      const indicatorIndicatorSettings =
+        indicatorSettings &&
+        indicatorSettings[0].inputSettings?.filter(
+          (value) => value.name === type,
+        );
+      console.log(indicatorIndicatorSettings && indicatorIndicatorSettings[0]);
+
+      const settingsValueList =
+        indicatorIndicatorSettings && indicatorIndicatorSettings[0].values;
+
+      const loadedParameters =
+        settingsValueList &&
+        settingsValueList.filter((i) =>
+          rowCase[0].inputSettings?.find(
+            (s) => s.inputSettingValueId === i.inputSettingValueId,
+          ),
+        );
+
+      // If loaded parameter is undefined and selected parameters are present, set data to selected parameters.
+      // If loaded parameter is not undefined and no selected parameters, set data to loaded parameters.
+      // If loaded parameters and selected parameters, set data to selected parameters.
+      if (type === 'Indicator') {
+        if (
+          loadedParameters !== undefined &&
+          selectedIndicatorParameters === undefined
+        ) {
+          defaultParameter = loadedParameters;
+        } else if (
+          selectedIndicatorParameters !== undefined &&
+          loadedParameters === undefined
+        ) {
+          defaultParameter = selectedIndicatorParameters;
+        } else if (
+          selectedIndicatorParameters !== undefined &&
+          loadedParameters !== undefined
+        ) {
+          defaultParameter = selectedIndicatorParameters;
+        }
+        return defaultParameter;
+      } else if (type === 'Variogram Family Filter') {
+        if (
+          loadedParameters !== undefined &&
+          selectedVariogramModels === undefined
+        ) {
+          defaultParameter = loadedParameters;
+        } else if (
+          selectedVariogramModels !== undefined &&
+          loadedParameters === undefined
+        ) {
+          defaultParameter = selectedVariogramModels;
+        } else if (
+          selectedVariogramModels !== undefined &&
+          loadedParameters !== undefined
+        ) {
+          defaultParameter = selectedVariogramModels;
+        }
+        return defaultParameter;
+      }
+    },
+    [
+      allCasesList,
+      indicatorSettings,
+      selectedIndicatorParameters,
+      selectedVariogramModels,
+    ],
+  );
+
   useEffect(() => {
     function setNotSaved(r: ComputeCaseDto) {
-      if (r.computeCaseId === id) {
+      if (r.computeMethod.name !== 'Channel') {
+        setDisableSave(false);
+      } else if (r.computeCaseId === id && r.computeMethod.name === 'Channel') {
         setSaved(false);
       }
     }
+
     allCasesList
       .filter((c) => !caseList.includes(c))
       .forEach((r) => setNotSaved(r));
   }, [caseList, allCasesList, id, saved]);
+
+  useEffect(() => {
+    function setNotSaved(r: ComputeCaseDto) {
+      if (r.computeMethod.name === 'Indicator') {
+        setSaved(false);
+      }
+    }
+
+    allCasesList.forEach((r) => setNotSaved(r));
+  }, [caseList, allCasesList, id, saved]);
+
+  const indicatorVariogramFamilySettings =
+    indicatorSettings &&
+    indicatorSettings[0].inputSettings?.filter(
+      (value) => value.name === 'Variogram Family Filter',
+    );
+  console.log(indicatorSettings && indicatorSettings[0].inputSettings);
+  console.log(
+    indicatorVariogramFamilySettings && indicatorVariogramFamilySettings[0],
+  );
+
+  console.log(selectedVariogramModels);
 
   return (
     <Styled.Case>
@@ -248,17 +346,24 @@ export const CaseRow = ({
             IndicatorSettings={
               indicatorSettings && indicatorSettings[0].inputSettings
             }
-            selectedModelArea={selectedModelArea}
-            selectedIndicatorParameters={selectedIndicatorParameters}
+            selectedModelArea={selectedRowArea(rowCase.computeCaseId)}
+            selectedIndicatorParameters={selectedParam(
+              rowCase.computeCaseId,
+              'Indicator',
+            )}
             selectedParameters={selectedParameters}
             selectedArchelFilter={selectedArchelFilter}
-            selectedVariogramModels={selectedVariogramModels}
+            selectedVariogramModels={selectedParam(
+              rowCase.computeCaseId,
+              'Variogram Family Filter',
+            )}
             setModelArea={setModelArea}
             setIndicatorParameters={setIndicatorParameters}
-            setParameters={setParameters}
+            setParameters={setIndicatorParameters}
             setArchelFilter={setArchelFilter}
             setVariogramModels={setVariogramModels}
             existingCases={caseList}
+            saved={saved}
           />
         )}
 
@@ -278,6 +383,7 @@ export const CaseRow = ({
             setParameters={setParameters}
             setVariogramModels={setVariogramModels}
             existingCases={caseList}
+            saved={saved}
           />
         )}
 
@@ -298,6 +404,7 @@ export const CaseRow = ({
             setArchelFilter={setArchelFilter}
             setVariogramModels={setVariogramModels}
             existingCases={caseList}
+            saved={saved}
           />
         )}
 
@@ -313,11 +420,12 @@ export const CaseRow = ({
         )}
         <CaseButtons
           caseType={saveObjectCase ? 'Object' : 'Variogram'}
-          enableRun={saved}
+          saved={saved}
           isProcessed={data?.data.isProcessed}
-          saveCase={() => saveCase(id)}
-          runCase={runRowCase}
           caseStatus={rowCase.jobStatus}
+          disableSave={disableSave}
+          runCase={runRowCase}
+          saveCase={() => saveCase(id)}
         />
       </Styled.CaseRow>
     </Styled.Case>

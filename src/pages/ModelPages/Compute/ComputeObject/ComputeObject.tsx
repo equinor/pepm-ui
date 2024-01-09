@@ -18,6 +18,14 @@ import { useAccessToken } from '../../../../hooks/useAccessToken';
 import * as Styled from '../Compute.styled';
 import { CaseInfoTyoe } from '../ComputeVariogram/ComputeVariogram';
 
+const ObjectCaseInfo: CaseInfoTyoe = {
+  type: 'Channel',
+  title: 'Object cases',
+  info: 'You can add multiple cases for the different areas in your model.',
+  addText: 'Add object case',
+  runText: 'Run all object cases',
+};
+
 export const ComputeObject = () => {
   const [refetchKey, setRefetchKey] = useState<number>(0);
   const [showAlert, setAlert] = useState<string>();
@@ -66,14 +74,6 @@ export const ComputeObject = () => {
   const computeObject = useMutation({
     mutationFn: JobsService.postApiJobsComputeChannelEstimations,
   });
-
-  const ObjectCaseInfo: CaseInfoTyoe = {
-    type: 'Channel',
-    title: 'Object cases',
-    info: 'You can add multiple cases for the different areas in your model.',
-    addText: 'Add object case',
-    runText: 'Run all object cases',
-  };
 
   const runComputeObject = async (computeCaseId: string) => {
     if (!modelId) return;
