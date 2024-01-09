@@ -17,7 +17,7 @@ spec:
       ports:
         - name: http
           port: 3000
-      variables:
+      secrets:
         REACT_APP_AAD_TENANT_ID: ""
         REACT_APP_AAD_CLIENT_ID: ""
         REACT_APP_AAD_REDIRECT_URI: ""
