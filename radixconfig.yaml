@@ -134,7 +134,7 @@ spec:
               path: /mnt/azure-storage/worker
               blobfuse2:
                 protocol: fuse2
-                container: nrresqml
+                container: worker
                 uid: 1000
                 accessMode: ReadWriteMany
                 useAdls: true
@@ -178,7 +178,7 @@ spec:
               path: /mnt/azure-storage/worker
               blobfuse2:
                 protocol: fuse2
-                container: nrchannest
+                container: worker
                 uid: 1000
                 accessMode: ReadWriteMany
                 useAdls: true
@@ -221,7 +221,7 @@ spec:
               path: /mnt/azure-storage/worker
               blobfuse2:
                 protocol: fuse2
-                container: nrvargrest
+                container: worker
                 uid: 1000
                 accessMode: ReadWriteMany
                 useAdls: true
