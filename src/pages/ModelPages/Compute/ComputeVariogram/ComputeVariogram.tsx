@@ -1,15 +1,10 @@
 /* eslint-disable max-lines-per-function */
 import { useMsal } from '@azure/msal-react';
-import { Button, Icon, Snackbar } from '@equinor/eds-core-react';
-import { add as ADD, play as PLAY } from '@equinor/eds-icons';
+import { Snackbar } from '@equinor/eds-core-react';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  AnalogueModelComputeCasesService,
-  ComputeCaseDto,
-  ComputeJobStatus,
-} from '../../../../api/generated';
+import { AnalogueModelComputeCasesService } from '../../../../api/generated';
 import { CaseGroup } from '../../../../features/Compute/CaseGroup/CaseGroup';
 import { ComputeHeader } from '../../../../features/Compute/ComputeHeader/ComputeHeader';
 import { useAccessToken } from '../../../../hooks/useAccessToken';
@@ -35,17 +30,6 @@ export const ComputeVariogram = () => {
   const { modelId } = useParams<{ modelId: string }>();
   const { instance, accounts } = useMsal();
   const token = useAccessToken(instance, accounts[0]);
-  const [localIndicatorCaseList, setLocalIndicatorCaseList] = useState<
-    ComputeCaseDto[]
-  >([]);
-  const [localNTGCaseList, setLocalNTGCaseList] = useState<ComputeCaseDto[]>(
-    [],
-  );
-  const [
-    localContiniousParameterCaseList,
-    setLocalContiniousParameterCaseList,
-  ] = useState<ComputeCaseDto[]>([]);
-
   const [showAlert, setAlert] = useState<string>();
 
   function clearStatus() {
@@ -65,108 +49,17 @@ export const ComputeVariogram = () => {
     return data?.data.filter((method) => method.computeMethod.name === name);
   };
   const Indicator = methodFilter('Indicator');
-  const NetToGross = methodFilter('Net-To-Gross');
+  const NetToGross = methodFilter('Net-to-Gross');
   const ContiniousParameter = methodFilter('ContiniusParameter');
 
   const saveCaseAlert = () => {
     setAlert('New object case saved');
   };
 
-  // TODO: Get the id in a propper way, not hard coded.
-  const getMethodId = (method: string) => {
-    if (method === 'Indicator') {
-      return 'c96fd047-19cc-4e10-9c1e-626a62c22539';
-    } else if (method === 'Net-To-Gross') {
-      return '2abfea7a-7160-4b0a-85a9-674be70b5f17';
-    } else {
-      return '88663a7e-0a45-46ce-8ba3-ef4a314e1878';
-    }
-  };
-
-  const addCase = (methodName: string) => {
-    const methodId = getMethodId(methodName);
-    const method = {
-      computeMethodId: methodId,
-      name: methodName,
-    };
-    const randomId = Math.floor(Math.random() * 100).toString();
-    const newCase: ComputeCaseDto = {
-      computeCaseId: randomId,
-      computeMethod: method,
-      modelArea: {
-        modelAreaId: '',
-        name: '',
-      },
-      inputSettings: [],
-      jobStatus: ComputeJobStatus.NOT_STARTED,
-    };
-
-    if (methodName === 'Indicator' && localIndicatorCaseList.length < 1) {
-      setLocalIndicatorCaseList([...localIndicatorCaseList, newCase]);
-    } else if (methodName === 'Indicator') {
-      // TODO: Error handeling, inform user
-      // eslint-disable-next-line no-console
-      console.log('Just one unsaved case at time');
-    }
-
-    if (methodName === 'Net-To-Gross' && localNTGCaseList.length < 1) {
-      setLocalNTGCaseList([...localNTGCaseList, newCase]);
-    } else if (methodName === 'Net-To-Gross') {
-      // TODO: Error handeling, inform user
-      // eslint-disable-next-line no-console
-      console.log('Just one unsaved case at time');
-    }
-
-    if (
-      methodName === 'ContiniousParameter' &&
-      localContiniousParameterCaseList.length < 1
-    ) {
-      setLocalContiniousParameterCaseList([
-        ...localContiniousParameterCaseList,
-        newCase,
-      ]);
-    } else if (methodName === 'ContiniousParameter') {
-      // TODO: Error handeling, inform user
-      // eslint-disable-next-line no-console
-      console.log('Just one unsaved case at time');
-    }
-  };
-
   return (
     <>
       <Styled.Case>
         <ComputeHeader caseInfo={variogramCaseInfo} />
-
-        <Styled.ButtonDiv>
-          <Styled.ButtonGroup>
-            <Button variant="outlined" onClick={() => addCase('Indicator')}>
-              <Icon data={ADD} size={18}></Icon>
-              Indicator
-            </Button>
-            <Button variant="outlined" onClick={() => addCase('Net-To-Gross')}>
-              <Icon data={ADD} size={18}></Icon>
-              Net-To-Gross
-            </Button>
-            <Button
-              variant="outlined"
-              onClick={() => addCase('ContiniousParameter')}
-            >
-              <Icon data={ADD} size={18}></Icon>
-              ContiniousParameter
-            </Button>
-          </Styled.ButtonGroup>
-          <Styled.ButtonGroup>
-            <Button
-              variant="outlined"
-              // eslint-disable-next-line no-console
-              onClick={() => console.log('Running all')}
-              disabled
-            >
-              <Icon data={PLAY} size={18}></Icon>
-              Run all
-            </Button>
-          </Styled.ButtonGroup>
-        </Styled.ButtonDiv>
 
         <CaseGroup
           caseList={
@@ -175,17 +68,17 @@ export const ComputeVariogram = () => {
           methodName="Indicator"
           // eslint-disable-next-line no-console
           runCase={(id: string) => console.log(id)}
-          localCaseList={localIndicatorCaseList}
+          // localCaseList={localIndicatorCaseList}
           saveCaseAlert={saveCaseAlert}
         />
         <CaseGroup
           caseList={
             NetToGross !== undefined && NetToGross.length > 0 ? NetToGross : []
           }
-          methodName="Net-to-gross"
+          methodName="Net-to-Gross"
           // eslint-disable-next-line no-console
           runCase={(id: string) => console.log(id)}
-          localCaseList={localNTGCaseList}
+          // localCaseList={localNTGCaseList}
           saveCaseAlert={saveCaseAlert}
         />
 
@@ -198,7 +91,6 @@ export const ComputeVariogram = () => {
           methodName="ContiniousParameter"
           // eslint-disable-next-line no-console
           runCase={(id: string) => console.log(id)}
-          localCaseList={localContiniousParameterCaseList}
           saveCaseAlert={saveCaseAlert}
         />
       </Styled.Case>

@@ -11,6 +11,7 @@ import {
   ComputeSettingsService,
   CreateComputeCaseCommandResponse,
   CreateComputeCaseInputSettingsForm,
+  ListComputeSettingsDto,
   ListComputeSettingsInputValueDto,
   ModelAreaDto,
 } from '../../../../api/generated';
@@ -25,7 +26,8 @@ export const CaseRow = ({
   id,
   allCasesList,
   caseList,
-  saveObjectCase,
+  caseType,
+  saveCase,
   saveCaseAlert,
   runCase,
   removeLocalCase,
@@ -34,7 +36,8 @@ export const CaseRow = ({
   id: string;
   allCasesList: ComputeCaseDto[];
   caseList: ComputeCaseDto[];
-  saveObjectCase?: (
+  caseType: string;
+  saveCase?: (
     modelAreaId: string,
     computeMethodId: string,
     computeTypeId: string,
@@ -113,11 +116,42 @@ export const CaseRow = ({
       ? data.data.modelAreas.concat(wholeModelObject)
       : wholeModelObject;
 
-  const saveCase = async (id: string) => {
+  // TODO: Make into reusable function
+  const getParameterList = () => {
+    let inputSettingsList: CreateComputeCaseInputSettingsForm[] = [];
+
+    if (selectedVariogramModels) {
+      const variogramModelTypeId = '4d07719a-3f1c-4a0e-9147-23a51adb876c';
+      selectedVariogramModels.forEach((m) => {
+        const temp = {
+          inputSettingValueId: m.inputSettingValueId,
+          inputSettingTypeId: variogramModelTypeId,
+        };
+        inputSettingsList = [...inputSettingsList, temp];
+      });
+    }
+
+    if (selectedIndicatorParameters) {
+      const variogramModelTypeId = '4d07719a-3f1c-4a0e-9147-23a51adb876c';
+      selectedIndicatorParameters.forEach((s) => {
+        const temp = {
+          inputSettingValueId: s.inputSettingValueId,
+          inputSettingTypeId: variogramModelTypeId,
+        };
+        inputSettingsList = [...inputSettingsList, temp];
+      });
+    }
+
+    return inputSettingsList;
+  };
+
+  const handleSaveCase = async (id: string) => {
     // Checks if Case already exists in the db
     const caseExists = caseList.filter((c) => c.computeCaseId === id);
 
-    if (caseExists.length > 0) {
+    // MIDLERTIDIG ENDRET FOR Å FÅ TESTET, SNU TIL length > 0 NÅR FERDIG OG PUT ER PÅ PLASS
+    // Vil lage en ny case og ikkje oppdatere nå
+    if (caseExists.length < 0) {
       // Handle updates and PUT request
       // Check if model area has changed
       // Check if the new settings already exists
@@ -126,8 +160,11 @@ export const CaseRow = ({
 
       // Check if the instance is an Object case and right data/methods is provided
       // TODO: Seperate into own method, take type as argument. Support all types not just Channel cases
-      if (saveObjectCase && channelSettings) {
-        const computeType = channelSettings[0];
+      if (saveCase && variogramSettings) {
+        const computeType: ListComputeSettingsDto =
+          caseType === 'Object' && channelSettings
+            ? channelSettings[0]
+            : variogramSettings[0];
 
         if (
           row[0] !== undefined &&
@@ -143,32 +180,41 @@ export const CaseRow = ({
               (cl) => cl.modelArea.name === selectedModelArea[0].modelAreaType,
             );
 
-          if (checkDuplicateType.length === 0) {
-            const res = await saveObjectCase(
+          const inputSettingsList = getParameterList();
+
+          if (caseType === 'Object' && checkDuplicateType.length > 0) {
+            // TODO: Error handeling, inform user
+            // Handle Object duplicate Error
+            setCaseError('Duplicate Object case, model area');
+          } else {
+            const res = await saveCase(
               selectedModelArea[0].modelAreaId,
               row[0].computeMethod.computeMethodId,
               computeType.computeTypeId,
-              [],
+              inputSettingsList,
             );
             if (res?.success) {
               removeLocalCase(id);
               saveCaseAlert();
             }
-          } else {
-            // TODO: Error handeling, inform user
-            // Possibly not necessary anyway. Might never be reached with new limitations on user.
           }
         } else {
           // Case should have no set model area, is a 'whole model' case
           // Checks if 'whole model' case already exists
           const checkDuplicate = caseList.filter((c) => c.modelArea === null);
 
-          if (checkDuplicate.length <= 0 && selectedModelArea !== undefined) {
-            const res = await saveObjectCase(
+          if (caseType === 'Object' && checkDuplicate.length > 0) {
+            // TODO: Error handeling, inform user
+            // Handle Object duplicate Error
+            setCaseError('Duplicate Object case, model area');
+          } else if (selectedModelArea !== undefined) {
+            const inputSettingsList = getParameterList();
+
+            const res = await saveCase(
               '',
               row[0].computeMethod.computeMethodId,
-              '42069a5e-d76c-41be-8d1e-cd30d9b043f0',
-              [],
+              computeType.computeTypeId,
+              inputSettingsList,
             );
             if (res?.success) {
               removeLocalCase(id);
@@ -238,7 +284,6 @@ export const CaseRow = ({
         indicatorSettings[0].inputSettings?.filter(
           (value) => value.name === type,
         );
-      console.log(indicatorIndicatorSettings && indicatorIndicatorSettings[0]);
 
       const settingsValueList =
         indicatorIndicatorSettings && indicatorIndicatorSettings[0].values;
@@ -324,24 +369,12 @@ export const CaseRow = ({
     allCasesList.forEach((r) => setNotSaved(r));
   }, [caseList, allCasesList, id, saved]);
 
-  const indicatorVariogramFamilySettings =
-    indicatorSettings &&
-    indicatorSettings[0].inputSettings?.filter(
-      (value) => value.name === 'Variogram Family Filter',
-    );
-  console.log(indicatorSettings && indicatorSettings[0].inputSettings);
-  console.log(
-    indicatorVariogramFamilySettings && indicatorVariogramFamilySettings[0],
-  );
-
-  console.log(selectedVariogramModels);
-
   return (
     <Styled.Case>
       <Styled.CaseRow>
         {rowCase.computeMethod.name === 'Indicator' && (
           <VariogramOptionSelect
-            modelAreas={modelAreas ? modelAreas : []}
+            modelAreas={areaList ? areaList : []}
             caseType={'Indicator'}
             IndicatorSettings={
               indicatorSettings && indicatorSettings[0].inputSettings
@@ -364,13 +397,14 @@ export const CaseRow = ({
             setVariogramModels={setVariogramModels}
             existingCases={caseList}
             saved={saved}
+            caseError={caseError}
           />
         )}
 
-        {rowCase.computeMethod.name === 'Net-To-Gross' && (
+        {rowCase.computeMethod.name === 'Net-to-Gross' && (
           <VariogramOptionSelect
             modelAreas={modelAreas ? modelAreas : []}
-            caseType={'Net-to-gross'}
+            caseType={'Net-to-Gross'}
             NetToGrossSettings={
               NetToGrossSettings && NetToGrossSettings[0].inputSettings
             }
@@ -384,6 +418,7 @@ export const CaseRow = ({
             setVariogramModels={setVariogramModels}
             existingCases={caseList}
             saved={saved}
+            caseError={caseError}
           />
         )}
 
@@ -405,6 +440,7 @@ export const CaseRow = ({
             setVariogramModels={setVariogramModels}
             existingCases={caseList}
             saved={saved}
+            caseError={caseError}
           />
         )}
 
@@ -419,13 +455,13 @@ export const CaseRow = ({
           />
         )}
         <CaseButtons
-          caseType={saveObjectCase ? 'Object' : 'Variogram'}
+          caseType={caseType === 'Object' ? 'Object' : 'Variogram'}
           saved={saved}
           isProcessed={data?.data.isProcessed}
           caseStatus={rowCase.jobStatus}
           disableSave={disableSave}
           runCase={runRowCase}
-          saveCase={() => saveCase(id)}
+          saveCase={() => handleSaveCase(id)}
         />
       </Styled.CaseRow>
     </Styled.Case>
