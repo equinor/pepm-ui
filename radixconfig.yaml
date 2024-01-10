@@ -19,11 +19,11 @@ spec:
           port: 3000
       environmentConfig:
         - environment: dev
-            imageTagName: dev:-latest
+            imageTagName: dev.latest
         - environment: test
-            imageTagName: test:-latest
+            imageTagName: test.latest
         - environment: prod
-            imageTagName: production:-latest
+            imageTagName: production.latest
     - name: api
       image: ghcr.io/equinor/pepm-core-api/pepm-api:{imageTagName}
       publicPort: http
