@@ -2,5 +2,12 @@ on:
   workflow_call
 
 jobs:
-  publish-latest:
+  publish-dev:
+    strategy:
+      matrix:
+        environment: [dev, test, production]
+
     uses: ./.github/workflows/publish.yaml
+    with:
+      ENVIRONMENT: ${{ matrix.environment }}
+  

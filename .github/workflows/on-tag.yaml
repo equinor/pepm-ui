@@ -23,10 +23,10 @@ jobs:
   publish-prod:
     uses: ./.github/workflows/publish.yaml
     with:
-      IMAGE_TAG: production
+      ENVIRONMENT: production
 
   publish-tag:
     needs: [set-tag-ref]
     uses: ./.github/workflows/publish.yaml
     with:
-      IMAGE_TAG: ${{ needs.set-tag-ref.outputs.tag-ref }}
+      ENVIRONMENT: ${{ needs.set-tag-ref.outputs.tag-ref }}

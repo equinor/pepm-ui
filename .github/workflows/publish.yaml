@@ -1,8 +1,7 @@
 on:
   workflow_call:
     inputs:
-      IMAGE_TAG:
-        default: latest
+      ENVIRONMENT:
         type: string
 
 jobs:
@@ -12,13 +11,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@master
-      - run: echo "Tagging with ${{inputs.IMAGE_TAG}}"
+      - run: echo "Tagging with ${{inputs.ENVIRONMENT}}"
 
       - name: Build Container Image
-        run: IMAGE_TAG=${{inputs.IMAGE_TAG}} docker compose build
+        run: ENVIRONMENT=${{inputs.ENVIRONMENT}} docker compose build
 
       - name: Authenticate Against Container Registry
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
 
       - name: Publish Container Image
-        run: IMAGE_TAG=${{inputs.IMAGE_TAG}} docker compose push
+        run: IMAGE_TAG=${{inputs.ENVIRONMENT}} docker compose push
