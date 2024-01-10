@@ -1,5 +1,4 @@
 /* eslint-disable max-lines-per-function */
-import { useState } from 'react';
 import {
   ComputeCaseDto,
   ListComputeSettingsInputDto,
@@ -30,6 +29,7 @@ export const VariogramOptionSelect = ({
   IndicatorSettings,
   existingCases,
   saved,
+  caseError,
 }: {
   modelAreas: ModelAreaDto[];
   caseType: string;
@@ -63,10 +63,10 @@ export const VariogramOptionSelect = ({
   ContiniusParameterSettings?: ListComputeSettingsInputDto[];
   existingCases: ComputeCaseDto[];
   saved: boolean;
+  caseError: string;
 }) => {
   // TODO: Case Error handling
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [caseError, setCaseError] = useState<string>('');
 
   // Lage en funksjon som tar inn Liste og Name
   const indicatorFamilySettings = IndicatorSettings?.filter(

@@ -6,12 +6,9 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   AnalogueModelComputeCasesService,
-  CreateComputeCaseCommandForm,
-  CreateComputeCaseInputSettingsForm,
   EstimateChannelCommand,
   JobsService,
 } from '../../../../api/generated';
-import { queryClient } from '../../../../auth/queryClient';
 import { CaseGroup } from '../../../../features/Compute/CaseGroup/CaseGroup';
 import { ComputeHeader } from '../../../../features/Compute/ComputeHeader/ComputeHeader';
 import { useAccessToken } from '../../../../hooks/useAccessToken';
@@ -53,24 +50,6 @@ export const ComputeObject = () => {
     enabled: !!token,
   });
 
-  const saveCase = useMutation({
-    mutationFn: ({
-      id,
-      requestBody,
-    }: {
-      id: string;
-      requestBody: CreateComputeCaseCommandForm;
-    }) => {
-      return AnalogueModelComputeCasesService.postApiAnalogueModelsComputeCases(
-        id,
-        requestBody,
-      );
-    },
-    onSuccess: () => {
-      queryClient.refetchQueries();
-    },
-  });
-
   const computeObject = useMutation({
     mutationFn: JobsService.postApiJobsComputeChannelEstimations,
   });
@@ -95,27 +74,6 @@ export const ComputeObject = () => {
     (method) => method.computeMethod.name === 'Channel',
   );
 
-  const saveObjectCase = async (
-    modelAreaId: string,
-    computeMethodId: string,
-    computeTypeId: string,
-    inputSettings: CreateComputeCaseInputSettingsForm[],
-  ) => {
-    const caseRequestBody: CreateComputeCaseCommandForm = {
-      modelAreaId: modelAreaId,
-      computeMethodId: computeMethodId,
-      computeTypeId: computeTypeId,
-      inputSettings: inputSettings,
-    };
-    if (modelId) {
-      const res = await saveCase.mutateAsync({
-        id: modelId,
-        requestBody: caseRequestBody,
-      });
-      return res;
-    }
-  };
-
   return (
     <>
       <Styled.Case>
@@ -123,7 +81,6 @@ export const ComputeObject = () => {
         <CaseGroup
           caseList={channel !== undefined && channel.length > 0 ? channel : []}
           methodName={ObjectCaseInfo.type}
-          saveObjectCase={saveObjectCase}
           saveCaseAlert={saveCaseAlert}
           runCase={runComputeObject}
         />
