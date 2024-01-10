@@ -5,7 +5,7 @@ on:
     
 
 jobs:
-  publish-dev:
+  publish-image:
     strategy:
       matrix:
         environment: [dev, test, production]
