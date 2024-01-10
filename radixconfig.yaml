@@ -12,7 +12,7 @@ spec:
     - name: prod
   components:
     - name: web
-      image: ghcr.io/equinor/pepm-core-api/pepm-api:{imageTagName}
+      image: ghcr.io/equinor/pepm-ui/pepm-ui:{imageTagName}
       publicPort: http
       ports:
         - name: http
