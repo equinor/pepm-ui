@@ -1,6 +1,17 @@
 on: 
-  workflow_call
+  push:
+    branches:
+      main
+    
 
 jobs:
-  publish-latest:
+  publish-image:
+    strategy:
+      matrix:
+        environment: [dev, test, production]
+
     uses: ./.github/workflows/publish.yaml
+    with:
+      ENVIRONMENT: ${{ matrix.environment }}
+    
+  

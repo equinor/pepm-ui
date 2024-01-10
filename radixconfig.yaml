@@ -12,21 +12,18 @@ spec:
     - name: prod
   components:
     - name: web
-      src: .
+      image: ghcr.io/equinor/pepm-core-api/pepm-api:{imageTagName}
       publicPort: http
       ports:
         - name: http
           port: 3000
-      variables:
-        REACT_APP_AAD_TENANT_ID: ""
-        REACT_APP_AAD_CLIENT_ID: ""
-        REACT_APP_AAD_REDIRECT_URI: ""
-        REACT_APP_BACKEND_URL: ""
-        REACT_APP_BACKEND_API_SCOPE: ""
       environmentConfig:
         - environment: dev
+            imageTagName: dev.latest
         - environment: test
+            imageTagName: test.latest
         - environment: prod
+            imageTagName: production.latest
     - name: api
       image: ghcr.io/equinor/pepm-core-api/pepm-api:{imageTagName}
       publicPort: http
