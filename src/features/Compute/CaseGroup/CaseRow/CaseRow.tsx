@@ -153,10 +153,11 @@ export const CaseRow = ({
 
     // MIDLERTIDIG ENDRET FOR Å FÅ TESTET, SNU TIL length > 0 NÅR FERDIG OG PUT ER PÅ PLASS
     // Vil lage en ny case og ikkje oppdatere nå
-    if (caseExists.length < 0) {
+    if (caseExists.length > 0) {
       // Handle updates and PUT request
       // Check if model area has changed
       // Check if the new settings already exists
+      console.log('UPDATE NOT AVAILABLE');
     } else {
       const row = allCasesList.filter((c) => c.computeCaseId === id);
 
