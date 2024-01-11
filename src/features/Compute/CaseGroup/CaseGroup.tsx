@@ -2,14 +2,13 @@
 import { Button, Icon, Tooltip } from '@equinor/eds-core-react';
 import { add as ADD, play as PLAY } from '@equinor/eds-icons';
 import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   AnalogueModelComputeCasesService,
   ComputeCaseDto,
   ComputeJobStatus,
   CreateComputeCaseCommandForm,
-  CreateComputeCaseCommandResponse,
   CreateComputeCaseInputSettingsForm,
 } from '../../../api/generated';
 import { queryClient } from '../../../auth/queryClient';
@@ -20,18 +19,18 @@ import { CaseRow } from './CaseRow/CaseRow';
 export const CaseGroup = ({
   caseList,
   methodName,
+  triggerAddCase,
   saveCaseAlert,
+  setTriggerAddCase,
+  updateLocalCaseList,
   runCase,
 }: {
   caseList: ComputeCaseDto[];
   methodName: string;
-  saveCase?: (
-    modelAreaId: string,
-    computeMethodId: string,
-    computeTypeId: string,
-    inputSettings: CreateComputeCaseInputSettingsForm[],
-  ) => Promise<CreateComputeCaseCommandResponse | undefined>;
+  triggerAddCase?: string;
   saveCaseAlert: () => void;
+  setTriggerAddCase?: React.Dispatch<React.SetStateAction<string | undefined>>;
+  updateLocalCaseList?: (type: string, add: boolean) => void;
   runCase: (computeCaseId: string) => void;
 }) => {
   const { modelId } = useParams<{ modelId: string }>();
@@ -73,70 +72,78 @@ export const CaseGroup = ({
     }
   };
 
-  const filerLocalList = (methodType: string) => {
-    const methodFileter = localList.filter(
-      (c) => c.computeMethod.name === methodType,
-    );
+  const filerLocalList = useCallback(
+    (methodType: string) => {
+      const methodFileter = localList.filter(
+        (c) => c.computeMethod.name === methodType,
+      );
 
-    return methodFileter;
-  };
+      return methodFileter;
+    },
+    [localList],
+  );
 
-  const setListItem = (methodType: string, newCase: ComputeCaseDto) => {
-    const filteredList = filerLocalList(methodType);
+  const addCase = useCallback(
+    (methodType: string) => {
+      const setListItem = (methodType: string, newCase: ComputeCaseDto) => {
+        const filteredList = filerLocalList(methodType);
 
-    if (methodType === 'Channel' && filteredList.length < 1) {
-      setLocalList([...localList, newCase]);
-    } else if (
-      methodType !== 'Channel' &&
-      filteredList.length < 1 &&
-      filteredList[0] === undefined
-    ) {
-      setLocalList([...localList, newCase]);
-    } else {
-      // TODO: Error handeling, inform user
-      // eslint-disable-next-line no-console
-      console.log('Just one unsaved case at time');
-    }
-  };
+        if (methodType === 'Channel' && filteredList.length < 1) {
+          setLocalList([...localList, newCase]);
+        } else if (
+          methodType !== 'Channel' &&
+          filteredList.length < 1 &&
+          filteredList[0] === undefined
+        ) {
+          setLocalList([...localList, newCase]);
+          updateLocalCaseList && updateLocalCaseList(methodType, true);
+        } else {
+          // TODO: Error handeling, inform user
+          // eslint-disable-next-line no-console
+          console.log('Just one unsaved case at time');
+        }
+      };
 
-  const addCase = (methodType: string) => {
-    const methodId = getMethodId(methodType);
-    const method = {
-      computeMethodId: methodId,
-      name: methodType,
-    };
+      const methodId = getMethodId(methodType);
+      const method = {
+        computeMethodId: methodId,
+        name: methodType,
+      };
 
-    const randomId = Math.floor(Math.random() * 100).toString();
-    const newCase: ComputeCaseDto = {
-      computeCaseId: randomId,
-      computeMethod: method,
-      modelArea: {
-        modelAreaId: '',
-        name: '',
-      },
-      inputSettings: [],
-      jobStatus: ComputeJobStatus.NOT_STARTED,
-    };
+      const randomId = Math.floor(Math.random() * 100).toString();
+      const newCase: ComputeCaseDto = {
+        computeCaseId: randomId,
+        computeMethod: method,
+        modelArea: {
+          modelAreaId: '',
+          name: '',
+        },
+        inputSettings: [],
+        jobStatus: ComputeJobStatus.NOT_STARTED,
+      };
 
-    switch (methodType) {
-      case 'Channel':
-        setListItem('Channel', newCase);
-        break;
-      case 'Indicator':
-        setListItem('Indicator', newCase);
-        break;
-      case 'Net-to-Gross':
-        setListItem('Net-to-Gross', newCase);
-        break;
-      case 'ContiniousParameter':
-        setListItem('ContiniousParameter', newCase);
-        break;
-    }
-  };
+      switch (methodType) {
+        case 'Channel':
+          setListItem('Channel', newCase);
+          break;
+        case 'Indicator':
+          setListItem('Indicator', newCase);
+          break;
+        case 'Net-to-Gross':
+          setListItem('Net-to-Gross', newCase);
+          break;
+        case 'ContiniousParameter':
+          setListItem('ContiniousParameter', newCase);
+          break;
+      }
+    },
+    [filerLocalList, localList, updateLocalCaseList],
+  );
 
   const removeLocalCase = (id: string) => {
     const newList = localList.filter((c) => c.computeCaseId !== id);
     setLocalList(newList);
+    updateLocalCaseList && updateLocalCaseList(methodName, false);
   };
 
   const saveCase = async (
@@ -160,9 +167,30 @@ export const CaseGroup = ({
     }
   };
 
+  useEffect(() => {
+    if (
+      triggerAddCase !== undefined &&
+      triggerAddCase === 'Indicator' &&
+      setTriggerAddCase
+    ) {
+      setTriggerAddCase('');
+      addCase('Indicator');
+    } else if (
+      triggerAddCase !== undefined &&
+      triggerAddCase === 'Net-to-Gross'
+    ) {
+      addCase('Net-to-Gross');
+    } else if (
+      triggerAddCase !== undefined &&
+      triggerAddCase === 'ContiniousParameter'
+    ) {
+      addCase('ContiniousParameter');
+    }
+  }, [addCase, setTriggerAddCase, triggerAddCase]);
+
   return (
     <>
-      {methodName === 'Channel' ? (
+      {methodName === 'Channel' && (
         <Styled.ButtonDiv>
           <Styled.ButtonGroup>
             <Tooltip
@@ -193,51 +221,13 @@ export const CaseGroup = ({
             </Tooltip>
           </Styled.ButtonGroup>
         </Styled.ButtonDiv>
-      ) : (
-        <Styled.ButtonDiv>
-          <Styled.ButtonGroup>
-            {methodName === 'Indicator' && (
-              <Button variant="outlined" onClick={() => addCase('Indicator')}>
-                <Icon data={ADD} size={18}></Icon>
-                Indicator
-              </Button>
-            )}
-            {methodName === 'Net-to-Gross' && (
-              <Button
-                variant="outlined"
-                onClick={() => addCase('Net-to-Gross')}
-              >
-                <Icon data={ADD} size={18}></Icon>
-                Net-to-Gross
-              </Button>
-            )}
-            {methodName === 'ContiniousParameter' && (
-              <Button
-                variant="outlined"
-                onClick={() => addCase('ContiniousParameter')}
-              >
-                <Icon data={ADD} size={18}></Icon>
-                ContiniousParameter
-              </Button>
-            )}
-          </Styled.ButtonGroup>
-          <Styled.ButtonGroup>
-            <Button
-              variant="outlined"
-              // eslint-disable-next-line no-console
-              onClick={() => console.log('Running all')}
-              disabled
-            >
-              <Icon data={PLAY} size={18}></Icon>
-              Run all
-            </Button>
-          </Styled.ButtonGroup>
-        </Styled.ButtonDiv>
       )}
 
       <CaseCardComponent
         title={methodName}
         key={caseList.length > 0 ? caseList[0].computeCaseId : null}
+        addCase={addCase}
+        localList={localList}
       >
         <Styled.CaseList>
           {methodName === 'Channel' ? (
@@ -271,6 +261,7 @@ export const CaseGroup = ({
                   saveCaseAlert={saveCaseAlert}
                   runCase={runCase}
                   removeLocalCase={removeLocalCase}
+                  updateLocalCaseList={updateLocalCaseList}
                 />
               ))}
             </>

@@ -31,6 +31,7 @@ export const CaseRow = ({
   saveCaseAlert,
   runCase,
   removeLocalCase,
+  updateLocalCaseList,
 }: {
   rowCase: ComputeCaseDto;
   id: string;
@@ -46,6 +47,7 @@ export const CaseRow = ({
   saveCaseAlert: () => void;
   removeLocalCase: (id: string) => void;
   runCase: (id: string) => void;
+  updateLocalCaseList?: (type: string, add: boolean) => void;
 }) => {
   const { modelId } = useParams<{ modelId: string }>();
   const { instance, accounts } = useMsal();

@@ -17,7 +17,6 @@ export const Title = styled.div`
   display: flex;
   flex-direction: column;
 
-  padding: ${spacings.LARGE} 0 0 ${spacings.LARGE};
   column-gap: ${spacings.MEDIUM};
 `;
 
@@ -36,4 +35,13 @@ export const CaseBorder = styled.div`
 
   border-radius: ${spacings.CARD_ROUNDED};
   border: solid 1px ${theme.light.ui.background.medium};
+`;
+
+export const ButtonGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  justify-content: space-between;
+  column-gap: ${spacings.SMALL};
+  padding: ${spacings.MEDIUM};
 `;
