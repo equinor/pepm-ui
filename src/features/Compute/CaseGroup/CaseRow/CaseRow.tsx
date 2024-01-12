@@ -11,6 +11,7 @@ import {
   ComputeSettingsService,
   CreateComputeCaseCommandResponse,
   CreateComputeCaseInputSettingsForm,
+  ListComputeCasesByAnalogueModelIdQueryResponse,
   ListComputeSettingsDto,
   ListComputeSettingsInputValueDto,
   ModelAreaDto,
@@ -32,6 +33,7 @@ export const CaseRow = ({
   setAlertMessage,
   runCase,
   updateCase,
+  deleteCase,
   removeLocalCase,
 }: {
   rowCase: ComputeCaseDto;
@@ -39,7 +41,7 @@ export const CaseRow = ({
   allCasesList: ComputeCaseDto[];
   caseList: ComputeCaseDto[];
   caseType: string;
-  saveCase?: (
+  saveCase: (
     modelAreaId: string,
     computeMethodId: string,
     computeTypeId: string,
@@ -49,7 +51,10 @@ export const CaseRow = ({
     modelAreaId: string,
     computeTypeId: string,
     inputSettings: UpdateComputeCaseInputSettingsForm[],
-  ) => Promise<void>;
+  ) => Promise<ListComputeCasesByAnalogueModelIdQueryResponse | undefined>;
+  deleteCase: (
+    computeCaseId: string,
+  ) => Promise<ListComputeCasesByAnalogueModelIdQueryResponse | undefined>;
   setAlertMessage: (message: string) => void;
   runCase: (id: string) => void;
   removeLocalCase: (id: string) => void;
@@ -165,8 +170,14 @@ export const CaseRow = ({
         : '';
       const inputSettingsList = getParameterList();
 
-      await updateCase(modelArea, row[0].computeCaseId, inputSettingsList);
-      setAlertMessage('Case updated');
+      const res = await updateCase(
+        modelArea,
+        row[0].computeCaseId,
+        inputSettingsList,
+      );
+      if (res?.success) {
+        setAlertMessage('Case updated');
+      }
     } else {
       const row = allCasesList.filter((c) => c.computeCaseId === id);
 
@@ -467,13 +478,15 @@ export const CaseRow = ({
           />
         )}
         <CaseButtons
+          id={id}
           caseType={caseType === 'Object' ? 'Object' : 'Variogram'}
           saved={saved}
           isProcessed={data?.data.isProcessed}
           caseStatus={rowCase.jobStatus}
-          runCase={runRowCase}
           saveCase={() => handleSaveCase(id)}
-          id={id}
+          runCase={runRowCase}
+          deleteCase={deleteCase}
+          setAlertMessage={setAlertMessage}
         />
       </Styled.CaseRow>
     </Styled.Case>

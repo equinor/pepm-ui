@@ -78,6 +78,24 @@ export const CaseGroup = ({
     },
   });
 
+  const deleteApiCase = useMutation({
+    mutationFn: ({
+      id,
+      computeCaseId,
+    }: {
+      id: string;
+      computeCaseId: string;
+    }) => {
+      return AnalogueModelComputeCasesService.deleteApiAnalogueModelsComputeCases(
+        id,
+        computeCaseId,
+      );
+    },
+    onSuccess: () => {
+      queryClient.refetchQueries();
+    },
+  });
+
   // TODO: Get the id in a propper way, not hard coded.
   const getMethodId = (method: string) => {
     if (method === 'Indicator') {
@@ -210,6 +228,16 @@ export const CaseGroup = ({
     }
   };
 
+  const deleteCase = async (computeCaseId: string) => {
+    if (modelId) {
+      const res = await deleteApiCase.mutateAsync({
+        id: modelId,
+        computeCaseId: computeCaseId,
+      });
+      return res;
+    }
+  };
+
   useEffect(() => {
     if (
       triggerAddCase !== undefined &&
@@ -284,6 +312,7 @@ export const CaseGroup = ({
                   caseList={caseList}
                   caseType={methodName === 'Channel' ? 'Object' : 'Variogram'}
                   saveCase={saveCase}
+                  deleteCase={deleteCase}
                   setAlertMessage={setAlertMessage}
                   runCase={runCase}
                   removeLocalCase={removeLocalCase}
@@ -302,6 +331,7 @@ export const CaseGroup = ({
                   caseType={methodName === 'Channel' ? 'Object' : 'Variogram'}
                   saveCase={saveCase}
                   updateCase={updateCase}
+                  deleteCase={deleteCase}
                   setAlertMessage={setAlertMessage}
                   runCase={runCase}
                   removeLocalCase={removeLocalCase}
