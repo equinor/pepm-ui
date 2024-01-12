@@ -363,13 +363,13 @@ export const CaseRow = ({
   }, [caseList, allCasesList, id, saved]);
 
   useEffect(() => {
-    function setNotSaved(r: ComputeCaseDto) {
+    function setNotSavedVariogram(r: ComputeCaseDto) {
       if (r.computeMethod.name === 'Indicator') {
         setSaved(false);
       }
     }
 
-    allCasesList.forEach((r) => setNotSaved(r));
+    allCasesList.forEach((r) => setNotSavedVariogram(r));
   }, [caseList, allCasesList, id, saved]);
 
   return (
@@ -465,6 +465,7 @@ export const CaseRow = ({
           disableSave={disableSave}
           runCase={runRowCase}
           saveCase={() => handleSaveCase(id)}
+          id={id}
         />
       </Styled.CaseRow>
     </Styled.Case>
