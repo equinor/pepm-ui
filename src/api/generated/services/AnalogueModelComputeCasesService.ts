@@ -55,14 +55,14 @@ export class AnalogueModelComputeCasesService {
      * @param id
      * @param computeCaseId
      * @param requestBody
-     * @returns void
+     * @returns ListComputeCasesByAnalogueModelIdQueryResponse Success
      * @throws ApiError
      */
     public static putApiAnalogueModelsComputeCases(
         id: string,
         computeCaseId: string,
         requestBody?: UpdateComputeCaseCommandForm,
-    ): CancelablePromise<void> {
+    ): CancelablePromise<ListComputeCasesByAnalogueModelIdQueryResponse> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/analogue-models/{id}/compute-cases/{computeCaseId}',
@@ -72,6 +72,26 @@ export class AnalogueModelComputeCasesService {
             },
             body: requestBody,
             mediaType: 'application/json-patch+json',
+        });
+    }
+
+    /**
+     * @param id
+     * @param computeCaseId
+     * @returns ListComputeCasesByAnalogueModelIdQueryResponse Success
+     * @throws ApiError
+     */
+    public static deleteApiAnalogueModelsComputeCases(
+        id: string,
+        computeCaseId: string,
+    ): CancelablePromise<ListComputeCasesByAnalogueModelIdQueryResponse> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/api/analogue-models/{id}/compute-cases/{computeCaseId}',
+            path: {
+                'id': id,
+                'computeCaseId': computeCaseId,
+            },
         });
     }
 
