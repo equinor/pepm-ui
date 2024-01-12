@@ -1,11 +1,5 @@
 /* eslint-disable max-lines-per-function */
-import {
-  Button,
-  Dialog,
-  Icon,
-  Tooltip,
-  Typography,
-} from '@equinor/eds-core-react';
+import { Button, Icon, Tooltip } from '@equinor/eds-core-react';
 import {
   copy as COPY,
   delete_to_trash as DELETE,
@@ -13,55 +7,82 @@ import {
   save as SAVE,
 } from '@equinor/eds-icons';
 import { useState } from 'react';
-import { ComputeJobStatus } from '../../../../api/generated';
+import {
+  ComputeJobStatus,
+  ListComputeCasesByAnalogueModelIdQueryResponse,
+} from '../../../../api/generated';
+import { ConfirmDialog } from '../../../../components/ConfirmDialog/ConfirmDialog';
 import * as Styled from './CaseButtons.styled';
 
 export const CaseButtons = ({
+  id,
   caseType,
   saved,
   isProcessed,
   caseStatus,
   saveCase,
   runCase,
-  id,
+  deleteCase,
+  setAlertMessage,
 }: {
+  id: string;
   caseType: string;
   saved: boolean;
   isProcessed?: boolean;
   caseStatus: ComputeJobStatus;
-  saveCase: () => void;
   runCase?: () => void;
-  id: string;
+  saveCase: () => void;
+  deleteCase: (
+    computeCaseId: string,
+  ) => Promise<ListComputeCasesByAnalogueModelIdQueryResponse | undefined>;
+  setAlertMessage: (message: string) => void;
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [saveConfirm, setSaveConfirm] = useState(false);
+
   const handleConfirmSave = () => {
     saveCase();
-    setIsOpen(false);
+    setSaveConfirm(false);
+  };
+
+  const handleConfirmDelete = async () => {
+    const res = await deleteCase(id);
+    if (res?.success) {
+      setAlertMessage('Case deleted');
+    }
+    setDeleteConfirm(false);
   };
 
   return (
     <Styled.ButtonDiv>
-      <Tooltip title={'Functionality not implemented yet.'}>
+      {id.length < 3 ? (
+        <Tooltip title={'Can not delete unsaved case.'}>
+          <Button disabled variant="ghost_icon" aria-label="remove">
+            <Icon data={DELETE} size={24}></Icon>
+          </Button>
+        </Tooltip>
+      ) : (
         <Button
-          disabled
           variant="ghost_icon"
-          // eslint-disable-next-line no-console
-          onClick={() => console.log('Delete')}
+          onClick={() => setDeleteConfirm(true)}
           aria-label="remove"
         >
           <Icon data={DELETE} size={24}></Icon>
         </Button>
-      </Tooltip>
+      )}
+
       {caseType === 'Variogram' && (
-        <Button
-          disabled
-          variant="ghost_icon"
-          aria-label="duplicate"
-          // eslint-disable-next-line no-console
-          onClick={() => console.log('Duplicate')}
-        >
-          <Icon data={COPY} size={24}></Icon>
-        </Button>
+        <Tooltip title={'Functionality not implemented yet.'}>
+          <Button
+            disabled
+            variant="ghost_icon"
+            aria-label="duplicate"
+            // eslint-disable-next-line no-console
+            onClick={() => console.log('Duplicate')}
+          >
+            <Icon data={COPY} size={24}></Icon>
+          </Button>
+        </Tooltip>
       )}
 
       {caseType === 'Object' ? (
@@ -151,29 +172,29 @@ export const CaseButtons = ({
           </Tooltip>
           <Button
             variant="outlined"
-            onClick={id.length > 3 ? () => setIsOpen(true) : saveCase}
+            onClick={id.length > 3 ? () => setSaveConfirm(true) : saveCase}
           >
             <Icon data={SAVE} size={18}></Icon>
             Save
           </Button>
-          <Dialog open={isOpen}>
-            <Dialog.Header>
-              <Dialog.Title>Confirm overwrite</Dialog.Title>
-            </Dialog.Header>
-            <Dialog.CustomContent>
-              <Typography variant="body_short">
-                By pressing OK, the current case will be overwritten, deleting
-                old results.
-              </Typography>
-            </Dialog.CustomContent>
-            <Dialog.Actions>
-              <Button onClick={handleConfirmSave}>OK</Button>
-              <Button variant="ghost" onClick={() => setIsOpen(false)}>
-                Cancel
-              </Button>
-            </Dialog.Actions>
-          </Dialog>
         </>
+      )}
+      {deleteConfirm && (
+        <ConfirmDialog
+          isOpen={deleteConfirm}
+          message="By pressing OK, the case and belonging results will be deleted."
+          confirmAction={handleConfirmDelete}
+          setIsOpen={setDeleteConfirm}
+        ></ConfirmDialog>
+      )}
+      {saveConfirm && (
+        <ConfirmDialog
+          isOpen={saveConfirm}
+          message="By pressing OK, the current case will be overwritten, deleting old
+      results."
+          confirmAction={handleConfirmSave}
+          setIsOpen={setSaveConfirm}
+        ></ConfirmDialog>
       )}
     </Styled.ButtonDiv>
   );

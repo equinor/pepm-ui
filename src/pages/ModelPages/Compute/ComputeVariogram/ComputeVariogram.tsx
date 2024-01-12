@@ -1,6 +1,6 @@
 /* eslint-disable max-lines-per-function */
 import { useMsal } from '@azure/msal-react';
-import { Button, Icon, Snackbar } from '@equinor/eds-core-react';
+import { Button, Icon, Snackbar, Tooltip } from '@equinor/eds-core-react';
 import { add as ADD, play as PLAY } from '@equinor/eds-icons';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -102,15 +102,17 @@ export const ComputeVariogram = () => {
             </Button>
           </Styled.ButtonGroup>
           <Styled.ButtonGroup>
-            <Button
-              variant="outlined"
-              // eslint-disable-next-line no-console
-              onClick={() => console.log('Running all')}
-              disabled
-            >
-              <Icon data={PLAY} size={18}></Icon>
-              Run all
-            </Button>
+            <Tooltip title={'Functionality not implemented yet.'}>
+              <Button
+                variant="outlined"
+                // eslint-disable-next-line no-console
+                onClick={() => console.log('Running all')}
+                disabled
+              >
+                <Icon data={PLAY} size={18}></Icon>
+                Run all
+              </Button>
+            </Tooltip>
           </Styled.ButtonGroup>
         </Styled.ButtonDiv>
 
