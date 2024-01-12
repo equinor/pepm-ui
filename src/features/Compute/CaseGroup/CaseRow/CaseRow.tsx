@@ -14,6 +14,7 @@ import {
   ListComputeSettingsDto,
   ListComputeSettingsInputValueDto,
   ModelAreaDto,
+  UpdateComputeCaseInputSettingsForm,
 } from '../../../../api/generated';
 import { useAccessToken } from '../../../../hooks/useAccessToken';
 import { CaseButtons } from '../CaseButtons/CaseButtons';
@@ -28,10 +29,10 @@ export const CaseRow = ({
   caseList,
   caseType,
   saveCase,
-  saveCaseAlert,
+  setAlertMessage,
   runCase,
+  updateCase,
   removeLocalCase,
-  updateLocalCaseList,
 }: {
   rowCase: ComputeCaseDto;
   id: string;
@@ -44,10 +45,14 @@ export const CaseRow = ({
     computeTypeId: string,
     inputSettings: CreateComputeCaseInputSettingsForm[],
   ) => Promise<CreateComputeCaseCommandResponse | undefined>;
-  saveCaseAlert: () => void;
-  removeLocalCase: (id: string) => void;
+  updateCase?: (
+    modelAreaId: string,
+    computeTypeId: string,
+    inputSettings: UpdateComputeCaseInputSettingsForm[],
+  ) => Promise<void>;
+  setAlertMessage: (message: string) => void;
   runCase: (id: string) => void;
-  updateLocalCaseList?: (type: string, add: boolean) => void;
+  removeLocalCase: (id: string) => void;
 }) => {
   const { modelId } = useParams<{ modelId: string }>();
   const { instance, accounts } = useMsal();
@@ -64,7 +69,6 @@ export const CaseRow = ({
   const [selectedVariogramModels, setVariogramModels] =
     useState<ListComputeSettingsInputValueDto[]>();
   const [saved, setSaved] = useState<boolean>(true);
-  const [disableSave, setDisableSave] = useState<boolean>(true);
   const [caseError, setCaseError] = useState<string>('');
 
   const { data } = useQuery({
@@ -150,14 +154,19 @@ export const CaseRow = ({
   const handleSaveCase = async (id: string) => {
     // Checks if Case already exists in the db
     const caseExists = caseList.filter((c) => c.computeCaseId === id);
-
-    // MIDLERTIDIG ENDRET FOR Å FÅ TESTET, SNU TIL length > 0 NÅR FERDIG OG PUT ER PÅ PLASS
-    // Vil lage en ny case og ikkje oppdatere nå
-    if (caseExists.length > 0) {
-      // Handle updates and PUT request
+    if (caseExists.length > 0 && updateCase) {
       // Check if model area has changed
       // Check if the new settings already exists
-      console.log('UPDATE NOT AVAILABLE');
+      const row = allCasesList.filter((c) => c.computeCaseId === id);
+      const modelArea = selectedModelArea
+        ? selectedModelArea[0].modelAreaId
+        : row[0].modelArea
+        ? row[0].modelArea.modelAreaId
+        : '';
+      const inputSettingsList = getParameterList();
+
+      await updateCase(modelArea, row[0].computeCaseId, inputSettingsList);
+      setAlertMessage('Case updated');
     } else {
       const row = allCasesList.filter((c) => c.computeCaseId === id);
 
@@ -198,7 +207,7 @@ export const CaseRow = ({
             );
             if (res?.success) {
               removeLocalCase(id);
-              saveCaseAlert();
+              setAlertMessage('New case saved');
             }
           }
         } else {
@@ -221,7 +230,7 @@ export const CaseRow = ({
             );
             if (res?.success) {
               removeLocalCase(id);
-              saveCaseAlert();
+              setAlertMessage('New case saved');
             }
           } else {
             setCaseError('You must select a model area');
@@ -308,6 +317,7 @@ export const CaseRow = ({
           selectedIndicatorParameters === undefined
         ) {
           defaultParameter = loadedParameters;
+          setIndicatorParameters(loadedParameters);
         } else if (
           selectedIndicatorParameters !== undefined &&
           loadedParameters === undefined
@@ -326,6 +336,7 @@ export const CaseRow = ({
           selectedVariogramModels === undefined
         ) {
           defaultParameter = loadedParameters;
+          setVariogramModels(loadedParameters);
         } else if (
           selectedVariogramModels !== undefined &&
           loadedParameters === undefined
@@ -350,9 +361,7 @@ export const CaseRow = ({
 
   useEffect(() => {
     function setNotSaved(r: ComputeCaseDto) {
-      if (r.computeMethod.name !== 'Channel') {
-        setDisableSave(false);
-      } else if (r.computeCaseId === id && r.computeMethod.name === 'Channel') {
+      if (r.computeCaseId === id && r.computeMethod.name === 'Channel') {
         setSaved(false);
       }
     }
@@ -395,7 +404,7 @@ export const CaseRow = ({
             )}
             setModelArea={setModelArea}
             setIndicatorParameters={setIndicatorParameters}
-            setParameters={setIndicatorParameters}
+            setParameters={setParameters}
             setArchelFilter={setArchelFilter}
             setVariogramModels={setVariogramModels}
             existingCases={caseList}
@@ -462,7 +471,6 @@ export const CaseRow = ({
           saved={saved}
           isProcessed={data?.data.isProcessed}
           caseStatus={rowCase.jobStatus}
-          disableSave={disableSave}
           runCase={runRowCase}
           saveCase={() => handleSaveCase(id)}
           id={id}

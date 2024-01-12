@@ -21,7 +21,6 @@ export const CaseButtons = ({
   saved,
   isProcessed,
   caseStatus,
-  disableSave,
   saveCase,
   runCase,
   id,
@@ -30,7 +29,6 @@ export const CaseButtons = ({
   saved: boolean;
   isProcessed?: boolean;
   caseStatus: ComputeJobStatus;
-  disableSave: boolean;
   saveCase: () => void;
   runCase?: () => void;
   id: string;
@@ -153,7 +151,7 @@ export const CaseButtons = ({
           </Tooltip>
           <Button
             variant="outlined"
-            onClick={disableSave ? () => setIsOpen(true) : saveCase}
+            onClick={id.length > 3 ? () => setIsOpen(true) : saveCase}
           >
             <Icon data={SAVE} size={18}></Icon>
             Save
@@ -164,8 +162,8 @@ export const CaseButtons = ({
             </Dialog.Header>
             <Dialog.CustomContent>
               <Typography variant="body_short">
-                By pressing OK, the current case will be overwritten,
-                invalidating old results.
+                By pressing OK, the current case will be overwritten, deleting
+                old results.
               </Typography>
             </Dialog.CustomContent>
             <Dialog.Actions>
