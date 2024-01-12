@@ -5,6 +5,7 @@
 import type { CreateComputeCaseCommandForm } from '../models/CreateComputeCaseCommandForm';
 import type { CreateComputeCaseCommandResponse } from '../models/CreateComputeCaseCommandResponse';
 import type { ListComputeCasesByAnalogueModelIdQueryResponse } from '../models/ListComputeCasesByAnalogueModelIdQueryResponse';
+import type { UpdateComputeCaseCommandForm } from '../models/UpdateComputeCaseCommandForm';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -47,6 +48,30 @@ export class AnalogueModelComputeCasesService {
             path: {
                 'id': id,
             },
+        });
+    }
+
+    /**
+     * @param id
+     * @param computeCaseId
+     * @param requestBody
+     * @returns void
+     * @throws ApiError
+     */
+    public static putApiAnalogueModelsComputeCases(
+        id: string,
+        computeCaseId: string,
+        requestBody?: UpdateComputeCaseCommandForm,
+    ): CancelablePromise<void> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/api/analogue-models/{id}/compute-cases/{computeCaseId}',
+            path: {
+                'id': id,
+                'computeCaseId': computeCaseId,
+            },
+            body: requestBody,
+            mediaType: 'application/json-patch+json',
         });
     }
 

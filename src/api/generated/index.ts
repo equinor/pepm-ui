@@ -99,6 +99,8 @@ export type { UpdateAnalogueModelDto } from './models/UpdateAnalogueModelDto';
 export type { UpdateChannelEstimationStatusCommand } from './models/UpdateChannelEstimationStatusCommand';
 export type { UpdateChannelEstimationStatusCommandResponse } from './models/UpdateChannelEstimationStatusCommandResponse';
 export type { UpdateChannelEstimationStatusDto } from './models/UpdateChannelEstimationStatusDto';
+export type { UpdateComputeCaseCommandForm } from './models/UpdateComputeCaseCommandForm';
+export type { UpdateComputeCaseInputSettingsForm } from './models/UpdateComputeCaseInputSettingsForm';
 export type { UpdateJobStatusCommand } from './models/UpdateJobStatusCommand';
 export type { UpdateJobStatusCommandResponse } from './models/UpdateJobStatusCommandResponse';
 export type { UpdateJobStatusDto } from './models/UpdateJobStatusDto';
