@@ -24,6 +24,7 @@ export const CaseButtons = ({
   disableSave,
   saveCase,
   runCase,
+  id,
 }: {
   caseType: string;
   saved: boolean;
@@ -32,6 +33,7 @@ export const CaseButtons = ({
   disableSave: boolean;
   saveCase: () => void;
   runCase?: () => void;
+  id: string;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleConfirmSave = () => {
@@ -54,6 +56,7 @@ export const CaseButtons = ({
       </Tooltip>
       {caseType === 'Variogram' && (
         <Button
+          disabled
           variant="ghost_icon"
           aria-label="duplicate"
           // eslint-disable-next-line no-console
@@ -124,9 +127,10 @@ export const CaseButtons = ({
           >
             <Button
               variant="outlined"
-              onClick={saved ? runCase : saveCase}
+              onClick={runCase}
               disabled={
                 !isProcessed ||
+                id.length < 3 ||
                 caseStatus === 'Created' ||
                 caseStatus === 'Waiting' ||
                 caseStatus === 'Running' ||

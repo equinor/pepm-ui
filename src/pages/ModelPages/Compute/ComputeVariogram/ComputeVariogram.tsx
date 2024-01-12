@@ -124,7 +124,7 @@ export const ComputeVariogram = () => {
           setTriggerAddCase={setTriggerAddCase}
           updateLocalCaseList={updateLocalCaseList}
           // eslint-disable-next-line no-console
-          runCase={(id: string) => console.log(id)}
+          runCase={(id: string) => console.log('Running variogram case .... ')}
         />
         <CaseGroup
           caseList={
