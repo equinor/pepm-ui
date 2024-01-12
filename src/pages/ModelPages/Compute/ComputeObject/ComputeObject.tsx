@@ -33,8 +33,8 @@ export const ComputeObject = () => {
   function clearStatus() {
     setAlert(undefined);
   }
-  const saveCaseAlert = () => {
-    setAlert('New object case saved');
+  const setAlertMessage = (message: string) => {
+    setAlert(message);
   };
 
   const uppdateCaseList = () => {
@@ -65,7 +65,7 @@ export const ComputeObject = () => {
 
     if (res.success) {
       uppdateCaseList();
-      setAlert('Started computing case');
+      setAlertMessage('Started computing case');
     }
   };
 
@@ -81,7 +81,7 @@ export const ComputeObject = () => {
         <CaseGroup
           caseList={channel !== undefined && channel.length > 0 ? channel : []}
           methodName={ObjectCaseInfo.type}
-          saveCaseAlert={saveCaseAlert}
+          setAlertMessage={setAlertMessage}
           runCase={runComputeObject}
         />
       </Styled.Case>

@@ -66,8 +66,8 @@ export const ComputeVariogram = () => {
   const NetToGross = methodFilter('Net-to-Gross');
   const ContiniousParameter = methodFilter('ContiniusParameter');
 
-  const saveCaseAlert = () => {
-    setAlert('New object case saved');
+  const setAlertMessage = (message: string) => {
+    setAlert(message);
   };
 
   const addCase = (type: string) => {
@@ -120,7 +120,7 @@ export const ComputeVariogram = () => {
           }
           methodName="Indicator"
           triggerAddCase={triggerAddCase}
-          saveCaseAlert={saveCaseAlert}
+          setAlertMessage={setAlertMessage}
           setTriggerAddCase={setTriggerAddCase}
           updateLocalCaseList={updateLocalCaseList}
           // eslint-disable-next-line no-console
@@ -133,7 +133,7 @@ export const ComputeVariogram = () => {
           methodName="Net-to-Gross"
           triggerAddCase={triggerAddCase}
           // localCaseList={localNTGCaseList}
-          saveCaseAlert={saveCaseAlert}
+          setAlertMessage={setAlertMessage}
           // eslint-disable-next-line no-console
           runCase={(id: string) => console.log(id)}
         />
@@ -146,7 +146,7 @@ export const ComputeVariogram = () => {
           }
           methodName="ContiniousParameter"
           triggerAddCase={triggerAddCase}
-          saveCaseAlert={saveCaseAlert}
+          setAlertMessage={setAlertMessage}
           // eslint-disable-next-line no-console
           runCase={(id: string) => console.log(id)}
         />

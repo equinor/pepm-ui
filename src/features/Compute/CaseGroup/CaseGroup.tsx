@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
 import { Button, Icon, Tooltip } from '@equinor/eds-core-react';
 import { add as ADD, play as PLAY } from '@equinor/eds-icons';
@@ -10,6 +11,8 @@ import {
   ComputeJobStatus,
   CreateComputeCaseCommandForm,
   CreateComputeCaseInputSettingsForm,
+  UpdateComputeCaseCommandForm,
+  UpdateComputeCaseInputSettingsForm,
 } from '../../../api/generated';
 import { queryClient } from '../../../auth/queryClient';
 import { CaseCardComponent } from '../../../components/CaseCardComponent/CaseCardComponent';
@@ -20,7 +23,7 @@ export const CaseGroup = ({
   caseList,
   methodName,
   triggerAddCase,
-  saveCaseAlert,
+  setAlertMessage,
   setTriggerAddCase,
   updateLocalCaseList,
   runCase,
@@ -28,7 +31,7 @@ export const CaseGroup = ({
   caseList: ComputeCaseDto[];
   methodName: string;
   triggerAddCase?: string;
-  saveCaseAlert: () => void;
+  setAlertMessage: (message: string) => void;
   setTriggerAddCase?: React.Dispatch<React.SetStateAction<string | undefined>>;
   updateLocalCaseList?: (type: string, add: boolean) => void;
   runCase: (computeCaseId: string) => void;
@@ -46,6 +49,27 @@ export const CaseGroup = ({
     }) => {
       return AnalogueModelComputeCasesService.postApiAnalogueModelsComputeCases(
         id,
+        requestBody,
+      );
+    },
+    onSuccess: () => {
+      queryClient.refetchQueries();
+    },
+  });
+
+  const updateApiCase = useMutation({
+    mutationFn: ({
+      id,
+      computeCaseId,
+      requestBody,
+    }: {
+      id: string;
+      computeCaseId: string;
+      requestBody: UpdateComputeCaseCommandForm;
+    }) => {
+      return AnalogueModelComputeCasesService.putApiAnalogueModelsComputeCases(
+        id,
+        computeCaseId,
         requestBody,
       );
     },
@@ -167,6 +191,25 @@ export const CaseGroup = ({
     }
   };
 
+  const updateCase = async (
+    modelAreaId: string,
+    computeCaseId: string,
+    inputSettings: UpdateComputeCaseInputSettingsForm[],
+  ) => {
+    const caseRequestBody: UpdateComputeCaseCommandForm = {
+      modelAreaId: modelAreaId,
+      inputSettings: inputSettings,
+    };
+    if (modelId) {
+      const res = await updateApiCase.mutateAsync({
+        id: modelId,
+        computeCaseId: computeCaseId,
+        requestBody: caseRequestBody,
+      });
+      return res;
+    }
+  };
+
   useEffect(() => {
     if (
       triggerAddCase !== undefined &&
@@ -241,7 +284,7 @@ export const CaseGroup = ({
                   caseList={caseList}
                   caseType={methodName === 'Channel' ? 'Object' : 'Variogram'}
                   saveCase={saveCase}
-                  saveCaseAlert={saveCaseAlert}
+                  setAlertMessage={setAlertMessage}
                   runCase={runCase}
                   removeLocalCase={removeLocalCase}
                 />
@@ -258,10 +301,10 @@ export const CaseGroup = ({
                   caseList={caseList}
                   caseType={methodName === 'Channel' ? 'Object' : 'Variogram'}
                   saveCase={saveCase}
-                  saveCaseAlert={saveCaseAlert}
+                  updateCase={updateCase}
+                  setAlertMessage={setAlertMessage}
                   runCase={runCase}
                   removeLocalCase={removeLocalCase}
-                  updateLocalCaseList={updateLocalCaseList}
                 />
               ))}
             </>
