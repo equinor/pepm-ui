@@ -127,7 +127,7 @@ export const CaseRow = ({
       ? data.data.modelAreas.concat(wholeModelObject)
       : wholeModelObject;
 
-  // TODO: Make into reusable function
+  // TODO: Refactor, make into reusable function
   const getParameterList = () => {
     let inputSettingsList: CreateComputeCaseInputSettingsForm[] = [];
 
@@ -145,6 +145,39 @@ export const CaseRow = ({
     if (selectedIndicatorParameters) {
       const variogramModelTypeId = '4d07719a-3f1c-4a0e-9147-23a51adb876c';
       selectedIndicatorParameters.forEach((s) => {
+        const temp = {
+          inputSettingValueId: s.inputSettingValueId,
+          inputSettingTypeId: variogramModelTypeId,
+        };
+        inputSettingsList = [...inputSettingsList, temp];
+      });
+    }
+
+    if (selectedGrainSize) {
+      const variogramModelTypeId = '397fe0eb-652a-4ed3-85f3-adef9d91e733';
+      selectedGrainSize.forEach((s) => {
+        const temp = {
+          inputSettingValueId: s.inputSettingValueId,
+          inputSettingTypeId: variogramModelTypeId,
+        };
+        inputSettingsList = [...inputSettingsList, temp];
+      });
+    }
+
+    if (selectedParameters) {
+      const variogramModelTypeId = 'f9e54531-5858-4ad8-9cf1-9c19a2219214';
+      selectedParameters.forEach((s) => {
+        const temp = {
+          inputSettingValueId: s.inputSettingValueId,
+          inputSettingTypeId: variogramModelTypeId,
+        };
+        inputSettingsList = [...inputSettingsList, temp];
+      });
+    }
+
+    if (selectedArchelFilter) {
+      const variogramModelTypeId = 'bf0fd3bd-f757-482d-a2dc-8f85814271cf';
+      selectedArchelFilter.forEach((s) => {
         const temp = {
           inputSettingValueId: s.inputSettingValueId,
           inputSettingTypeId: variogramModelTypeId,
@@ -295,81 +328,6 @@ export const CaseRow = ({
     [areaList, allCasesList, selectedModelArea],
   );
 
-  const modelAreas = data && data.data.modelAreas;
-
-  const selectedParam = useCallback(
-    (rowId: string, type: string) => {
-      const rowCase = allCasesList.filter((c) => c.computeCaseId === rowId);
-      let defaultParameter: ListComputeSettingsInputValueDto[] = [];
-
-      const indicatorIndicatorSettings =
-        indicatorSettings &&
-        indicatorSettings[0].inputSettings?.filter(
-          (value) => value.name === type,
-        );
-
-      const settingsValueList =
-        indicatorIndicatorSettings && indicatorIndicatorSettings[0].values;
-
-      const loadedParameters =
-        settingsValueList &&
-        settingsValueList.filter((i) =>
-          rowCase[0].inputSettings?.find(
-            (s) => s.inputSettingValueId === i.inputSettingValueId,
-          ),
-        );
-
-      // If loaded parameter is undefined and selected parameters are present, set data to selected parameters.
-      // If loaded parameter is not undefined and no selected parameters, set data to loaded parameters.
-      // If loaded parameters and selected parameters, set data to selected parameters.
-      if (type === 'Indicator') {
-        if (
-          loadedParameters !== undefined &&
-          selectedIndicatorParameters === undefined
-        ) {
-          defaultParameter = loadedParameters;
-          setIndicatorParameters(loadedParameters);
-        } else if (
-          selectedIndicatorParameters !== undefined &&
-          loadedParameters === undefined
-        ) {
-          defaultParameter = selectedIndicatorParameters;
-        } else if (
-          selectedIndicatorParameters !== undefined &&
-          loadedParameters !== undefined
-        ) {
-          defaultParameter = selectedIndicatorParameters;
-        }
-        return defaultParameter;
-      } else if (type === 'Variogram Family Filter') {
-        if (
-          loadedParameters !== undefined &&
-          selectedVariogramModels === undefined
-        ) {
-          defaultParameter = loadedParameters;
-          setVariogramModels(loadedParameters);
-        } else if (
-          selectedVariogramModels !== undefined &&
-          loadedParameters === undefined
-        ) {
-          defaultParameter = selectedVariogramModels;
-        } else if (
-          selectedVariogramModels !== undefined &&
-          loadedParameters !== undefined
-        ) {
-          defaultParameter = selectedVariogramModels;
-        }
-        return defaultParameter;
-      }
-    },
-    [
-      allCasesList,
-      indicatorSettings,
-      selectedIndicatorParameters,
-      selectedVariogramModels,
-    ],
-  );
-
   useEffect(() => {
     function setNotSaved(r: ComputeCaseDto) {
       if (r.computeCaseId === id && r.computeMethod.name === 'Channel') {
@@ -392,31 +350,42 @@ export const CaseRow = ({
     allCasesList.forEach((r) => setNotSavedVariogram(r));
   }, [caseList, allCasesList, id, saved]);
 
+  useEffect(() => {
+    function setNotSavedVariogram(r: ComputeCaseDto) {
+      if (r.computeMethod.name === 'Net-To-Gross') {
+        setSaved(false);
+      }
+    }
+
+    allCasesList.forEach((r) => setNotSavedVariogram(r));
+  }, [caseList, allCasesList, id, saved]);
+
+  useEffect(() => {
+    function setNotSavedVariogram(r: ComputeCaseDto) {
+      if (r.computeMethod.name === 'ContiniousParameter') {
+        setSaved(false);
+      }
+    }
+
+    allCasesList.forEach((r) => setNotSavedVariogram(r));
+  }, [caseList, allCasesList, id, saved]);
+
   return (
     <Styled.Case>
       <Styled.CaseRow>
         {rowCase.computeMethod.name === 'Indicator' && (
           <VariogramOptionSelect
+            rowCase={rowCase}
             modelAreas={areaList ? areaList : []}
             caseType={'Indicator'}
             IndicatorSettings={
               indicatorSettings && indicatorSettings[0].inputSettings
             }
             selectedModelArea={selectedRowArea(rowCase.computeCaseId)}
-            selectedIndicatorParameters={selectedParam(
-              rowCase.computeCaseId,
-              'Indicator',
-            )}
-            selectedParameters={selectedParameters}
-            selectedArchelFilter={selectedArchelFilter}
-            selectedVariogramModels={selectedParam(
-              rowCase.computeCaseId,
-              'Variogram Family Filter',
-            )}
+            selectedIndicatorParameters={selectedIndicatorParameters}
+            selectedVariogramModels={selectedVariogramModels}
             setModelArea={setModelArea}
             setIndicatorParameters={setIndicatorParameters}
-            setParameters={setParameters}
-            setArchelFilter={setArchelFilter}
             setVariogramModels={setVariogramModels}
             existingCases={caseList}
             saved={saved}
@@ -424,20 +393,19 @@ export const CaseRow = ({
           />
         )}
 
-        {rowCase.computeMethod.name === 'Net-to-Gross' && (
+        {rowCase.computeMethod.name === 'Net-To-Gross' && (
           <VariogramOptionSelect
-            modelAreas={modelAreas ? modelAreas : []}
-            caseType={'Net-to-Gross'}
+            rowCase={rowCase}
+            modelAreas={areaList ? areaList : []}
+            caseType={'Net-To-Gross'}
             NetToGrossSettings={
               NetToGrossSettings && NetToGrossSettings[0].inputSettings
             }
-            selectedModelArea={selectedModelArea}
+            selectedModelArea={selectedRowArea(rowCase.computeCaseId)}
             selectedGrainSize={selectedGrainSize}
-            selectedParameters={selectedParameters}
             selectedVariogramModels={selectedVariogramModels}
             setModelArea={setModelArea}
             setGrainSize={setGrainSize}
-            setParameters={setParameters}
             setVariogramModels={setVariogramModels}
             existingCases={caseList}
             saved={saved}
@@ -447,13 +415,14 @@ export const CaseRow = ({
 
         {rowCase.computeMethod.name === 'ContiniousParameter' && (
           <VariogramOptionSelect
-            modelAreas={modelAreas ? modelAreas : []}
-            caseType={'Continuous parameter'}
+            rowCase={rowCase}
+            modelAreas={areaList ? areaList : []}
+            caseType={'ContiniousParameter'}
             ContiniusParameterSettings={
               ContiniousParameterSettings &&
               ContiniousParameterSettings[0].inputSettings
             }
-            selectedModelArea={selectedModelArea}
+            selectedModelArea={selectedRowArea(rowCase.computeCaseId)}
             selectedParameters={selectedParameters}
             selectedArchelFilter={selectedArchelFilter}
             selectedVariogramModels={selectedVariogramModels}

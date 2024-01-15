@@ -63,8 +63,8 @@ export const ComputeVariogram = () => {
     return data?.data.filter((method) => method.computeMethod.name === name);
   };
   const Indicator = methodFilter('Indicator');
-  const NetToGross = methodFilter('Net-to-Gross');
-  const ContiniousParameter = methodFilter('ContiniusParameter');
+  const NetToGross = methodFilter('Net-To-Gross');
+  const ContiniousParameter = methodFilter('ContiniousParameter');
 
   const setAlertMessage = (message: string) => {
     setAlert(message);
@@ -89,9 +89,9 @@ export const ComputeVariogram = () => {
               <Icon data={ADD} size={18}></Icon>
               Indicator
             </Button>
-            <Button variant="outlined" onClick={() => addCase('Net-to-Gross')}>
+            <Button variant="outlined" onClick={() => addCase('Net-To-Gross')}>
               <Icon data={ADD} size={18}></Icon>
-              Net-to-Gross
+              Net-To-Gross
             </Button>
             <Button
               variant="outlined"
@@ -132,9 +132,8 @@ export const ComputeVariogram = () => {
           caseList={
             NetToGross !== undefined && NetToGross.length > 0 ? NetToGross : []
           }
-          methodName="Net-to-Gross"
+          methodName="Net-To-Gross"
           triggerAddCase={triggerAddCase}
-          // localCaseList={localNTGCaseList}
           setAlertMessage={setAlertMessage}
           // eslint-disable-next-line no-console
           runCase={(id: string) => console.log(id)}
