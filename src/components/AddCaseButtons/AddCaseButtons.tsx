@@ -30,8 +30,8 @@ export const AddCaseButtons = ({
           Add case
         </Button>
       )}
-      {title === 'Net-to-Gross' && addCase && (
-        <Button variant="ghost" onClick={() => addCase('Net-to-Gross')}>
+      {title === 'Net-To-Gross' && addCase && (
+        <Button variant="ghost" onClick={() => addCase('Net-To-Gross')}>
           <Icon data={ADD} size={18}></Icon>
           Add case
         </Button>

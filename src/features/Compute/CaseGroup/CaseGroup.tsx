@@ -100,7 +100,7 @@ export const CaseGroup = ({
   const getMethodId = (method: string) => {
     if (method === 'Indicator') {
       return 'c96fd047-19cc-4e10-9c1e-626a62c22539';
-    } else if (method === 'Net-to-Gross') {
+    } else if (method === 'Net-To-Gross') {
       return '2abfea7a-7160-4b0a-85a9-674be70b5f17';
     } else if (method === 'ContiniousParameter') {
       return '88663a7e-0a45-46ce-8ba3-ef4a314e1878';
@@ -171,8 +171,8 @@ export const CaseGroup = ({
         case 'Indicator':
           setListItem('Indicator', newCase);
           break;
-        case 'Net-to-Gross':
-          setListItem('Net-to-Gross', newCase);
+        case 'Net-To-Gross':
+          setListItem('Net-To-Gross', newCase);
           break;
         case 'ContiniousParameter':
           setListItem('ContiniousParameter', newCase);
@@ -248,9 +248,9 @@ export const CaseGroup = ({
       addCase('Indicator');
     } else if (
       triggerAddCase !== undefined &&
-      triggerAddCase === 'Net-to-Gross'
+      triggerAddCase === 'Net-To-Gross'
     ) {
-      addCase('Net-to-Gross');
+      addCase('Net-To-Gross');
     } else if (
       triggerAddCase !== undefined &&
       triggerAddCase === 'ContiniousParameter'

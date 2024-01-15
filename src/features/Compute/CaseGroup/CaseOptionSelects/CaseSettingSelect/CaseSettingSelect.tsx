@@ -28,8 +28,8 @@ export const CaseSettingSelect = ({
     <Autocomplete
       label={label}
       disabled={
-        (caseType === 'Net-to-gross' || caseType === 'Indicator') &&
-        settingType !== 'continuousParameter'
+        (caseType === 'Net-To-Gross' || caseType === 'Indicator') &&
+        settingType !== 'ContiniousParameter'
       }
       options={options && options.length > 0 ? options : []}
       optionLabel={(option) => option.name}
