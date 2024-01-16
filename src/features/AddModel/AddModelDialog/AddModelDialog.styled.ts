@@ -4,7 +4,8 @@ import { spacings } from '../../../tokens/spacings';
 
 const StyledDialog = styled(Dialog)`
   min-width: 600px;
-  width: max-content;
+  height: 90vh;
+  overflow-y: scroll;
 `;
 
 const StyledDialogCustomContent = styled(Dialog.CustomContent)`
