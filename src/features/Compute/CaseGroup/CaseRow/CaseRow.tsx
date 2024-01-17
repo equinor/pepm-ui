@@ -8,12 +8,12 @@ import { useParams } from 'react-router-dom';
 import {
   AnalogueModelsService,
   ComputeCaseDto,
-  ComputeSettingsService,
   CreateComputeCaseCommandResponse,
   CreateComputeCaseInputSettingsForm,
   ListComputeCasesByAnalogueModelIdQueryResponse,
   ListComputeSettingsDto,
   ListComputeSettingsInputValueDto,
+  ListComputeSettingsMethodDto,
   ModelAreaDto,
   UpdateComputeCaseInputSettingsForm,
 } from '../../../../api/generated';
@@ -35,6 +35,8 @@ export const CaseRow = ({
   updateCase,
   deleteCase,
   removeLocalCase,
+  settingsFilter,
+  variogramFilter,
 }: {
   rowCase: ComputeCaseDto;
   id: string;
@@ -58,6 +60,10 @@ export const CaseRow = ({
   setAlertMessage: (message: string) => void;
   runCase: (id: string) => void;
   removeLocalCase: (id: string) => void;
+  settingsFilter: (name: string) => ListComputeSettingsDto[] | undefined;
+  variogramFilter?: (
+    name: string,
+  ) => ListComputeSettingsMethodDto[] | undefined;
 }) => {
   const { modelId } = useParams<{ modelId: string }>();
   const { instance, accounts } = useMsal();
@@ -83,32 +89,33 @@ export const CaseRow = ({
     enabled: !!token,
   });
 
-  const computeSettingsResponse = useQuery({
-    queryKey: ['compute-settings'],
-    queryFn: () => ComputeSettingsService.getApiComputeSettings(),
-    enabled: !!token,
-  });
+  // const computeSettingsResponse = useQuery({
+  //   queryKey: ['compute-settings'],
+  //   queryFn: () => ComputeSettingsService.getApiComputeSettings(),
+  //   enabled: !!token,
+  // });
 
-  const settingsFilter = (name: string) => {
-    if (computeSettingsResponse) {
-      return computeSettingsResponse.data?.data.filter(
-        (item) => item.name === name,
-      );
-    }
-  };
+  // const settingsFilter = (name: string) => {
+  //   if (computeSettingsResponse) {
+  //     return computeSettingsResponse.data?.data.filter(
+  //       (item) => item.name === name,
+  //     );
+  //   }
+  // };
   const channelSettings = settingsFilter('Object');
   const variogramSettings = settingsFilter('Variogram');
 
-  const variogramFilter = (name: string) => {
-    if (variogramSettings) {
-      return variogramSettings[0].allowedMethods.filter(
-        (item) => item.name === name,
-      );
-    }
-  };
-  const indicatorSettings = variogramFilter('Indicator');
-  const NetToGrossSettings = variogramFilter('Net-To-Gross');
-  const ContiniousParameterSettings = variogramFilter('ContiniousParameter');
+  // const variogramFilter = (name: string) => {
+  //   if (variogramSettings) {
+  //     return variogramSettings[0].allowedMethods.filter(
+  //       (item) => item.name === name,
+  //     );
+  //   }
+  // };
+  const indicatorSettings = variogramFilter && variogramFilter('Indicator');
+  const netToGrossSettings = variogramFilter && variogramFilter('Net-To-Gross');
+  const continiousParameterSettings =
+    variogramFilter && variogramFilter('ContiniousParameter');
 
   const runRowCase = () => {
     if (id) runCase(id);
@@ -127,23 +134,89 @@ export const CaseRow = ({
       ? data.data.modelAreas.concat(wholeModelObject)
       : wholeModelObject;
 
+  const addSelectedSettings = (
+    setting: ListComputeSettingsInputValueDto[] | undefined,
+    settingList: CreateComputeCaseInputSettingsForm[],
+    settingType: string,
+    methodType: string,
+  ) => {
+    if (setting) {
+      let id = undefined;
+      switch (settingType) {
+        case 'Indicator':
+          // id =
+          //   indicatorSettings &&
+          //   indicatorSettings[0].inputSettings.filter(
+          //     (i) => (i.name = methodType),
+          //   );
+
+          console.log(indicatorSettings);
+          console.log(indicatorSettings && indicatorSettings[0].inputSettings);
+
+          // console.log(id);
+
+          break;
+        case 'Net-To-Gross':
+          id =
+            netToGrossSettings &&
+            netToGrossSettings[0].inputSettings.filter(
+              (i) => (i.inputSettingTypeId = setting[0].inputSettingValueId),
+            );
+          console.log(id);
+          break;
+        case 'ContiniousParameter':
+          id =
+            continiousParameterSettings &&
+            continiousParameterSettings[0].inputSettings.filter(
+              (i) => (i.inputSettingTypeId = setting[0].inputSettingValueId),
+            );
+          console.log(id);
+          break;
+      }
+
+      // const variogramModelTypeId = '4d07719a-3f1c-4a0e-9147-23a51adb876c';
+      // setting.forEach((m) => {
+      //   const temp = {
+      //     inputSettingValueId: m.inputSettingValueId,
+      //     inputSettingTypeId: variogramModelTypeId,
+      //   };
+      //   settingList = [...settingList, temp];
+      // });
+    }
+  };
+
   // TODO: Refactor, make into reusable function
   const getParameterList = () => {
     let inputSettingsList: CreateComputeCaseInputSettingsForm[] = [];
 
+    console.log('Kjører parameter list GET');
+
+    addSelectedSettings(
+      selectedIndicatorParameters,
+      inputSettingsList,
+      'Indicator',
+      'Indicator',
+    );
+    addSelectedSettings(
+      selectedVariogramModels,
+      inputSettingsList,
+      'Indicator',
+      'Variogram Family Filter',
+    );
+
     if (selectedVariogramModels) {
-      const variogramModelTypeId = '4d07719a-3f1c-4a0e-9147-23a51adb876c';
+      const inputSettingTypeId = '4d07719a-3f1c-4a0e-9147-23a51adb876c';
       selectedVariogramModels.forEach((m) => {
         const temp = {
           inputSettingValueId: m.inputSettingValueId,
-          inputSettingTypeId: variogramModelTypeId,
+          inputSettingTypeId: inputSettingTypeId,
         };
         inputSettingsList = [...inputSettingsList, temp];
       });
     }
 
     if (selectedIndicatorParameters) {
-      const variogramModelTypeId = '4d07719a-3f1c-4a0e-9147-23a51adb876c';
+      const variogramModelTypeId = '4b0d48c4-563d-4adb-8aa4-fc62bae0af6e';
       selectedIndicatorParameters.forEach((s) => {
         const temp = {
           inputSettingValueId: s.inputSettingValueId,
@@ -399,7 +472,7 @@ export const CaseRow = ({
             modelAreas={areaList ? areaList : []}
             caseType={'Net-To-Gross'}
             NetToGrossSettings={
-              NetToGrossSettings && NetToGrossSettings[0].inputSettings
+              netToGrossSettings && netToGrossSettings[0].inputSettings
             }
             selectedModelArea={selectedRowArea(rowCase.computeCaseId)}
             selectedGrainSize={selectedGrainSize}
@@ -419,8 +492,8 @@ export const CaseRow = ({
             modelAreas={areaList ? areaList : []}
             caseType={'ContiniousParameter'}
             ContiniusParameterSettings={
-              ContiniousParameterSettings &&
-              ContiniousParameterSettings[0].inputSettings
+              continiousParameterSettings &&
+              continiousParameterSettings[0].inputSettings
             }
             selectedModelArea={selectedRowArea(rowCase.computeCaseId)}
             selectedParameters={selectedParameters}

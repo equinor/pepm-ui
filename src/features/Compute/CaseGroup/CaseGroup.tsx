@@ -104,6 +104,8 @@ export const CaseGroup = ({
     queryFn: () => ComputeSettingsService.getApiComputeSettings(),
     enabled: !!token,
   });
+  // eslint-disable-next-line no-console
+  console.log(computeSettingsResponse && computeSettingsResponse.data?.data);
 
   const settingsFilter = (name: string) => {
     if (computeSettingsResponse) {
@@ -114,6 +116,9 @@ export const CaseGroup = ({
   };
   const channelSettings = settingsFilter('Object');
   const variogramSettings = settingsFilter('Variogram');
+
+  // eslint-disable-next-line no-console
+  console.log(variogramSettings);
 
   const variogramFilter = (name: string) => {
     if (variogramSettings) {
@@ -355,6 +360,7 @@ export const CaseGroup = ({
                   setAlertMessage={setAlertMessage}
                   runCase={runCase}
                   removeLocalCase={removeLocalCase}
+                  settingsFilter={settingsFilter}
                 />
               ))}
             </>
@@ -374,6 +380,8 @@ export const CaseGroup = ({
                   setAlertMessage={setAlertMessage}
                   runCase={runCase}
                   removeLocalCase={removeLocalCase}
+                  settingsFilter={settingsFilter}
+                  variogramFilter={variogramFilter}
                 />
               ))}
             </>
