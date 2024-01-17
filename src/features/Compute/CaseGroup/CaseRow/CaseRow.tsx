@@ -89,10 +89,6 @@ export const CaseRow = ({
     enabled: !!token,
   });
 
-  const runRowCase = () => {
-    if (id) runCase(id);
-  };
-
   const settingsFilter = (name: string) => {
     if (computeSettingsResponse) {
       return computeSettingsResponse.data?.data.filter(
@@ -113,6 +109,10 @@ export const CaseRow = ({
   const indicatorSettings = variogramFilter('Indicator');
   const NetToGrossSettings = variogramFilter('Net-To-Gross');
   const ContiniousParameterSettings = variogramFilter('ContiniousParameter');
+
+  const runRowCase = () => {
+    if (id) runCase(id);
+  };
 
   const wholeModelObject: ModelAreaDto[] = [
     {

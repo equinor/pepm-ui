@@ -31,13 +31,21 @@ export const AddCaseButtons = ({
         </Button>
       )}
       {title === 'Net-To-Gross' && addCase && (
-        <Button variant="ghost" onClick={() => addCase('Net-To-Gross')}>
+        <Button
+          variant="ghost"
+          onClick={() => addCase('Net-To-Gross')}
+          disabled={filerLocalList('Net-To-Gross').length > 0}
+        >
           <Icon data={ADD} size={18}></Icon>
           Add case
         </Button>
       )}
       {title === 'ContiniousParameter' && addCase && (
-        <Button variant="ghost" onClick={() => addCase('ContiniousParameter')}>
+        <Button
+          variant="ghost"
+          onClick={() => addCase('ContiniousParameter')}
+          disabled={filerLocalList('ContiniousParameter').length > 0}
+        >
           <Icon data={ADD} size={18}></Icon>
           Add case
         </Button>

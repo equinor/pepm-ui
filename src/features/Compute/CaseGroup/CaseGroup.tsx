@@ -1,14 +1,16 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
+import { useMsal } from '@azure/msal-react';
 import { Button, Icon, Tooltip } from '@equinor/eds-core-react';
 import { add as ADD, play as PLAY } from '@equinor/eds-icons';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   AnalogueModelComputeCasesService,
   ComputeCaseDto,
   ComputeJobStatus,
+  ComputeSettingsService,
   CreateComputeCaseCommandForm,
   CreateComputeCaseInputSettingsForm,
   UpdateComputeCaseCommandForm,
@@ -16,6 +18,7 @@ import {
 } from '../../../api/generated';
 import { queryClient } from '../../../auth/queryClient';
 import { CaseCardComponent } from '../../../components/CaseCardComponent/CaseCardComponent';
+import { useAccessToken } from '../../../hooks/useAccessToken';
 import * as Styled from './CaseGroup.styled';
 import { CaseRow } from './CaseRow/CaseRow';
 
@@ -24,7 +27,6 @@ export const CaseGroup = ({
   methodName,
   triggerAddCase,
   setAlertMessage,
-  setTriggerAddCase,
   updateLocalCaseList,
   runCase,
 }: {
@@ -32,12 +34,13 @@ export const CaseGroup = ({
   methodName: string;
   triggerAddCase?: string;
   setAlertMessage: (message: string) => void;
-  setTriggerAddCase?: React.Dispatch<React.SetStateAction<string | undefined>>;
   updateLocalCaseList?: (type: string, add: boolean) => void;
   runCase: (computeCaseId: string) => void;
 }) => {
-  const { modelId } = useParams<{ modelId: string }>();
   const [localList, setLocalList] = useState<ComputeCaseDto[]>([]);
+  const { modelId } = useParams<{ modelId: string }>();
+  const { instance, accounts } = useMsal();
+  const token = useAccessToken(instance, accounts[0]);
 
   const saveApiCase = useMutation({
     mutationFn: ({
@@ -96,23 +99,32 @@ export const CaseGroup = ({
     },
   });
 
-  // TODO: Get the id in a propper way, not hard coded.
-  const getMethodId = (method: string) => {
-    if (method === 'Indicator') {
-      return 'c96fd047-19cc-4e10-9c1e-626a62c22539';
-    } else if (method === 'Net-To-Gross') {
-      return '2abfea7a-7160-4b0a-85a9-674be70b5f17';
-    } else if (method === 'ContiniousParameter') {
-      return '88663a7e-0a45-46ce-8ba3-ef4a314e1878';
-    } else if (method === 'Channel') {
-      return '7b298b84-de00-4134-a07e-ee01119c9949';
-    } else {
-      // TODO: Handle error, inform user
-      // eslint-disable-next-line no-console
-      console.log('Unvalid metod');
-      return '';
+  const computeSettingsResponse = useQuery({
+    queryKey: ['compute-settings'],
+    queryFn: () => ComputeSettingsService.getApiComputeSettings(),
+    enabled: !!token,
+  });
+
+  const settingsFilter = (name: string) => {
+    if (computeSettingsResponse) {
+      return computeSettingsResponse.data?.data.filter(
+        (item) => item.name === name,
+      );
     }
   };
+  const channelSettings = settingsFilter('Object');
+  const variogramSettings = settingsFilter('Variogram');
+
+  const variogramFilter = (name: string) => {
+    if (variogramSettings) {
+      return variogramSettings[0].allowedMethods.filter(
+        (item) => item.name === name,
+      );
+    }
+  };
+  const indicatorSettings = variogramFilter('Indicator');
+  const NetToGrossSettings = variogramFilter('Net-To-Gross');
+  const ContiniousParameterSettings = variogramFilter('ContiniousParameter');
 
   const filerLocalList = useCallback(
     (methodType: string) => {
@@ -139,53 +151,83 @@ export const CaseGroup = ({
         ) {
           setLocalList([...localList, newCase]);
           updateLocalCaseList && updateLocalCaseList(methodType, true);
-        } else {
-          // TODO: Error handeling, inform user
-          // eslint-disable-next-line no-console
-          console.log('Just one unsaved case at time');
         }
       };
 
-      const methodId = getMethodId(methodType);
-      const method = {
-        computeMethodId: methodId,
-        name: methodType,
-      };
-
-      const randomId = Math.floor(Math.random() * 100).toString();
-      const newCase: ComputeCaseDto = {
-        computeCaseId: randomId,
-        computeMethod: method,
-        modelArea: {
-          modelAreaId: '',
-          name: '',
-        },
-        inputSettings: [],
-        jobStatus: ComputeJobStatus.NOT_STARTED,
-      };
+      let methodId = undefined;
 
       switch (methodType) {
         case 'Channel':
-          setListItem('Channel', newCase);
+          methodId =
+            channelSettings &&
+            channelSettings[0].allowedMethods[0].computeMethodId;
           break;
         case 'Indicator':
-          setListItem('Indicator', newCase);
+          methodId = indicatorSettings && indicatorSettings[0].computeMethodId;
           break;
         case 'Net-To-Gross':
-          setListItem('Net-To-Gross', newCase);
+          methodId =
+            NetToGrossSettings && NetToGrossSettings[0].computeMethodId;
           break;
         case 'ContiniousParameter':
-          setListItem('ContiniousParameter', newCase);
+          methodId =
+            ContiniousParameterSettings &&
+            ContiniousParameterSettings[0].computeMethodId;
           break;
       }
+
+      if (methodId === undefined) {
+        // TODO: handle ID not found
+        setAlertMessage('A problem occured, could not find method type.');
+      } else {
+        const method = {
+          computeMethodId: methodId,
+          name: methodType,
+        };
+
+        const randomId = Math.floor(Math.random() * 100).toString();
+        const newCase: ComputeCaseDto = {
+          computeCaseId: randomId,
+          computeMethod: method,
+          modelArea: {
+            modelAreaId: '',
+            name: '',
+          },
+          inputSettings: [],
+          jobStatus: ComputeJobStatus.NOT_STARTED,
+        };
+
+        switch (methodType) {
+          case 'Channel':
+            setListItem('Channel', newCase);
+            break;
+          case 'Indicator':
+            setListItem('Indicator', newCase);
+            break;
+          case 'Net-To-Gross':
+            setListItem('Net-To-Gross', newCase);
+            break;
+          case 'ContiniousParameter':
+            setListItem('ContiniousParameter', newCase);
+            break;
+        }
+      }
     },
-    [filerLocalList, localList, updateLocalCaseList],
+    [
+      ContiniousParameterSettings,
+      NetToGrossSettings,
+      channelSettings,
+      filerLocalList,
+      indicatorSettings,
+      localList,
+      setAlertMessage,
+      updateLocalCaseList,
+    ],
   );
 
   const removeLocalCase = (id: string) => {
     const newList = localList.filter((c) => c.computeCaseId !== id);
     setLocalList(newList);
-    updateLocalCaseList && updateLocalCaseList(methodName, false);
   };
 
   const saveCase = async (
@@ -205,6 +247,8 @@ export const CaseGroup = ({
         id: modelId,
         requestBody: caseRequestBody,
       });
+      if (res.success)
+        updateLocalCaseList && updateLocalCaseList(methodName, false);
       return res;
     }
   };
@@ -239,25 +283,20 @@ export const CaseGroup = ({
   };
 
   useEffect(() => {
-    if (
-      triggerAddCase !== undefined &&
-      triggerAddCase === 'Indicator' &&
-      setTriggerAddCase
-    ) {
-      setTriggerAddCase('');
-      addCase('Indicator');
-    } else if (
-      triggerAddCase !== undefined &&
-      triggerAddCase === 'Net-To-Gross'
-    ) {
-      addCase('Net-To-Gross');
-    } else if (
-      triggerAddCase !== undefined &&
-      triggerAddCase === 'ContiniousParameter'
-    ) {
-      addCase('ContiniousParameter');
+    if (triggerAddCase !== undefined) {
+      switch (triggerAddCase) {
+        case 'Indicator':
+          addCase('Indicator');
+          break;
+        case 'Net-To-Gross':
+          addCase('Net-To-Gross');
+          break;
+        case 'ContiniousParameter':
+          addCase('ContiniousParameter');
+          break;
+      }
     }
-  }, [addCase, setTriggerAddCase, triggerAddCase]);
+  }, [addCase, triggerAddCase]);
 
   return (
     <>
