@@ -36,14 +36,15 @@ export const ComputeVariogram = () => {
   const [localCaseList, setLocalCaseList] = useState<Array<string>>([]);
 
   const updateLocalCaseList = (type: string, add: boolean) => {
-    const temp = localCaseList;
     if (add) {
+      const temp = localCaseList;
       temp.push(type);
+      setLocalCaseList(temp);
     } else {
-      const filtered = temp.findIndex((e) => e.includes(type));
-      temp.splice(filtered, 1);
+      const filteredAddCases = localCaseList.filter((i) => i !== type);
+      setLocalCaseList(filteredAddCases);
+      setTriggerAddCase(undefined);
     }
-    setLocalCaseList(temp);
   };
 
   function clearStatus() {
@@ -84,18 +85,32 @@ export const ComputeVariogram = () => {
             <Button
               variant="outlined"
               onClick={() => addCase('Indicator')}
-              disabled={localCaseList.includes('Indicator')}
+              disabled={
+                triggerAddCase?.includes('Indicator') ||
+                localCaseList?.includes('Indicator')
+              }
             >
               <Icon data={ADD} size={18}></Icon>
               Indicator
             </Button>
-            <Button variant="outlined" onClick={() => addCase('Net-To-Gross')}>
+            <Button
+              variant="outlined"
+              onClick={() => addCase('Net-To-Gross')}
+              disabled={
+                triggerAddCase?.includes('Net-To-Gross') ||
+                localCaseList?.includes('Net-To-Gross')
+              }
+            >
               <Icon data={ADD} size={18}></Icon>
               Net-To-Gross
             </Button>
             <Button
               variant="outlined"
               onClick={() => addCase('ContiniousParameter')}
+              disabled={
+                triggerAddCase?.includes('ContiniousParameter') ||
+                localCaseList?.includes('ContiniousParameter')
+              }
             >
               <Icon data={ADD} size={18}></Icon>
               ContiniousParameter
@@ -123,7 +138,6 @@ export const ComputeVariogram = () => {
           methodName="Indicator"
           triggerAddCase={triggerAddCase}
           setAlertMessage={setAlertMessage}
-          setTriggerAddCase={setTriggerAddCase}
           updateLocalCaseList={updateLocalCaseList}
           // eslint-disable-next-line no-console
           runCase={(id: string) => console.log('Running variogram case .... ')}
@@ -135,6 +149,7 @@ export const ComputeVariogram = () => {
           methodName="Net-To-Gross"
           triggerAddCase={triggerAddCase}
           setAlertMessage={setAlertMessage}
+          updateLocalCaseList={updateLocalCaseList}
           // eslint-disable-next-line no-console
           runCase={(id: string) => console.log(id)}
         />
@@ -148,6 +163,7 @@ export const ComputeVariogram = () => {
           methodName="ContiniousParameter"
           triggerAddCase={triggerAddCase}
           setAlertMessage={setAlertMessage}
+          updateLocalCaseList={updateLocalCaseList}
           // eslint-disable-next-line no-console
           runCase={(id: string) => console.log(id)}
         />
