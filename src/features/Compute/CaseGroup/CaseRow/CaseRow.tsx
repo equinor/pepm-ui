@@ -89,29 +89,9 @@ export const CaseRow = ({
     enabled: !!token,
   });
 
-  // const computeSettingsResponse = useQuery({
-  //   queryKey: ['compute-settings'],
-  //   queryFn: () => ComputeSettingsService.getApiComputeSettings(),
-  //   enabled: !!token,
-  // });
-
-  // const settingsFilter = (name: string) => {
-  //   if (computeSettingsResponse) {
-  //     return computeSettingsResponse.data?.data.filter(
-  //       (item) => item.name === name,
-  //     );
-  //   }
-  // };
   const channelSettings = settingsFilter('Object');
   const variogramSettings = settingsFilter('Variogram');
 
-  // const variogramFilter = (name: string) => {
-  //   if (variogramSettings) {
-  //     return variogramSettings[0].allowedMethods.filter(
-  //       (item) => item.name === name,
-  //     );
-  //   }
-  // };
   const indicatorSettings = variogramFilter && variogramFilter('Indicator');
   const netToGrossSettings = variogramFilter && variogramFilter('Net-To-Gross');
   const continiousParameterSettings =
@@ -136,7 +116,6 @@ export const CaseRow = ({
 
   const addSelectedSettings = (
     setting: ListComputeSettingsInputValueDto[] | undefined,
-    settingList: CreateComputeCaseInputSettingsForm[],
     settingType: string,
     methodType: string,
   ) => {
@@ -144,124 +123,128 @@ export const CaseRow = ({
       let selectedId = undefined;
       switch (settingType) {
         case 'Indicator':
-          if (indicatorSettings) {
-            // eslint-disable-next-line no-console
-            console.log(methodType);
-            // eslint-disable-next-line no-console
-            console.log(indicatorSettings[0].inputSettings);
-
-            const res = indicatorSettings[0].inputSettings.filter(
-              (i) => (i.name = methodType),
-            );
-            // eslint-disable-next-line no-console
-            console.log(res);
-          }
+          if (indicatorSettings)
+            selectedId = indicatorSettings[0].inputSettings.filter(
+              (i) => i.name === methodType,
+            )[0].inputSettingTypeId;
           return selectedId;
+
         case 'Net-To-Gross':
           if (netToGrossSettings)
             selectedId = netToGrossSettings[0].inputSettings.filter(
-              (i) => (i.inputSettingTypeId = setting[0].inputSettingValueId),
-            );
-          // eslint-disable-next-line no-console
-          console.log(selectedId);
+              (i) => i.name === methodType,
+            )[0].inputSettingTypeId;
           return selectedId;
+
         case 'ContiniousParameter':
-          selectedId =
-            continiousParameterSettings &&
-            continiousParameterSettings[0].inputSettings.filter(
-              (i) => (i.inputSettingTypeId = setting[0].inputSettingValueId),
-            );
-          // eslint-disable-next-line no-console
-          console.log(selectedId);
+          if (continiousParameterSettings)
+            selectedId =
+              continiousParameterSettings &&
+              continiousParameterSettings[0].inputSettings.filter(
+                (i) => (i.inputSettingTypeId = setting[0].inputSettingValueId),
+              )[0].inputSettingTypeId;
           return selectedId;
       }
-
-      // const variogramModelTypeId = '4d07719a-3f1c-4a0e-9147-23a51adb876c';
-      // setting.forEach((m) => {
-      //   const temp = {
-      //     inputSettingValueId: m.inputSettingValueId,
-      //     inputSettingTypeId: variogramModelTypeId,
-      //   };
-      //   settingList = [...settingList, temp];
-      // });
     }
   };
 
-  // TODO: Refactor, make into reusable function
-  const getParameterList = () => {
+  const updateList = async (
+    setting: ListComputeSettingsInputValueDto[] | undefined,
+    settingList: CreateComputeCaseInputSettingsForm[],
+    settingType: string,
+    methodType: string,
+  ) => {
+    let newList = [...settingList];
+    if (setting) {
+      const inputSettingTypeId = addSelectedSettings(
+        setting,
+        settingType,
+        methodType,
+      );
+
+      if (inputSettingTypeId)
+        setting.forEach((m) => {
+          const temp = {
+            inputSettingValueId: m.inputSettingValueId,
+            inputSettingTypeId: inputSettingTypeId,
+          };
+          newList = [...newList, temp];
+        });
+    }
+    return newList;
+  };
+
+  const getParameterList = async (settingType: string) => {
     let inputSettingsList: CreateComputeCaseInputSettingsForm[] = [];
 
-    const resIndicator = addSelectedSettings(
-      selectedIndicatorParameters,
-      inputSettingsList,
-      'Indicator',
-      'Indicator',
-    );
-    // eslint-disable-next-line no-console
-    console.log(resIndicator);
+    switch (settingType) {
+      case 'Indicator': {
+        const firstUpdate = await updateList(
+          selectedIndicatorParameters,
+          inputSettingsList,
+          'Indicator',
+          'Indicator',
+        );
 
-    const resFamily = addSelectedSettings(
-      selectedVariogramModels,
-      inputSettingsList,
-      'Indicator',
-      'Variogram Family Filter',
-    );
-    // eslint-disable-next-line no-console
-    console.log(resFamily);
+        inputSettingsList = firstUpdate;
 
-    if (selectedVariogramModels) {
-      const inputSettingTypeId = '4d07719a-3f1c-4a0e-9147-23a51adb876c';
-      selectedVariogramModels.forEach((m) => {
-        const temp = {
-          inputSettingValueId: m.inputSettingValueId,
-          inputSettingTypeId: inputSettingTypeId,
-        };
-        inputSettingsList = [...inputSettingsList, temp];
-      });
-    }
+        const secondUpdate = await updateList(
+          selectedVariogramModels,
+          inputSettingsList,
+          'Indicator',
+          'Variogram Family Filter',
+        );
+        inputSettingsList = secondUpdate;
 
-    if (selectedIndicatorParameters) {
-      const variogramModelTypeId = '4b0d48c4-563d-4adb-8aa4-fc62bae0af6e';
-      selectedIndicatorParameters.forEach((s) => {
-        const temp = {
-          inputSettingValueId: s.inputSettingValueId,
-          inputSettingTypeId: variogramModelTypeId,
-        };
-        inputSettingsList = [...inputSettingsList, temp];
-      });
-    }
+        break;
+      }
+      case 'Net-To-Gross': {
+        const firstUpdate = await updateList(
+          selectedGrainSize,
+          inputSettingsList,
+          'Net-To-Gross',
+          'Net-To-Gross',
+        );
+        inputSettingsList = firstUpdate;
 
-    if (selectedGrainSize) {
-      const variogramModelTypeId = '397fe0eb-652a-4ed3-85f3-adef9d91e733';
-      selectedGrainSize.forEach((s) => {
-        const temp = {
-          inputSettingValueId: s.inputSettingValueId,
-          inputSettingTypeId: variogramModelTypeId,
-        };
-        inputSettingsList = [...inputSettingsList, temp];
-      });
-    }
+        const secondUpdate = await updateList(
+          selectedVariogramModels,
+          inputSettingsList,
+          'Net-To-Gross',
+          'Variogram Family Filter',
+        );
+        inputSettingsList = secondUpdate;
 
-    if (selectedParameters) {
-      const variogramModelTypeId = 'f9e54531-5858-4ad8-9cf1-9c19a2219214';
-      selectedParameters.forEach((s) => {
-        const temp = {
-          inputSettingValueId: s.inputSettingValueId,
-          inputSettingTypeId: variogramModelTypeId,
-        };
-        inputSettingsList = [...inputSettingsList, temp];
-      });
-    }
+        break;
+      }
 
-    if (selectedArchelFilter) {
-      const variogramModelTypeId = 'bf0fd3bd-f757-482d-a2dc-8f85814271cf';
-      selectedArchelFilter.forEach((s) => {
-        const temp = {
-          inputSettingValueId: s.inputSettingValueId,
-          inputSettingTypeId: variogramModelTypeId,
-        };
-        inputSettingsList = [...inputSettingsList, temp];
-      });
+      case 'ContiniousParameter': {
+        const firstUpdate = await updateList(
+          selectedParameters,
+          inputSettingsList,
+          'ContiniousParameter',
+          'ContiniousParameter',
+        );
+        inputSettingsList = firstUpdate;
+
+        const secondUpdate = await updateList(
+          selectedArchelFilter,
+          inputSettingsList,
+          'ContiniousParameter',
+          'Archel',
+        );
+        inputSettingsList = secondUpdate;
+
+        const thirdUpdate = await updateList(
+          selectedVariogramModels,
+          inputSettingsList,
+          'ContiniousParameter',
+          'Variogram Family Filter',
+        );
+        inputSettingsList = thirdUpdate;
+
+        break;
+      }
     }
 
     return inputSettingsList;
@@ -279,7 +262,10 @@ export const CaseRow = ({
         : row[0].modelArea
         ? row[0].modelArea.modelAreaId
         : '';
-      const inputSettingsList = getParameterList();
+
+      const settingType = row[0].computeMethod.name;
+      const list = await getParameterList(settingType);
+      const inputSettingsList = list;
 
       const res = await updateCase(
         modelArea,
@@ -314,7 +300,9 @@ export const CaseRow = ({
               (cl) => cl.modelArea.name === selectedModelArea[0].modelAreaType,
             );
 
-          const inputSettingsList = getParameterList();
+          const settingType = row[0].computeMethod.name;
+          const list = await getParameterList(settingType);
+          const inputSettingsList = list;
 
           if (caseType === 'Object' && checkDuplicateType.length > 0) {
             // TODO: Error handeling, inform user
@@ -342,7 +330,9 @@ export const CaseRow = ({
             // Handle Object duplicate Error
             setCaseError('Duplicate Object case, model area');
           } else if (selectedModelArea !== undefined) {
-            const inputSettingsList = getParameterList();
+            const settingType = row[0].computeMethod.name;
+            const list = await getParameterList(settingType);
+            const inputSettingsList = list;
 
             const res = await saveCase(
               '',
