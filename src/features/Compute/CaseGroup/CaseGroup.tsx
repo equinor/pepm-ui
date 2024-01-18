@@ -104,8 +104,8 @@ export const CaseGroup = ({
     queryFn: () => ComputeSettingsService.getApiComputeSettings(),
     enabled: !!token,
   });
-  // eslint-disable-next-line no-console
-  console.log(computeSettingsResponse && computeSettingsResponse.data?.data);
+  // // eslint-disable-next-line no-console
+  // console.log(computeSettingsResponse && computeSettingsResponse.data?.data);
 
   const settingsFilter = (name: string) => {
     if (computeSettingsResponse) {
@@ -117,8 +117,8 @@ export const CaseGroup = ({
   const channelSettings = settingsFilter('Object');
   const variogramSettings = settingsFilter('Variogram');
 
-  // eslint-disable-next-line no-console
-  console.log(variogramSettings);
+  // // eslint-disable-next-line no-console
+  // console.log(variogramSettings);
 
   const variogramFilter = (name: string) => {
     if (variogramSettings) {
@@ -327,6 +327,7 @@ export const CaseGroup = ({
             <Tooltip title="Functionality not implemented yet.">
               <Button
                 variant="outlined"
+                // eslint-disable-next-line no-console
                 onClick={() => console.log('Running all')}
                 disabled
               >

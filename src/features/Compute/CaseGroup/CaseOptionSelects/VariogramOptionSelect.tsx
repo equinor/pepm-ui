@@ -144,13 +144,13 @@ export const VariogramOptionSelect = ({
 
     let defaultParameter: ListComputeSettingsInputValueDto[] = [];
 
-    if (method === 'Indicator' && loadedParameters) {
+    if (method === 'Indicator' && loadedParameters && setIndicatorParameters) {
       if (
         loadedParameters !== undefined &&
         selectedIndicatorParameters === undefined
       ) {
         defaultParameter = loadedParameters;
-        setIndicatorParameters && setIndicatorParameters(loadedParameters);
+        setIndicatorParameters(loadedParameters);
       } else if (
         selectedIndicatorParameters !== undefined &&
         loadedParameters === undefined
