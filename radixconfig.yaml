@@ -141,6 +141,32 @@ spec:
                 useAdls: true
                 streaming:
                   enabled: false
+        
+        - environment: test
+          volumeMounts:
+            - name: pepm-nrresqml-model-storage-test
+              path: /mnt/azure-storage/models
+              blobfuse2:
+                protocol: fuse2
+                container: models
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+            - name: pepm-nrresqml-worker-storage-test
+              path: /mnt/azure-storage/worker
+              blobfuse2:
+                protocol: fuse2
+                container: worker
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+        
+
+
     - name: pepm-nrchannest
       image: ghcr.io/equinor/pepm-worker-api/pepm-nrchannest:latest
       schedulerPort: 8090
@@ -186,6 +212,30 @@ spec:
                 streaming:
                   enabled: false
 
+        - environment: test
+          volumeMounts:
+            - name: pepm-nrchannest-model-storage-test
+              path: /mnt/azure-storage/models
+              blobfuse2:
+                protocol: fuse2
+                container: models
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+
+            - name: pepm-nrchannest-worker-storage-test
+              path: /mnt/azure-storage/worker
+              blobfuse2:
+                protocol: fuse2
+                container: worker
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+
     - name: pepm-nrvargrest
       image: ghcr.io/equinor/pepm-worker-api/pepm-nrvargrest:latest
       schedulerPort: 8090
@@ -219,6 +269,30 @@ spec:
                   enabled: false
 
             - name: pepm-nrvargrest-worker-storage-dev
+              path: /mnt/azure-storage/worker
+              blobfuse2:
+                protocol: fuse2
+                container: worker
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+
+        - environment: test
+          volumeMounts:
+            - name: pepm-nrvargrest-model-storage-test
+              path: /mnt/azure-storage/models
+              blobfuse2:
+                protocol: fuse2
+                container: models
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+
+            - name: pepm-nrvargrest-worker-storage-test
               path: /mnt/azure-storage/worker
               blobfuse2:
                 protocol: fuse2
