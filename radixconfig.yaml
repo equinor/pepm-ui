@@ -31,6 +31,9 @@ spec:
     - name: api
       image: ghcr.io/equinor/pepm-core-api/pepm-api:{imageTagName}
       publicPort: http
+      resources:
+        requests:
+          memory: "2048Mi"
       ports:
         - name: http
           port: 5000
@@ -105,10 +108,9 @@ spec:
       schedulerPort: 8090
       resources:
         requests:
-          memory: "2048Mi"
+          memory: "4096Mi"
           cpu: "1000m"
         limits:
-          memory: "4096Mi"
           cpu: "2000m"
       payload:
         path: /app/args
@@ -174,10 +176,9 @@ spec:
       timeLimitSeconds: 43200
       resources:
         requests:
-          memory: "4096Mi"
+          memory: "8192Mi"
           cpu: "1000m"
         limits:
-          memory: "8192Mi"
           cpu: "2000m"
       payload:
         path: /app/args
@@ -243,10 +244,9 @@ spec:
       timeLimitSeconds: 43200
       resources:
         requests:
-          memory: "4096Mi"
+          memory: "8192Mi"
           cpu: "1000m"
         limits:
-          memory: "8192Mi"
           cpu: "2000m"
       payload:
         path: /app/args
