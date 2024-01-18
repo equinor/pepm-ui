@@ -141,37 +141,39 @@ export const CaseRow = ({
     methodType: string,
   ) => {
     if (setting) {
-      let id = undefined;
+      let selectedId = undefined;
       switch (settingType) {
         case 'Indicator':
-          // id =
-          //   indicatorSettings &&
-          //   indicatorSettings[0].inputSettings.filter(
-          //     (i) => (i.name = methodType),
-          //   );
+          if (indicatorSettings) {
+            // eslint-disable-next-line no-console
+            console.log(methodType);
+            // eslint-disable-next-line no-console
+            console.log(indicatorSettings[0].inputSettings);
 
-          console.log(indicatorSettings);
-          console.log(indicatorSettings && indicatorSettings[0].inputSettings);
-
-          // console.log(id);
-
-          break;
+            const res = indicatorSettings[0].inputSettings.filter(
+              (i) => (i.name = methodType),
+            );
+            // eslint-disable-next-line no-console
+            console.log(res);
+          }
+          return selectedId;
         case 'Net-To-Gross':
-          id =
-            netToGrossSettings &&
-            netToGrossSettings[0].inputSettings.filter(
+          if (netToGrossSettings)
+            selectedId = netToGrossSettings[0].inputSettings.filter(
               (i) => (i.inputSettingTypeId = setting[0].inputSettingValueId),
             );
-          console.log(id);
-          break;
+          // eslint-disable-next-line no-console
+          console.log(selectedId);
+          return selectedId;
         case 'ContiniousParameter':
-          id =
+          selectedId =
             continiousParameterSettings &&
             continiousParameterSettings[0].inputSettings.filter(
               (i) => (i.inputSettingTypeId = setting[0].inputSettingValueId),
             );
-          console.log(id);
-          break;
+          // eslint-disable-next-line no-console
+          console.log(selectedId);
+          return selectedId;
       }
 
       // const variogramModelTypeId = '4d07719a-3f1c-4a0e-9147-23a51adb876c';
@@ -189,20 +191,23 @@ export const CaseRow = ({
   const getParameterList = () => {
     let inputSettingsList: CreateComputeCaseInputSettingsForm[] = [];
 
-    console.log('Kjører parameter list GET');
-
-    addSelectedSettings(
+    const resIndicator = addSelectedSettings(
       selectedIndicatorParameters,
       inputSettingsList,
       'Indicator',
       'Indicator',
     );
-    addSelectedSettings(
+    // eslint-disable-next-line no-console
+    console.log(resIndicator);
+
+    const resFamily = addSelectedSettings(
       selectedVariogramModels,
       inputSettingsList,
       'Indicator',
       'Variogram Family Filter',
     );
+    // eslint-disable-next-line no-console
+    console.log(resFamily);
 
     if (selectedVariogramModels) {
       const inputSettingTypeId = '4d07719a-3f1c-4a0e-9147-23a51adb876c';
