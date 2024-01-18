@@ -166,10 +166,11 @@ export const VariogramOptionSelect = ({
     } else if (method === 'Variogram Family Filter') {
       if (
         loadedParameters !== undefined &&
-        selectedVariogramModels === undefined
+        selectedVariogramModels === undefined &&
+        setVariogramModels
       ) {
         defaultParameter = loadedParameters;
-        setVariogramModels && setVariogramModels(loadedParameters);
+        setVariogramModels(loadedParameters);
       } else if (
         selectedVariogramModels !== undefined &&
         loadedParameters === undefined
@@ -183,9 +184,13 @@ export const VariogramOptionSelect = ({
       }
       return defaultParameter;
     } else if (method === 'Net-To-Gross') {
-      if (loadedParameters !== undefined && selectedGrainSize === undefined) {
+      if (
+        loadedParameters !== undefined &&
+        selectedGrainSize === undefined &&
+        setGrainSize
+      ) {
         defaultParameter = loadedParameters;
-        setGrainSize && setGrainSize(loadedParameters);
+        setGrainSize(loadedParameters);
       } else if (
         selectedGrainSize !== undefined &&
         loadedParameters === undefined
@@ -199,9 +204,13 @@ export const VariogramOptionSelect = ({
       }
       return defaultParameter;
     } else if (method === 'ContiniousParameter') {
-      if (loadedParameters !== undefined && selectedParameters === undefined) {
+      if (
+        loadedParameters !== undefined &&
+        selectedParameters === undefined &&
+        setParameters
+      ) {
         defaultParameter = loadedParameters;
-        setParameters && setParameters(loadedParameters);
+        setParameters(loadedParameters);
       } else if (
         selectedParameters !== undefined &&
         loadedParameters === undefined
@@ -217,10 +226,11 @@ export const VariogramOptionSelect = ({
     } else if (method === 'Archel') {
       if (
         loadedParameters !== undefined &&
-        selectedArchelFilter === undefined
+        selectedArchelFilter === undefined &&
+        setArchelFilter
       ) {
         defaultParameter = loadedParameters;
-        setArchelFilter && setArchelFilter(loadedParameters);
+        setArchelFilter(loadedParameters);
       } else if (
         selectedArchelFilter !== undefined &&
         loadedParameters === undefined
