@@ -68,70 +68,113 @@ export const VariogramOptionSelect = ({
   saved: boolean;
   caseError: string;
 }) => {
-  // TODO: Case Error handling
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const filterSettings = (
+    setting: ListComputeSettingsInputDto[] | undefined,
+    method: string,
+  ) => {
+    return setting?.filter((value) => value.name === method);
+  };
 
-  // Lage en funksjon som tar inn Liste og Name
-  const indicatorFamilySettings = IndicatorSettings?.filter(
-    (value) => value.name === 'Variogram Family Filter',
+  const indicatorFamilySettings = filterSettings(
+    IndicatorSettings,
+    'Variogram Family Filter',
   );
-  const indicatorIndicatorSettings = IndicatorSettings?.filter(
-    (value) => value.name === 'Indicator',
+  const indicatorIndicatorSettings = filterSettings(
+    IndicatorSettings,
+    'Indicator',
   );
-
-  const NetGrossGrainSizeSettings = NetToGrossSettings?.filter(
-    (value) => value.name === 'Net-To-Gross',
-  );
-  const NetGrossVariogramFamilySettings = NetToGrossSettings?.filter(
-    (value) => value.name === 'Variogram Family Filter',
-  );
-  const contParamsVariogramFamilySettings = ContiniusParameterSettings?.filter(
-    (value) => value.name === 'Variogram Family Filter',
-  );
-  const contParamsParamsSettings = ContiniusParameterSettings?.filter(
-    (value) => value.name === 'ContiniousParameter',
-  );
-  const contParamsArchelSettings = ContiniusParameterSettings?.filter(
-    (value) => value.name === 'Archel',
+  const NetGrossGrainSizeSettings = filterSettings(
+    NetToGrossSettings,
+    'Net-To-Gross',
   );
 
-  // TODO: Refactor method to reusable function
+  const NetGrossVariogramFamilySettings = filterSettings(
+    NetToGrossSettings,
+    'Variogram Family Filter',
+  );
+
+  const contParamsVariogramFamilySettings = filterSettings(
+    ContiniusParameterSettings,
+    'Variogram Family Filter',
+  );
+
+  const contParamsParamsSettings = filterSettings(
+    ContiniusParameterSettings,
+    'ContiniousParameter',
+  );
+
+  const contParamsArchelSettings = filterSettings(
+    ContiniusParameterSettings,
+    'Archel',
+  );
+
+  const getDefaultParameters = (
+    loadedParameters: ListComputeSettingsInputValueDto[],
+    selectedParameter: ListComputeSettingsInputValueDto[] | undefined,
+    setParameter: (
+      value: React.SetStateAction<
+        ListComputeSettingsInputValueDto[] | undefined
+      >,
+    ) => void,
+  ) => {
+    let list: ListComputeSettingsInputValueDto[] = [];
+
+    if (loadedParameters !== undefined && selectedParameter === undefined) {
+      list = loadedParameters;
+      setParameter(loadedParameters);
+    } else if (
+      selectedParameter !== undefined &&
+      loadedParameters === undefined
+    ) {
+      list = selectedParameter;
+    } else if (
+      selectedParameter !== undefined &&
+      loadedParameters !== undefined
+    ) {
+      list = selectedParameter;
+    }
+    return list;
+  };
+
   const selectedParamValue = (method: string) => {
     let settingsValueList: ListComputeSettingsInputValueDto[] | undefined = [];
     let loadedParameters: ListComputeSettingsInputValueDto[] | undefined = [];
 
-    if (method === 'Indicator') {
-      settingsValueList =
-        indicatorIndicatorSettings && indicatorIndicatorSettings[0].values;
-    } else if (
-      method === 'Variogram Family Filter' &&
-      caseType === 'Indicator'
-    ) {
-      settingsValueList =
-        indicatorFamilySettings && indicatorFamilySettings[0].values;
-    } else if (method === 'Net-To-Gross') {
-      settingsValueList =
-        NetGrossGrainSizeSettings && NetGrossGrainSizeSettings[0].values;
-    } else if (
-      method === 'Variogram Family Filter' &&
-      caseType === 'Net-To-Gross'
-    ) {
-      settingsValueList =
-        NetGrossVariogramFamilySettings &&
-        NetGrossVariogramFamilySettings[0].values;
-    } else if (
-      method === 'Variogram Family Filter' &&
-      caseType === 'ContiniousParameter'
-    ) {
-      settingsValueList =
-        contParamsVariogramFamilySettings &&
-        contParamsVariogramFamilySettings[0].values;
-    } else if (method === 'ContiniousParameter') {
-      settingsValueList =
-        contParamsParamsSettings && contParamsParamsSettings[0].values;
-    } else if (method === 'Archel') {
-      settingsValueList =
-        contParamsArchelSettings && contParamsArchelSettings[0].values;
+    switch (method) {
+      case 'Indicator': {
+        if (indicatorIndicatorSettings)
+          settingsValueList = indicatorIndicatorSettings[0].values;
+        break;
+      }
+      case 'Variogram Family Filter': {
+        if (caseType === 'Indicator') {
+          if (indicatorFamilySettings)
+            settingsValueList = indicatorFamilySettings[0].values;
+        } else if (caseType === 'Net-To-Gross') {
+          if (NetGrossVariogramFamilySettings)
+            settingsValueList = NetGrossVariogramFamilySettings[0].values;
+        } else if (caseType === 'ContiniousParameter') {
+          if (contParamsVariogramFamilySettings)
+            settingsValueList = contParamsVariogramFamilySettings[0].values;
+        }
+        break;
+      }
+      case 'Net-To-Gross': {
+        if (NetGrossGrainSizeSettings)
+          settingsValueList = NetGrossGrainSizeSettings[0].values;
+        break;
+      }
+
+      case 'ContiniousParameter': {
+        if (contParamsParamsSettings)
+          settingsValueList = contParamsParamsSettings[0].values;
+        break;
+      }
+      case 'Archel': {
+        if (contParamsArchelSettings)
+          settingsValueList = contParamsArchelSettings[0].values;
+        break;
+      }
     }
 
     loadedParameters =
@@ -142,107 +185,51 @@ export const VariogramOptionSelect = ({
         ),
       );
 
-    let defaultParameter: ListComputeSettingsInputValueDto[] = [];
+    switch (method) {
+      case 'Indicator':
+        if (setIndicatorParameters)
+          return getDefaultParameters(
+            loadedParameters,
+            selectedIndicatorParameters,
+            setIndicatorParameters,
+          );
+        break;
 
-    if (method === 'Indicator' && loadedParameters && setIndicatorParameters) {
-      if (
-        loadedParameters !== undefined &&
-        selectedIndicatorParameters === undefined
-      ) {
-        defaultParameter = loadedParameters;
-        setIndicatorParameters(loadedParameters);
-      } else if (
-        selectedIndicatorParameters !== undefined &&
-        loadedParameters === undefined
-      ) {
-        defaultParameter = selectedIndicatorParameters;
-      } else if (
-        selectedIndicatorParameters !== undefined &&
-        loadedParameters !== undefined
-      ) {
-        defaultParameter = selectedIndicatorParameters;
-      }
-      return defaultParameter;
-    } else if (method === 'Variogram Family Filter') {
-      if (
-        loadedParameters !== undefined &&
-        selectedVariogramModels === undefined &&
-        setVariogramModels
-      ) {
-        defaultParameter = loadedParameters;
-        setVariogramModels(loadedParameters);
-      } else if (
-        selectedVariogramModels !== undefined &&
-        loadedParameters === undefined
-      ) {
-        defaultParameter = selectedVariogramModels;
-      } else if (
-        selectedVariogramModels !== undefined &&
-        loadedParameters !== undefined
-      ) {
-        defaultParameter = selectedVariogramModels;
-      }
-      return defaultParameter;
-    } else if (method === 'Net-To-Gross') {
-      if (
-        loadedParameters !== undefined &&
-        selectedGrainSize === undefined &&
-        setGrainSize
-      ) {
-        defaultParameter = loadedParameters;
-        setGrainSize(loadedParameters);
-      } else if (
-        selectedGrainSize !== undefined &&
-        loadedParameters === undefined
-      ) {
-        defaultParameter = selectedGrainSize;
-      } else if (
-        selectedGrainSize !== undefined &&
-        loadedParameters !== undefined
-      ) {
-        defaultParameter = selectedGrainSize;
-      }
-      return defaultParameter;
-    } else if (method === 'ContiniousParameter') {
-      if (
-        loadedParameters !== undefined &&
-        selectedParameters === undefined &&
-        setParameters
-      ) {
-        defaultParameter = loadedParameters;
-        setParameters(loadedParameters);
-      } else if (
-        selectedParameters !== undefined &&
-        loadedParameters === undefined
-      ) {
-        defaultParameter = selectedParameters;
-      } else if (
-        selectedParameters !== undefined &&
-        loadedParameters !== undefined
-      ) {
-        defaultParameter = selectedParameters;
-      }
-      return defaultParameter;
-    } else if (method === 'Archel') {
-      if (
-        loadedParameters !== undefined &&
-        selectedArchelFilter === undefined &&
-        setArchelFilter
-      ) {
-        defaultParameter = loadedParameters;
-        setArchelFilter(loadedParameters);
-      } else if (
-        selectedArchelFilter !== undefined &&
-        loadedParameters === undefined
-      ) {
-        defaultParameter = selectedArchelFilter;
-      } else if (
-        selectedArchelFilter !== undefined &&
-        loadedParameters !== undefined
-      ) {
-        defaultParameter = selectedArchelFilter;
-      }
-      return defaultParameter;
+      case 'Variogram Family Filter':
+        if (setVariogramModels)
+          return getDefaultParameters(
+            loadedParameters,
+            selectedVariogramModels,
+            setVariogramModels,
+          );
+        break;
+
+      case 'Net-To-Gross':
+        if (setGrainSize)
+          return getDefaultParameters(
+            loadedParameters,
+            selectedGrainSize,
+            setGrainSize,
+          );
+        break;
+
+      case 'ContiniousParameter':
+        if (setParameters)
+          return getDefaultParameters(
+            loadedParameters,
+            selectedParameters,
+            setParameters,
+          );
+        break;
+
+      case 'Archel':
+        if (setArchelFilter)
+          return getDefaultParameters(
+            loadedParameters,
+            selectedArchelFilter,
+            setArchelFilter,
+          );
+        break;
     }
   };
 
