@@ -1,27 +1,10 @@
-import { useMsal } from '@azure/msal-react';
 import { Table, Typography } from '@equinor/eds-core-react';
-import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
-import {
-  AnalogueModelsService,
-  OpenAPI,
-  UploadList,
-} from '../../../api/generated';
-import { useAccessToken } from '../../../hooks/useAccessToken';
+import { UploadList } from '../../../api/generated';
+import { useFetchModel } from '../../../hooks/useFetchModel';
 import * as Styled from './ModelSourceView.styled';
 
 export const ModelSourceView = () => {
-  const { modelId } = useParams();
-  const { instance, accounts } = useMsal();
-  const token = useAccessToken(instance, accounts[0]);
-  if (token) OpenAPI.TOKEN = token;
-
-  const { isLoading, data } = useQuery({
-    queryKey: ['analogue-model', modelId],
-    queryFn: () =>
-      AnalogueModelsService.getApiAnalogueModels1(modelId as string),
-    enabled: !!token,
-  });
+  const { isLoading, data } = useFetchModel();
 
   if (isLoading || !data?.success) return <p>Loading ...</p>;
 

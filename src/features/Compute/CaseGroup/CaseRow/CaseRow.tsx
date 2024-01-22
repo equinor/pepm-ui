@@ -1,12 +1,8 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-depth */
 /* eslint-disable max-lines-per-function */
-import { useMsal } from '@azure/msal-react';
-import { useQuery } from '@tanstack/react-query';
 import { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import {
-  AnalogueModelsService,
   ComputeCaseDto,
   CreateComputeCaseCommandResponse,
   CreateComputeCaseInputSettingsForm,
@@ -17,7 +13,7 @@ import {
   ModelAreaDto,
   UpdateComputeCaseInputSettingsForm,
 } from '../../../../api/generated';
-import { useAccessToken } from '../../../../hooks/useAccessToken';
+import { useFetchModel } from '../../../../hooks/useFetchModel';
 import { CaseButtons } from '../CaseButtons/CaseButtons';
 import { ModelAreaSelect } from '../CaseSettingSelects/ModelAreaSelect';
 import { VariogramOptionSelect } from '../CaseSettingSelects/VariogramSettingSelect';
@@ -65,9 +61,6 @@ export const CaseRow = ({
     name: string,
   ) => ListComputeSettingsMethodDto[] | undefined;
 }) => {
-  const { modelId } = useParams<{ modelId: string }>();
-  const { instance, accounts } = useMsal();
-  const token = useAccessToken(instance, accounts[0]);
   const [selectedModelArea, setModelArea] = useState<ModelAreaDto[]>();
   const [selectedIndicatorParameters, setIndicatorParameters] =
     useState<ListComputeSettingsInputValueDto[]>();
@@ -82,12 +75,7 @@ export const CaseRow = ({
   const [saved, setSaved] = useState<boolean>(true);
   const [caseError, setCaseError] = useState<string>('');
 
-  const { data } = useQuery({
-    queryKey: ['analogue-model', modelId],
-    queryFn: () =>
-      AnalogueModelsService.getApiAnalogueModels1(modelId as string),
-    enabled: !!token,
-  });
+  const { data } = useFetchModel();
 
   const channelSettings = settingsFilter('Object');
   const variogramSettings = settingsFilter('Variogram');

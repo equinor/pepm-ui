@@ -1,9 +1,7 @@
 /* eslint-disable max-lines-per-function */
-import { useMsal } from '@azure/msal-react';
 import { Button, Table, Typography } from '@equinor/eds-core-react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
 import {
   AddAnalogueDto,
   AddAnalogueModelAnalogueCommandForm,
@@ -15,29 +13,18 @@ import {
   AnalogueModelMetadataService,
   AnalogueModelSourceType,
   MetadataDto,
-  OpenAPI,
   UpdateAnalogueModelCommandBody,
 } from '../../../api/generated';
 import { AnalogueModelsService } from '../../../api/generated/services/AnalogueModelsService';
-import { useAccessToken } from '../../../hooks/useAccessToken';
+import { queryClient } from '../../../auth/queryClient';
+import { useFetchModel } from '../../../hooks/useFetchModel';
 import { AddModelDialog } from '../../AddModel/AddModelDialog/AddModelDialog';
 import { TableDataCell } from '../TableDataCell/TableDataCell';
 import * as Styled from './ModelMetadataView.styled';
 
 export const ModelMetadataView = () => {
-  const { modelId } = useParams();
-  const { instance, accounts } = useMsal();
-  const token = useAccessToken(instance, accounts[0]);
-  if (token) OpenAPI.TOKEN = token;
-
   const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false);
-  const [refetchKey, setRefetchKey] = useState<number>(0);
-  const { isLoading, data } = useQuery({
-    queryKey: ['analogue-model', modelId, refetchKey],
-    queryFn: () =>
-      AnalogueModelsService.getApiAnalogueModels1(modelId as string),
-    enabled: !!token,
-  });
+  const { isLoading, data } = useFetchModel();
 
   const defaultMetadata: AnalogueModelDetail = {
     analogueModelId: data?.data.analogueModelId
@@ -83,6 +70,9 @@ export const ModelMetadataView = () => {
         requestBody,
       );
     },
+    onSuccess: () => {
+      queryClient.refetchQueries();
+    },
   });
 
   const uploadModelAnalouges = useMutation({
@@ -97,6 +87,9 @@ export const ModelMetadataView = () => {
         id,
         requestBody,
       );
+    },
+    onSuccess: () => {
+      queryClient.refetchQueries();
     },
   });
 
@@ -147,7 +140,6 @@ export const ModelMetadataView = () => {
       requestBody: readyAnalogue,
     });
 
-    setRefetchKey(refetchKey + 1);
     toggleDialog();
   };
 
