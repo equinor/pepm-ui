@@ -409,34 +409,16 @@ export const CaseRow = ({
   }, [caseList, allCasesList, id, saved]);
 
   useEffect(() => {
-    function setNotSavedVariogram(r: ComputeCaseDto) {
-      if (r.computeMethod.name === 'Indicator') {
+    function setNotSavedVariogram(r: ComputeCaseDto, type: string) {
+      if (r.computeMethod.name === type) {
         setSaved(false);
       }
     }
 
-    allCasesList.forEach((r) => setNotSavedVariogram(r));
-  }, [caseList, allCasesList, id, saved]);
-
-  useEffect(() => {
-    function setNotSavedVariogram(r: ComputeCaseDto) {
-      if (r.computeMethod.name === 'Net-To-Gross') {
-        setSaved(false);
-      }
-    }
-
-    allCasesList.forEach((r) => setNotSavedVariogram(r));
-  }, [caseList, allCasesList, id, saved]);
-
-  useEffect(() => {
-    function setNotSavedVariogram(r: ComputeCaseDto) {
-      if (r.computeMethod.name === 'ContiniousParameter') {
-        setSaved(false);
-      }
-    }
-
-    allCasesList.forEach((r) => setNotSavedVariogram(r));
-  }, [caseList, allCasesList, id, saved]);
+    allCasesList.forEach((r) => setNotSavedVariogram(r, 'Indicator'));
+    allCasesList.forEach((r) => setNotSavedVariogram(r, 'Net-To-Gross'));
+    allCasesList.forEach((r) => setNotSavedVariogram(r, 'ContiniousParameter'));
+  }, [caseList, allCasesList, saved]);
 
   return (
     <Styled.Case>
