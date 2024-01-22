@@ -88,10 +88,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     return isNaN(value);
   }
 
-  const model = useQuery({
-    queryKey: ['analogue-model', modelId, updated],
-    queryFn: () => AnalogueModelsService.getApiAnalogueModels1(modelId),
-  });
+  const { data, isLoading } = useFetchModel(modelId);
 
   const modelAreas = useQuery({
     queryKey: ['model-area'],
@@ -111,6 +108,9 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
         requestBody,
       );
     },
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ['analogue-model'] });
+    },
   });
 
   const putAreaCoordinates = useMutation({
@@ -128,6 +128,9 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
         modelAreaId,
         requestBody,
       );
+    },
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ['analogue-model'] });
     },
   });
 
@@ -160,8 +163,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
       return;
     }
 
-    const selectableAreas =
-      model.data?.data?.modelAreas && model.data?.data?.modelAreas;
+    const selectableAreas = data?.data?.modelAreas && data?.data?.modelAreas;
 
     const selectedArea = selectableAreas?.filter(
       (area) => area.modelAreaType === changes.selectedItems[0].name,
@@ -383,7 +385,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [errors, submitting]);
 
-  if (modelAreas.isLoading || modelAreas.data === undefined || model.isLoading)
+  if (modelAreas.isLoading || modelAreas.data === undefined || isLoading)
     return <p>Loading.....</p>;
 
   return (
@@ -393,7 +395,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
         <Styled.Form>
           <Styled.Info>
             <Typography variant="h6">
-              {model.data?.success && model.data.data.name}
+              {data?.success && data.data.name}
             </Typography>
             <Typography variant="body_long">
               Select from predefined model areas and set the X/Y coordinates for
