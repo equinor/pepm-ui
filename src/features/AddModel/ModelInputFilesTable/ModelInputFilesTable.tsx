@@ -1,54 +1,8 @@
 /* eslint-disable max-lines-per-function */
-import { Button, Table } from '@equinor/eds-core-react';
-import { delete_to_trash as deleteIcon } from '@equinor/eds-icons';
-import { ChangeEvent } from 'react';
-import IconButton from '../../../components/IconButton/IconButton';
-import { FileUploader } from '../FileUploader/FileUploader';
+import { Table } from '@equinor/eds-core-react';
+import { FileColumn } from '../FileColumn/FileColumn';
 
 type FileDisplay = { isVisible: boolean; toggle: () => void };
-
-interface FileColumnProps {
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onDelete: () => void;
-  INI?: true;
-  file?: File;
-  fileDisplay?: FileDisplay;
-  fileSize?: number;
-}
-
-const FileColumn = ({
-  onChange,
-  onDelete,
-  INI,
-  file,
-  fileDisplay,
-  fileSize,
-}: FileColumnProps) => {
-  const DeleteButton = ({ onDelete }: { onDelete: () => void }) => (
-    <IconButton icon={deleteIcon} title="delete" onClick={onDelete} />
-  );
-
-  return (
-    <Table.Row className={`${INI ? 'ini' : 'nc'}-file`}>
-      <Table.Cell>
-        <FileUploader
-          onChange={onChange}
-          file={file}
-          acceptType={INI ? 'INI' : 'NC'}
-        />
-      </Table.Cell>
-      <Table.Cell>
-        {file && INI && (
-          <Button variant="outlined" onClick={fileDisplay?.toggle}>
-            {fileDisplay?.isVisible ? 'Hide' : 'Show'}
-          </Button>
-        )}
-      </Table.Cell>
-      <Table.Cell>{file ? fileSize : '-'}</Table.Cell>
-      <Table.Cell>{file && <DeleteButton onDelete={onDelete} />}</Table.Cell>
-    </Table.Row>
-  );
-};
 
 export const ModelInputFilesTable = ({
   fileDisplay,

@@ -1,11 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import { Button, Typography } from '@equinor/eds-core-react';
 import { useEffect, useState } from 'react';
-import {
-  AnalogueList,
-  AnalogueModelDetail,
-  MetadataDto,
-} from '../../../api/generated';
+import { AnalogueModelDetail } from '../../../api/generated';
 import { ModelInputFilesTable } from '../ModelInputFilesTable/ModelInputFilesTable';
 import { ModelMetadata } from '../ModelMetadata/ModelMetadata';
 import * as Styled from './AddModelDialog.styled';
@@ -19,13 +15,6 @@ interface AddModelDialogProps {
   defaultMetadata: AnalogueModelDetail;
   isEdit?: boolean;
   existingData?: AnalogueModelDetail;
-}
-
-export default interface MetadataProps {
-  name: string;
-  description: string;
-  metadata: MetadataDto[];
-  analogue?: AnalogueList[];
 }
 
 interface FilesProps {
@@ -78,6 +67,10 @@ export const AddModelDialog = ({
     if (rawFile === undefined) return;
     setFileSize(rawFile.size);
   }, [rawFile]);
+
+  useEffect(() => {
+    if (files.NC === undefined) setFileSize(0);
+  }, [files]);
 
   useEffect(() => {
     if (existingData) setMetadata(existingData);
@@ -150,6 +143,8 @@ export const AddModelDialog = ({
 
   const handleCancle = () => {
     setMetadata(defaultMetadata);
+    setFiles(defaultFiles);
+    setErrors({});
     cancel();
   };
 
