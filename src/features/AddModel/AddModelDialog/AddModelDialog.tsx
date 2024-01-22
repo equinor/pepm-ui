@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { AnalogueModelDetail } from '../../../api/generated';
 import { ModelInputFilesTable } from '../ModelInputFilesTable/ModelInputFilesTable';
 import { ModelMetadata } from '../ModelMetadata/ModelMetadata';
+import { useAddModelDialog, validateValues } from './AddModelDialog.hooks';
 import * as Styled from './AddModelDialog.styled';
 
 interface AddModelDialogProps {
@@ -17,7 +18,7 @@ interface AddModelDialogProps {
   existingData?: AnalogueModelDetail;
 }
 
-interface FilesProps {
+export interface FilesProps {
   NC?: File;
   INI?: File;
 }
@@ -56,8 +57,10 @@ export const AddModelDialog = ({
   const [fileSize, setFileSize] = useState(0);
   const [rawFile, setrawFile] = useState<File>();
 
+  useAddModelDialog(setFileSize, setMetadata, files, rawFile, existingData);
+
   const handleSubmit = () => {
-    setErrors(validateValues(metadata));
+    setErrors(validateValues(metadata, files, isEdit));
     setSubmitting(true);
   };
 
@@ -108,78 +111,10 @@ export const AddModelDialog = ({
     submitting,
   ]);
 
-  useEffect(() => {
-    if (rawFile === undefined) return;
-    setFileSize(rawFile.size);
-  }, [rawFile]);
-
-  useEffect(() => {
-    if (files.NC === undefined) setFileSize(0);
-  }, [files]);
-
-  useEffect(() => {
-    if (existingData) setMetadata(existingData);
-  }, [existingData]);
-
   function toggleINIFileContent() {
     setFileDisplay(!isFileDisplay);
   }
-
   const INIFileContent = () => <p>Not implemented yet...</p>;
-
-  const validateValues = (
-    inputValues: Partial<AnalogueModelDetail> | undefined,
-  ) => {
-    const errors: ErrorType = {};
-
-    if (inputValues?.name === undefined || inputValues?.name === '') {
-      errors.name = 'Name not provided';
-    }
-
-    if (
-      inputValues?.description === undefined ||
-      inputValues?.description === ''
-    ) {
-      errors.description = 'Description not provided';
-    }
-
-    if (
-      inputValues?.metadata === undefined ||
-      inputValues?.metadata?.filter((m) => m.metadataType === 'Field').length <=
-        0
-    ) {
-      errors.field = 'Field not selected';
-    }
-
-    if (
-      inputValues?.metadata === undefined ||
-      inputValues?.metadata?.filter((m) => m.metadataType === 'Formation')
-        .length <= 0
-    ) {
-      errors.formation = 'Formation not selected';
-    }
-
-    if (
-      inputValues?.analogues === undefined ||
-      inputValues?.analogues?.length <= 0
-    ) {
-      errors.analogues = 'Analogues not selected';
-    }
-
-    if (
-      inputValues?.metadata === undefined ||
-      inputValues?.metadata?.filter((m) => m.metadataType === 'Zone').length <=
-        0
-    ) {
-      errors.zone = 'Zone not selected';
-    }
-
-    if (!files.NC && !isEdit) {
-      errors.file = 'NC file missing';
-    }
-
-    return errors;
-  };
 
   return (
     <Styled.Dialog open={isOpen}>
