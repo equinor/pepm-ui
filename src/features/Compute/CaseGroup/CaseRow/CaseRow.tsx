@@ -19,8 +19,8 @@ import {
 } from '../../../../api/generated';
 import { useAccessToken } from '../../../../hooks/useAccessToken';
 import { CaseButtons } from '../CaseButtons/CaseButtons';
-import { ModelAreaSelect } from '../CaseOptionSelects/ModelAreaSelect/ModelAreaSelect';
-import { VariogramOptionSelect } from '../CaseOptionSelects/VariogramOptionSelect';
+import { ModelAreaSelect } from '../CaseSettingSelects/ModelAreaSelect';
+import { VariogramOptionSelect } from '../CaseSettingSelects/VariogramSettingSelect';
 import * as Styled from './CaseRow.Styled';
 
 export const CaseRow = ({
