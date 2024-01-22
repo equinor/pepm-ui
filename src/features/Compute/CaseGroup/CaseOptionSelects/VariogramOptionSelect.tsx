@@ -259,6 +259,7 @@ export const VariogramOptionSelect = ({
       {setGrainSize && caseType === 'Net-To-Gross' && (
         <CaseSettingSelect
           label={'From grain size'}
+          settingType="Net-To-Gross"
           options={
             NetGrossGrainSizeSettings && NetGrossGrainSizeSettings[0].values
           }

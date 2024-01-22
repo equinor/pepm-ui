@@ -35,7 +35,7 @@ export const CaseSettingSelect = ({
       optionLabel={(option) => option.name}
       selectedOptions={selectedValue}
       onOptionsChange={onSelectChange}
-      multiple
+      multiple={settingType !== 'Net-To-Gross'}
     ></Autocomplete>
   );
 };
