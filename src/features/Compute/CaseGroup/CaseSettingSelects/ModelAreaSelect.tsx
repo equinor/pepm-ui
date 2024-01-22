@@ -4,8 +4,8 @@ import {
   AutocompleteChanges,
   Label,
 } from '@equinor/eds-core-react';
-import { ComputeCaseDto, ModelAreaDto } from '../../../../../api/generated';
-import * as Styled from '../CaseOptionSelects.styled';
+import { ComputeCaseDto, ModelAreaDto } from '../../../../api/generated';
+import * as Styled from './SettingSelect.styled';
 
 export const ModelAreaSelect = ({
   modelAreas,

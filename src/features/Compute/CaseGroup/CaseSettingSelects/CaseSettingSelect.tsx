@@ -1,5 +1,5 @@
 import { Autocomplete, AutocompleteChanges } from '@equinor/eds-core-react';
-import { ListComputeSettingsInputValueDto } from '../../../../../api/generated';
+import { ListComputeSettingsInputValueDto } from '../../../../api/generated';
 
 export const CaseSettingSelect = ({
   label,

@@ -6,9 +6,9 @@ import {
   ListComputeSettingsInputValueDto,
   ModelAreaDto,
 } from '../../../../api/generated';
-import * as Styled from './CaseOptionSelects.styled';
-import { CaseSettingSelect } from './CaseSettingSelect/CaseSettingSelect';
-import { ModelAreaSelect } from './ModelAreaSelect/ModelAreaSelect';
+import { CaseSettingSelect } from './CaseSettingSelect';
+import { ModelAreaSelect } from './ModelAreaSelect';
+import * as Styled from './SettingSelect.styled';
 
 export const VariogramOptionSelect = ({
   rowCase,
