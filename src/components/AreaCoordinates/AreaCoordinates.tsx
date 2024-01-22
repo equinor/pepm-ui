@@ -19,6 +19,8 @@ import {
   UpdateAnalogueModelAreaCommandForm,
 } from '../../api/generated';
 import { AnalogueModelsService } from '../../api/generated/services/AnalogueModelsService';
+import { queryClient } from '../../auth/queryClient';
+import { useFetchModel } from '../../hooks/useFetchModel';
 import * as Styled from './AreaCoordinates.styled';
 import { CoordinateInput } from './CoordinateInput/CoordinateInput';
 
@@ -61,7 +63,6 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
   const [showSaveAlert, setSaveAlert] = useState(false);
   const [activeArea, setActiveArea] = useState<ModelAreaTypeDto>(defaultArea);
   const [newArea, setNewArea] = useState<ModelAreaTypeDto>();
-  const [updated, setUpdated] = useState(1);
   const [errors, setErrors] = useState<ErrorType>({});
   const [submitting, setSubmitting] = useState(false);
   const [areaCoordinate, setAreaCoordinate] = useState<AreaCoordinateType>({
@@ -300,7 +301,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     return errors;
   };
 
-  const clearAndUpdate = () => {
+  const clearAndUpdate = async () => {
     setActiveArea(defaultArea);
     setAreaCoordinate({
       modelAreaId: '',
@@ -317,8 +318,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
         },
       ],
     });
-    setUpdated(updated + 1);
-    setSaveAlert(true);
+    return 'success';
   };
 
   const postModelArea = async () => {
@@ -334,7 +334,8 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
       });
 
       if (coordinateRes.success) {
-        clearAndUpdate();
+        const res = await clearAndUpdate();
+        if (res === 'success') setSaveAlert(true);
       }
     }
   };
@@ -346,7 +347,8 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
       requestBody: { coordinates: areaCoordinate.coordinates },
     });
     if (coordinateRes.success) {
-      clearAndUpdate();
+      const res = await clearAndUpdate();
+      if (res === 'success') setSaveAlert(true);
     }
   };
 
@@ -409,6 +411,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
               options={modelAreas.data.data}
               optionLabel={(option) => option.name}
               onOptionsChange={handleSelectChange}
+              selectedOptions={[activeArea]}
               variant={errors.area ? 'error' : undefined}
             ></Autocomplete>
           </Styled.CoordinateGroup>
