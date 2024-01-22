@@ -56,12 +56,57 @@ export const AddModelDialog = ({
   const [fileSize, setFileSize] = useState(0);
   const [rawFile, setrawFile] = useState<File>();
 
+  const handleSubmit = () => {
+    setErrors(validateValues(metadata));
+    setSubmitting(true);
+  };
+
+  const handleCancle = () => {
+    setMetadata(defaultMetadata);
+    setFiles(defaultFiles);
+    setErrors({});
+    cancel();
+  };
+
+  const fileAdded = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const file = e.target.files[0];
+    const type = e.target.name;
+    setFiles({ ...files, [type]: file });
+    setrawFile(e.target.files[0]);
+  };
+
   useEffect(() => {
+    const cleanupStates = () => {
+      if (!isEdit) setMetadata(defaultMetadata);
+      setFiles(defaultFiles);
+      setrawFile(undefined);
+      setFileSize(0);
+      setSubmitting(false);
+    };
+
+    const finishSubmit = () => {
+      if (files.NC && !isEdit && confirm) {
+        confirm(files.NC, metadata);
+      } else if (isEdit && edit) {
+        edit(metadata);
+      }
+      cleanupStates();
+    };
+
     if (Object.keys(errors).length === 0 && submitting) {
       finishSubmit();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [errors, submitting]);
+  }, [
+    confirm,
+    defaultMetadata,
+    edit,
+    errors,
+    files.NC,
+    isEdit,
+    metadata,
+    submitting,
+  ]);
 
   useEffect(() => {
     if (rawFile === undefined) return;
@@ -134,43 +179,6 @@ export const AddModelDialog = ({
     }
 
     return errors;
-  };
-
-  const handleSubmit = () => {
-    setErrors(validateValues(metadata));
-    setSubmitting(true);
-  };
-
-  const handleCancle = () => {
-    setMetadata(defaultMetadata);
-    setFiles(defaultFiles);
-    setErrors({});
-    cancel();
-  };
-
-  const cleanupStates = () => {
-    if (!isEdit) setMetadata(defaultMetadata);
-    setFiles(defaultFiles);
-    setrawFile(undefined);
-    setFileSize(0);
-    setSubmitting(false);
-  };
-
-  const finishSubmit = () => {
-    if (files.NC && !isEdit && confirm) {
-      confirm(files.NC, metadata);
-    } else if (isEdit && edit) {
-      edit(metadata);
-    }
-    cleanupStates();
-  };
-
-  const fileAdded = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-    const file = e.target.files[0];
-    const type = e.target.name;
-    setFiles({ ...files, [type]: file });
-    setrawFile(e.target.files[0]);
   };
 
   return (
