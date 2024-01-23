@@ -4,6 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { EstimateChannelCommand, JobsService } from '../../../../api/generated';
+import { queryClient } from '../../../../auth/queryClient';
 import { CaseGroup } from '../../../../features/Compute/CaseGroup/CaseGroup';
 import { ComputeHeader } from '../../../../features/Compute/ComputeHeader/ComputeHeader';
 import { useFetchCases } from '../../../../hooks/useFetchCases';
@@ -33,6 +34,9 @@ export const ComputeObject = () => {
 
   const computeObject = useMutation({
     mutationFn: JobsService.postApiJobsComputeChannelEstimations,
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ['model-cases'] });
+    },
   });
 
   const runComputeObject = async (computeCaseId: string) => {
@@ -45,7 +49,6 @@ export const ComputeObject = () => {
     const res = await computeObject.mutateAsync(requestBody);
 
     if (res.success) {
-      uppdateCaseList();
       setAlertMessage('Started computing case');
     }
   };
