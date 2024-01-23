@@ -1,14 +1,10 @@
 /* eslint-disable max-lines-per-function */
-import { useMsal } from '@azure/msal-react';
 import { Button, Icon, Snackbar, Tooltip } from '@equinor/eds-core-react';
 import { add as ADD, play as PLAY } from '@equinor/eds-icons';
-import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { AnalogueModelComputeCasesService } from '../../../../api/generated';
 import { CaseGroup } from '../../../../features/Compute/CaseGroup/CaseGroup';
 import { ComputeHeader } from '../../../../features/Compute/ComputeHeader/ComputeHeader';
-import { useAccessToken } from '../../../../hooks/useAccessToken';
+import { useFetchCases } from '../../../../hooks/useFetchCases';
 import * as Styled from '../Compute.styled';
 
 export interface CaseInfoTyoe {
@@ -28,9 +24,6 @@ const variogramCaseInfo: CaseInfoTyoe = {
 };
 
 export const ComputeVariogram = () => {
-  const { modelId } = useParams<{ modelId: string }>();
-  const { instance, accounts } = useMsal();
-  const token = useAccessToken(instance, accounts[0]);
   const [showAlert, setAlert] = useState<string>();
   const [triggerAddCase, setTriggerAddCase] = useState<string>();
   const [localCaseList, setLocalCaseList] = useState<Array<string>>([]);
@@ -51,14 +44,7 @@ export const ComputeVariogram = () => {
     setAlert(undefined);
   }
 
-  const { data } = useQuery({
-    queryKey: ['model-cases', modelId],
-    queryFn: () =>
-      AnalogueModelComputeCasesService.getApiAnalogueModelsComputeCases(
-        modelId as string,
-      ),
-    enabled: !!token,
-  });
+  const { data } = useFetchCases();
 
   const methodFilter = (name: string) => {
     return data?.data.filter((method) => method.computeMethod.name === name);
