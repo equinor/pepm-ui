@@ -21,6 +21,7 @@ import {
   UploadFileType,
   UploadsService,
 } from '../../api/generated';
+import { queryClient } from '../../auth/queryClient';
 import { AddModelDialog } from '../../features/AddModel/AddModelDialog/AddModelDialog';
 import { ModelTable } from '../../features/ModelTable/ModelTable';
 import * as Styled from './Browse.styled';
@@ -48,7 +49,6 @@ export const Browse = () => {
   const [uploadId, setUploadId] = useState<string>('');
   const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false);
   const [uploadStatus, setUploadStatus] = useState<string>();
-  const [refetch, setRefetch] = useState<number>(0);
   const [uploading, setUploading] = useState<boolean>(false);
   const [transforming, setTransforming] = useState<boolean>(false);
 
@@ -67,6 +67,9 @@ export const Browse = () => {
 
   const createModel = useMutation({
     mutationFn: AnalogueModelsService.postApiAnalogueModels,
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ['analogue-models'] });
+    },
   });
 
   const modelManifest = useMutation({
@@ -79,6 +82,9 @@ export const Browse = () => {
 
   const uploadFinished = useMutation({
     mutationFn: UploadsService.postApiUploadsModelsComplete,
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ['analogue-models'] });
+    },
   });
 
   const convertModelFile = useMutation({
@@ -180,7 +186,6 @@ export const Browse = () => {
     if (createModel.error === null && modelUpload.success) {
       const id = modelUpload.data.analogueModelId;
       setModelId(id);
-      setRefetch(refetch + 1);
       setProgress(1);
       uploadMetadata(id, metadata);
 
@@ -297,7 +302,6 @@ export const Browse = () => {
           <Button onClick={toggleDialog}>Add new model</Button>
         </div>
         <ModelTable
-          refetchKey={refetch}
           progress={progress}
           activeUploadId={modelId}
           transforming={transforming}

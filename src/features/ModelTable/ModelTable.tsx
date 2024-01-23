@@ -16,12 +16,10 @@ import { useAccessToken } from '../../hooks/useAccessToken';
 import * as Styled from './ModelTable.styled';
 
 export const ModelTable = ({
-  refetchKey,
   progress,
   activeUploadId,
   transforming,
 }: {
-  refetchKey: number;
   progress: number;
   activeUploadId: string;
   transforming: boolean;
@@ -34,7 +32,7 @@ export const ModelTable = ({
   const [toggle, setToggle] = useState<boolean>(false);
   const [activeModel, setActiveModel] = useState<string>();
   const { isLoading, data } = useQuery({
-    queryKey: ['analogue-models', refetchKey],
+    queryKey: ['analogue-models'],
     queryFn: () => AnalogueModelsService.getApiAnalogueModels(),
     enabled: !!token,
   });
