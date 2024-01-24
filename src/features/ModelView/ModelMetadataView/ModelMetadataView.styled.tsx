@@ -14,7 +14,7 @@ export const Metadata = styled.div`
 
 const DataTable = styled(Table)`
   min-width: 256px;
-  width: 75%;
+  width: 85%;
 `;
 
 export const NameCell = styled(Table.Cell)`

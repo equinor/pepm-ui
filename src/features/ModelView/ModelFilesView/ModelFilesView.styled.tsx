@@ -7,7 +7,7 @@ export const TableWrapper = styled.div`
   flex-direction: column;
   row-gap: ${spacings.LARGE};
 
-  width: 75%;
+  width: 85%;
 `;
 
 export const FileTable = styled(Table)`

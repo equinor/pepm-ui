@@ -10,9 +10,9 @@ export const ImageWrapper = styled.div`
   border-style: solid;
   border-width: 1px;
   border-color: ${theme.light.ui.background.medium};
+  width: 100%;
 
-  max-width: 100%;
-
+  max-width: fit-content;
   height: fit-content;
 
   > h5 {

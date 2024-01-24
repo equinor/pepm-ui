@@ -19,5 +19,5 @@ export const InnerMetadataWrapper = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: ${spacings.XXX_LARGE};
-  width: 70%;
+  width: 50vw;
 `;

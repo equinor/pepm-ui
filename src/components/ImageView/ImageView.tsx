@@ -1,3 +1,4 @@
+import { Typography } from '@equinor/eds-core-react';
 import * as Styled from './ImageView.styled';
 
 export const ImageView = ({
@@ -12,7 +13,7 @@ export const ImageView = ({
   return (
     <Styled.ImageWrapper>
       <img className="image" alt={altText} src={img} />
-      <h5>{text}</h5>
+      <Typography variant="h5">{text}</Typography>
     </Styled.ImageWrapper>
   );
 };
