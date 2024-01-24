@@ -149,28 +149,26 @@ export const ModelMetadataView = () => {
     <Styled.Metadata>
       <Typography variant="h3">Description and metadata</Typography>
       {data.data.description && <div>{data.data.description}</div>}
-      <Styled.MetadataTable>
-        <Table>
-          <Table.Body>
-            <Table.Row>
-              <Table.Cell className="table-first-col">Field</Table.Cell>
-              <TableDataCell data={data.data} type="Field" />
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell className="table-first-col">Fomation</Table.Cell>
-              <TableDataCell data={data.data} type="Formation" />
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell className="table-first-col">Analouge</Table.Cell>
-              <TableDataCell data={data.data} type="Analouge" />
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell className="table-first-col">Zone</Table.Cell>
-              <TableDataCell data={data.data} type="Zone" />
-            </Table.Row>
-          </Table.Body>
-        </Table>
-      </Styled.MetadataTable>
+      <Styled.Table>
+        <Table.Body>
+          <Table.Row>
+            <Styled.NameCell>Field</Styled.NameCell>
+            <TableDataCell data={data.data} type="Field" />
+          </Table.Row>
+          <Table.Row>
+            <Styled.NameCell>Fomation</Styled.NameCell>
+            <TableDataCell data={data.data} type="Formation" />
+          </Table.Row>
+          <Table.Row>
+            <Styled.NameCell>Analouge</Styled.NameCell>
+            <TableDataCell data={data.data} type="Analouge" />
+          </Table.Row>
+          <Table.Row>
+            <Styled.NameCell>Zone</Styled.NameCell>
+            <TableDataCell data={data.data} type="Zone" />
+          </Table.Row>
+        </Table.Body>
+      </Styled.Table>
 
       <Button
         onClick={toggleDialog}

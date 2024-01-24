@@ -1,6 +1,6 @@
-import { Table, Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react';
 import { AnalogueModelDetail } from '../../../api/generated';
-
+import * as Styled from '../ModelMetadataView/ModelMetadataView.styled';
 export const TableDataCell = ({
   data,
   type,
@@ -9,7 +9,7 @@ export const TableDataCell = ({
   type: string;
 }) => {
   return (
-    <Table.Cell className="table-second-col">
+    <Styled.DataCell>
       {type === 'Analouge' ? (
         data.analogues && data.analogues.length > 0 ? (
           data.analogues.map((m) => (
@@ -27,6 +27,6 @@ export const TableDataCell = ({
       ) : (
         <Typography> - </Typography>
       )}
-    </Table.Cell>
+    </Styled.DataCell>
   );
 };
