@@ -7,7 +7,6 @@ export const Case = styled.div`
   flex-direction: column;
 
   padding: ${spacings.MEDIUM};
-  column-gap: ${spacings.MEDIUM};
 
   border-bottom: solid thin ${theme.light.ui.background.medium};
   background-color: ${theme.light.ui.background.default};
@@ -15,7 +14,17 @@ export const Case = styled.div`
 `;
 
 export const CaseRow = styled.div`
+  &.Object {
+    align-items: center;
+  }
   display: flex;
+  flex-direction: row;
+  column-gap: ${spacings.MEDIUM};
+`;
+
+export const AutocompleteWrapper = styled.div`
+  display: flex;
+  flex: auto;
   flex-direction: row;
   column-gap: ${spacings.MEDIUM};
 `;

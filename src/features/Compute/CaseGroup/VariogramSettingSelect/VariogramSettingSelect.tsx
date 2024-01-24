@@ -1,14 +1,18 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
+import { Button, Icon } from '@equinor/eds-core-react';
+import { expand as EXPAND } from '@equinor/eds-icons';
+import { useState } from 'react';
 import {
   ComputeCaseDto,
   ListComputeSettingsInputDto,
   ListComputeSettingsInputValueDto,
   ModelAreaDto,
 } from '../../../../api/generated';
-import { CaseSettingSelect } from './CaseSettingSelect';
-import { ModelAreaSelect } from './ModelAreaSelect';
-import * as Styled from './SettingSelect.styled';
+import { CaseSettingSelect } from '../CaseSettingSelects/CaseSettingSelect';
+import { ModelAreaSelect } from '../CaseSettingSelects/ModelAreaSelect';
+import * as Styled from '../CaseSettingSelects/SettingSelect.styled';
+import { ViewSelectedVariogramSettings } from '../ViewSelectedVariogramSettings/ViewSelectedVariogramSettings';
 
 export const VariogramOptionSelect = ({
   rowCase,
@@ -68,6 +72,8 @@ export const VariogramOptionSelect = ({
   saved: boolean;
   caseError: string;
 }) => {
+  const [expandSettings, setExpandSettings] = useState<boolean>(false);
+
   const filterSettings = (
     setting: ListComputeSettingsInputDto[] | undefined,
     method: string,
@@ -233,79 +239,135 @@ export const VariogramOptionSelect = ({
     }
   };
 
+  const handleExpandView = () => {
+    setExpandSettings(!expandSettings);
+  };
+
   return (
     <Styled.AutocompleteWrapper>
-      <ModelAreaSelect
-        disableSelect={saved}
-        modelAreas={modelAreas}
+      <Styled.ButtonWrapper>
+        <Button
+          variant="ghost_icon"
+          aria-label="remove"
+          onClick={handleExpandView}
+        >
+          <Icon data={EXPAND} size={24}></Icon>
+        </Button>
+      </Styled.ButtonWrapper>
+      <ViewSelectedVariogramSettings
+        expandSettings={expandSettings}
         selectedModelArea={selectedModelArea}
-        setModelArea={setModelArea}
-        existingCases={existingCases}
-        caseError={caseError}
-        caseType="Variogram"
-      />
+      >
+        <ModelAreaSelect
+          disableSelect={saved}
+          modelAreas={modelAreas}
+          selectedModelArea={selectedModelArea}
+          setModelArea={setModelArea}
+          existingCases={existingCases}
+          caseError={caseError}
+          caseType="Variogram"
+        />
+      </ViewSelectedVariogramSettings>
 
       {setIndicatorParameters && caseType === 'Indicator' && (
-        <CaseSettingSelect
-          label={'Parameter'}
-          options={
-            indicatorIndicatorSettings && indicatorIndicatorSettings[0].values
+        <ViewSelectedVariogramSettings
+          expandSettings={expandSettings}
+          selecteSettings={
+            selectedParamValue && selectedParamValue('Indicator')
           }
-          selectedValue={selectedParamValue && selectedParamValue('Indicator')}
-          setValue={setIndicatorParameters}
-        />
+        >
+          <CaseSettingSelect
+            label={'Parameter'}
+            options={
+              indicatorIndicatorSettings && indicatorIndicatorSettings[0].values
+            }
+            selectedValue={
+              selectedParamValue && selectedParamValue('Indicator')
+            }
+            setValue={setIndicatorParameters}
+          />
+        </ViewSelectedVariogramSettings>
       )}
 
       {setGrainSize && caseType === 'Net-To-Gross' && (
-        <CaseSettingSelect
-          label={'From grain size'}
-          settingType="Net-To-Gross"
-          options={
-            NetGrossGrainSizeSettings && NetGrossGrainSizeSettings[0].values
-          }
-          selectedValue={
+        <ViewSelectedVariogramSettings
+          expandSettings={expandSettings}
+          selecteSettings={
             selectedParamValue && selectedParamValue('Net-To-Gross')
           }
-          setValue={setGrainSize}
-        />
+        >
+          <CaseSettingSelect
+            label={'From grain size'}
+            settingType="Net-To-Gross"
+            options={
+              NetGrossGrainSizeSettings && NetGrossGrainSizeSettings[0].values
+            }
+            selectedValue={
+              selectedParamValue && selectedParamValue('Net-To-Gross')
+            }
+            setValue={setGrainSize}
+          />
+        </ViewSelectedVariogramSettings>
       )}
       {setParameters && caseType === 'ContiniousParameter' && (
-        <CaseSettingSelect
-          label={'Parameter'}
-          settingType="ContiniousParameter"
-          options={
-            contParamsParamsSettings && contParamsParamsSettings[0].values
-          }
-          selectedValue={
+        <ViewSelectedVariogramSettings
+          expandSettings={expandSettings}
+          selecteSettings={
             selectedParamValue && selectedParamValue('ContiniousParameter')
           }
-          setValue={setParameters}
-        />
+        >
+          <CaseSettingSelect
+            label={'Parameter'}
+            settingType="ContiniousParameter"
+            options={
+              contParamsParamsSettings && contParamsParamsSettings[0].values
+            }
+            selectedValue={
+              selectedParamValue && selectedParamValue('ContiniousParameter')
+            }
+            setValue={setParameters}
+          />
+        </ViewSelectedVariogramSettings>
       )}
-      <CaseSettingSelect
-        label="Architectural elements filter"
-        settingType="Archel"
-        options={contParamsArchelSettings && contParamsArchelSettings[0].values}
-        selectedValue={selectedParamValue && selectedParamValue('Archel')}
-        setValue={setArchelFilter}
-        caseType={caseType}
-      />
-      <CaseSettingSelect
-        label={'Variogram model'}
-        options={
-          caseType === 'Net-To-Gross'
-            ? NetGrossVariogramFamilySettings &&
-              NetGrossVariogramFamilySettings[0].values
-            : caseType === 'Indicator'
-            ? indicatorFamilySettings && indicatorFamilySettings[0].values
-            : contParamsVariogramFamilySettings &&
-              contParamsVariogramFamilySettings[0].values
-        }
-        selectedValue={
+      <ViewSelectedVariogramSettings
+        expandSettings={expandSettings}
+        selecteSettings={selectedParamValue && selectedParamValue('Archel')}
+      >
+        <CaseSettingSelect
+          label="Architectural elements filter"
+          settingType="Archel"
+          options={
+            contParamsArchelSettings && contParamsArchelSettings[0].values
+          }
+          selectedValue={selectedParamValue && selectedParamValue('Archel')}
+          setValue={setArchelFilter}
+          caseType={caseType}
+        />
+      </ViewSelectedVariogramSettings>
+
+      <ViewSelectedVariogramSettings
+        expandSettings={expandSettings}
+        selecteSettings={
           selectedParamValue && selectedParamValue('Variogram Family Filter')
         }
-        setValue={setVariogramModels}
-      />
+      >
+        <CaseSettingSelect
+          label={'Variogram model'}
+          options={
+            caseType === 'Net-To-Gross'
+              ? NetGrossVariogramFamilySettings &&
+                NetGrossVariogramFamilySettings[0].values
+              : caseType === 'Indicator'
+              ? indicatorFamilySettings && indicatorFamilySettings[0].values
+              : contParamsVariogramFamilySettings &&
+                contParamsVariogramFamilySettings[0].values
+          }
+          selectedValue={
+            selectedParamValue && selectedParamValue('Variogram Family Filter')
+          }
+          setValue={setVariogramModels}
+        />
+      </ViewSelectedVariogramSettings>
     </Styled.AutocompleteWrapper>
   );
 };

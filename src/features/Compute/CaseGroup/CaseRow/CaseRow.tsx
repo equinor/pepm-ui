@@ -16,7 +16,7 @@ import {
 import { useFetchModel } from '../../../../hooks/useFetchModel';
 import { CaseButtons } from '../CaseButtons/CaseButtons';
 import { ModelAreaSelect } from '../CaseSettingSelects/ModelAreaSelect';
-import { VariogramOptionSelect } from '../CaseSettingSelects/VariogramSettingSelect';
+import { VariogramOptionSelect } from '../VariogramSettingSelect/VariogramSettingSelect';
 import * as Styled from './CaseRow.Styled';
 
 export const CaseRow = ({
@@ -410,7 +410,9 @@ export const CaseRow = ({
 
   return (
     <Styled.Case>
-      <Styled.CaseRow>
+      <Styled.CaseRow
+        className={caseType === 'Object' ? 'Object' : 'Variogram'}
+      >
         {rowCase.computeMethod.name === 'Indicator' && (
           <VariogramOptionSelect
             rowCase={rowCase}
@@ -475,15 +477,18 @@ export const CaseRow = ({
         )}
 
         {rowCase.computeMethod.name === 'Channel' && (
-          <ModelAreaSelect
-            disableSelect={saved}
-            modelAreas={areaList ? areaList : []}
-            selectedModelArea={selectedRowArea(rowCase.computeCaseId)}
-            setModelArea={setModelArea}
-            existingCases={caseList}
-            caseError={caseError}
-          />
+          <Styled.AutocompleteWrapper>
+            <ModelAreaSelect
+              disableSelect={saved}
+              modelAreas={areaList ? areaList : []}
+              selectedModelArea={selectedRowArea(rowCase.computeCaseId)}
+              setModelArea={setModelArea}
+              existingCases={caseList}
+              caseError={caseError}
+            />
+          </Styled.AutocompleteWrapper>
         )}
+
         <CaseButtons
           id={id}
           caseType={caseType === 'Object' ? 'Object' : 'Variogram'}

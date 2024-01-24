@@ -6,5 +6,6 @@ export const ButtonDiv = styled.div`
   flex: row;
   flex-direction: row;
   column-gap: ${spacings.SMALL};
-  align-items: end;
+  align-items: start;
+  padding-top: ${spacings.MEDIUM};
 `;
