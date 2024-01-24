@@ -11,6 +11,10 @@ export const Case = styled.div`
   border-bottom: solid thin ${theme.light.ui.background.medium};
   background-color: ${theme.light.ui.background.default};
   border-radius: ${spacings.CARD_ROUNDED};
+
+  &.local-case {
+    border: solid lightgreen;
+  }
 `;
 
 export const CaseRow = styled.div`
