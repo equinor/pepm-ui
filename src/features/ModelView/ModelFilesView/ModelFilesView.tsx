@@ -1,9 +1,9 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import { UploadList } from '../../../api/generated';
 import { useFetchModel } from '../../../hooks/useFetchModel';
-import * as Styled from './ModelSourceView.styled';
+import * as Styled from './ModelFilesView.styled';
 
-export const ModelSourceView = () => {
+export const ModelFilesView = () => {
   const { isLoading, data } = useFetchModel();
 
   if (isLoading || !data?.success) return <p>Loading ...</p>;
