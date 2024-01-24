@@ -409,7 +409,7 @@ export const CaseRow = ({
   }, [caseList, allCasesList, saved]);
 
   return (
-    <Styled.Case>
+    <Styled.Case className={id.length <= 3 ? 'local-case' : ''}>
       <Styled.CaseRow
         className={caseType === 'Object' ? 'Object' : 'Variogram'}
       >
