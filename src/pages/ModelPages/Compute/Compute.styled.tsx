@@ -11,9 +11,9 @@ export const Case = styled.div`
   column-gap: ${spacings.MEDIUM};
   row-gap: ${spacings.XXX_LARGE};
 
-  width: 85%;
+  width: 70vw;
 
-  @media (max-width: 1550px) {
+  @media (max-width: 1725px) {
     width: 100%;
   }
 

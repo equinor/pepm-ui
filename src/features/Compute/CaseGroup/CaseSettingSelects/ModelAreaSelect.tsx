@@ -44,46 +44,44 @@ export const ModelAreaSelect = ({
   };
 
   return (
-    <Styled.AutocompleteWrapper>
-      <Styled.AutocompleteRow>
-        <Styled.Required>
-          <Autocomplete
-            label="Model area"
-            readOnly={disableSelect}
-            options={modelAreas && modelAreas.length > 0 ? modelAreas : []}
-            selectedOptions={
-              selectedModelArea &&
-              selectedModelArea.length > 0 &&
-              selectedModelArea[0].modelAreaId !== ''
-                ? selectedModelArea
-                : selectedModelArea &&
-                  selectedModelArea.length > 0 &&
-                  selectedModelArea[0].modelAreaType === 'Whole model'
-                ? [
-                    {
-                      modelAreaId: '',
-                      modelAreaType: 'Whole model',
-                      coordinates: [],
-                    },
-                  ]
-                : [
-                    {
-                      modelAreaId: '',
-                      modelAreaType: '',
-                      coordinates: [],
-                    },
-                  ]
-            }
-            optionLabel={(modelArea) => modelArea.modelAreaType}
-            onOptionsChange={(changes: AutocompleteChanges<ModelAreaDto>) =>
-              setModelArea && setModelArea(changes.selectedItems)
-            }
-            optionDisabled={!caseType ? filterDisabled : undefined}
-            variant={caseError.length > 0 ? 'error' : undefined}
-          />
-          {caseError.length > 0 && <Label label={caseError}></Label>}
-        </Styled.Required>
-      </Styled.AutocompleteRow>
-    </Styled.AutocompleteWrapper>
+    <Styled.AutocompleteRow>
+      <Styled.Required>
+        <Autocomplete
+          label="Model area"
+          readOnly={disableSelect}
+          options={modelAreas && modelAreas.length > 0 ? modelAreas : []}
+          selectedOptions={
+            selectedModelArea &&
+            selectedModelArea.length > 0 &&
+            selectedModelArea[0].modelAreaId !== ''
+              ? selectedModelArea
+              : selectedModelArea &&
+                selectedModelArea.length > 0 &&
+                selectedModelArea[0].modelAreaType === 'Whole model'
+              ? [
+                  {
+                    modelAreaId: '',
+                    modelAreaType: 'Whole model',
+                    coordinates: [],
+                  },
+                ]
+              : [
+                  {
+                    modelAreaId: '',
+                    modelAreaType: '',
+                    coordinates: [],
+                  },
+                ]
+          }
+          optionLabel={(modelArea) => modelArea.modelAreaType}
+          onOptionsChange={(changes: AutocompleteChanges<ModelAreaDto>) =>
+            setModelArea && setModelArea(changes.selectedItems)
+          }
+          optionDisabled={!caseType ? filterDisabled : undefined}
+          variant={caseError.length > 0 ? 'error' : undefined}
+        />
+        {caseError.length > 0 && <Label label={caseError}></Label>}
+      </Styled.Required>
+    </Styled.AutocompleteRow>
   );
 };

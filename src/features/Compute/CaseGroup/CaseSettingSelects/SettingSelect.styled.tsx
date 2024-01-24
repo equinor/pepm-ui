@@ -5,6 +5,7 @@ export const AutocompleteWrapper = styled.div`
   display: flex;
   flex: auto;
   flex-direction: row;
+  align-items: top;
 
   column-gap: ${spacings.MEDIUM};
 `;
@@ -24,4 +25,9 @@ export const AutocompleteRow = styled.div`
   > div {
     flex-grow: 1;
   }
+`;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;
