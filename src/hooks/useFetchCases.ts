@@ -17,6 +17,7 @@ export const useFetchCases = () => {
         modelId as string,
       ),
     enabled: !!token,
+    refetchInterval: 30000,
   });
 
   return query;

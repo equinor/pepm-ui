@@ -1,4 +1,3 @@
-import { Button } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 import { spacings } from '../../../tokens/spacings';
 import { theme } from '../../../tokens/theme';
@@ -12,16 +11,13 @@ export const Case = styled.div`
   row-gap: ${spacings.XXX_LARGE};
 
   width: 70vw;
+  max-width: 1400px;
 
   @media (max-width: 1725px) {
     width: 100%;
   }
 
   border-left: solid ${spacings.XX_SMALL} ${theme.light.ui.background.medium};
-`;
-
-export const AddCaseButton = styled(Button)`
-  width: fit-content;
 `;
 
 export const ButtonDiv = styled.div`

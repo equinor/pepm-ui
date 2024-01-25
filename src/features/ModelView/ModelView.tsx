@@ -1,6 +1,6 @@
 import { ImageView } from '../../components/ImageView/ImageView';
 import { ModelMetadataView } from '../../features/ModelView/ModelMetadataView/ModelMetadataView';
-import { ModelSourceView } from '../../features/ModelView/ModelSourceView/ModelSourceView';
+import { ModelFilesView } from './ModelFilesView/ModelFilesView';
 import * as Styled from './ModelView.styled';
 import Img from './image.png';
 
@@ -9,7 +9,7 @@ export const ModelView = () => {
     <Styled.MetadataWrapper>
       <Styled.InnerMetadataWrapper>
         <ModelMetadataView />
-        <ModelSourceView />
+        <ModelFilesView />
       </Styled.InnerMetadataWrapper>
       <ImageView
         text="Model placeholder image"

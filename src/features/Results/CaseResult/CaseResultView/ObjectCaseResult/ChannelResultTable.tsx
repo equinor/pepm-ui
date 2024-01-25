@@ -42,43 +42,45 @@ export const ChannelResultTable = ({
   const channelWidthSD = filterValues('channel-width_sd');
 
   return (
-    <CaseCardComponent
-      title={data.resultType + ' Case'}
-      subTitle={modelArea}
-      resultCard={true}
-    >
-      <Table>
-        <Table.Head>
-          <Table.Row>
-            <Styled.DataCell></Styled.DataCell>
-            <Styled.DataCell>Mean</Styled.DataCell>
-            <Styled.DataCell>Standard deviation (SD)</Styled.DataCell>
-            <Styled.DataCell>Count</Styled.DataCell>
-          </Table.Row>
-        </Table.Head>
-        <Table.Body key={data.computeCaseId}>
-          <Table.Row>
-            <Styled.ColumnCell>Channel width</Styled.ColumnCell>
-            <Styled.DataCell>
-              {roundResultString(channelWidthMean[0].value)}
-            </Styled.DataCell>
-            <Styled.DataCell>
-              {roundResultString(channelWidthSD[0].value)}
-            </Styled.DataCell>
-            <Styled.DataCell>{channelWidthCount[0].value}</Styled.DataCell>
-          </Table.Row>
-          <Table.Row>
-            <Styled.ColumnCell>Channel height</Styled.ColumnCell>
-            <Styled.DataCell>
-              {roundResultString(channelHeightMean[0].value)}
-            </Styled.DataCell>
-            <Styled.DataCell>
-              {roundResultString(channelHeightSD[0].value)}
-            </Styled.DataCell>
-            <Styled.DataCell>{channelHeightCount[0].value}</Styled.DataCell>
-          </Table.Row>
-        </Table.Body>
-      </Table>
-    </CaseCardComponent>
+    <Styled.Wrapper>
+      <CaseCardComponent
+        title={data.resultType + ' Case'}
+        subTitle={modelArea}
+        resultCard={true}
+      >
+        <Table>
+          <Table.Head>
+            <Table.Row>
+              <Styled.DataCell></Styled.DataCell>
+              <Styled.DataCell>Mean</Styled.DataCell>
+              <Styled.DataCell>Standard deviation (SD)</Styled.DataCell>
+              <Styled.DataCell>Count</Styled.DataCell>
+            </Table.Row>
+          </Table.Head>
+          <Table.Body key={data.computeCaseId}>
+            <Table.Row>
+              <Styled.ColumnCell>Channel width</Styled.ColumnCell>
+              <Styled.DataCell>
+                {roundResultString(channelWidthMean[0].value)}
+              </Styled.DataCell>
+              <Styled.DataCell>
+                {roundResultString(channelWidthSD[0].value)}
+              </Styled.DataCell>
+              <Styled.DataCell>{channelWidthCount[0].value}</Styled.DataCell>
+            </Table.Row>
+            <Table.Row>
+              <Styled.ColumnCell>Channel height</Styled.ColumnCell>
+              <Styled.DataCell>
+                {roundResultString(channelHeightMean[0].value)}
+              </Styled.DataCell>
+              <Styled.DataCell>
+                {roundResultString(channelHeightSD[0].value)}
+              </Styled.DataCell>
+              <Styled.DataCell>{channelHeightCount[0].value}</Styled.DataCell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
+      </CaseCardComponent>
+    </Styled.Wrapper>
   );
 };

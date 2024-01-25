@@ -1,23 +1,20 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import { UploadList } from '../../../api/generated';
 import { useFetchModel } from '../../../hooks/useFetchModel';
-import * as Styled from './ModelSourceView.styled';
+import * as Styled from './ModelFilesView.styled';
 
-export const ModelSourceView = () => {
+export const ModelFilesView = () => {
   const { isLoading, data } = useFetchModel();
 
   if (isLoading || !data?.success) return <p>Loading ...</p>;
 
   return (
-    <Styled.FileTable>
-      <Typography variant="h3">Source</Typography>
-      <p>Uploaded by ABCD@equinor.com on Sep 13, 2023</p>
-      <Table>
+    <Styled.TableWrapper>
+      <Typography variant="h3">Files</Typography>
+      <Styled.FileTable>
         <Table.Head>
           <Table.Row className="table-row">
-            <Table.Cell className="table-first-col">
-              Model input files
-            </Table.Cell>
+            <Styled.TableCell>Model input files</Styled.TableCell>
             <Table.Cell>Size</Table.Cell>
           </Table.Row>
         </Table.Head>
@@ -27,9 +24,7 @@ export const ModelSourceView = () => {
             data.data.fileUploads?.length > 0) ? (
             data.data.fileUploads?.map((file: UploadList) => (
               <Table.Row key={file.uploadId} className="table-row">
-                <Table.Cell className="table-first-col">
-                  {file.originalFileName}
-                </Table.Cell>
+                <Styled.TableCell>{file.originalFileName}</Styled.TableCell>
                 <Table.Cell>**Size**</Table.Cell>
               </Table.Row>
             ))
@@ -40,7 +35,7 @@ export const ModelSourceView = () => {
             </Table.Row>
           )}
         </Table.Body>
-      </Table>
-    </Styled.FileTable>
+      </Styled.FileTable>
+    </Styled.TableWrapper>
   );
 };
