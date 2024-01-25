@@ -3,6 +3,9 @@ import { Table } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 import { theme } from '../../../../../tokens/theme';
 
+export const Wrapper = styled.div`
+  max-width: 950px;
+`;
 export const ColumnCell = styled(Table.Cell)`
   background: ${theme.light.ui.background.light};
   border: solid 0.5px ${theme.light.ui.background.medium};
