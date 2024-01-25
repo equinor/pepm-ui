@@ -29,7 +29,7 @@ export const ModelTable = ({
   if (token) OpenAPI.TOKEN = token;
   const navigate = useNavigate();
 
-  const [toggle, setToggle] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
   const [activeModel, setActiveModel] = useState<string>();
   const { isLoading, data } = useQuery({
     queryKey: ['analogue-models'],
@@ -192,7 +192,7 @@ export const ModelTable = ({
                   disabled={isActiveModel(row.original.analogueModelId)}
                   onClick={() => {
                     setActiveModel(row.original.analogueModelId);
-                    setToggle(!toggle);
+                    setOpen(!open);
                   }}
                 >
                   Set Areas
@@ -202,13 +202,11 @@ export const ModelTable = ({
           },
         ]}
       />
-      {activeModel && (
-        <Scrim open={toggle}>
-          <SideSheet open={toggle} onClose={() => setToggle(!toggle)}>
-            <AreaCoordinates modelId={activeModel} />
-          </SideSheet>
-        </Scrim>
-      )}
+      <Scrim open={open} isDismissable>
+        <SideSheet onClose={() => setOpen(!open)}>
+          {activeModel && <AreaCoordinates modelId={activeModel} />}
+        </SideSheet>
+      </Scrim>
     </Styled.Table>
   );
 };
