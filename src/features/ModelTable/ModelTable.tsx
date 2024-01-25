@@ -145,6 +145,7 @@ export const ModelTable = ({
             id: 'isProcessed',
             header: 'Status',
             enableColumnFilter: false,
+            size: 50,
             cell: ({ row }) => (
               <>
                 {isActiveModel(row.original.analogueModelId) ? (
@@ -173,8 +174,8 @@ export const ModelTable = ({
             id: 'navigate',
             enableColumnFilter: false,
             enableResizing: false,
+            maxSize: 220,
             size: 200,
-            minSize: 200,
             cell: ({ row }) => (
               <Styled.Buttons>
                 <Button
