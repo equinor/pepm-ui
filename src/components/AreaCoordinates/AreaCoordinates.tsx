@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   AddAnalogueModelAreaCommandForm,
   CoordinateDto,
@@ -64,7 +64,6 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
   const [activeArea, setActiveArea] = useState<ModelAreaTypeDto>(defaultArea);
   const [newArea, setNewArea] = useState<ModelAreaTypeDto>();
   const [errors, setErrors] = useState<ErrorType>({});
-  const [submitting, setSubmitting] = useState(false);
   const [areaCoordinate, setAreaCoordinate] = useState<AreaCoordinateType>({
     modelAreaId: '',
     coordinates: [
@@ -138,7 +137,6 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
   const handleSelectChange = async (
     changes: AutocompleteChanges<ModelAreaTypeDto>,
   ) => {
-    setSubmitting(false);
     setErrors({});
 
     // If area dropdown is set to empty:
@@ -230,7 +228,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     }
   };
 
-  const validateCoordinates = (area: AreaCoordinateType | undefined) => {
+  const validateCoordinates = async (area: AreaCoordinateType | undefined) => {
     const errors: ErrorType = {};
     if (!activeArea || activeArea.modelAreaTypeId === '') {
       errors.area = 'Model area needs to be selected';
@@ -321,6 +319,18 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     return 'success';
   };
 
+  const setCoordinates = (target: any, index: number, axis: string) => {
+    if (!areaCoordinate) return;
+
+    const uppdatedArea = {
+      ...areaCoordinate?.coordinates[index],
+      [axis]: target.value,
+    };
+    const newCoordinates = { ...areaCoordinate };
+    newCoordinates.coordinates[index] = uppdatedArea;
+    setAreaCoordinate(newCoordinates);
+  };
+
   const postModelArea = async () => {
     if (activeArea && areaCoordinate) {
       const postRequestBody: AddAnalogueModelAreaCommandForm = {
@@ -352,11 +362,6 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     }
   };
 
-  const handleSubmit = () => {
-    setErrors(validateCoordinates(areaCoordinate));
-    setSubmitting(true);
-  };
-
   const handleSave = async () => {
     if (!areaCoordinate || !areaCoordinate.coordinates) {
       return;
@@ -367,25 +372,14 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
       putModelArea();
     }
   };
+  const handleSubmit = async () => {
+    const err = await validateCoordinates(areaCoordinate);
+    setErrors(err);
 
-  const setCoordinates = (target: any, index: number, axis: string) => {
-    if (!areaCoordinate) return;
-
-    const uppdatedArea = {
-      ...areaCoordinate?.coordinates[index],
-      [axis]: target.value,
-    };
-    const newCoordinates = { ...areaCoordinate };
-    newCoordinates.coordinates[index] = uppdatedArea;
-    setAreaCoordinate(newCoordinates);
-  };
-
-  useEffect(() => {
-    if (Object.keys(errors).length === 0 && submitting) {
+    if (Object.keys(err).length === 0) {
       handleSave();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [errors, submitting]);
+  };
 
   if (modelAreas.isLoading || modelAreas.data === undefined || isLoading)
     return <p>Loading.....</p>;
