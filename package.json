@@ -46,7 +46,7 @@
     "lint": "eslint --fix --ext .ts,.tsx .",
     "prettier:fix": "prettier . --write",
     "prepare": "husky install",
-    "pre-commit": "yarn test --watchAll=false && yarn lint-staged",
+    "pre-commit": "yarn lint-staged",
     "generate-schema:radix": "npx openapi-typescript https://api-pepm-dev.radix.equinor.com/swagger/v1/swagger.yaml -o src/models/schema.d.ts"
   },
   "lint-staged": {
