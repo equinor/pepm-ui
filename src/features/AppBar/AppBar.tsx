@@ -1,11 +1,13 @@
 import { TopBar } from '@equinor/eds-core-react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import * as Styled from './AppBar.styled';
 import { Icons } from './Icons/Icons';
-// import { Navigation } from './Navigation/Navigation';
+import { Navigation } from './Navigation/Navigation';
 
 const AppBar = ({ title }: { title: string }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location.pathname);
 
   return (
     <Styled.TopBar>
@@ -16,7 +18,7 @@ const AppBar = ({ title }: { title: string }) => {
       >
         {title}
       </Styled.Header>
-      {/* <Navigation /> */}
+      <Navigation />
       <TopBar.Actions>
         <Icons />
       </TopBar.Actions>
