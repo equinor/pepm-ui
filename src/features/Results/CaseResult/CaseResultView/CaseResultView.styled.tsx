@@ -8,7 +8,10 @@ export const CaseResultView = styled.div`
 
   row-gap: ${spacings.XXX_LARGE};
   padding: ${spacings.LARGE};
-  width: 80%;
+
+  @media (min-width: 1400px) {
+    width: 80%;
+  }
 `;
 
 export const CaseResultList = styled.div`
