@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import * as Styled from './AppBar.styled';
 import { Icons } from './Icons/Icons';
 import { Navigation } from './Navigation/Navigation';
+
 const AppBar = ({ title }: { title: string }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -16,7 +17,7 @@ const AppBar = ({ title }: { title: string }) => {
       >
         {title}
       </Styled.Header>
-      <Navigation />
+      {/* <Navigation /> */}
       <TopBar.Actions>
         <Icons />
       </TopBar.Actions>
