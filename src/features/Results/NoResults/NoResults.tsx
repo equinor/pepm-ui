@@ -13,12 +13,12 @@ export const NoResults = () => {
         </Typography>
         <Typography variant="body_long">
           To get started, try adding cases to the <span>&nbsp;</span>
-          <Typography link href={'./variogram'}>
+          <Typography link href={'../compute/variogram'}>
             variogram
           </Typography>
           <span>&nbsp;</span>
           or <span>&nbsp;</span>
-          <Typography link href={'./object'}>
+          <Typography link href={'../compute/object'}>
             object
           </Typography>
           <span>&nbsp;</span> page.

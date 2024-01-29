@@ -7,22 +7,27 @@ import { VariogramCaseResult } from './VariogramCaseResult/VariogramCaseResult';
 import ResultIMG from './vargrest_output-0-_variogram_slices_.png';
 
 export const CaseResultView = ({
-  objectList,
+  resultList,
   computeCases,
 }: {
-  objectList?: GetResultDto[];
+  resultList: GetResultDto[];
   computeCases?: ComputeCaseDto[];
 }) => {
+  const caseType = resultList[0].resultType;
+
   return (
     <Styled.CaseResultView>
-      <Typography variant="h2">Compute results</Typography>
+      <Typography variant="h2">{caseType} results</Typography>
       <Styled.CaseResultList>
-        <VariogramCaseResult
-          caseList={[]}
-          img={ResultIMG}
-        ></VariogramCaseResult>
-        {objectList &&
-          objectList.map((obj) => (
+        {caseType === 'Variogram' && (
+          <VariogramCaseResult
+            caseList={[]}
+            img={ResultIMG}
+          ></VariogramCaseResult>
+        )}
+
+        {caseType === 'Object' &&
+          resultList.map((obj) => (
             <ChannelResultTable
               key={obj.computeCaseId}
               data={obj}
