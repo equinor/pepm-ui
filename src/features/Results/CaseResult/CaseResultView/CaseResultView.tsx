@@ -2,7 +2,7 @@ import * as Styled from './CaseResultView.styled';
 
 import { Typography } from '@equinor/eds-core-react';
 import { ComputeCaseDto, GetResultDto } from '../../../../api/generated';
-import { ChannelResultTable } from './ObjectCaseResult/ChannelResultTable';
+import { ChannelResult } from './ObjectCaseResult/ChannelResult';
 import { VariogramCaseResult } from './VariogramCaseResult/VariogramCaseResult';
 import ResultIMG from './vargrest_output-0-_variogram_slices_.png';
 
@@ -27,18 +27,25 @@ export const CaseResultView = ({
         )}
 
         {caseType === 'Object' &&
-          resultList.map((obj) => (
-            <ChannelResultTable
-              key={obj.computeCaseId}
-              data={obj}
-              computeCase={
-                computeCases && computeCases.length > 0
-                  ? computeCases.filter(
-                      (c) => c.computeCaseId === obj.computeCaseId,
-                    )
-                  : []
-              }
-            ></ChannelResultTable>
+          resultList.map((obj, index) => (
+            <Styled.Wrapper key={obj.computeCaseId}>
+              <ChannelResult
+                data={obj}
+                computeCase={
+                  computeCases && computeCases.length > 0
+                    ? computeCases.filter(
+                        (c) => c.computeCaseId === obj.computeCaseId,
+                      )
+                    : []
+                }
+              ></ChannelResult>
+              {index < resultList.length - 1 && (
+                <Styled.StyledDivider
+                  variant="small"
+                  color="medium"
+                ></Styled.StyledDivider>
+              )}
+            </Styled.Wrapper>
           ))}
       </Styled.CaseResultList>
     </Styled.CaseResultView>
