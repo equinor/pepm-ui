@@ -2,7 +2,7 @@
 import { CaseResultView } from '../../../../features/Results/CaseResult/CaseResultView/CaseResultView';
 import { NoResults } from '../../../../features/Results/NoResults/NoResults';
 import { useFetchCases } from '../../../../hooks/useFetchCases';
-import { useFetchResults } from '../../../../hooks/useFetchResultts';
+import { useFetchResults } from '../../../../hooks/useFetchResults';
 
 export const VariogramResults = () => {
   const { data } = useFetchResults();
