@@ -21,7 +21,7 @@ export const CaseResultView = ({
       <Styled.CaseResultList>
         {caseType === 'Variogram' && (
           <VariogramCaseResult
-            caseList={[]}
+            resultList={resultList}
             img={ResultIMG}
           ></VariogramCaseResult>
         )}

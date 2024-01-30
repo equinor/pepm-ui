@@ -4,23 +4,6 @@ import { NoResults } from '../../../../features/Results/NoResults/NoResults';
 import { useFetchCases } from '../../../../hooks/useFetchCases';
 import { useFetchResults } from '../../../../hooks/useFetchResultts';
 
-export interface VariogramResultListType {
-  caseId: number;
-  title: string;
-  resultList: VariogramResultType[];
-}
-
-export interface VariogramResultType {
-  identifier: number;
-  family: string;
-  computeMethod: string;
-  modelArea: string;
-  attribute: string;
-  quality: GLfloat;
-  sigma: GLfloat;
-  approved: string;
-}
-
 export const VariogramResults = () => {
   const { data } = useFetchResults();
   const cases = useFetchCases();
@@ -28,8 +11,6 @@ export const VariogramResults = () => {
   const variogramResults = data?.filter(
     (res) => res.resultType === 'Variogram',
   );
-
-  console.log(variogramResults);
 
   return (
     <>
