@@ -1,7 +1,6 @@
 import { createBrowserRouter, NonIndexRouteObject } from 'react-router-dom';
 import { App } from './App';
 import { ModelView } from './features/ModelView/ModelView';
-import { NoResults } from './features/Results/NoResults/NoResults';
 import { About } from './pages/About/About';
 import { Api } from './pages/Api/Api';
 import { Browse } from './pages/Browse/Browse';
@@ -10,6 +9,7 @@ import { ComputeObject } from './pages/ModelPages/Compute/ComputeObject/ComputeO
 import { ComputeVariogram } from './pages/ModelPages/Compute/ComputeVariogram/ComputeVariogram';
 import { Model } from './pages/ModelPages/Model/Model';
 import { ObjectResult } from './pages/ModelPages/Results/ObjectResult/ObjectResult';
+import { VariogramResults } from './pages/ModelPages/Results/VariogramResults/VariogramResults';
 
 interface Tab extends Required<Pick<NonIndexRouteObject, 'path' | 'element'>> {
   title: string;
@@ -54,7 +54,7 @@ const appRoutes = [
 
       {
         path: 'results/variogram',
-        element: <NoResults />,
+        element: <VariogramResults />,
       },
       {
         path: 'results/object',

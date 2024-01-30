@@ -1,7 +1,7 @@
 import { Table } from '@equinor/eds-core-react';
 import { CaseCardComponent } from '../../../../../components/CaseCardComponent/CaseCardComponent';
 import { ImageView } from '../../../../../components/ImageView/ImageView';
-import { VariogramResultListType } from '../../../../../pages/ModelPages/Results/Results';
+import { VariogramResultListType } from '../../../../../pages/ModelPages/Results/VariogramResults/VariogramResults';
 import * as Styled from './VariogramCaseResult.styled';
 
 export const VariogramCaseResult = ({
