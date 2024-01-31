@@ -15,7 +15,7 @@ export const CoordinateInput = ({
   label: string;
   error: boolean;
   areaCoordinate: AreaCoordinateType | undefined;
-  setCoordinates: (target: any, index: number, axis: string) => void;
+  setCoordinates: (value: string, index: number, axis: string) => void;
   position: number;
   axis: string;
   activeArea: ModelAreaTypeDto;
@@ -29,8 +29,8 @@ export const CoordinateInput = ({
             ? areaCoordinate?.coordinates[position].x
             : areaCoordinate?.coordinates[position].y
         }
-        onChange={(input: { target: any }) =>
-          setCoordinates(input.target, position, axis)
+        onChange={(e: React.FormEvent<HTMLInputElement>) =>
+          setCoordinates(e.currentTarget.value, position, axis)
         }
         rightAdornments={
           error ? (
