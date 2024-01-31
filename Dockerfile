@@ -23,6 +23,7 @@ EXPOSE 3000
 CMD ["serve", "build", "--listen", "3000", "-s"]
 
 
+
 FROM base AS test
 
 RUN yarn global add serve
