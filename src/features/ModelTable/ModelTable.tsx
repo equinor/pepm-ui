@@ -35,6 +35,7 @@ export const ModelTable = ({
     queryKey: ['analogue-models'],
     queryFn: () => AnalogueModelsService.getApiAnalogueModels(),
     enabled: !!token,
+    refetchInterval: 60000,
   });
 
   if (isLoading || !data?.success) return <p>Loading...</p>;
@@ -54,7 +55,7 @@ export const ModelTable = ({
   };
 
   const isTransforming = (id: string, status: boolean) => {
-    if (transforming && id === activeUploadId) {
+    if (transforming && id === activeUploadId && !status) {
       return <>Transforming model</>;
     } else {
       return status && <>Ready</>;
@@ -72,18 +73,13 @@ export const ModelTable = ({
         rows={data.data}
         pageSize={5}
         columns={[
-          {
-            accessorKey: 'analogueModelId',
-            header: 'Model ID',
-            id: 'analogueModelId',
-          },
           { accessorKey: 'name', header: 'Model name', id: 'name' },
           {
             accessorKey: 'analogues',
             id: 'analogues',
             header: 'Analogue',
             enableColumnFilter: false,
-            size: 120,
+            size: 100,
             cell: ({ row }) => (
               <Styled.List>
                 {row.original.analogues.map((a) => (
@@ -97,7 +93,7 @@ export const ModelTable = ({
             id: 'formation',
             header: 'Formation',
             enableColumnFilter: false,
-            size: 120,
+            size: 150,
             cell: ({ row }) => (
               <Styled.List>
                 {row.original.metadata
@@ -113,7 +109,7 @@ export const ModelTable = ({
             id: 'zone',
             header: 'Zone',
             enableColumnFilter: false,
-            size: 120,
+            size: 150,
             cell: ({ row }) => (
               <Styled.List>
                 {row.original.metadata
@@ -129,6 +125,7 @@ export const ModelTable = ({
             id: 'field',
             header: 'Field',
             enableColumnFilter: false,
+            size: 200,
             cell: ({ row }) => (
               <Styled.List>
                 {row.original.metadata
@@ -145,7 +142,7 @@ export const ModelTable = ({
             id: 'isProcessed',
             header: 'Status',
             enableColumnFilter: false,
-            size: 50,
+            size: 100,
             cell: ({ row }) => (
               <>
                 {isActiveModel(row.original.analogueModelId) ? (
@@ -175,7 +172,6 @@ export const ModelTable = ({
             enableColumnFilter: false,
             enableResizing: false,
             maxSize: 220,
-            size: 200,
             cell: ({ row }) => (
               <Styled.Buttons>
                 <Button
