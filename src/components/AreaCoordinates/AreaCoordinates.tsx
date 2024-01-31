@@ -319,12 +319,12 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     return 'success';
   };
 
-  const setCoordinates = (valute: string, index: number, axis: string) => {
+  const setCoordinates = (value: string, index: number, axis: string) => {
     if (!areaCoordinate) return;
 
     const uppdatedArea = {
       ...areaCoordinate?.coordinates[index],
-      [axis]: valute,
+      [axis]: value,
     };
     const newCoordinates = { ...areaCoordinate };
     newCoordinates.coordinates[index] = uppdatedArea;
