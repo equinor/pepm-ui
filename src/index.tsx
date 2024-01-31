@@ -1,14 +1,13 @@
 import { MsalProvider } from '@azure/msal-react';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { RouterProvider } from 'react-router-dom';
+import { App } from './App';
 import { msalInstance } from './auth/msalClient';
 import { queryClient } from './auth/queryClient';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { router } from './router';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -17,7 +16,7 @@ root.render(
   <React.StrictMode>
     <MsalProvider instance={msalInstance}>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <App />
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </MsalProvider>
