@@ -1,7 +1,17 @@
 import { Tabs } from '@equinor/eds-core-react';
 import { useNavigate } from 'react-router-dom';
-import { tabs } from '../../../router';
 import * as Styled from './Navigation.styled';
+
+interface Tab {
+  title: string;
+  path: string;
+}
+
+const tabs: Tab[] = [
+  { title: 'Models', path: '/' },
+  { title: 'API', path: 'api' },
+  { title: 'About', path: 'about' },
+];
 
 export const Navigation = () => {
   const navigate = useNavigate();
