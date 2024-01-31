@@ -8,16 +8,14 @@ export const Model = () => {
   const { data } = useFetchModel();
 
   return (
-    <>
-      <Styled.Wrapper>
-        <Styled.SidebarWrapper>
-          <ModelNavigationBar />
-        </Styled.SidebarWrapper>
-        <Styled.ContentWrapper>
-          <ModelNameFrame model={data?.data} />
-          <Outlet />
-        </Styled.ContentWrapper>
-      </Styled.Wrapper>
-    </>
+    <Styled.Wrapper>
+      <Styled.SidebarWrapper>
+        <ModelNavigationBar />
+      </Styled.SidebarWrapper>
+      <Styled.ContentWrapper>
+        <ModelNameFrame model={data?.data} />
+        <Outlet />
+      </Styled.ContentWrapper>
+    </Styled.Wrapper>
   );
 };

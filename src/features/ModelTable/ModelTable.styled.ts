@@ -10,7 +10,17 @@ export const Table = styled.div`
       min-width: 90% !important;
     }
     > div {
+      margin-top: 2rem;
       min-width: 90% !important;
+    }
+
+    @media (max-width: 1500px) {
+      > table {
+        min-width: 100% !important;
+      }
+      > div {
+        min-width: 100% !important;
+      }
     }
   }
 `;
@@ -25,7 +35,6 @@ export const Buttons = styled.div`
 export const List = styled.div`
   display: flex;
   flex-direction: row;
-  overflow: auto;
   > p {
     padding-right: ${spacings.X_SMALL};
   }

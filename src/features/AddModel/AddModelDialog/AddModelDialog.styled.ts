@@ -15,7 +15,8 @@ const StyledDialogCustomContent = styled(Dialog.CustomContent)`
   display: flex;
   flex-direction: column;
   row-gap: ${spacings.X_LARGE};
-  height: 740px;
+  height: fit-content;
+  padding-bottom: ${spacings.XXX_LARGE};
 
   > p {
     &.error {

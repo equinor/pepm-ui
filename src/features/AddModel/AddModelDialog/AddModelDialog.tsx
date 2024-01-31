@@ -119,7 +119,9 @@ export const AddModelDialog = ({
   return (
     <Styled.Dialog open={isOpen}>
       <Styled.Dialog.Header>
-        <Styled.Dialog.Title>Add new model</Styled.Dialog.Title>
+        <Styled.Dialog.Title>
+          {isEdit ? 'Edit model details' : 'Add new model'}
+        </Styled.Dialog.Title>
       </Styled.Dialog.Header>
       <Styled.DialogCustomContent scrollable>
         {!isEdit && (

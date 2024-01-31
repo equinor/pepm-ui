@@ -5,6 +5,7 @@ import { theme } from '../../../tokens/theme';
 
 export const StyledSidebarContent = styled(SideBar.Content)`
   padding-top: ${spacings.MEDIUM};
+  overflow: hidden;
   > a {
     border-bottom: none;
   }
