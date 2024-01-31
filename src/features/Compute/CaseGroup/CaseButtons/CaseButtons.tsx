@@ -20,22 +20,26 @@ export const CaseButtons = ({
   saved,
   isProcessed,
   caseStatus,
+  hasUnsavedCase,
   saveCase,
   runCase,
   deleteCase,
   setAlertMessage,
+  duplicateCase,
 }: {
   id: string;
   caseType: string;
   saved: boolean;
   isProcessed?: boolean;
   caseStatus: ComputeJobStatus;
+  hasUnsavedCase: boolean;
   runCase?: () => void;
   saveCase: () => void;
   deleteCase: (
     computeCaseId: string,
   ) => Promise<ListComputeCasesByAnalogueModelIdQueryResponse | undefined>;
   setAlertMessage: (message: string) => void;
+  duplicateCase: () => void;
 }) => {
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [saveConfirm, setSaveConfirm] = useState(false);
@@ -72,17 +76,36 @@ export const CaseButtons = ({
       )}
 
       {caseType === 'Variogram' && (
-        <Tooltip title={'Functionality not implemented yet.'}>
-          <Button
-            disabled
-            variant="ghost_icon"
-            aria-label="duplicate"
-            // eslint-disable-next-line no-console
-            onClick={() => console.log('Duplicate')}
-          >
-            <Icon data={COPY} size={24}></Icon>
-          </Button>
-        </Tooltip>
+        <>
+          {id.length < 3 ? (
+            <Tooltip title={'Can not duplicate unsaved case.'}>
+              <Button disabled variant="ghost_icon" aria-label="duplicate">
+                <Icon data={COPY} size={24}></Icon>
+              </Button>
+            </Tooltip>
+          ) : (
+            <>
+              {hasUnsavedCase ? (
+                <Tooltip
+                  title={'Only one unsaved case per method at the time.'}
+                >
+                  <Button disabled variant="ghost_icon" aria-label="duplicate">
+                    <Icon data={COPY} size={24}></Icon>
+                  </Button>
+                </Tooltip>
+              ) : (
+                <Button
+                  disabled={hasUnsavedCase}
+                  variant="ghost_icon"
+                  aria-label="duplicate"
+                  onClick={() => duplicateCase()}
+                >
+                  <Icon data={COPY} size={24}></Icon>
+                </Button>
+              )}
+            </>
+          )}
+        </>
       )}
 
       {caseType === 'Object' ? (

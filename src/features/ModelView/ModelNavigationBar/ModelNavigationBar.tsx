@@ -1,10 +1,9 @@
 /* eslint-disable max-lines-per-function */
 import { SideBar, SidebarLinkProps } from '@equinor/eds-core-react';
 import {
+  approve as APPROVE,
+  format_list_bulleted as FORMATLISTBULLET,
   IconData,
-  // eslint-disable-next-line sort-imports
-  approve,
-  format_list_bulleted as formatListBullet,
   settings,
 } from '@equinor/eds-icons';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -27,20 +26,12 @@ export const ModelNavigationBar = () => {
   const path = tab[tab.length - 1];
   const path2 = tab[tab.length - 2];
 
-  const menuItems: SidebarLinkProps[] = [
-    {
-      label: 'Details',
-      icon: formatListBullet,
-      href: 'details',
-      active: false,
-    },
-    {
-      label: 'Results',
-      icon: approve,
-      href: 'results',
-      active: false,
-    },
-  ];
+  const menuItems: SidebarLinkProps = {
+    label: 'Details',
+    icon: FORMATLISTBULLET,
+    href: 'details',
+    active: false,
+  };
 
   const sidebarCompute: MenuItems = {
     label: 'Compute',
@@ -50,14 +41,34 @@ export const ModelNavigationBar = () => {
       {
         label: 'Variogram',
         name: 'variogram',
-        href: 'variogram',
+        href: 'compute/variogram',
         icon: settings,
       },
       {
         label: 'Object',
         name: 'object',
-        href: 'object',
+        href: 'compute/object',
         icon: settings,
+      },
+    ],
+  };
+
+  const sidebarResults: MenuItems = {
+    label: 'Results',
+    href: '',
+    icon: APPROVE,
+    subItems: [
+      {
+        label: 'Variogram',
+        name: 'variogram',
+        href: 'results/variogram',
+        icon: APPROVE,
+      },
+      {
+        label: 'Object',
+        name: 'object',
+        href: 'results/object',
+        icon: APPROVE,
       },
     ],
   };
@@ -66,10 +77,10 @@ export const ModelNavigationBar = () => {
     <SideBar open>
       <Styled.SidebarContent>
         <Styled.SidebarLink
-          className={menuItems[0].href === path && 'activeTab'}
-          label={menuItems[0].label}
-          icon={menuItems[0].icon}
-          active={menuItems[0].href === path}
+          className={menuItems.href === path && 'activeTab'}
+          label={menuItems.label}
+          icon={menuItems.icon}
+          active={menuItems.href === path}
           onClick={() => {
             navigate('details');
           }}
@@ -77,21 +88,29 @@ export const ModelNavigationBar = () => {
 
         <Styled.SidebarLink
           disabled
-          className={('object' === path || 'variogram' === path) && 'activeTab'}
+          className={
+            ('object' === path || 'variogram' === path) &&
+            'compute' === path2 &&
+            'activeTab'
+          }
           isExpanded
           label={sidebarCompute.label}
           icon={sidebarCompute.icon}
-          active={'object' === path || 'variogram' === path}
+          active={
+            ('object' === path || 'variogram' === path) && 'compute' === path2
+          }
           onClick={() => {
-            navigate('variogram');
+            navigate('compute/variogram');
           }}
         ></Styled.SidebarLink>
         {sidebarCompute.subItems?.map((item) => (
           <Styled.AccordionItem
-            className={item.href === path && 'activeTab actTab'}
+            className={
+              item.name === path && path2 === 'compute' && 'activeTab actTab'
+            }
             key={item.label}
             label={item.label}
-            active={item.href === path && item.label === 'Variogram'}
+            active={item.name === path && path2 === 'compute'}
             onClick={() => {
               navigate(`${item.href}`);
             }}
@@ -100,16 +119,32 @@ export const ModelNavigationBar = () => {
 
         <Styled.SidebarLink
           className={
-            (menuItems[1].href === path || menuItems[1].href === path2) &&
+            ('object' === path || 'variogram' === path) &&
+            'results' === path2 &&
             'activeTab'
           }
-          label={menuItems[1].label}
-          icon={menuItems[1].icon}
-          active={menuItems[1].href === path || menuItems[1].href === path2}
+          label={sidebarResults.label}
+          icon={sidebarResults.icon}
+          active={
+            ('object' === path || 'variogram' === path) && 'results' === path2
+          }
           onClick={() => {
-            navigate('results');
+            navigate('results/variogram');
           }}
         ></Styled.SidebarLink>
+        {sidebarResults.subItems?.map((item) => (
+          <Styled.AccordionItem
+            className={
+              item.name === path && path2 === 'results' && 'activeTab actTab'
+            }
+            key={item.label}
+            label={item.label}
+            active={item.name === path && path2 === 'results'}
+            onClick={() => {
+              navigate(`${item.href}`);
+            }}
+          ></Styled.AccordionItem>
+        ))}
       </Styled.SidebarContent>
     </SideBar>
   );

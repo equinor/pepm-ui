@@ -19,6 +19,7 @@ import {
 import { queryClient } from '../../../auth/queryClient';
 import { CaseCardComponent } from '../../../components/CaseCardComponent/CaseCardComponent';
 import { useAccessToken } from '../../../hooks/useAccessToken';
+import { useFetchCases } from '../../../hooks/useFetchCases';
 import * as Styled from './CaseGroup.styled';
 import { CaseRow } from './CaseRow/CaseRow';
 
@@ -38,6 +39,7 @@ export const CaseGroup = ({
   runCase: (computeCaseId: string) => void;
 }) => {
   const [localList, setLocalList] = useState<ComputeCaseDto[]>([]);
+  const { data } = useFetchCases();
   const { modelId } = useParams<{ modelId: string }>();
   const { instance, accounts } = useMsal();
   const token = useAccessToken(instance, accounts[0]);
@@ -298,6 +300,32 @@ export const CaseGroup = ({
     }
   }, [addCase, triggerAddCase]);
 
+  const duplicateCase = (id: string) => {
+    const caseToDuplicate = data?.data.filter((c) => c.computeCaseId === id);
+    const randomLocalId = Math.floor(Math.random() * 100).toString();
+    if (caseToDuplicate) {
+      const newCase: ComputeCaseDto = {
+        computeCaseId: randomLocalId,
+        computeMethod: caseToDuplicate[0].computeMethod,
+        modelArea: caseToDuplicate[0].modelArea,
+        inputSettings: caseToDuplicate[0].inputSettings,
+        jobStatus: ComputeJobStatus.NOT_STARTED,
+      };
+
+      const localCasesForMethod = filerLocalList(
+        caseToDuplicate[0].computeMethod.name,
+      );
+
+      if (
+        localCasesForMethod.length < 1 &&
+        localCasesForMethod[0] === undefined
+      ) {
+        setLocalList([...localList, newCase]);
+        updateLocalCaseList && updateLocalCaseList('Variogram', true);
+      }
+    }
+  };
+
   return (
     <>
       {methodName === 'Channel' && (
@@ -378,6 +406,7 @@ export const CaseGroup = ({
                   removeLocalCase={removeLocalCase}
                   settingsFilter={settingsFilter}
                   variogramFilter={variogramFilter}
+                  duplicateCase={duplicateCase}
                 />
               ))}
             </>
