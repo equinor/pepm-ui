@@ -71,7 +71,7 @@ export const ModelTable = ({
         emptyMessage="Empty :("
         columnResizeMode="onChange"
         rows={data.data}
-        pageSize={5}
+        pageSize={10}
         columns={[
           { accessorKey: 'name', header: 'Model name', id: 'name' },
           {

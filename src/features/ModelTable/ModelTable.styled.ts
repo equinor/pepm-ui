@@ -10,10 +10,11 @@ export const Table = styled.div`
       min-width: 90% !important;
     }
     > div {
+      margin-top: 2rem;
       min-width: 90% !important;
     }
 
-    @media (max-width: 1200px) {
+    @media (max-width: 1500px) {
       > table {
         min-width: 100% !important;
       }
