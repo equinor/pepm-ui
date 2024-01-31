@@ -20,7 +20,8 @@ RUN deluser --remove-home node \
 
 USER 1001
 EXPOSE 3000
-CMD ["serve", "build", "--listen", "3000", '-s']
+CMD ["serve", "build", "--listen", "3000", "-s"]
+
 
 
 FROM base AS test
