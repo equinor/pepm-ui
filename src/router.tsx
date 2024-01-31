@@ -8,7 +8,8 @@ import { InvalidURL } from './pages/InvalidURL/InvalidURL';
 import { ComputeObject } from './pages/ModelPages/Compute/ComputeObject/ComputeObject';
 import { ComputeVariogram } from './pages/ModelPages/Compute/ComputeVariogram/ComputeVariogram';
 import { Model } from './pages/ModelPages/Model/Model';
-import { Results } from './pages/ModelPages/Results/Results';
+import { ObjectResult } from './pages/ModelPages/Results/ObjectResult/ObjectResult';
+import { VariogramResults } from './pages/ModelPages/Results/VariogramResults/VariogramResults';
 
 interface Tab extends Required<Pick<NonIndexRouteObject, 'path' | 'element'>> {
   title: string;
@@ -43,17 +44,21 @@ const appRoutes = [
       },
 
       {
-        path: 'variogram',
+        path: 'compute/variogram',
         element: <ComputeVariogram />,
       },
       {
-        path: 'object',
+        path: 'compute/object',
         element: <ComputeObject />,
       },
 
       {
-        path: 'results',
-        element: <Results />,
+        path: 'results/variogram',
+        element: <VariogramResults />,
+      },
+      {
+        path: 'results/object',
+        element: <ObjectResult />,
       },
     ],
   },

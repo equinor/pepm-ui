@@ -3,7 +3,8 @@ import { Table } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 import { theme } from '../../../../../tokens/theme';
 
-export const Wrapper = styled.div`
+const StyledTable = styled(Table)`
+  width: 100%;
   max-width: 950px;
 `;
 export const ColumnCell = styled(Table.Cell)`
@@ -20,3 +21,5 @@ export const DataCell = styled(Table.Cell)`
     justify-content: right;
   }
 `;
+
+export { StyledTable as Table };
