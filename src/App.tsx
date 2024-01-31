@@ -1,12 +1,13 @@
+import { InteractionType } from '@azure/msal-browser';
 import {
   AuthenticatedTemplate,
   UnauthenticatedTemplate,
   useMsalAuthentication,
 } from '@azure/msal-react';
-import { InteractionType } from '@azure/msal-browser';
-import { Layout } from './pages/Layout';
+import { RouterProvider } from 'react-router-dom';
 import { OpenAPI } from './api/generated';
 import { apiConfig } from './auth/authConfig';
+import { router } from './router';
 
 export function App() {
   useMsalAuthentication(InteractionType.Redirect);
@@ -15,7 +16,7 @@ export function App() {
   return (
     <>
       <AuthenticatedTemplate>
-        <Layout />
+        <RouterProvider router={router} />
       </AuthenticatedTemplate>
       <UnauthenticatedTemplate>
         <div>You are not authorized</div>

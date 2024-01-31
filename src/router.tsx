@@ -1,10 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { App } from './App';
+
 import { ModelView } from './features/ModelView/ModelView';
 import { About } from './pages/About/About';
 import { Api } from './pages/Api/Api';
 import { Browse } from './pages/Browse/Browse';
 import { InvalidURL } from './pages/InvalidURL/InvalidURL';
+import { Layout } from './pages/Layout';
 import { ComputeObject } from './pages/ModelPages/Compute/ComputeObject/ComputeObject';
 import { ComputeVariogram } from './pages/ModelPages/Compute/ComputeVariogram/ComputeVariogram';
 import { Model } from './pages/ModelPages/Model/Model';
@@ -14,7 +15,8 @@ import { VariogramResults } from './pages/ModelPages/Results/VariogramResults/Va
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: <Layout />,
+
     children: [
       {
         index: true,
