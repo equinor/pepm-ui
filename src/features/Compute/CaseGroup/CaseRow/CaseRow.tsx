@@ -33,6 +33,7 @@ export const CaseRow = ({
   removeLocalCase,
   settingsFilter,
   variogramFilter,
+  duplicateCase,
 }: {
   rowCase: ComputeCaseDto;
   id: string;
@@ -60,6 +61,7 @@ export const CaseRow = ({
   variogramFilter?: (
     name: string,
   ) => ListComputeSettingsMethodDto[] | undefined;
+  duplicateCase?: (id: string) => void;
 }) => {
   const [selectedModelArea, setModelArea] = useState<ModelAreaDto[]>();
   const [selectedIndicatorParameters, setIndicatorParameters] =
@@ -378,6 +380,7 @@ export const CaseRow = ({
         defaultArea = areaList.filter(
           (area) => area.modelAreaId === rowCase[0].modelArea.modelAreaId,
         );
+        setModelArea(defaultArea);
       }
       return defaultArea;
     },
@@ -407,6 +410,17 @@ export const CaseRow = ({
     allCasesList.forEach((r) => setNotSavedVariogram(r, 'Net-To-Gross'));
     allCasesList.forEach((r) => setNotSavedVariogram(r, 'ContiniousParameter'));
   }, [caseList, allCasesList, saved]);
+
+  const hasUnsavedCase = (id: string) => {
+    const caseMethod = allCasesList.filter((c) => c.computeCaseId === id)[0]
+      .computeMethod;
+    const methodList = allCasesList
+      .filter(
+        (c) => c.computeMethod.computeMethodId === caseMethod.computeMethodId,
+      )
+      .filter((i) => i.computeCaseId.length < 4);
+    return methodList.length > 0;
+  };
 
   return (
     <Styled.Case className={id.length <= 3 ? 'local-case' : ''}>
@@ -495,10 +509,14 @@ export const CaseRow = ({
           saved={saved}
           isProcessed={data?.data.isProcessed}
           caseStatus={rowCase.jobStatus}
+          hasUnsavedCase={hasUnsavedCase(id)}
           saveCase={() => handleSaveCase(id)}
           runCase={runRowCase}
           deleteCase={deleteCase}
           setAlertMessage={setAlertMessage}
+          duplicateCase={() => {
+            duplicateCase && duplicateCase(id);
+          }}
         />
       </Styled.CaseRow>
     </Styled.Case>
