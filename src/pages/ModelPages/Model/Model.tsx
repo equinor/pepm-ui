@@ -5,7 +5,10 @@ import { useFetchModel } from '../../../hooks/useFetchModel';
 import * as Styled from './Model.styled';
 
 export const Model = () => {
-  const { data } = useFetchModel();
+  const { data, isLoading, failureReason } = useFetchModel();
+
+  if (failureReason) return <>An error occured</>;
+  if (isLoading) return <>Loading ...</>;
 
   return (
     <Styled.Wrapper>
