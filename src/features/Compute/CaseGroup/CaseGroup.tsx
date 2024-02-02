@@ -58,7 +58,7 @@ export const CaseGroup = ({
       );
     },
     onSuccess: () => {
-      queryClient.refetchQueries();
+      queryClient.invalidateQueries(['model-cases']);
     },
   });
 
@@ -79,7 +79,7 @@ export const CaseGroup = ({
       );
     },
     onSuccess: () => {
-      queryClient.refetchQueries();
+      queryClient.invalidateQueries(['model-cases']);
     },
   });
 
@@ -97,7 +97,7 @@ export const CaseGroup = ({
       );
     },
     onSuccess: () => {
-      queryClient.refetchQueries();
+      queryClient.invalidateQueries(['model-cases']);
     },
   });
 
