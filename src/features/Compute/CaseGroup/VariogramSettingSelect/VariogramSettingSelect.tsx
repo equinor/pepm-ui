@@ -30,12 +30,17 @@ export const VariogramOptionSelect = ({
   setParameters,
   setArchelFilter,
   setVariogramModels,
-  NetToGrossSettings,
-  ContiniusParameterSettings,
-  IndicatorSettings,
+  NetGrossGrainSizeSettings,
+  NetGrossVariogramFamilySettings,
+  contParamsVariogramFamilySettings,
+  contParamsParamsSettings,
+  contParamsArchelSettings,
+  indicatorFamilySettings,
+  indicatorIndicatorSettings,
   existingCases,
   saved,
   caseError,
+  selectedParamValue,
 }: {
   rowCase: ComputeCaseDto;
   modelAreas: ModelAreaDto[];
@@ -65,69 +70,28 @@ export const VariogramOptionSelect = ({
   setVariogramModels: React.Dispatch<
     React.SetStateAction<ListComputeSettingsInputValueDto[] | undefined>
   >;
-  IndicatorSettings?: ListComputeSettingsInputDto[];
-  NetToGrossSettings?: ListComputeSettingsInputDto[];
-  ContiniusParameterSettings?: ListComputeSettingsInputDto[];
+  indicatorFamilySettings?: ListComputeSettingsInputDto[] | undefined;
+  indicatorIndicatorSettings?: ListComputeSettingsInputDto[] | undefined;
+  NetGrossGrainSizeSettings?: ListComputeSettingsInputDto[] | undefined;
+  NetGrossVariogramFamilySettings?: ListComputeSettingsInputDto[] | undefined;
+  contParamsVariogramFamilySettings?: ListComputeSettingsInputDto[] | undefined;
+  contParamsParamsSettings?: ListComputeSettingsInputDto[] | undefined;
+  contParamsArchelSettings?: ListComputeSettingsInputDto[] | undefined;
   existingCases: ComputeCaseDto[];
   saved: boolean;
   caseError: string;
+  selectedParamValue: (method: string) => ListComputeSettingsInputValueDto[];
 }) => {
   const [expandSettings, setExpandSettings] = useState<boolean>(false);
-
-  const filterSettings = (
-    setting: ListComputeSettingsInputDto[] | undefined,
-    method: string,
-  ) => {
-    return setting?.filter((value) => value.name === method);
-  };
-
-  const indicatorFamilySettings = filterSettings(
-    IndicatorSettings,
-    'Variogram Family Filter',
-  );
-  const indicatorIndicatorSettings = filterSettings(
-    IndicatorSettings,
-    'Indicator',
-  );
-  const NetGrossGrainSizeSettings = filterSettings(
-    NetToGrossSettings,
-    'Net-To-Gross',
-  );
-
-  const NetGrossVariogramFamilySettings = filterSettings(
-    NetToGrossSettings,
-    'Variogram Family Filter',
-  );
-
-  const contParamsVariogramFamilySettings = filterSettings(
-    ContiniusParameterSettings,
-    'Variogram Family Filter',
-  );
-
-  const contParamsParamsSettings = filterSettings(
-    ContiniusParameterSettings,
-    'ContiniousParameter',
-  );
-
-  const contParamsArchelSettings = filterSettings(
-    ContiniusParameterSettings,
-    'Archel',
-  );
 
   const getDefaultParameters = (
     loadedParameters: ListComputeSettingsInputValueDto[],
     selectedParameter: ListComputeSettingsInputValueDto[] | undefined,
-    setParameter: (
-      value: React.SetStateAction<
-        ListComputeSettingsInputValueDto[] | undefined
-      >,
-    ) => void,
   ) => {
     let list: ListComputeSettingsInputValueDto[] = [];
 
     if (loadedParameters !== undefined && selectedParameter === undefined) {
       list = loadedParameters;
-      setParameter(loadedParameters);
     } else if (
       selectedParameter !== undefined &&
       loadedParameters === undefined
@@ -142,99 +106,30 @@ export const VariogramOptionSelect = ({
     return list;
   };
 
-  const selectedParamValue = (method: string) => {
-    let settingsValueList: ListComputeSettingsInputValueDto[] | undefined = [];
-    let loadedParameters: ListComputeSettingsInputValueDto[] | undefined = [];
-
-    switch (method) {
-      case 'Indicator': {
-        if (indicatorIndicatorSettings)
-          settingsValueList = indicatorIndicatorSettings[0].values;
-        break;
-      }
-      case 'Variogram Family Filter': {
-        if (caseType === 'Indicator') {
-          if (indicatorFamilySettings)
-            settingsValueList = indicatorFamilySettings[0].values;
-        } else if (caseType === 'Net-To-Gross') {
-          if (NetGrossVariogramFamilySettings)
-            settingsValueList = NetGrossVariogramFamilySettings[0].values;
-        } else if (caseType === 'ContiniousParameter') {
-          if (contParamsVariogramFamilySettings)
-            settingsValueList = contParamsVariogramFamilySettings[0].values;
-        }
-        break;
-      }
-      case 'Net-To-Gross': {
-        if (NetGrossGrainSizeSettings)
-          settingsValueList = NetGrossGrainSizeSettings[0].values;
-        break;
-      }
-
-      case 'ContiniousParameter': {
-        if (contParamsParamsSettings)
-          settingsValueList = contParamsParamsSettings[0].values;
-        break;
-      }
-      case 'Archel': {
-        if (contParamsArchelSettings)
-          settingsValueList = contParamsArchelSettings[0].values;
-        break;
-      }
-    }
-
-    loadedParameters =
-      settingsValueList &&
-      settingsValueList.filter((i) =>
-        rowCase.inputSettings?.find(
-          (s) => s.inputSettingValueId === i.inputSettingValueId,
-        ),
-      );
-
+  const setIfLoadedValues = (method: string) => {
+    const loaded = selectedParamValue(method);
     switch (method) {
       case 'Indicator':
-        if (setIndicatorParameters)
-          return getDefaultParameters(
-            loadedParameters,
-            selectedIndicatorParameters,
-            setIndicatorParameters,
-          );
+        if (loaded)
+          return getDefaultParameters(loaded, selectedIndicatorParameters);
         break;
 
       case 'Variogram Family Filter':
-        if (setVariogramModels)
-          return getDefaultParameters(
-            loadedParameters,
-            selectedVariogramModels,
-            setVariogramModels,
-          );
-        break;
+        return getDefaultParameters(loaded, selectedVariogramModels);
 
       case 'Net-To-Gross':
-        if (setGrainSize)
-          return getDefaultParameters(
-            loadedParameters,
-            selectedGrainSize,
-            setGrainSize,
-          );
+        if (loaded) return getDefaultParameters(loaded, selectedGrainSize);
         break;
 
       case 'ContiniousParameter':
-        if (setParameters)
-          return getDefaultParameters(
-            loadedParameters,
-            selectedParameters,
-            setParameters,
-          );
+        if (loaded) return getDefaultParameters(loaded, selectedParameters);
         break;
 
       case 'Archel':
-        if (setArchelFilter)
-          return getDefaultParameters(
-            loadedParameters,
-            selectedArchelFilter,
-            setArchelFilter,
-          );
+        if (loaded) {
+          const res = getDefaultParameters(loaded, selectedArchelFilter);
+          return res;
+        }
         break;
     }
   };
@@ -272,18 +167,14 @@ export const VariogramOptionSelect = ({
       {setIndicatorParameters && caseType === 'Indicator' && (
         <ViewSelectedVariogramSettings
           expandSettings={expandSettings}
-          selecteSettings={
-            selectedParamValue && selectedParamValue('Indicator')
-          }
+          selecteSettings={setIfLoadedValues && setIfLoadedValues('Indicator')}
         >
           <CaseSettingSelect
             label={'Parameter'}
             options={
               indicatorIndicatorSettings && indicatorIndicatorSettings[0].values
             }
-            selectedValue={
-              selectedParamValue && selectedParamValue('Indicator')
-            }
+            selectedValue={setIfLoadedValues && setIfLoadedValues('Indicator')}
             setValue={setIndicatorParameters}
           />
         </ViewSelectedVariogramSettings>
@@ -293,7 +184,7 @@ export const VariogramOptionSelect = ({
         <ViewSelectedVariogramSettings
           expandSettings={expandSettings}
           selecteSettings={
-            selectedParamValue && selectedParamValue('Net-To-Gross')
+            setIfLoadedValues && setIfLoadedValues('Net-To-Gross')
           }
         >
           <CaseSettingSelect
@@ -303,7 +194,7 @@ export const VariogramOptionSelect = ({
               NetGrossGrainSizeSettings && NetGrossGrainSizeSettings[0].values
             }
             selectedValue={
-              selectedParamValue && selectedParamValue('Net-To-Gross')
+              setIfLoadedValues && setIfLoadedValues('Net-To-Gross')
             }
             setValue={setGrainSize}
           />
@@ -313,7 +204,7 @@ export const VariogramOptionSelect = ({
         <ViewSelectedVariogramSettings
           expandSettings={expandSettings}
           selecteSettings={
-            selectedParamValue && selectedParamValue('ContiniousParameter')
+            setIfLoadedValues && setIfLoadedValues('ContiniousParameter')
           }
         >
           <CaseSettingSelect
@@ -323,7 +214,7 @@ export const VariogramOptionSelect = ({
               contParamsParamsSettings && contParamsParamsSettings[0].values
             }
             selectedValue={
-              selectedParamValue && selectedParamValue('ContiniousParameter')
+              setIfLoadedValues && setIfLoadedValues('ContiniousParameter')
             }
             setValue={setParameters}
           />
@@ -331,7 +222,7 @@ export const VariogramOptionSelect = ({
       )}
       <ViewSelectedVariogramSettings
         expandSettings={expandSettings}
-        selecteSettings={selectedParamValue && selectedParamValue('Archel')}
+        selecteSettings={setIfLoadedValues && setIfLoadedValues('Archel')}
       >
         <CaseSettingSelect
           label="Architectural elements filter"
@@ -339,7 +230,7 @@ export const VariogramOptionSelect = ({
           options={
             contParamsArchelSettings && contParamsArchelSettings[0].values
           }
-          selectedValue={selectedParamValue && selectedParamValue('Archel')}
+          selectedValue={setIfLoadedValues && setIfLoadedValues('Archel')}
           setValue={setArchelFilter}
           caseType={caseType}
         />
@@ -348,7 +239,7 @@ export const VariogramOptionSelect = ({
       <ViewSelectedVariogramSettings
         expandSettings={expandSettings}
         selecteSettings={
-          selectedParamValue && selectedParamValue('Variogram Family Filter')
+          setIfLoadedValues && setIfLoadedValues('Variogram Family Filter')
         }
       >
         <CaseSettingSelect
@@ -363,7 +254,7 @@ export const VariogramOptionSelect = ({
                 contParamsVariogramFamilySettings[0].values
           }
           selectedValue={
-            selectedParamValue && selectedParamValue('Variogram Family Filter')
+            setIfLoadedValues && setIfLoadedValues('Variogram Family Filter')
           }
           setValue={setVariogramModels}
         />

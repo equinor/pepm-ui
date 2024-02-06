@@ -39,7 +39,7 @@ export const CaseGroup = ({
   runCase: (computeCaseId: string) => void;
 }) => {
   const [localList, setLocalList] = useState<ComputeCaseDto[]>([]);
-  const { data } = useFetchCases();
+  const { data, isLoading } = useFetchCases();
   const { modelId } = useParams<{ modelId: string }>();
   const { instance, accounts } = useMsal();
   const token = useAccessToken(instance, accounts[0]);
@@ -325,6 +325,7 @@ export const CaseGroup = ({
       }
     }
   };
+  if (isLoading) return <p>Loading ...</p>;
 
   return (
     <>
