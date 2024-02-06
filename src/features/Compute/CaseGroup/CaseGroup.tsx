@@ -325,7 +325,7 @@ export const CaseGroup = ({
       }
     }
   };
-  if (isLoading) return <p>Loading ...</p>;
+  if (isLoading || computeSettingsResponse.isLoading) return <p>Loading ...</p>;
 
   return (
     <>
