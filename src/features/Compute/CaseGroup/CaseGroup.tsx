@@ -39,7 +39,7 @@ export const CaseGroup = ({
   runCase: (computeCaseId: string) => void;
 }) => {
   const [localList, setLocalList] = useState<ComputeCaseDto[]>([]);
-  const { data } = useFetchCases();
+  const { data, isLoading } = useFetchCases();
   const { modelId } = useParams<{ modelId: string }>();
   const { instance, accounts } = useMsal();
   const token = useAccessToken(instance, accounts[0]);
@@ -58,7 +58,7 @@ export const CaseGroup = ({
       );
     },
     onSuccess: () => {
-      queryClient.refetchQueries();
+      queryClient.invalidateQueries(['model-cases']);
     },
   });
 
@@ -79,7 +79,7 @@ export const CaseGroup = ({
       );
     },
     onSuccess: () => {
-      queryClient.refetchQueries();
+      queryClient.invalidateQueries(['model-cases']);
     },
   });
 
@@ -97,7 +97,7 @@ export const CaseGroup = ({
       );
     },
     onSuccess: () => {
-      queryClient.refetchQueries();
+      queryClient.invalidateQueries(['model-cases']);
     },
   });
 
@@ -325,6 +325,7 @@ export const CaseGroup = ({
       }
     }
   };
+  if (isLoading || computeSettingsResponse.isLoading) return <p>Loading ...</p>;
 
   return (
     <>
