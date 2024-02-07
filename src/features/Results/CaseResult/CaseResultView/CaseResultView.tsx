@@ -1,33 +1,52 @@
+/* eslint-disable max-lines-per-function */
 import * as Styled from './CaseResultView.styled';
 
 import { Typography } from '@equinor/eds-core-react';
-import { ComputeCaseDto, GetResultDto } from '../../../../api/generated';
+import {
+  ComputeCaseDto,
+  GetChannelResultsDto,
+} from '../../../../api/generated';
 import { ChannelResult } from './ObjectCaseResult/ChannelResult';
 import { VariogramCaseResult } from './VariogramCaseResult/VariogramCaseResult';
 import ResultIMG from './vargrest_output-0-_variogram_slices_.png';
 
 export const CaseResultView = ({
-  resultList,
+  channelResultList,
+  variogramResultList,
   computeCases,
 }: {
-  resultList: GetResultDto[];
+  channelResultList?: GetChannelResultsDto[];
+  variogramResultList?: GetChannelResultsDto[];
   computeCases?: ComputeCaseDto[];
 }) => {
-  const caseType = resultList[0].resultType;
+  const channelType =
+    channelResultList !== undefined && channelResultList[0].type
+      ? channelResultList[0].type
+      : '';
+  const variogramType =
+    variogramResultList !== undefined && variogramResultList[0].type
+      ? variogramResultList[0].type
+      : '';
 
   return (
     <Styled.CaseResultView>
-      <Typography variant="h2">{caseType} results</Typography>
+      <Typography variant="h2">
+        {channelType !== ''
+          ? channelType
+          : variogramType !== ''
+          ? variogramType
+          : ''}{' '}
+        results
+      </Typography>
       <Styled.CaseResultList>
-        {caseType === 'Variogram' && (
+        {variogramResultList && (
           <VariogramCaseResult
-            resultList={resultList}
+            resultList={variogramResultList}
             img={ResultIMG}
           ></VariogramCaseResult>
         )}
-
-        {caseType === 'Object' &&
-          resultList.map((obj, index) => (
+        {channelResultList &&
+          channelResultList.map((obj, index) => (
             <Styled.Wrapper key={obj.computeCaseId}>
               <ChannelResult
                 data={obj}
@@ -39,7 +58,7 @@ export const CaseResultView = ({
                     : []
                 }
               ></ChannelResult>
-              {index < resultList.length - 1 && (
+              {index < channelResultList.length - 1 && (
                 <Styled.StyledDivider
                   variant="small"
                   color="medium"

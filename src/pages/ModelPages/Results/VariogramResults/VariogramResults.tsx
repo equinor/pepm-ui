@@ -1,22 +1,18 @@
-/* eslint-disable max-lines-per-function */
 import { CaseResultView } from '../../../../features/Results/CaseResult/CaseResultView/CaseResultView';
 import { NoResults } from '../../../../features/Results/NoResults/NoResults';
 import { useFetchCases } from '../../../../hooks/useFetchCases';
-import { useFetchResults } from '../../../../hooks/useFetchResults';
+import { useFetchVariogramResults } from '../../../../hooks/useFetchVariogramResults';
 
 export const VariogramResults = () => {
-  const { data } = useFetchResults();
+  const { data } = useFetchVariogramResults();
   const cases = useFetchCases();
-
-  const variogramResults = data?.filter(
-    (res) => res.resultType === 'Variogram',
-  );
+  const variogramResults = data?.data;
 
   return (
     <>
       {variogramResults !== undefined && variogramResults?.length > 0 ? (
         <CaseResultView
-          resultList={variogramResults}
+          variogramResultList={variogramResults}
           computeCases={cases.data?.data}
         />
       ) : (
