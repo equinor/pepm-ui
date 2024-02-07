@@ -375,7 +375,7 @@ export const CaseGroup = ({
               {caseList.concat(localList).map((c, index) => (
                 <CaseRow
                   rowCase={c}
-                  key={index}
+                  key={c.computeCaseId}
                   id={c.computeCaseId}
                   allCasesList={caseList.concat(localList)}
                   caseList={caseList}
@@ -394,7 +394,7 @@ export const CaseGroup = ({
               {caseList.concat(filerLocalList(methodName)).map((c, index) => (
                 <CaseRow
                   rowCase={c}
-                  key={index}
+                  key={c.computeCaseId}
                   id={c.computeCaseId}
                   allCasesList={caseList.concat(localList)}
                   caseList={caseList}

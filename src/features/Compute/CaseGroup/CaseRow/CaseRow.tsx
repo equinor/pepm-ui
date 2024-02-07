@@ -279,7 +279,6 @@ export const CaseRow = ({
 
         if (
           row[0] !== undefined &&
-          row[0].modelArea !== null &&
           selectedModelArea &&
           selectedModelArea[0].modelAreaId !== ''
         ) {
@@ -362,7 +361,11 @@ export const CaseRow = ({
       // and if the existing case model area has an empty string as id. Returns the selected area.
       // 4. Returns the set area. If all 3 above checks is fails the default empty area is returned.
 
-      if (rowCase.length > 0 && rowCase[0].modelArea === null) {
+      if (
+        rowCase.length > 0 &&
+        rowCase[0].modelArea === null &&
+        selectedModelArea === undefined
+      ) {
         defaultArea = [
           {
             modelAreaId: '',
