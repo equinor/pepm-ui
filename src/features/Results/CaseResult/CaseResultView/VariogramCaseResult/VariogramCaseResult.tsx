@@ -1,4 +1,4 @@
-import { GetResultDto } from '../../../../../api/generated';
+import { GetVariogramResultsDto } from '../../../../../api/generated';
 import { CaseCardComponent } from '../../../../../components/CaseCardComponent/CaseCardComponent';
 import { ImageView } from '../../../../../components/ImageView/ImageView';
 import * as Styled from './VariogramCaseResult.styled';
@@ -8,13 +8,13 @@ export const VariogramCaseResult = ({
   resultList,
   img,
 }: {
-  resultList: GetResultDto[];
+  resultList: GetVariogramResultsDto[];
   img: string;
 }) => {
   return (
     <>
       {resultList.map((item) => (
-        <CaseCardComponent key={item.computeCaseId} title={item.resultType}>
+        <CaseCardComponent key={item.computeCaseId} title="Variogram">
           <Styled.CaseResultCard>
             <ImageView text="run" img={img} altText="run"></ImageView>
             <Styled.CaseLeftDiv>

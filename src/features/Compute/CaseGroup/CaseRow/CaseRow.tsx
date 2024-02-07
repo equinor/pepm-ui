@@ -7,7 +7,6 @@ import {
   CreateComputeCaseCommandResponse,
   CreateComputeCaseInputSettingsForm,
   ListComputeCasesByAnalogueModelIdQueryResponse,
-  ListComputeSettingsDto,
   ListComputeSettingsInputDto,
   ListComputeSettingsInputValueDto,
   ListComputeSettingsMethodDto,
@@ -33,7 +32,6 @@ export const CaseRow = ({
   deleteCase,
   removeLocalCase,
   settingsFilter,
-  variogramFilter,
   duplicateCase,
 }: {
   rowCase: ComputeCaseDto;
@@ -44,7 +42,6 @@ export const CaseRow = ({
   saveCase: (
     modelAreaId: string,
     computeMethodId: string,
-    computeTypeId: string,
     inputSettings: CreateComputeCaseInputSettingsForm[],
   ) => Promise<CreateComputeCaseCommandResponse | undefined>;
   updateCase?: (
@@ -58,10 +55,7 @@ export const CaseRow = ({
   setAlertMessage: (message: string) => void;
   runCase: (id: string) => void;
   removeLocalCase: (id: string) => void;
-  settingsFilter: (name: string) => ListComputeSettingsDto[] | undefined;
-  variogramFilter?: (
-    name: string,
-  ) => ListComputeSettingsMethodDto[] | undefined;
+  settingsFilter: (name: string) => ListComputeSettingsMethodDto[] | undefined;
   duplicateCase?: (id: string) => void;
 }) => {
   const [selectedModelArea, setModelArea] = useState<ModelAreaDto[]>();
@@ -80,13 +74,9 @@ export const CaseRow = ({
 
   const { data, isLoading } = useFetchModel();
 
-  const channelSettings = settingsFilter('Object');
-  const variogramSettings = settingsFilter('Variogram');
-
-  const indicatorSettings = variogramFilter && variogramFilter('Indicator');
-  const netToGrossSettings = variogramFilter && variogramFilter('Net-To-Gross');
-  const continiousParameterSettings =
-    variogramFilter && variogramFilter('ContiniousParameter');
+  const indicatorSettings = settingsFilter('Indicator');
+  const netToGrossSettings = settingsFilter('Net-To-Gross');
+  const continiousParameterSettings = settingsFilter('ContiniousParameter');
 
   const runRowCase = () => {
     if (id) runCase(id);
@@ -271,12 +261,7 @@ export const CaseRow = ({
 
       // Check if the instance is an Object case and right data/methods is provided
       // TODO: Seperate into own method, take type as argument. Support all types not just Channel cases
-      if (saveCase && variogramSettings) {
-        const computeType: ListComputeSettingsDto =
-          caseType === 'Object' && channelSettings
-            ? channelSettings[0]
-            : variogramSettings[0];
-
+      if (saveCase) {
         if (
           row[0] !== undefined &&
           selectedModelArea &&
@@ -302,7 +287,6 @@ export const CaseRow = ({
             const res = await saveCase(
               selectedModelArea[0].modelAreaId,
               row[0].computeMethod.computeMethodId,
-              computeType.computeTypeId,
               inputSettingsList,
             );
             if (res?.success) {
@@ -327,7 +311,6 @@ export const CaseRow = ({
             const res = await saveCase(
               '',
               row[0].computeMethod.computeMethodId,
-              computeType.computeTypeId,
               inputSettingsList,
             );
             if (res?.success) {

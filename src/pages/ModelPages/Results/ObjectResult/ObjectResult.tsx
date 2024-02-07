@@ -1,19 +1,18 @@
-/* eslint-disable max-lines-per-function */
 import { CaseResultView } from '../../../../features/Results/CaseResult/CaseResultView/CaseResultView';
 import { NoResults } from '../../../../features/Results/NoResults/NoResults';
 import { useFetchCases } from '../../../../hooks/useFetchCases';
-import { useFetchResults } from '../../../../hooks/useFetchResults';
+import { useFetchChannelResults } from '../../../../hooks/useFetchChannelResults';
 
 export const ObjectResult = () => {
   const cases = useFetchCases();
-  const { data } = useFetchResults();
-  const objectResults = data?.filter((res) => res.resultType === 'Object');
+  const { data } = useFetchChannelResults();
+  const objectResults = data?.data;
 
   return (
     <>
-      {objectResults !== undefined && objectResults?.length > 0 ? (
+      {objectResults !== undefined && objectResults.length > 0 ? (
         <CaseResultView
-          resultList={objectResults}
+          channelResultList={objectResults}
           computeCases={cases.data?.data}
         />
       ) : (

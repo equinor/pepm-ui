@@ -114,19 +114,11 @@ export const CaseGroup = ({
       );
     }
   };
-  const channelSettings = settingsFilter('Object');
-  const variogramSettings = settingsFilter('Variogram');
 
-  const variogramFilter = (name: string) => {
-    if (variogramSettings) {
-      return variogramSettings[0].allowedMethods.filter(
-        (item) => item.name === name,
-      );
-    }
-  };
-  const indicatorSettings = variogramFilter('Indicator');
-  const NetToGrossSettings = variogramFilter('Net-To-Gross');
-  const ContiniousParameterSettings = variogramFilter('ContiniousParameter');
+  const channelSettings = settingsFilter('Channel');
+  const indicatorSettings = settingsFilter('Indicator');
+  const NetToGrossSettings = settingsFilter('Net-To-Gross');
+  const ContiniousParameterSettings = settingsFilter('ContiniousParameter');
 
   const filerLocalList = useCallback(
     (methodType: string) => {
@@ -160,9 +152,7 @@ export const CaseGroup = ({
 
       switch (methodType) {
         case 'Channel':
-          methodId =
-            channelSettings &&
-            channelSettings[0].allowedMethods[0].computeMethodId;
+          methodId = channelSettings && channelSettings[0].computeMethodId;
           break;
         case 'Indicator':
           methodId = indicatorSettings && indicatorSettings[0].computeMethodId;
@@ -235,13 +225,11 @@ export const CaseGroup = ({
   const saveCase = async (
     modelAreaId: string,
     computeMethodId: string,
-    computeTypeId: string,
     inputSettings: CreateComputeCaseInputSettingsForm[],
   ) => {
     const caseRequestBody: CreateComputeCaseCommandForm = {
       modelAreaId: modelAreaId,
       computeMethodId: computeMethodId,
-      computeTypeId: computeTypeId,
       inputSettings: inputSettings,
     };
     if (modelId) {
@@ -406,7 +394,6 @@ export const CaseGroup = ({
                   runCase={runCase}
                   removeLocalCase={removeLocalCase}
                   settingsFilter={settingsFilter}
-                  variogramFilter={variogramFilter}
                   duplicateCase={duplicateCase}
                 />
               ))}

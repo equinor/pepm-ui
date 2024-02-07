@@ -8,7 +8,6 @@ import type { CreateComputeCaseInputSettingsForm } from './CreateComputeCaseInpu
 export type CreateComputeCaseCommandForm = {
     modelAreaId?: string | null;
     computeMethodId: string;
-    computeTypeId: string;
     inputSettings: Array<CreateComputeCaseInputSettingsForm>;
 };
 

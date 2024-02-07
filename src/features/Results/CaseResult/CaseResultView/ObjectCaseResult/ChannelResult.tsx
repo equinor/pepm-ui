@@ -1,5 +1,8 @@
 import { Typography } from '@equinor/eds-core-react';
-import { ComputeCaseDto, GetResultDto } from '../../../../../api/generated';
+import {
+  ComputeCaseDto,
+  GetChannelResultsDto,
+} from '../../../../../api/generated';
 import * as Styled from './ChannelResult.styled';
 import { ChannelResultTable } from './ChannelResultTable';
 
@@ -7,7 +10,7 @@ export const ChannelResult = ({
   data,
   computeCase,
 }: {
-  data: GetResultDto;
+  data: GetChannelResultsDto;
   computeCase?: ComputeCaseDto[];
 }) => {
   let modelArea = '';
