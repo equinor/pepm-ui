@@ -3,13 +3,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { ListComputeSettingsMethodDto } from './ListComputeSettingsMethodDto';
+import type { GetChannelResultsDto } from './GetChannelResultsDto';
 
-export type ListComputeSettingsQueryResponse = {
+export type GetChanelResultsByModelIdQueryResponse = {
     success?: boolean;
     count?: number | null;
     message?: string | null;
     validationErrors?: Array<string> | null;
-    data: Array<ListComputeSettingsMethodDto>;
+    data: Array<GetChannelResultsDto>;
 };
 

@@ -3,13 +3,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { ListComputeSettingsMethodDto } from './ListComputeSettingsMethodDto';
+import type { GetVariogramResultsDto } from './GetVariogramResultsDto';
 
-export type ListComputeSettingsQueryResponse = {
+export type GetVariogramResultsByModelIdQueryResponse = {
     success?: boolean;
     count?: number | null;
     message?: string | null;
     validationErrors?: Array<string> | null;
-    data: Array<ListComputeSettingsMethodDto>;
+    data: Array<GetVariogramResultsDto>;
 };
 

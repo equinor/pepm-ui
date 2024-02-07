@@ -3,8 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type GetResultValueDto = {
-    name: string;
-    value: string;
+export type GetChannelResultsFileDto = {
+    name?: string | null;
+    channelResultFileId?: string | null;
 };
 

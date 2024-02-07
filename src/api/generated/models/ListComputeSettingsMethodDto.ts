@@ -8,6 +8,7 @@ import type { ListComputeSettingsInputDto } from './ListComputeSettingsInputDto'
 export type ListComputeSettingsMethodDto = {
     computeMethodId: string;
     name: string;
+    computeType: string;
     inputSettings: Array<ListComputeSettingsInputDto>;
 };
 

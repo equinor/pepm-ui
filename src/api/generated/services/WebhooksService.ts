@@ -6,6 +6,7 @@ import type { UpdateChannelEstimationStatusCommand } from '../models/UpdateChann
 import type { UpdateChannelEstimationStatusCommandResponse } from '../models/UpdateChannelEstimationStatusCommandResponse';
 import type { UpdateJobStatusCommand } from '../models/UpdateJobStatusCommand';
 import type { UpdateJobStatusCommandResponse } from '../models/UpdateJobStatusCommandResponse';
+import type { UpdateVariogramEstimationStatusCommand } from '../models/UpdateVariogramEstimationStatusCommand';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -41,6 +42,22 @@ export class WebhooksService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/webhooks/channest/status',
+            body: requestBody,
+            mediaType: 'application/json-patch+json',
+        });
+    }
+
+    /**
+     * @param requestBody
+     * @returns UpdateChannelEstimationStatusCommandResponse Success
+     * @throws ApiError
+     */
+    public static postApiWebhooksVargrestStatus(
+        requestBody?: UpdateVariogramEstimationStatusCommand,
+    ): CancelablePromise<UpdateChannelEstimationStatusCommandResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/webhooks/vargrest/status',
             body: requestBody,
             mediaType: 'application/json-patch+json',
         });
