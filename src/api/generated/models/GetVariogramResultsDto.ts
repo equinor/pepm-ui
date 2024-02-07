@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { CoordinateM } from './CoordinateM';
+import type { CoordinateDto } from './CoordinateDto';
 import type { VariogramResultFile } from './VariogramResultFile';
 
 export type GetVariogramResultsDto = {
@@ -21,6 +21,6 @@ export type GetVariogramResultsDto = {
     archelFilter?: string | null;
     indicator?: string | null;
     attribute?: string | null;
-    box?: Array<CoordinateM> | null;
+    box?: Array<CoordinateDto> | null;
 };
 

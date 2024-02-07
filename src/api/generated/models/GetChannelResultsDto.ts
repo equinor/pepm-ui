@@ -6,7 +6,7 @@
 import type { ChannelEstimationResultDto } from './ChannelEstimationResultDto';
 import type { ChannelHeightDto } from './ChannelHeightDto';
 import type { ComputeType } from './ComputeType';
-import type { CoordinateM } from './CoordinateM';
+import type { CoordinateDto } from './CoordinateDto';
 import type { GetChannelResultsFileDto } from './GetChannelResultsFileDto';
 
 export type GetChannelResultsDto = {
@@ -18,6 +18,6 @@ export type GetChannelResultsDto = {
     channelWidth?: ChannelEstimationResultDto;
     segmentHeight?: ChannelEstimationResultDto;
     channelHeight?: ChannelHeightDto;
-    box?: Array<CoordinateM> | null;
+    box?: Array<CoordinateDto> | null;
 };
 
