@@ -50,7 +50,6 @@ export type { ConvertAnalogueModelCommand } from './models/ConvertAnalogueModelC
 export type { Coordinate } from './models/Coordinate';
 export type { CoordinateDto } from './models/CoordinateDto';
 export type { CoordinateEqualityComparer } from './models/CoordinateEqualityComparer';
-export type { CoordinateM } from './models/CoordinateM';
 export type { CoordinateSequence } from './models/CoordinateSequence';
 export type { CoordinateSequenceFactory } from './models/CoordinateSequenceFactory';
 export type { CreateAnalogueCommand } from './models/CreateAnalogueCommand';
