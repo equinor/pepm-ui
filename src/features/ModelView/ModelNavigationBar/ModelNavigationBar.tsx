@@ -1,10 +1,11 @@
 /* eslint-disable max-lines-per-function */
 import { SideBar, SidebarLinkProps } from '@equinor/eds-core-react';
 import {
-  approve as APPROVE,
+  arrow_back as BACK,
   format_list_bulleted as FORMATLISTBULLET,
+  grid_on as GRID,
   IconData,
-  settings,
+  timeline as TIMELINE,
 } from '@equinor/eds-icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import * as Styled from './ModelNavigationBar.styled';
@@ -13,6 +14,7 @@ type MenuItems = SidebarLinkProps & {
   subItems?: Array<{
     label: string;
     name: string;
+    type: string;
     href: string;
     icon: IconData;
   }>;
@@ -26,6 +28,12 @@ export const ModelNavigationBar = () => {
   const path = tab[tab.length - 1];
   const path2 = tab[tab.length - 2];
 
+  const backItems: SidebarLinkProps = {
+    label: 'Back',
+    icon: BACK,
+    href: '/',
+    active: false,
+  };
   const menuItems: SidebarLinkProps = {
     label: 'Details',
     icon: FORMATLISTBULLET,
@@ -33,42 +41,46 @@ export const ModelNavigationBar = () => {
     active: false,
   };
 
-  const sidebarCompute: MenuItems = {
-    label: 'Compute',
-    href: 'variogram',
-    icon: settings,
+  const objectItems: MenuItems = {
+    label: 'Object',
+    href: '',
+    icon: GRID,
     subItems: [
       {
-        label: 'Variogram',
-        name: 'variogram',
-        href: 'compute/variogram',
-        icon: settings,
+        label: 'Compute settings',
+        name: 'object',
+        type: 'compute',
+        href: 'compute/object',
+        icon: GRID,
       },
       {
-        label: 'Object',
+        label: 'Results',
         name: 'object',
-        href: 'compute/object',
-        icon: settings,
+        type: 'results',
+        href: 'results/object',
+        icon: GRID,
       },
     ],
   };
 
-  const sidebarResults: MenuItems = {
-    label: 'Results',
+  const variogramItems: MenuItems = {
+    label: 'Variogram',
     href: '',
-    icon: APPROVE,
+    icon: TIMELINE,
     subItems: [
       {
-        label: 'Variogram',
+        label: 'Compute settings',
         name: 'variogram',
-        href: 'results/variogram',
-        icon: APPROVE,
+        type: 'compute',
+        href: 'compute/variogram',
+        icon: TIMELINE,
       },
       {
-        label: 'Object',
-        name: 'object',
-        href: 'results/object',
-        icon: APPROVE,
+        label: 'Results',
+        name: 'variogram',
+        type: 'results',
+        href: 'results/variogram',
+        icon: TIMELINE,
       },
     ],
   };
@@ -76,6 +88,13 @@ export const ModelNavigationBar = () => {
   return (
     <SideBar open>
       <Styled.SidebarContent>
+        <Styled.SidebarLink
+          label={backItems.label}
+          icon={backItems.icon}
+          onClick={() => {
+            navigate('/');
+          }}
+        ></Styled.SidebarLink>
         <Styled.SidebarLink
           className={menuItems.href === path && 'activeTab'}
           label={menuItems.label}
@@ -88,29 +107,21 @@ export const ModelNavigationBar = () => {
 
         <Styled.SidebarLink
           disabled
-          className={
-            ('object' === path || 'variogram' === path) &&
-            'compute' === path2 &&
-            'activeTab'
-          }
           isExpanded
-          label={sidebarCompute.label}
-          icon={sidebarCompute.icon}
-          active={
-            ('object' === path || 'variogram' === path) && 'compute' === path2
-          }
+          label={objectItems.label}
+          icon={objectItems.icon}
           onClick={() => {
-            navigate('compute/variogram');
+            navigate('compute/object');
           }}
         ></Styled.SidebarLink>
-        {sidebarCompute.subItems?.map((item) => (
+        {objectItems.subItems?.map((item) => (
           <Styled.AccordionItem
             className={
-              item.name === path && path2 === 'compute' && 'activeTab actTab'
+              item.name === path && path2 === item.type && 'activeTab actTab'
             }
             key={item.label}
             label={item.label}
-            active={item.name === path && path2 === 'compute'}
+            active={item.name === path && path2 === item.type}
             onClick={() => {
               navigate(`${item.href}`);
             }}
@@ -118,28 +129,20 @@ export const ModelNavigationBar = () => {
         ))}
 
         <Styled.SidebarLink
-          className={
-            ('object' === path || 'variogram' === path) &&
-            'results' === path2 &&
-            'activeTab'
-          }
-          label={sidebarResults.label}
-          icon={sidebarResults.icon}
-          active={
-            ('object' === path || 'variogram' === path) && 'results' === path2
-          }
+          label={variogramItems.label}
+          icon={variogramItems.icon}
           onClick={() => {
-            navigate('results/variogram');
+            navigate('compute/variogram');
           }}
         ></Styled.SidebarLink>
-        {sidebarResults.subItems?.map((item) => (
+        {variogramItems.subItems?.map((item) => (
           <Styled.AccordionItem
             className={
-              item.name === path && path2 === 'results' && 'activeTab actTab'
+              item.name === path && path2 === item.type && 'activeTab actTab'
             }
             key={item.label}
             label={item.label}
-            active={item.name === path && path2 === 'results'}
+            active={item.name === path && path2 === item.type}
             onClick={() => {
               navigate(`${item.href}`);
             }}

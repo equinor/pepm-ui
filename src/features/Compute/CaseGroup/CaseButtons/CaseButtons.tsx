@@ -118,7 +118,7 @@ export const CaseButtons = ({
                   : caseStatus === 'Created' ||
                     caseStatus === 'Waiting' ||
                     caseStatus === 'Running'
-                  ? 'Case are running.'
+                  ? 'Case is running.'
                   : ''
               }
             >
