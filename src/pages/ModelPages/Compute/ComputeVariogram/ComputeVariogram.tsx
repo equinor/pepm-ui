@@ -1,7 +1,14 @@
 /* eslint-disable max-lines-per-function */
 import { Button, Icon, Snackbar, Tooltip } from '@equinor/eds-core-react';
 import { add as ADD, play as PLAY } from '@equinor/eds-icons';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import {
+  EstimateVariogramCommand,
+  JobsService,
+} from '../../../../api/generated';
+import { queryClient } from '../../../../auth/queryClient';
 import { CaseGroup } from '../../../../features/Compute/CaseGroup/CaseGroup';
 import { ComputeHeader } from '../../../../features/Compute/ComputeHeader/ComputeHeader';
 import { useFetchCases } from '../../../../hooks/useFetchCases';
@@ -27,6 +34,7 @@ export const ComputeVariogram = () => {
   const [showAlert, setAlert] = useState<string>();
   const [triggerAddCase, setTriggerAddCase] = useState<string>();
   const [localCaseList, setLocalCaseList] = useState<Array<string>>([]);
+  const { modelId } = useParams<{ modelId: string }>();
 
   const updateLocalCaseList = (type: string, add: boolean) => {
     if (add) {
@@ -59,6 +67,27 @@ export const ComputeVariogram = () => {
 
   const addCase = (type: string) => {
     setTriggerAddCase(type);
+  };
+
+  const computeVariogram = useMutation({
+    mutationFn: JobsService.postApiJobsComputeVariogramEstimations,
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ['model-cases'] });
+    },
+  });
+
+  const runComputeVariogram = async (computeCaseId: string) => {
+    if (!modelId) return;
+    const requestBody: EstimateVariogramCommand = {
+      modelId: modelId,
+      computeCaseId: computeCaseId,
+    };
+
+    const res = await computeVariogram.mutateAsync(requestBody);
+
+    if (res.success) {
+      setAlertMessage('Started computing case');
+    }
   };
 
   return (
@@ -107,7 +136,7 @@ export const ComputeVariogram = () => {
               <Button
                 variant="outlined"
                 // eslint-disable-next-line no-console
-                onClick={() => console.log('Running all')}
+                onClick={() => runComputeVariogram}
                 disabled
               >
                 <Icon data={PLAY} size={18}></Icon>
@@ -125,8 +154,7 @@ export const ComputeVariogram = () => {
           triggerAddCase={triggerAddCase}
           setAlertMessage={setAlertMessage}
           updateLocalCaseList={updateLocalCaseList}
-          // eslint-disable-next-line no-console
-          runCase={(id: string) => console.log('Running variogram case .... ')}
+          runCase={runComputeVariogram}
         />
         <CaseGroup
           caseList={
@@ -136,8 +164,7 @@ export const ComputeVariogram = () => {
           triggerAddCase={triggerAddCase}
           setAlertMessage={setAlertMessage}
           updateLocalCaseList={updateLocalCaseList}
-          // eslint-disable-next-line no-console
-          runCase={(id: string) => console.log(id)}
+          runCase={runComputeVariogram}
         />
 
         <CaseGroup
@@ -150,8 +177,7 @@ export const ComputeVariogram = () => {
           triggerAddCase={triggerAddCase}
           setAlertMessage={setAlertMessage}
           updateLocalCaseList={updateLocalCaseList}
-          // eslint-disable-next-line no-console
-          runCase={(id: string) => console.log(id)}
+          runCase={runComputeVariogram}
         />
       </Styled.Case>
       <Snackbar
