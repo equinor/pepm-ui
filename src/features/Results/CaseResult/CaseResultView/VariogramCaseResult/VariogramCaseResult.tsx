@@ -14,7 +14,7 @@ export const VariogramCaseResult = ({
   return (
     <>
       {resultList.map((item) => (
-        <CaseCardComponent key={item.computeCaseId} title="Variogram">
+        <CaseCardComponent key={item.variogramResultId} title="Variogram">
           <Styled.CaseResultCard>
             <ImageView text="run" img={img} altText="run"></ImageView>
             <Styled.CaseLeftDiv>
