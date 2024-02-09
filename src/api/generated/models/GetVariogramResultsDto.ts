@@ -4,13 +4,13 @@
 /* eslint-disable */
 
 import type { CoordinateDto } from './CoordinateDto';
-import type { VariogramResultFile } from './VariogramResultFile';
+import type { GetVariogramResultsVariogramResultFileDto } from './GetVariogramResultsVariogramResultFileDto';
 
 export type GetVariogramResultsDto = {
     computeCaseId?: string;
     variogramResultId?: string;
     identifier?: number;
-    variogramResultFiles?: Array<VariogramResultFile> | null;
+    variogramResultFiles?: Array<GetVariogramResultsVariogramResultFileDto> | null;
     rmajor?: number;
     rminor?: number;
     azimuth?: number;

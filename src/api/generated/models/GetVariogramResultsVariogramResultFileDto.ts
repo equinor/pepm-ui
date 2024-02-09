@@ -3,9 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { Ordinates } from './Ordinates';
-
-export type CoordinateSequenceFactory = {
-    ordinates?: Ordinates;
+export type GetVariogramResultsVariogramResultFileDto = {
+    fileName?: string | null;
+    variogramResultFileId?: string | null;
 };
 
