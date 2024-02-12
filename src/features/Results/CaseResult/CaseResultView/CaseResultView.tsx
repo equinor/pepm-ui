@@ -5,10 +5,10 @@ import { Typography } from '@equinor/eds-core-react';
 import {
   ComputeCaseDto,
   GetChannelResultsDto,
+  GetVariogramResultsDto,
 } from '../../../../api/generated';
 import { ChannelResult } from './ObjectCaseResult/ChannelResult';
 import { VariogramCaseResult } from './VariogramCaseResult/VariogramCaseResult';
-import ResultIMG from './vargrest_output-0-_variogram_slices_.png';
 
 export const CaseResultView = ({
   channelResultList,
@@ -16,17 +16,14 @@ export const CaseResultView = ({
   computeCases,
 }: {
   channelResultList?: GetChannelResultsDto[];
-  variogramResultList?: GetChannelResultsDto[];
+  variogramResultList?: GetVariogramResultsDto[];
   computeCases?: ComputeCaseDto[];
 }) => {
   const channelType =
     channelResultList !== undefined && channelResultList[0].type
       ? channelResultList[0].type
       : '';
-  const variogramType =
-    variogramResultList !== undefined && variogramResultList[0].type
-      ? variogramResultList[0].type
-      : '';
+  const variogramType = variogramResultList !== undefined ? 'Variogram' : '';
 
   return (
     <Styled.CaseResultView>
@@ -42,7 +39,6 @@ export const CaseResultView = ({
         {variogramResultList && (
           <VariogramCaseResult
             resultList={variogramResultList}
-            img={ResultIMG}
           ></VariogramCaseResult>
         )}
         {channelResultList &&

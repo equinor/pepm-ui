@@ -4,7 +4,6 @@
 /* eslint-disable */
 
 export type GetVariogramResultsVariogramResultFileDto = {
-    fileName?: string | null;
-    variogramResultFileId?: string | null;
+  fileName: string;
+  variogramResultFileId: string;
 };
-
