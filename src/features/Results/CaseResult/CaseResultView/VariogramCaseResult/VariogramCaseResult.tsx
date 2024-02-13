@@ -9,8 +9,6 @@ export const VariogramCaseResult = ({
 }: {
   resultList: GetVariogramResultsDto[];
 }) => {
-  console.log(resultList);
-
   return (
     <>
       {resultList.map((item) => (
