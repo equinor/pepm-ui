@@ -1,5 +1,4 @@
 /* eslint-disable max-lines */
-/* eslint-disable react/prop-types */
 /* eslint-disable max-lines-per-function */
 
 import {
@@ -9,28 +8,22 @@ import {
   Snackbar,
   Typography,
 } from '@equinor/eds-core-react';
-import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import {
   AddAnalogueModelAreaCommandForm,
   CoordinateDto,
   ModelAreaTypeDto,
-  ModelAreaTypeService,
-  UpdateAnalogueModelAreaCommandForm,
 } from '../../api/generated';
-import { AnalogueModelsService } from '../../api/generated/services/AnalogueModelsService';
-import { queryClient } from '../../auth/queryClient';
 import { useFetchModel } from '../../hooks/useFetchModel';
+import { useFetchModelAreas } from '../../hooks/useFetchModelAreas';
+import { useMutateAreaCoordinates } from '../../hooks/useMutateAreaCoordinates';
+import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
+import {
+  CoordinateErrorType,
+  validateCoordinates,
+} from './AreaCoordinates.hooks';
 import * as Styled from './AreaCoordinates.styled';
 import { CoordinateInput } from './CoordinateInput/CoordinateInput';
-
-type ErrorType = {
-  area?: string;
-  x0?: string;
-  y0?: string;
-  x1?: string;
-  y1?: string;
-};
 
 export type AreaCoordinateType = {
   modelAreaId: string;
@@ -63,7 +56,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
   const [showSaveAlert, setSaveAlert] = useState(false);
   const [activeArea, setActiveArea] = useState<ModelAreaTypeDto>(defaultArea);
   const [newArea, setNewArea] = useState<ModelAreaTypeDto>();
-  const [errors, setErrors] = useState<ErrorType>({});
+  const [errors, setErrors] = useState<CoordinateErrorType>({});
   const [areaCoordinate, setAreaCoordinate] = useState<AreaCoordinateType>({
     modelAreaId: '',
     coordinates: [
@@ -80,59 +73,13 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     ],
   });
 
+  const { data, isLoading } = useFetchModel(modelId);
+  const modelAreas = useFetchModelAreas();
+  const mutateAreaCoordinates = useMutateAreaCoordinates();
+
   function clearStatus() {
     setSaveAlert(false);
   }
-
-  function NotANumber(value: any) {
-    return isNaN(value);
-  }
-
-  const { data, isLoading } = useFetchModel(modelId);
-
-  const modelAreas = useQuery({
-    queryKey: ['model-area'],
-    queryFn: () => ModelAreaTypeService.getApiModelareatype(),
-  });
-
-  const postAreaCoordinates = useMutation({
-    mutationFn: ({
-      id,
-      requestBody,
-    }: {
-      id: string;
-      requestBody: AddAnalogueModelAreaCommandForm;
-    }) => {
-      return AnalogueModelsService.postApiAnalogueModelsModelAreas(
-        id,
-        requestBody,
-      );
-    },
-    onSuccess: () => {
-      queryClient.refetchQueries({ queryKey: ['analogue-model'] });
-    },
-  });
-
-  const putAreaCoordinates = useMutation({
-    mutationFn: ({
-      id,
-      modelAreaId,
-      requestBody,
-    }: {
-      id: string;
-      modelAreaId: string;
-      requestBody: UpdateAnalogueModelAreaCommandForm;
-    }) => {
-      return AnalogueModelsService.putApiAnalogueModelsModelAreas(
-        id,
-        modelAreaId,
-        requestBody,
-      );
-    },
-    onSuccess: () => {
-      queryClient.refetchQueries({ queryKey: ['analogue-model'] });
-    },
-  });
 
   const handleSelectChange = async (
     changes: AutocompleteChanges<ModelAreaTypeDto>,
@@ -144,21 +91,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     //    Coordinates are set to default
     if (changes.selectedItems.length <= 0) {
       setActiveArea(defaultArea);
-      setAreaCoordinate({
-        modelAreaId: '',
-        coordinates: [
-          {
-            x: 0,
-            y: 0,
-            m: 0,
-          },
-          {
-            x: 0,
-            y: 0,
-            m: 1,
-          },
-        ],
-      });
+      setAreaCoordinate(defaultState);
       return;
     }
 
@@ -228,94 +161,9 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     }
   };
 
-  const validateCoordinates = async (area: AreaCoordinateType | undefined) => {
-    const errors: ErrorType = {};
-    if (!activeArea || activeArea.modelAreaTypeId === '') {
-      errors.area = 'Model area needs to be selected';
-    }
-
-    if (area && area.coordinates[0].x === area.coordinates[1].x) {
-      errors.x0 = 'X coordinates can´t be equal.';
-    }
-    if (area && area.coordinates[0].y === area.coordinates[1].y) {
-      errors.y0 = 'Y coordinates can´t be equal.';
-    }
-    if (area && NotANumber(area.coordinates[0].x)) {
-      errors.x0 = 'Coordinates can´t be string, just numbers are allowed.';
-    }
-    if (area && NotANumber(area.coordinates[0].y)) {
-      errors.y0 = 'Coordinates can´t be string, just numbers are allowed.';
-    }
-    if (area && NotANumber(area.coordinates[1].x)) {
-      errors.x1 = 'Coordinates can´t be string, just numbers are allowed.';
-    }
-    if (area && NotANumber(area.coordinates[1].y)) {
-      errors.y1 = 'Coordinates can´t be string, just numbers are allowed.';
-    }
-    if (area && area.coordinates[1].x === 0) {
-      errors.x1 = 'Bottom right corner can not be 0.';
-    }
-
-    if (
-      area &&
-      (area.coordinates[0].x === null ||
-        area.coordinates[0].x === undefined ||
-        // @ts-expect-error Autocomplete
-        area.coordinates[0].x === '')
-    ) {
-      errors.x0 = 'All fields must be filled in';
-    }
-
-    if (
-      area &&
-      (area.coordinates[0].y === null ||
-        area.coordinates[0].y === undefined ||
-        // @ts-expect-error Autocomplete
-        area.coordinates[0].y === '')
-    ) {
-      errors.y0 = 'All fields must be filled in';
-    }
-
-    if (
-      area &&
-      (area.coordinates[1].x === null ||
-        area.coordinates[1].x === undefined ||
-        // @ts-expect-error Autocomplete
-        area.coordinates[1].x === '')
-    ) {
-      errors.x1 = 'All fields must be filled in';
-    }
-
-    if (
-      area &&
-      (area.coordinates[1].y === null ||
-        area.coordinates[1].y === undefined ||
-        // @ts-expect-error Autocomplete
-        area.coordinates[1].y === '')
-    ) {
-      errors.y1 = 'All fields must be filled in';
-    }
-
-    return errors;
-  };
-
   const clearAndUpdate = async () => {
     setActiveArea(defaultArea);
-    setAreaCoordinate({
-      modelAreaId: '',
-      coordinates: [
-        {
-          x: 0,
-          y: 0,
-          m: 0,
-        },
-        {
-          x: 0,
-          y: 0,
-          m: 1,
-        },
-      ],
-    });
+    setAreaCoordinate(defaultState);
     return 'success';
   };
 
@@ -338,10 +186,11 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
         coordinates: areaCoordinate.coordinates,
       };
 
-      const coordinateRes = await postAreaCoordinates.mutateAsync({
-        id: modelId,
-        requestBody: postRequestBody,
-      });
+      const coordinateRes =
+        await mutateAreaCoordinates.postAreaCoordinates.mutateAsync({
+          id: modelId,
+          requestBody: postRequestBody,
+        });
 
       if (coordinateRes.success) {
         const res = await clearAndUpdate();
@@ -351,11 +200,12 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
   };
 
   const putModelArea = async () => {
-    const coordinateRes = await putAreaCoordinates.mutateAsync({
-      id: modelId,
-      modelAreaId: areaCoordinate.modelAreaId,
-      requestBody: { coordinates: areaCoordinate.coordinates },
-    });
+    const coordinateRes =
+      await mutateAreaCoordinates.putAreaCoordinates.mutateAsync({
+        id: modelId,
+        modelAreaId: areaCoordinate.modelAreaId,
+        requestBody: { coordinates: areaCoordinate.coordinates },
+      });
     if (coordinateRes.success) {
       const res = await clearAndUpdate();
       if (res === 'success') setSaveAlert(true);
@@ -373,7 +223,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
     }
   };
   const handleSubmit = async () => {
-    const err = await validateCoordinates(areaCoordinate);
+    const err = await validateCoordinates(areaCoordinate, activeArea);
     setErrors(err);
 
     if (Object.keys(err).length === 0) {
@@ -456,18 +306,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
               />
             </Styled.CoordinateInputs>
 
-            <div>
-              {errors && (
-                <div>
-                  {' '}
-                  <p>{errors.area}</p>
-                  <p>{errors.x0}</p>
-                  <p>{errors.y0}</p>
-                  <p>{errors.x1}</p>
-                  <p>{errors.y1}</p>
-                </div>
-              )}
-            </div>
+            {errors && <ErrorMessage errors={errors}></ErrorMessage>}
           </Styled.CoordinateGroup>
 
           <Button onClick={handleSubmit}>Save</Button>
