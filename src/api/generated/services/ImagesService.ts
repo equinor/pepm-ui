@@ -10,12 +10,12 @@ export class ImagesService {
 
     /**
      * @param imageId
-     * @returns any Success
+     * @returns binary Success
      * @throws ApiError
      */
     public static getApiImagesVariogram(
         imageId: string,
-    ): CancelablePromise<any> {
+    ): CancelablePromise<Blob> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/images/variogram/{imageId}',

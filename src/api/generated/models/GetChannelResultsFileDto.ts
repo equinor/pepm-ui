@@ -4,7 +4,7 @@
 /* eslint-disable */
 
 export type GetChannelResultsFileDto = {
-    fileName?: string | null;
-    channelResultFileId?: string | null;
+    fileName: string;
+    channelResultFileId: string;
 };
 
