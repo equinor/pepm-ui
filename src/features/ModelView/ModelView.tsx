@@ -1,4 +1,3 @@
-import { Scrim, SideSheet } from '@equinor/eds-core-react';
 import { useState } from 'react';
 import { AreaCoordinates } from '../../components/AreaCoordinates/AreaCoordinates';
 import { ImageView } from '../../components/ImageView/ImageView';
@@ -30,11 +29,7 @@ export const ModelView = () => {
         />
       </Styled.MetadataWrapper>
 
-      <Scrim open={open} isDismissable>
-        <SideSheet onClose={() => setOpen(!open)}>
-          <AreaCoordinates />
-        </SideSheet>
-      </Scrim>
+      <AreaCoordinates open={open} toggleOpen={toggleOpen} />
     </>
   );
 };

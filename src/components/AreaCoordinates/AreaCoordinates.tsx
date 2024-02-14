@@ -5,6 +5,7 @@ import {
   Autocomplete,
   AutocompleteChanges,
   Button,
+  Dialog,
   Snackbar,
   Typography,
 } from '@equinor/eds-core-react';
@@ -53,7 +54,13 @@ const defaultArea: ModelAreaTypeDto = {
   name: '',
 };
 
-export const AreaCoordinates = () => {
+export const AreaCoordinates = ({
+  open,
+  toggleOpen,
+}: {
+  open: boolean;
+  toggleOpen: () => void;
+}) => {
   const [showSaveAlert, setSaveAlert] = useState(false);
   const [activeArea, setActiveArea] = useState<ModelAreaTypeDto>(defaultArea);
   const [newArea, setNewArea] = useState<ModelAreaTypeDto>();
@@ -242,18 +249,16 @@ export const AreaCoordinates = () => {
 
   return (
     <>
-      <Styled.SideSheet>
-        <Typography variant="h2">Model areas</Typography>
-        <Styled.Form>
-          <Styled.Info>
-            <Typography variant="h6">
-              {data?.success && data.data.name}
-            </Typography>
-            <Typography variant="body_long">
-              Select from predefined model areas and set the X/Y coordinates for
-              each area.
-            </Typography>
-          </Styled.Info>
+      <Styled.Dialog open={open}>
+        <Dialog.Header>
+          <Dialog.Title>Model Areas</Dialog.Title>
+        </Dialog.Header>
+        <Styled.Content>
+          <Typography variant="body_long">
+            Select from predefined model areas and set the X/Y coordinates for
+            each area.
+          </Typography>
+
           <Styled.CoordinateGroup className={'autocomplete-error'}>
             <Autocomplete
               className={errors?.area && 'autocomplete-error'}
@@ -314,10 +319,15 @@ export const AreaCoordinates = () => {
 
             {errors && <ErrorMessage errors={errors}></ErrorMessage>}
           </Styled.CoordinateGroup>
+        </Styled.Content>
 
+        <Dialog.Actions>
           <Button onClick={handleSubmit}>Save</Button>
-        </Styled.Form>
-      </Styled.SideSheet>
+          <Button variant="ghost" onClick={toggleOpen}>
+            Cancel
+          </Button>
+        </Dialog.Actions>
+      </Styled.Dialog>
       <Snackbar
         open={!!showSaveAlert}
         autoHideDuration={3000}
