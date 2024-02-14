@@ -51,6 +51,7 @@ export type { CreateParameterCommand } from './models/CreateParameterCommand';
 export type { ErrorResponse } from './models/ErrorResponse';
 export type { EstimateChannelCommand } from './models/EstimateChannelCommand';
 export type { EstimateVariogramCommand } from './models/EstimateVariogramCommand';
+export type { File } from './models/File';
 export type { GetAnalogueListQueryResponse } from './models/GetAnalogueListQueryResponse';
 export type { GetAnalogueModelListQueryResponse } from './models/GetAnalogueModelListQueryResponse';
 export type { GetAnalogueModelQueryResponse } from './models/GetAnalogueModelQueryResponse';
