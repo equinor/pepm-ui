@@ -9,6 +9,7 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   AddAnalogueModelAreaCommandForm,
   CoordinateDto,
@@ -52,7 +53,7 @@ const defaultArea: ModelAreaTypeDto = {
   name: '',
 };
 
-export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
+export const AreaCoordinates = () => {
   const [showSaveAlert, setSaveAlert] = useState(false);
   const [activeArea, setActiveArea] = useState<ModelAreaTypeDto>(defaultArea);
   const [newArea, setNewArea] = useState<ModelAreaTypeDto>();
@@ -72,6 +73,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
       },
     ],
   });
+  const { modelId } = useParams();
 
   const { data, isLoading } = useFetchModel(modelId);
   const modelAreas = useFetchModelAreas();
@@ -180,35 +182,39 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
   };
 
   const postModelArea = async () => {
-    if (activeArea && areaCoordinate) {
-      const postRequestBody: AddAnalogueModelAreaCommandForm = {
-        modelAreaTypeId: activeArea.modelAreaTypeId,
-        coordinates: areaCoordinate.coordinates,
-      };
+    if (modelId) {
+      if (activeArea && areaCoordinate) {
+        const postRequestBody: AddAnalogueModelAreaCommandForm = {
+          modelAreaTypeId: activeArea.modelAreaTypeId,
+          coordinates: areaCoordinate.coordinates,
+        };
 
-      const coordinateRes =
-        await mutateAreaCoordinates.postAreaCoordinates.mutateAsync({
-          id: modelId,
-          requestBody: postRequestBody,
-        });
+        const coordinateRes =
+          await mutateAreaCoordinates.postAreaCoordinates.mutateAsync({
+            id: modelId,
+            requestBody: postRequestBody,
+          });
 
-      if (coordinateRes.success) {
-        const res = await clearAndUpdate();
-        if (res === 'success') setSaveAlert(true);
+        if (coordinateRes.success) {
+          const res = await clearAndUpdate();
+          if (res === 'success') setSaveAlert(true);
+        }
       }
     }
   };
 
   const putModelArea = async () => {
-    const coordinateRes =
-      await mutateAreaCoordinates.putAreaCoordinates.mutateAsync({
-        id: modelId,
-        modelAreaId: areaCoordinate.modelAreaId,
-        requestBody: { coordinates: areaCoordinate.coordinates },
-      });
-    if (coordinateRes.success) {
-      const res = await clearAndUpdate();
-      if (res === 'success') setSaveAlert(true);
+    if (modelId) {
+      const coordinateRes =
+        await mutateAreaCoordinates.putAreaCoordinates.mutateAsync({
+          id: modelId,
+          modelAreaId: areaCoordinate.modelAreaId,
+          requestBody: { coordinates: areaCoordinate.coordinates },
+        });
+      if (coordinateRes.success) {
+        const res = await clearAndUpdate();
+        if (res === 'success') setSaveAlert(true);
+      }
     }
   };
 

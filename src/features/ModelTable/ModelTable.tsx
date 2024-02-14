@@ -1,17 +1,10 @@
 /* eslint-disable max-lines-per-function */
 import { useMsal } from '@azure/msal-react';
-import {
-  Button,
-  LinearProgress,
-  Scrim,
-  SideSheet,
-} from '@equinor/eds-core-react';
+import { Button, LinearProgress } from '@equinor/eds-core-react';
 import { EdsDataGrid } from '@equinor/eds-data-grid-react';
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnalogueModelsService, OpenAPI } from '../../api/generated';
-import { AreaCoordinates } from '../../components/AreaCoordinates/AreaCoordinates';
 import { useAccessToken } from '../../hooks/useAccessToken';
 import * as Styled from './ModelTable.styled';
 
@@ -29,8 +22,6 @@ export const ModelTable = ({
   if (token) OpenAPI.TOKEN = token;
   const navigate = useNavigate();
 
-  const [open, setOpen] = useState<boolean>(false);
-  const [activeModel, setActiveModel] = useState<string>();
   const { isLoading, data } = useQuery({
     queryKey: ['analogue-models'],
     queryFn: () => AnalogueModelsService.getApiAnalogueModels(),
@@ -171,7 +162,7 @@ export const ModelTable = ({
             id: 'navigate',
             enableColumnFilter: false,
             enableResizing: false,
-            maxSize: 220,
+            maxSize: 100,
             cell: ({ row }) => (
               <Styled.Buttons>
                 <Button
@@ -183,26 +174,11 @@ export const ModelTable = ({
                 >
                   Open
                 </Button>
-                <Button
-                  variant="ghost"
-                  disabled={isActiveModel(row.original.analogueModelId)}
-                  onClick={() => {
-                    setActiveModel(row.original.analogueModelId);
-                    setOpen(!open);
-                  }}
-                >
-                  Set Areas
-                </Button>
               </Styled.Buttons>
             ),
           },
         ]}
       />
-      <Scrim open={open} isDismissable>
-        <SideSheet onClose={() => setOpen(!open)}>
-          {activeModel && <AreaCoordinates modelId={activeModel} />}
-        </SideSheet>
-      </Scrim>
     </Styled.Table>
   );
 };

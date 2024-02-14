@@ -1,7 +1,11 @@
 import { Button, Typography } from '@equinor/eds-core-react';
 import * as Styled from './ModelAreaCoordinates.styled';
 
-export const ModelAreaCoordinates = () => {
+export const ModelAreaCoordinates = ({
+  toggleOpen,
+}: {
+  toggleOpen: () => void;
+}) => {
   return (
     <Styled.Wrapper>
       <Typography variant="h3">Model areas</Typography>
@@ -9,7 +13,9 @@ export const ModelAreaCoordinates = () => {
         You can define multiple areas for calculation in your model by entering
         coordinates.
       </Typography>
-      <Button variant="outlined">Set model areas</Button>
+      <Button onClick={toggleOpen} variant="outlined">
+        Set model areas
+      </Button>
     </Styled.Wrapper>
   );
 };
