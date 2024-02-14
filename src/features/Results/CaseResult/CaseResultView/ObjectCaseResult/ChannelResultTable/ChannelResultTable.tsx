@@ -1,7 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import { Table } from '@equinor/eds-core-react';
 
-import { GetChannelResultsDto } from '../../../../../api/generated';
+import { GetChannelResultsDto } from '../../../../../../api/generated';
 import * as Styled from './ChannelResultTable.styled';
 
 const NumberOfDecimals = 2;
@@ -21,7 +21,7 @@ export const ChannelResultTable = ({
     <Styled.Table>
       <Table.Head>
         <Table.Row>
-          <Styled.DataCell></Styled.DataCell>
+          <Styled.InfoCell></Styled.InfoCell>
           <Styled.DataCell>Mean</Styled.DataCell>
           <Styled.DataCell>Standard deviation (SD)</Styled.DataCell>
           <Styled.DataCell>Count</Styled.DataCell>

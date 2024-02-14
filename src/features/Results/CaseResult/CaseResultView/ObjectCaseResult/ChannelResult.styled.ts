@@ -9,13 +9,6 @@ export const Wrapper = styled.div`
 export const InnerWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  column-gap: ${spacings.SMALL};
+  column-gap: ${spacings.LARGE};
   width: 100%;
-`;
-
-export const Info = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  width: 150px;
 `;
