@@ -5,9 +5,9 @@ import {
   format_list_bulleted as FORMATLISTBULLET,
   grid_on as GRID,
   IconData,
-  timeline as TIMELINE,
 } from '@equinor/eds-icons';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { VariogramIcon } from '../../../assets/VaritogramIcon';
 import * as Styled from './ModelNavigationBar.styled';
 
 type MenuItems = SidebarLinkProps & {
@@ -66,21 +66,21 @@ export const ModelNavigationBar = () => {
   const variogramItems: MenuItems = {
     label: 'Variogram',
     href: '',
-    icon: TIMELINE,
+    icon: VariogramIcon,
     subItems: [
       {
         label: 'Compute settings',
         name: 'variogram',
         type: 'compute',
         href: 'compute/variogram',
-        icon: TIMELINE,
+        icon: VariogramIcon,
       },
       {
         label: 'Results',
         name: 'variogram',
         type: 'results',
         href: 'results/variogram',
-        icon: TIMELINE,
+        icon: VariogramIcon,
       },
     ],
   };

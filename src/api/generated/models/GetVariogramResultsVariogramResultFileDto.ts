@@ -3,8 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export enum FileType {
-    JPG = 'JPG',
-    PNG = 'PNG',
-    CSV = 'CSV',
-}
+export type GetVariogramResultsVariogramResultFileDto = {
+    fileName: string;
+    variogramResultFileId: string;
+};
+
