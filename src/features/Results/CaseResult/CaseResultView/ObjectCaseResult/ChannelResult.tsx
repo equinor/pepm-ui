@@ -1,10 +1,10 @@
-import { Typography } from '@equinor/eds-core-react';
 import {
   ComputeCaseDto,
   GetChannelResultsDto,
 } from '../../../../../api/generated';
 import * as Styled from './ChannelResult.styled';
-import { ChannelResultTable } from './ChannelResultTable';
+import { ChannelResultTable } from './ChannelResultTable/ChannelResultTable';
+import { ResultArea } from './ResultArea/ResultArea';
 
 export const ChannelResult = ({
   data,
@@ -29,10 +29,11 @@ export const ChannelResult = ({
   return (
     <Styled.Wrapper>
       <Styled.InnerWrapper>
-        <Styled.Info>
-          <Typography variant="h5"> {computeMethod}</Typography>
-          <Typography variant="body_short"> {modelArea}</Typography>
-        </Styled.Info>
+        <ResultArea
+          computeMethod={computeMethod}
+          modelArea={modelArea}
+          data={data}
+        ></ResultArea>
         <ChannelResultTable data={data}></ChannelResultTable>
       </Styled.InnerWrapper>
     </Styled.Wrapper>
