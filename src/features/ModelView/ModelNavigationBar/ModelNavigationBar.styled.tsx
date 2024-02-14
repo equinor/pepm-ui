@@ -11,6 +11,20 @@ export const StyledSidebarContent = styled(SideBar.Content)`
   }
 `;
 
+export const StyledBackButton = styled(SideBar.Link)`
+  > p {
+    color: ${theme.light.primary.resting};
+    font-weight: bold;
+  }
+  > svg {
+    fill: ${theme.light.primary.resting};
+  }
+  &:hover {
+    background-color: ${theme.light.ui.background.light};
+  }
+
+  padding: 0 0 ${spacings.MEDIUM} ${spacings.SMALL};
+`;
 export const StyledSidebarLink = styled(SideBar.Link)`
   &.activeTab {
     background: transparent;
@@ -59,6 +73,7 @@ export const StyledAccordionItem = styled(SideBar.AccordionItem)`
 
 export {
   StyledAccordionItem as AccordionItem,
+  StyledBackButton as Back,
   StyledSidebarContent as SidebarContent,
   StyledSidebarLink as SidebarLink,
 };

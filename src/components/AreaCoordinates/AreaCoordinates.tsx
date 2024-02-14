@@ -5,10 +5,12 @@ import {
   Autocomplete,
   AutocompleteChanges,
   Button,
+  Dialog,
   Snackbar,
   Typography,
 } from '@equinor/eds-core-react';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   AddAnalogueModelAreaCommandForm,
   CoordinateDto,
@@ -52,7 +54,13 @@ const defaultArea: ModelAreaTypeDto = {
   name: '',
 };
 
-export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
+export const AreaCoordinates = ({
+  open,
+  toggleOpen,
+}: {
+  open: boolean;
+  toggleOpen: () => void;
+}) => {
   const [showSaveAlert, setSaveAlert] = useState(false);
   const [activeArea, setActiveArea] = useState<ModelAreaTypeDto>(defaultArea);
   const [newArea, setNewArea] = useState<ModelAreaTypeDto>();
@@ -72,6 +80,7 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
       },
     ],
   });
+  const { modelId } = useParams();
 
   const { data, isLoading } = useFetchModel(modelId);
   const modelAreas = useFetchModelAreas();
@@ -180,35 +189,39 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
   };
 
   const postModelArea = async () => {
-    if (activeArea && areaCoordinate) {
-      const postRequestBody: AddAnalogueModelAreaCommandForm = {
-        modelAreaTypeId: activeArea.modelAreaTypeId,
-        coordinates: areaCoordinate.coordinates,
-      };
+    if (modelId) {
+      if (activeArea && areaCoordinate) {
+        const postRequestBody: AddAnalogueModelAreaCommandForm = {
+          modelAreaTypeId: activeArea.modelAreaTypeId,
+          coordinates: areaCoordinate.coordinates,
+        };
 
-      const coordinateRes =
-        await mutateAreaCoordinates.postAreaCoordinates.mutateAsync({
-          id: modelId,
-          requestBody: postRequestBody,
-        });
+        const coordinateRes =
+          await mutateAreaCoordinates.postAreaCoordinates.mutateAsync({
+            id: modelId,
+            requestBody: postRequestBody,
+          });
 
-      if (coordinateRes.success) {
-        const res = await clearAndUpdate();
-        if (res === 'success') setSaveAlert(true);
+        if (coordinateRes.success) {
+          const res = await clearAndUpdate();
+          if (res === 'success') setSaveAlert(true);
+        }
       }
     }
   };
 
   const putModelArea = async () => {
-    const coordinateRes =
-      await mutateAreaCoordinates.putAreaCoordinates.mutateAsync({
-        id: modelId,
-        modelAreaId: areaCoordinate.modelAreaId,
-        requestBody: { coordinates: areaCoordinate.coordinates },
-      });
-    if (coordinateRes.success) {
-      const res = await clearAndUpdate();
-      if (res === 'success') setSaveAlert(true);
+    if (modelId) {
+      const coordinateRes =
+        await mutateAreaCoordinates.putAreaCoordinates.mutateAsync({
+          id: modelId,
+          modelAreaId: areaCoordinate.modelAreaId,
+          requestBody: { coordinates: areaCoordinate.coordinates },
+        });
+      if (coordinateRes.success) {
+        const res = await clearAndUpdate();
+        if (res === 'success') setSaveAlert(true);
+      }
     }
   };
 
@@ -236,18 +249,16 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
 
   return (
     <>
-      <Styled.SideSheet>
-        <Typography variant="h2">Model areas</Typography>
-        <Styled.Form>
-          <Styled.Info>
-            <Typography variant="h6">
-              {data?.success && data.data.name}
-            </Typography>
-            <Typography variant="body_long">
-              Select from predefined model areas and set the X/Y coordinates for
-              each area.
-            </Typography>
-          </Styled.Info>
+      <Styled.Dialog open={open}>
+        <Dialog.Header>
+          <Dialog.Title>Model Areas</Dialog.Title>
+        </Dialog.Header>
+        <Styled.Content>
+          <Typography variant="body_long">
+            Select from predefined model areas and set the X/Y coordinates for
+            each area.
+          </Typography>
+
           <Styled.CoordinateGroup className={'autocomplete-error'}>
             <Autocomplete
               className={errors?.area && 'autocomplete-error'}
@@ -308,10 +319,15 @@ export const AreaCoordinates = ({ modelId }: { modelId: string }) => {
 
             {errors && <ErrorMessage errors={errors}></ErrorMessage>}
           </Styled.CoordinateGroup>
+        </Styled.Content>
 
+        <Dialog.Actions>
           <Button onClick={handleSubmit}>Save</Button>
-        </Styled.Form>
-      </Styled.SideSheet>
+          <Button variant="ghost" onClick={toggleOpen}>
+            Cancel
+          </Button>
+        </Dialog.Actions>
+      </Styled.Dialog>
       <Snackbar
         open={!!showSaveAlert}
         autoHideDuration={3000}
