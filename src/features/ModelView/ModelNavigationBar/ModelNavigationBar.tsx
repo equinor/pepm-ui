@@ -29,7 +29,7 @@ export const ModelNavigationBar = () => {
   const path2 = tab[tab.length - 2];
 
   const backItems: SidebarLinkProps = {
-    label: 'Back',
+    label: 'Back to models',
     icon: BACK,
     href: '/',
     active: false,
@@ -88,13 +88,13 @@ export const ModelNavigationBar = () => {
   return (
     <SideBar open>
       <Styled.SidebarContent>
-        <Styled.SidebarLink
+        <Styled.Back
           label={backItems.label}
           icon={backItems.icon}
           onClick={() => {
             navigate('/');
           }}
-        ></Styled.SidebarLink>
+        ></Styled.Back>
         <Styled.SidebarLink
           className={menuItems.href === path && 'activeTab'}
           label={menuItems.label}
