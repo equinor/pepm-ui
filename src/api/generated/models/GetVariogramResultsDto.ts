@@ -4,23 +4,23 @@
 /* eslint-disable */
 
 import type { CoordinateDto } from './CoordinateDto';
-import type { VariogramResultFile } from './VariogramResultFile';
+import type { GetVariogramResultsVariogramResultFileDto } from './GetVariogramResultsVariogramResultFileDto';
 
 export type GetVariogramResultsDto = {
-    computeCaseId?: string;
-    variogramResultId?: string;
-    identifier?: number;
-    variogramResultFiles?: Array<VariogramResultFile> | null;
-    rmajor?: number;
-    rminor?: number;
-    azimuth?: number;
-    rvertical?: number;
-    sigma?: number;
-    quality?: number;
+    computeCaseId: string;
+    variogramResultId: string;
+    identifier: number;
+    variogramResultFiles: Array<GetVariogramResultsVariogramResultFileDto>;
+    rmajor: number;
+    rminor: number;
+    azimuth: number;
+    rvertical: number;
+    sigma: number;
+    quality: number;
     family?: string | null;
     archelFilter?: string | null;
     indicator?: string | null;
     attribute?: string | null;
-    box?: Array<CoordinateDto> | null;
+    box: Array<CoordinateDto>;
 };
 

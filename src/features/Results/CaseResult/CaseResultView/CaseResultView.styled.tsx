@@ -17,6 +17,7 @@ export const CaseResultView = styled.div`
 export const CaseResultList = styled.div`
   display: flex;
   flex-direction: column;
+  row-gap: ${spacings.X_LARGE};
 
   width: 100%;
 `;
