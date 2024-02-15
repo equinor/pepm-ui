@@ -1,14 +1,13 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-depth */
 /* eslint-disable max-lines-per-function */
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
   ComputeCaseDto,
   CreateComputeCaseCommandResponse,
   CreateComputeCaseInputSettingsForm,
   ListComputeCasesByAnalogueModelIdQueryResponse,
   ListComputeSettingsInputDto,
-  ListComputeSettingsInputValueDto,
   ListComputeSettingsMethodDto,
   ModelAreaDto,
   UpdateComputeCaseInputSettingsForm,
@@ -18,6 +17,7 @@ import { CaseButtons } from '../CaseButtons/CaseButtons';
 import { ModelAreaSelect } from '../CaseSettingSelects/ModelAreaSelect';
 import { VariogramOptionSelect } from '../VariogramSettingSelect/VariogramSettingSelect';
 import * as Styled from './CaseRow.Styled';
+import { useCaseParameters } from './hooks/useCaseParameters';
 import { useGetParameterList } from './hooks/useGetParameterList';
 import { useSetSaved } from './hooks/useSetSaved';
 
@@ -61,27 +61,36 @@ export const CaseRow = ({
   duplicateCase?: (id: string) => void;
 }) => {
   const [selectedModelArea, setModelArea] = useState<ModelAreaDto[]>();
-  const [selectedIndicatorParameters, setIndicatorParameters] =
-    useState<ListComputeSettingsInputValueDto[]>();
-  const [selectedGrainSize, setGrainSize] =
-    useState<ListComputeSettingsInputValueDto[]>();
-  const [selectedParameters, setParameters] =
-    useState<ListComputeSettingsInputValueDto[]>();
-  const [selectedArchelFilter, setArchelFilter] =
-    useState<ListComputeSettingsInputValueDto[]>();
-  const [selectedVariogramModels, setVariogramModels] =
-    useState<ListComputeSettingsInputValueDto[]>();
   const [caseError, setCaseError] = useState<string>('');
+
+  const indicatorSettings = settingsFilter('Indicator');
+  const netToGrossSettings = settingsFilter('Net-To-Gross');
+  const continiousParameterSettings = settingsFilter('ContiniousParameter');
+
+  const {
+    selectedIndicatorParameters,
+    selectedGrainSize,
+    selectedParameters,
+    selectedArchelFilter,
+    selectedVariogramModels,
+    setIndicatorParameters,
+    setGrainSize,
+    setParameters,
+    setArchelFilter,
+    setVariogramModels,
+    selectedValues,
+  } = useCaseParameters(
+    rowCase,
+    indicatorSettings,
+    netToGrossSettings,
+    continiousParameterSettings,
+  );
 
   const { data, isLoading } = useFetchModel();
   const { saved } = useSetSaved(id, allCasesList, caseList);
 
   const row = allCasesList.filter((c) => c.computeCaseId === id);
   const settingType = row[0].computeMethod.name;
-
-  const indicatorSettings = settingsFilter('Indicator');
-  const netToGrossSettings = settingsFilter('Net-To-Gross');
-  const continiousParameterSettings = settingsFilter('ContiniousParameter');
 
   const { inputSettingsList } = useGetParameterList(
     settingType,
@@ -311,142 +320,6 @@ export const CaseRow = ({
     'Archel',
   );
 
-  const selectedParamValue = useCallback(
-    (method: string) => {
-      let settingsValueList: ListComputeSettingsInputValueDto[] | undefined =
-        [];
-      let loadedParameters: ListComputeSettingsInputValueDto[] | undefined = [];
-
-      switch (method) {
-        case 'Indicator': {
-          if (indicatorIndicatorSettings)
-            settingsValueList = indicatorIndicatorSettings[0].values;
-          break;
-        }
-        case 'Variogram Family Filter': {
-          if (rowCase.computeMethod.name === 'Indicator') {
-            if (indicatorFamilySettings)
-              settingsValueList = indicatorFamilySettings[0].values;
-          } else if (rowCase.computeMethod.name === 'Net-To-Gross') {
-            if (NetGrossVariogramFamilySettings)
-              settingsValueList = NetGrossVariogramFamilySettings[0].values;
-          } else if (rowCase.computeMethod.name === 'ContiniousParameter') {
-            if (contParamsVariogramFamilySettings)
-              settingsValueList = contParamsVariogramFamilySettings[0].values;
-          }
-          break;
-        }
-        case 'Net-To-Gross': {
-          if (NetGrossGrainSizeSettings)
-            settingsValueList = NetGrossGrainSizeSettings[0].values;
-          break;
-        }
-
-        case 'ContiniousParameter': {
-          if (contParamsParamsSettings)
-            settingsValueList = contParamsParamsSettings[0].values;
-          break;
-        }
-        case 'Archel': {
-          if (contParamsArchelSettings)
-            settingsValueList = contParamsArchelSettings[0].values;
-          break;
-        }
-      }
-
-      loadedParameters =
-        settingsValueList &&
-        settingsValueList.filter((i) =>
-          rowCase.inputSettings?.find(
-            (s) => s.inputSettingValueId === i.inputSettingValueId,
-          ),
-        );
-
-      return loadedParameters;
-    },
-    [
-      NetGrossGrainSizeSettings,
-      NetGrossVariogramFamilySettings,
-      contParamsArchelSettings,
-      contParamsParamsSettings,
-      contParamsVariogramFamilySettings,
-      indicatorFamilySettings,
-      indicatorIndicatorSettings,
-      rowCase.computeMethod.name,
-      rowCase.inputSettings,
-    ],
-  );
-
-  const setIfLoadedValues = useCallback(
-    (method: string) => {
-      const loaded = selectedParamValue(method);
-      switch (method) {
-        case 'Indicator':
-          if (loaded)
-            getDefaultParameters(
-              loaded,
-              selectedIndicatorParameters,
-              setIndicatorParameters,
-            );
-          break;
-
-        case 'Variogram Family Filter':
-          if (loaded)
-            getDefaultParameters(
-              loaded,
-              selectedVariogramModels,
-              setVariogramModels,
-            );
-          break;
-
-        case 'Net-To-Gross':
-          if (loaded)
-            getDefaultParameters(loaded, selectedGrainSize, setGrainSize);
-          break;
-
-        case 'ContiniousParameter':
-          if (loaded)
-            getDefaultParameters(loaded, selectedParameters, setParameters);
-          break;
-
-        case 'Archel':
-          if (loaded)
-            getDefaultParameters(loaded, selectedArchelFilter, setArchelFilter);
-          break;
-      }
-    },
-    [
-      selectedArchelFilter,
-      selectedGrainSize,
-      selectedIndicatorParameters,
-      selectedParamValue,
-      selectedParameters,
-      selectedVariogramModels,
-    ],
-  );
-
-  const getDefaultParameters = (
-    loadedParameters: ListComputeSettingsInputValueDto[],
-    selectedParameter: ListComputeSettingsInputValueDto[] | undefined,
-    setParameter: (
-      value: React.SetStateAction<
-        ListComputeSettingsInputValueDto[] | undefined
-      >,
-    ) => void,
-  ) => {
-    if (selectedParameter === undefined) {
-      setParameter(loadedParameters);
-    }
-  };
-
-  useEffect(() => {
-    setIfLoadedValues('Indicator');
-    setIfLoadedValues('Variogram Family Filter');
-    setIfLoadedValues('Net-To-Gross');
-    setIfLoadedValues('ContiniousParameter');
-    setIfLoadedValues('Archel');
-  }, [setIfLoadedValues]);
-
   if (isLoading) return <p>Loading ...</p>;
 
   return (
@@ -470,7 +343,7 @@ export const CaseRow = ({
             existingCases={caseList}
             saved={saved}
             caseError={caseError}
-            selectedParamValue={selectedParamValue}
+            selectedParamValue={selectedValues}
           />
         )}
 
@@ -490,7 +363,7 @@ export const CaseRow = ({
             existingCases={caseList}
             saved={saved}
             caseError={caseError}
-            selectedParamValue={selectedParamValue}
+            selectedParamValue={selectedValues}
           />
         )}
 
@@ -515,7 +388,7 @@ export const CaseRow = ({
             existingCases={caseList}
             saved={saved}
             caseError={caseError}
-            selectedParamValue={selectedParamValue}
+            selectedParamValue={selectedValues}
           />
         )}
 
