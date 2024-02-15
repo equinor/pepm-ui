@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-depth */
 /* eslint-disable max-lines-per-function */
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import {
   ComputeCaseDto,
   CreateComputeCaseCommandResponse,
@@ -9,16 +9,15 @@ import {
   ListComputeCasesByAnalogueModelIdQueryResponse,
   ListComputeSettingsInputDto,
   ListComputeSettingsMethodDto,
-  ModelAreaDto,
   UpdateComputeCaseInputSettingsForm,
 } from '../../../../api/generated';
-import { useFetchModel } from '../../../../hooks/useFetchModel';
 import { CaseButtons } from '../CaseButtons/CaseButtons';
 import { ModelAreaSelect } from '../CaseSettingSelects/ModelAreaSelect';
 import { VariogramOptionSelect } from '../VariogramSettingSelect/VariogramSettingSelect';
 import * as Styled from './CaseRow.Styled';
 import { useCaseParameters } from './hooks/useCaseParameters';
 import { useGetParameterList } from './hooks/useGetParameterList';
+import { useModelArea } from './hooks/useModelArea';
 import { useSetSaved } from './hooks/useSetSaved';
 
 export const CaseRow = ({
@@ -60,13 +59,16 @@ export const CaseRow = ({
   settingsFilter: (name: string) => ListComputeSettingsMethodDto[] | undefined;
   duplicateCase?: (id: string) => void;
 }) => {
-  const [selectedModelArea, setModelArea] = useState<ModelAreaDto[]>();
   const [caseError, setCaseError] = useState<string>('');
 
   const indicatorSettings = settingsFilter('Indicator');
   const netToGrossSettings = settingsFilter('Net-To-Gross');
   const continiousParameterSettings = settingsFilter('ContiniousParameter');
 
+  const row = allCasesList.filter((c) => c.computeCaseId === id);
+  const settingType = row[0].computeMethod.name;
+
+  const { saved } = useSetSaved(id, allCasesList, caseList);
   const {
     selectedIndicatorParameters,
     selectedGrainSize,
@@ -86,11 +88,14 @@ export const CaseRow = ({
     continiousParameterSettings,
   );
 
-  const { data, isLoading } = useFetchModel();
-  const { saved } = useSetSaved(id, allCasesList, caseList);
-
-  const row = allCasesList.filter((c) => c.computeCaseId === id);
-  const settingType = row[0].computeMethod.name;
+  const {
+    isLoading,
+    isProcessed,
+    areaList,
+    selectedModelArea,
+    setModelArea,
+    selectedRowArea,
+  } = useModelArea(allCasesList);
 
   const { inputSettingsList } = useGetParameterList(
     settingType,
@@ -108,19 +113,6 @@ export const CaseRow = ({
     if (id) runCase(id);
   };
 
-  const wholeModelObject: ModelAreaDto[] = [
-    {
-      modelAreaId: '',
-      modelAreaType: 'Whole model',
-      coordinates: [],
-    },
-  ];
-
-  const areaList: ModelAreaDto[] =
-    data && data.data.modelAreas
-      ? data.data.modelAreas.concat(wholeModelObject)
-      : wholeModelObject;
-
   const handleSaveCase = async (id: string) => {
     // Checks if Case already exists in the db
     const caseExists = caseList.filter((c) => c.computeCaseId === id);
@@ -133,10 +125,6 @@ export const CaseRow = ({
         : row[0].modelArea
         ? row[0].modelArea.modelAreaId
         : '';
-
-      // const list = await getParameterList(settingType);
-      // const inputSettingsList = list;
-
       const res = await updateCase(
         modelArea,
         row[0].computeCaseId,
@@ -149,7 +137,6 @@ export const CaseRow = ({
       const row = allCasesList.filter((c) => c.computeCaseId === id);
 
       // Check if the instance is an Object case and right data/methods is provided
-      // TODO: Seperate into own method, take type as argument. Support all types not just Channel cases
       if (saveCase) {
         if (
           row[0] !== undefined &&
@@ -164,12 +151,7 @@ export const CaseRow = ({
               (cl) => cl.modelArea.name === selectedModelArea[0].modelAreaType,
             );
 
-          // const list = await getParameterList(settingType);
-          // const inputSettingsList = list;
-
           if (caseType === 'Object' && checkDuplicateType.length > 0) {
-            // TODO: Error handeling, inform user
-            // Handle Object duplicate Error
             setCaseError('Duplicate Object case, model area');
           } else {
             const res = await saveCase(
@@ -188,13 +170,8 @@ export const CaseRow = ({
           const checkDuplicate = caseList.filter((c) => c.modelArea === null);
 
           if (caseType === 'Object' && checkDuplicate.length > 0) {
-            // TODO: Error handeling, inform user
-            // Handle Object duplicate Error
             setCaseError('Duplicate Object case, model area');
           } else if (selectedModelArea !== undefined) {
-            // const list = await getParameterList(settingType);
-            // const inputSettingsList = list;
-
             const res = await saveCase(
               '',
               row[0].computeMethod.computeMethodId,
@@ -211,55 +188,6 @@ export const CaseRow = ({
       }
     }
   };
-
-  const selectedRowArea = useCallback(
-    (rowId: string) => {
-      const rowCase = allCasesList.filter((c) => c.computeCaseId === rowId);
-
-      // Set default selected area to empty
-      let defaultArea: ModelAreaDto[] = [
-        {
-          modelAreaId: '',
-          modelAreaType: '',
-          coordinates: [],
-        },
-      ];
-
-      // 1. Check if the case exists and if the case model area is 'Whole model'
-      // 2. Check if the selected area is defined, returns selected model area
-      // 3. Check if the case exists, if the case model area is NOT 'Whole model', if selected model area is undefined,
-      // and if the existing case model area has an empty string as id. Returns the selected area.
-      // 4. Returns the set area. If all 3 above checks is fails the default empty area is returned.
-
-      if (
-        rowCase.length > 0 &&
-        rowCase[0].modelArea === null &&
-        selectedModelArea === undefined
-      ) {
-        defaultArea = [
-          {
-            modelAreaId: '',
-            modelAreaType: 'Whole model',
-            coordinates: [],
-          },
-        ];
-      } else if (selectedModelArea !== undefined) {
-        defaultArea = selectedModelArea;
-      } else if (
-        rowCase.length > 0 &&
-        rowCase[0].modelArea !== null &&
-        selectedModelArea === undefined &&
-        rowCase[0].modelArea.modelAreaId !== ''
-      ) {
-        defaultArea = areaList.filter(
-          (area) => area.modelAreaId === rowCase[0].modelArea.modelAreaId,
-        );
-        setModelArea(defaultArea);
-      }
-      return defaultArea;
-    },
-    [areaList, allCasesList, selectedModelArea],
-  );
 
   const hasUnsavedCase = (id: string) => {
     const caseMethod = allCasesList.filter((c) => c.computeCaseId === id)[0]
@@ -409,7 +337,7 @@ export const CaseRow = ({
           id={id}
           caseType={caseType === 'Object' ? 'Object' : 'Variogram'}
           saved={saved}
-          isProcessed={data?.data.isProcessed}
+          isProcessed={isProcessed}
           caseStatus={rowCase.jobStatus}
           hasUnsavedCase={hasUnsavedCase(id)}
           saveCase={() => handleSaveCase(id)}
