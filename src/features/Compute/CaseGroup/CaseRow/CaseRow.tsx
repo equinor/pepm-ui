@@ -18,6 +18,7 @@ import { CaseButtons } from '../CaseButtons/CaseButtons';
 import { ModelAreaSelect } from '../CaseSettingSelects/ModelAreaSelect';
 import { VariogramOptionSelect } from '../VariogramSettingSelect/VariogramSettingSelect';
 import * as Styled from './CaseRow.Styled';
+import { useSetSaved } from './hooks/useSetSaved';
 
 export const CaseRow = ({
   rowCase,
@@ -69,10 +70,11 @@ export const CaseRow = ({
     useState<ListComputeSettingsInputValueDto[]>();
   const [selectedVariogramModels, setVariogramModels] =
     useState<ListComputeSettingsInputValueDto[]>();
-  const [saved, setSaved] = useState<boolean>(true);
   const [caseError, setCaseError] = useState<string>('');
 
   const { data, isLoading } = useFetchModel();
+
+  const { saved } = useSetSaved(id, allCasesList, caseList);
 
   const indicatorSettings = settingsFilter('Indicator');
   const netToGrossSettings = settingsFilter('Net-To-Gross');
@@ -373,30 +375,6 @@ export const CaseRow = ({
     },
     [areaList, allCasesList, selectedModelArea],
   );
-
-  useEffect(() => {
-    function setNotSaved(r: ComputeCaseDto) {
-      if (r.computeCaseId === id && r.computeMethod.name === 'Channel') {
-        setSaved(false);
-      }
-    }
-
-    allCasesList
-      .filter((c) => !caseList.includes(c))
-      .forEach((r) => setNotSaved(r));
-  }, [caseList, allCasesList, id, saved]);
-
-  useEffect(() => {
-    function setNotSavedVariogram(r: ComputeCaseDto, type: string) {
-      if (r.computeMethod.name === type) {
-        setSaved(false);
-      }
-    }
-
-    allCasesList.forEach((r) => setNotSavedVariogram(r, 'Indicator'));
-    allCasesList.forEach((r) => setNotSavedVariogram(r, 'Net-To-Gross'));
-    allCasesList.forEach((r) => setNotSavedVariogram(r, 'ContiniousParameter'));
-  }, [caseList, allCasesList, saved]);
 
   const hasUnsavedCase = (id: string) => {
     const caseMethod = allCasesList.filter((c) => c.computeCaseId === id)[0]
