@@ -18,6 +18,7 @@ import { CaseButtons } from '../CaseButtons/CaseButtons';
 import { ModelAreaSelect } from '../CaseSettingSelects/ModelAreaSelect';
 import { VariogramOptionSelect } from '../VariogramSettingSelect/VariogramSettingSelect';
 import * as Styled from './CaseRow.Styled';
+import { useGetParameterList } from './hooks/useGetParameterList';
 import { useSetSaved } from './hooks/useSetSaved';
 
 export const CaseRow = ({
@@ -73,12 +74,26 @@ export const CaseRow = ({
   const [caseError, setCaseError] = useState<string>('');
 
   const { data, isLoading } = useFetchModel();
-
   const { saved } = useSetSaved(id, allCasesList, caseList);
+
+  const row = allCasesList.filter((c) => c.computeCaseId === id);
+  const settingType = row[0].computeMethod.name;
 
   const indicatorSettings = settingsFilter('Indicator');
   const netToGrossSettings = settingsFilter('Net-To-Gross');
   const continiousParameterSettings = settingsFilter('ContiniousParameter');
+
+  const { inputSettingsList } = useGetParameterList(
+    settingType,
+    indicatorSettings,
+    netToGrossSettings,
+    continiousParameterSettings,
+    selectedIndicatorParameters,
+    selectedArchelFilter,
+    selectedGrainSize,
+    selectedParameters,
+    selectedVariogramModels,
+  );
 
   const runRowCase = () => {
     if (id) runCase(id);
@@ -97,142 +112,6 @@ export const CaseRow = ({
       ? data.data.modelAreas.concat(wholeModelObject)
       : wholeModelObject;
 
-  const addSelectedSettings = (
-    setting: ListComputeSettingsInputValueDto[] | undefined,
-    settingType: string,
-    methodType: string,
-  ) => {
-    if (setting) {
-      let selectedId = undefined;
-      switch (settingType) {
-        case 'Indicator':
-          if (indicatorSettings)
-            selectedId = indicatorSettings[0].inputSettings.filter(
-              (i) => i.name === methodType,
-            )[0].inputSettingTypeId;
-          return selectedId;
-
-        case 'Net-To-Gross':
-          if (netToGrossSettings)
-            selectedId = netToGrossSettings[0].inputSettings.filter(
-              (i) => i.name === methodType,
-            )[0].inputSettingTypeId;
-          return selectedId;
-
-        case 'ContiniousParameter':
-          if (continiousParameterSettings)
-            selectedId =
-              continiousParameterSettings &&
-              continiousParameterSettings[0].inputSettings.filter(
-                (i) => (i.inputSettingTypeId = setting[0].inputSettingValueId),
-              )[0].inputSettingTypeId;
-          return selectedId;
-      }
-    }
-  };
-
-  const updateList = async (
-    setting: ListComputeSettingsInputValueDto[] | undefined,
-    settingList: CreateComputeCaseInputSettingsForm[],
-    settingType: string,
-    methodType: string,
-  ) => {
-    let newList = [...settingList];
-    if (setting) {
-      const inputSettingTypeId = addSelectedSettings(
-        setting,
-        settingType,
-        methodType,
-      );
-
-      if (inputSettingTypeId)
-        setting.forEach((m) => {
-          const temp = {
-            inputSettingValueId: m.inputSettingValueId,
-            inputSettingTypeId: inputSettingTypeId,
-          };
-          newList = [...newList, temp];
-        });
-    }
-    return newList;
-  };
-
-  const getParameterList = async (settingType: string) => {
-    let inputSettingsList: CreateComputeCaseInputSettingsForm[] = [];
-
-    switch (settingType) {
-      case 'Indicator': {
-        const firstUpdate = await updateList(
-          selectedIndicatorParameters,
-          inputSettingsList,
-          'Indicator',
-          'Indicator',
-        );
-
-        inputSettingsList = firstUpdate;
-
-        const secondUpdate = await updateList(
-          selectedVariogramModels,
-          inputSettingsList,
-          'Indicator',
-          'Variogram Family Filter',
-        );
-        inputSettingsList = secondUpdate;
-
-        break;
-      }
-      case 'Net-To-Gross': {
-        const firstUpdate = await updateList(
-          selectedGrainSize,
-          inputSettingsList,
-          'Net-To-Gross',
-          'Net-To-Gross',
-        );
-        inputSettingsList = firstUpdate;
-
-        const secondUpdate = await updateList(
-          selectedVariogramModels,
-          inputSettingsList,
-          'Net-To-Gross',
-          'Variogram Family Filter',
-        );
-        inputSettingsList = secondUpdate;
-
-        break;
-      }
-
-      case 'ContiniousParameter': {
-        const firstUpdate = await updateList(
-          selectedParameters,
-          inputSettingsList,
-          'ContiniousParameter',
-          'ContiniousParameter',
-        );
-        inputSettingsList = firstUpdate;
-
-        const secondUpdate = await updateList(
-          selectedArchelFilter,
-          inputSettingsList,
-          'ContiniousParameter',
-          'Archel',
-        );
-        inputSettingsList = secondUpdate;
-
-        const thirdUpdate = await updateList(
-          selectedVariogramModels,
-          inputSettingsList,
-          'ContiniousParameter',
-          'Variogram Family Filter',
-        );
-        inputSettingsList = thirdUpdate;
-
-        break;
-      }
-    }
-
-    return inputSettingsList;
-  };
-
   const handleSaveCase = async (id: string) => {
     // Checks if Case already exists in the db
     const caseExists = caseList.filter((c) => c.computeCaseId === id);
@@ -246,9 +125,8 @@ export const CaseRow = ({
         ? row[0].modelArea.modelAreaId
         : '';
 
-      const settingType = row[0].computeMethod.name;
-      const list = await getParameterList(settingType);
-      const inputSettingsList = list;
+      // const list = await getParameterList(settingType);
+      // const inputSettingsList = list;
 
       const res = await updateCase(
         modelArea,
@@ -277,9 +155,8 @@ export const CaseRow = ({
               (cl) => cl.modelArea.name === selectedModelArea[0].modelAreaType,
             );
 
-          const settingType = row[0].computeMethod.name;
-          const list = await getParameterList(settingType);
-          const inputSettingsList = list;
+          // const list = await getParameterList(settingType);
+          // const inputSettingsList = list;
 
           if (caseType === 'Object' && checkDuplicateType.length > 0) {
             // TODO: Error handeling, inform user
@@ -306,9 +183,8 @@ export const CaseRow = ({
             // Handle Object duplicate Error
             setCaseError('Duplicate Object case, model area');
           } else if (selectedModelArea !== undefined) {
-            const settingType = row[0].computeMethod.name;
-            const list = await getParameterList(settingType);
-            const inputSettingsList = list;
+            // const list = await getParameterList(settingType);
+            // const inputSettingsList = list;
 
             const res = await saveCase(
               '',
@@ -569,7 +445,7 @@ export const CaseRow = ({
     setIfLoadedValues('Net-To-Gross');
     setIfLoadedValues('ContiniousParameter');
     setIfLoadedValues('Archel');
-  }, [selectedParamValue, setIfLoadedValues]);
+  }, [setIfLoadedValues]);
 
   if (isLoading) return <p>Loading ...</p>;
 
