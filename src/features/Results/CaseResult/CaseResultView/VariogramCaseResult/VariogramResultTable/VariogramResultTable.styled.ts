@@ -7,14 +7,14 @@ export const Table = styled.div`
 
   > div {
     > table {
-      min-width: 1050px !important;
+      min-width: 1150px;
     }
     > div {
       margin-top: 2rem;
-      min-width: 1050px !important;
+      min-width: 1150px;
     }
 
-    @media (max-width: 1500px) {
+    @media (max-width: 1750px) {
       > table {
         min-width: 100% !important;
       }

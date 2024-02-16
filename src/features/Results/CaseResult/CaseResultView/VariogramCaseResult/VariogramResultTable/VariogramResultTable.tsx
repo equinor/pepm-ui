@@ -4,6 +4,15 @@ import { GetVariogramResultsDto } from '../../../../../../api/generated';
 import { useFetchCases } from '../../../../../../hooks/useFetchCases';
 import * as Styled from './VariogramResultTable.styled';
 
+interface ResultObjectType {
+  method: string;
+  parameter: string;
+  archelFilter: string;
+  modelArea: string;
+  variogramModel: string;
+  quality: string | number;
+}
+
 const NumberOfDecimals = 3;
 
 export const VariogramResultTable = ({
@@ -12,77 +21,81 @@ export const VariogramResultTable = ({
   resultList: GetVariogramResultsDto[];
 }) => {
   const caseList = useFetchCases();
-  const roundResultString = (value?: number) => {
+  const roundResultString = (value: number) => {
     if (value) {
       return value.toFixed(NumberOfDecimals);
-    }
+    } else return value;
   };
+
+  const resultElementsList: ResultObjectType[] = resultList.map((e) => {
+    const method = caseList.data?.data.filter(
+      (c) => c.computeCaseId === e.computeCaseId,
+    )[0].computeMethod.name;
+    let parameter = '';
+    if (method === 'Indicator') {
+      parameter = e.indicator ? e.indicator : '';
+    } else if (method === 'Net-To-Gross') {
+      parameter = e.customIndicator ? e.customIndicator : '';
+    } else if (method === 'ContiniousParameter') {
+      parameter = e.attribute ? e.attribute : '';
+    }
+
+    const modelArea = caseList.data?.data.filter(
+      (c) => c.computeCaseId === e.computeCaseId,
+    )[0].modelArea.name;
+
+    const element: ResultObjectType = {
+      method: method ? method : '',
+      parameter: parameter,
+      archelFilter: e.archelFilter ? e.archelFilter : '',
+      modelArea: modelArea ? modelArea : '',
+      variogramModel: e.family ? e.family : '',
+      quality: roundResultString(e.quality)
+        ? roundResultString(e.quality)
+        : e.quality,
+    };
+    return element;
+  });
 
   return (
     <Styled.Table>
       <EdsDataGrid
         enableSorting
         enablePagination
-        enableColumnFiltering
-        emptyMessage="Empty
-        :("
+        emptyMessage="No results to show"
         columnResizeMode="onChange"
-        rows={resultList}
+        rows={resultElementsList}
         pageSize={50}
         columns={[
           {
             accessorKey: 'method',
-            id: 'method',
             header: 'Compute method',
-            cell: ({ row }) => (
-              <div>
-                {
-                  caseList.data?.data.filter(
-                    (c) => c.computeCaseId === row.original.computeCaseId,
-                  )[0].computeMethod.name
-                }
-              </div>
-            ),
+            id: 'method',
           },
           {
-            accessorKey: 'attribute',
+            accessorKey: 'parameter',
             header: 'Parameter',
-            id: 'attribute',
+            id: 'parameter',
           },
           {
             accessorKey: 'archelFilter',
             header: 'Archel Filter',
             id: 'archelFilter',
-            enableColumnFilter: false,
           },
           {
             accessorKey: 'modelArea',
-            header: 'Model area',
+            header: 'Archel Filter',
             id: 'modelArea',
-            cell: ({ row }) => (
-              <div>
-                {
-                  caseList.data?.data.filter(
-                    (c) => c.computeCaseId === row.original.computeCaseId,
-                  )[0].modelArea.name
-                }
-              </div>
-            ),
           },
           {
-            accessorKey: 'family',
+            accessorKey: 'variogramModel',
             header: 'Variogram model',
-            id: 'family',
-            enableColumnFilter: false,
+            id: 'variogramModel',
           },
           {
             accessorKey: 'quality',
-            header: 'Quailty factor',
+            header: 'Variogram model',
             id: 'quality',
-            enableColumnFilter: false,
-            cell: ({ row }) => (
-              <div>{roundResultString(row.original.quality)}</div>
-            ),
           },
         ]}
       />
