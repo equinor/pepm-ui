@@ -1,23 +1,24 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-depth */
 /* eslint-disable max-lines-per-function */
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   ComputeCaseDto,
   CreateComputeCaseCommandResponse,
   CreateComputeCaseInputSettingsForm,
   ListComputeCasesByAnalogueModelIdQueryResponse,
   ListComputeSettingsInputDto,
-  ListComputeSettingsInputValueDto,
   ListComputeSettingsMethodDto,
-  ModelAreaDto,
   UpdateComputeCaseInputSettingsForm,
 } from '../../../../api/generated';
-import { useFetchModel } from '../../../../hooks/useFetchModel';
 import { CaseButtons } from '../CaseButtons/CaseButtons';
 import { ModelAreaSelect } from '../CaseSettingSelects/ModelAreaSelect';
 import { VariogramOptionSelect } from '../VariogramSettingSelect/VariogramSettingSelect';
 import * as Styled from './CaseRow.Styled';
+import { useCaseParameters } from './hooks/useCaseParameters';
+import { useGetParameterList } from './hooks/useGetParameterList';
+import { useModelArea } from './hooks/useModelArea';
+import { useSetSaved } from './hooks/useSetSaved';
 
 export const CaseRow = ({
   rowCase,
@@ -58,177 +59,58 @@ export const CaseRow = ({
   settingsFilter: (name: string) => ListComputeSettingsMethodDto[] | undefined;
   duplicateCase?: (id: string) => void;
 }) => {
-  const [selectedModelArea, setModelArea] = useState<ModelAreaDto[]>();
-  const [selectedIndicatorParameters, setIndicatorParameters] =
-    useState<ListComputeSettingsInputValueDto[]>();
-  const [selectedGrainSize, setGrainSize] =
-    useState<ListComputeSettingsInputValueDto[]>();
-  const [selectedParameters, setParameters] =
-    useState<ListComputeSettingsInputValueDto[]>();
-  const [selectedArchelFilter, setArchelFilter] =
-    useState<ListComputeSettingsInputValueDto[]>();
-  const [selectedVariogramModels, setVariogramModels] =
-    useState<ListComputeSettingsInputValueDto[]>();
-  const [saved, setSaved] = useState<boolean>(true);
   const [caseError, setCaseError] = useState<string>('');
-
-  const { data, isLoading } = useFetchModel();
 
   const indicatorSettings = settingsFilter('Indicator');
   const netToGrossSettings = settingsFilter('Net-To-Gross');
   const continiousParameterSettings = settingsFilter('ContiniousParameter');
 
+  const row = allCasesList.filter((c) => c.computeCaseId === id);
+  const settingType = row[0].computeMethod.name;
+
+  const { saved } = useSetSaved(id, allCasesList, caseList);
+  const {
+    selectedIndicatorParameters,
+    selectedGrainSize,
+    selectedParameters,
+    selectedArchelFilter,
+    selectedVariogramModels,
+    setIndicatorParameters,
+    setGrainSize,
+    setParameters,
+    setArchelFilter,
+    setVariogramModels,
+    selectedValues,
+  } = useCaseParameters(
+    rowCase,
+    indicatorSettings,
+    netToGrossSettings,
+    continiousParameterSettings,
+  );
+
+  const {
+    isLoading,
+    isProcessed,
+    areaList,
+    selectedModelArea,
+    setModelArea,
+    selectedRowArea,
+  } = useModelArea(allCasesList);
+
+  const { inputSettingsList } = useGetParameterList(
+    settingType,
+    indicatorSettings,
+    netToGrossSettings,
+    continiousParameterSettings,
+    selectedIndicatorParameters,
+    selectedArchelFilter,
+    selectedGrainSize,
+    selectedParameters,
+    selectedVariogramModels,
+  );
+
   const runRowCase = () => {
     if (id) runCase(id);
-  };
-
-  const wholeModelObject: ModelAreaDto[] = [
-    {
-      modelAreaId: '',
-      modelAreaType: 'Whole model',
-      coordinates: [],
-    },
-  ];
-
-  const areaList: ModelAreaDto[] =
-    data && data.data.modelAreas
-      ? data.data.modelAreas.concat(wholeModelObject)
-      : wholeModelObject;
-
-  const addSelectedSettings = (
-    setting: ListComputeSettingsInputValueDto[] | undefined,
-    settingType: string,
-    methodType: string,
-  ) => {
-    if (setting) {
-      let selectedId = undefined;
-      switch (settingType) {
-        case 'Indicator':
-          if (indicatorSettings)
-            selectedId = indicatorSettings[0].inputSettings.filter(
-              (i) => i.name === methodType,
-            )[0].inputSettingTypeId;
-          return selectedId;
-
-        case 'Net-To-Gross':
-          if (netToGrossSettings)
-            selectedId = netToGrossSettings[0].inputSettings.filter(
-              (i) => i.name === methodType,
-            )[0].inputSettingTypeId;
-          return selectedId;
-
-        case 'ContiniousParameter':
-          if (continiousParameterSettings)
-            selectedId =
-              continiousParameterSettings &&
-              continiousParameterSettings[0].inputSettings.filter(
-                (i) => (i.inputSettingTypeId = setting[0].inputSettingValueId),
-              )[0].inputSettingTypeId;
-          return selectedId;
-      }
-    }
-  };
-
-  const updateList = async (
-    setting: ListComputeSettingsInputValueDto[] | undefined,
-    settingList: CreateComputeCaseInputSettingsForm[],
-    settingType: string,
-    methodType: string,
-  ) => {
-    let newList = [...settingList];
-    if (setting) {
-      const inputSettingTypeId = addSelectedSettings(
-        setting,
-        settingType,
-        methodType,
-      );
-
-      if (inputSettingTypeId)
-        setting.forEach((m) => {
-          const temp = {
-            inputSettingValueId: m.inputSettingValueId,
-            inputSettingTypeId: inputSettingTypeId,
-          };
-          newList = [...newList, temp];
-        });
-    }
-    return newList;
-  };
-
-  const getParameterList = async (settingType: string) => {
-    let inputSettingsList: CreateComputeCaseInputSettingsForm[] = [];
-
-    switch (settingType) {
-      case 'Indicator': {
-        const firstUpdate = await updateList(
-          selectedIndicatorParameters,
-          inputSettingsList,
-          'Indicator',
-          'Indicator',
-        );
-
-        inputSettingsList = firstUpdate;
-
-        const secondUpdate = await updateList(
-          selectedVariogramModels,
-          inputSettingsList,
-          'Indicator',
-          'Variogram Family Filter',
-        );
-        inputSettingsList = secondUpdate;
-
-        break;
-      }
-      case 'Net-To-Gross': {
-        const firstUpdate = await updateList(
-          selectedGrainSize,
-          inputSettingsList,
-          'Net-To-Gross',
-          'Net-To-Gross',
-        );
-        inputSettingsList = firstUpdate;
-
-        const secondUpdate = await updateList(
-          selectedVariogramModels,
-          inputSettingsList,
-          'Net-To-Gross',
-          'Variogram Family Filter',
-        );
-        inputSettingsList = secondUpdate;
-
-        break;
-      }
-
-      case 'ContiniousParameter': {
-        const firstUpdate = await updateList(
-          selectedParameters,
-          inputSettingsList,
-          'ContiniousParameter',
-          'ContiniousParameter',
-        );
-        inputSettingsList = firstUpdate;
-
-        const secondUpdate = await updateList(
-          selectedArchelFilter,
-          inputSettingsList,
-          'ContiniousParameter',
-          'Archel',
-        );
-        inputSettingsList = secondUpdate;
-
-        const thirdUpdate = await updateList(
-          selectedVariogramModels,
-          inputSettingsList,
-          'ContiniousParameter',
-          'Variogram Family Filter',
-        );
-        inputSettingsList = thirdUpdate;
-
-        break;
-      }
-    }
-
-    return inputSettingsList;
   };
 
   const handleSaveCase = async (id: string) => {
@@ -243,11 +125,6 @@ export const CaseRow = ({
         : row[0].modelArea
         ? row[0].modelArea.modelAreaId
         : '';
-
-      const settingType = row[0].computeMethod.name;
-      const list = await getParameterList(settingType);
-      const inputSettingsList = list;
-
       const res = await updateCase(
         modelArea,
         row[0].computeCaseId,
@@ -260,7 +137,6 @@ export const CaseRow = ({
       const row = allCasesList.filter((c) => c.computeCaseId === id);
 
       // Check if the instance is an Object case and right data/methods is provided
-      // TODO: Seperate into own method, take type as argument. Support all types not just Channel cases
       if (saveCase) {
         if (
           row[0] !== undefined &&
@@ -275,13 +151,7 @@ export const CaseRow = ({
               (cl) => cl.modelArea.name === selectedModelArea[0].modelAreaType,
             );
 
-          const settingType = row[0].computeMethod.name;
-          const list = await getParameterList(settingType);
-          const inputSettingsList = list;
-
           if (caseType === 'Object' && checkDuplicateType.length > 0) {
-            // TODO: Error handeling, inform user
-            // Handle Object duplicate Error
             setCaseError('Duplicate Object case, model area');
           } else {
             const res = await saveCase(
@@ -300,14 +170,8 @@ export const CaseRow = ({
           const checkDuplicate = caseList.filter((c) => c.modelArea === null);
 
           if (caseType === 'Object' && checkDuplicate.length > 0) {
-            // TODO: Error handeling, inform user
-            // Handle Object duplicate Error
             setCaseError('Duplicate Object case, model area');
           } else if (selectedModelArea !== undefined) {
-            const settingType = row[0].computeMethod.name;
-            const list = await getParameterList(settingType);
-            const inputSettingsList = list;
-
             const res = await saveCase(
               '',
               row[0].computeMethod.computeMethodId,
@@ -324,79 +188,6 @@ export const CaseRow = ({
       }
     }
   };
-
-  const selectedRowArea = useCallback(
-    (rowId: string) => {
-      const rowCase = allCasesList.filter((c) => c.computeCaseId === rowId);
-
-      // Set default selected area to empty
-      let defaultArea: ModelAreaDto[] = [
-        {
-          modelAreaId: '',
-          modelAreaType: '',
-          coordinates: [],
-        },
-      ];
-
-      // 1. Check if the case exists and if the case model area is 'Whole model'
-      // 2. Check if the selected area is defined, returns selected model area
-      // 3. Check if the case exists, if the case model area is NOT 'Whole model', if selected model area is undefined,
-      // and if the existing case model area has an empty string as id. Returns the selected area.
-      // 4. Returns the set area. If all 3 above checks is fails the default empty area is returned.
-
-      if (
-        rowCase.length > 0 &&
-        rowCase[0].modelArea === null &&
-        selectedModelArea === undefined
-      ) {
-        defaultArea = [
-          {
-            modelAreaId: '',
-            modelAreaType: 'Whole model',
-            coordinates: [],
-          },
-        ];
-      } else if (selectedModelArea !== undefined) {
-        defaultArea = selectedModelArea;
-      } else if (
-        rowCase.length > 0 &&
-        rowCase[0].modelArea !== null &&
-        selectedModelArea === undefined &&
-        rowCase[0].modelArea.modelAreaId !== ''
-      ) {
-        defaultArea = areaList.filter(
-          (area) => area.modelAreaId === rowCase[0].modelArea.modelAreaId,
-        );
-        setModelArea(defaultArea);
-      }
-      return defaultArea;
-    },
-    [areaList, allCasesList, selectedModelArea],
-  );
-
-  useEffect(() => {
-    function setNotSaved(r: ComputeCaseDto) {
-      if (r.computeCaseId === id && r.computeMethod.name === 'Channel') {
-        setSaved(false);
-      }
-    }
-
-    allCasesList
-      .filter((c) => !caseList.includes(c))
-      .forEach((r) => setNotSaved(r));
-  }, [caseList, allCasesList, id, saved]);
-
-  useEffect(() => {
-    function setNotSavedVariogram(r: ComputeCaseDto, type: string) {
-      if (r.computeMethod.name === type) {
-        setSaved(false);
-      }
-    }
-
-    allCasesList.forEach((r) => setNotSavedVariogram(r, 'Indicator'));
-    allCasesList.forEach((r) => setNotSavedVariogram(r, 'Net-To-Gross'));
-    allCasesList.forEach((r) => setNotSavedVariogram(r, 'ContiniousParameter'));
-  }, [caseList, allCasesList, saved]);
 
   const hasUnsavedCase = (id: string) => {
     const caseMethod = allCasesList.filter((c) => c.computeCaseId === id)[0]
@@ -457,142 +248,6 @@ export const CaseRow = ({
     'Archel',
   );
 
-  const selectedParamValue = useCallback(
-    (method: string) => {
-      let settingsValueList: ListComputeSettingsInputValueDto[] | undefined =
-        [];
-      let loadedParameters: ListComputeSettingsInputValueDto[] | undefined = [];
-
-      switch (method) {
-        case 'Indicator': {
-          if (indicatorIndicatorSettings)
-            settingsValueList = indicatorIndicatorSettings[0].values;
-          break;
-        }
-        case 'Variogram Family Filter': {
-          if (rowCase.computeMethod.name === 'Indicator') {
-            if (indicatorFamilySettings)
-              settingsValueList = indicatorFamilySettings[0].values;
-          } else if (rowCase.computeMethod.name === 'Net-To-Gross') {
-            if (NetGrossVariogramFamilySettings)
-              settingsValueList = NetGrossVariogramFamilySettings[0].values;
-          } else if (rowCase.computeMethod.name === 'ContiniousParameter') {
-            if (contParamsVariogramFamilySettings)
-              settingsValueList = contParamsVariogramFamilySettings[0].values;
-          }
-          break;
-        }
-        case 'Net-To-Gross': {
-          if (NetGrossGrainSizeSettings)
-            settingsValueList = NetGrossGrainSizeSettings[0].values;
-          break;
-        }
-
-        case 'ContiniousParameter': {
-          if (contParamsParamsSettings)
-            settingsValueList = contParamsParamsSettings[0].values;
-          break;
-        }
-        case 'Archel': {
-          if (contParamsArchelSettings)
-            settingsValueList = contParamsArchelSettings[0].values;
-          break;
-        }
-      }
-
-      loadedParameters =
-        settingsValueList &&
-        settingsValueList.filter((i) =>
-          rowCase.inputSettings?.find(
-            (s) => s.inputSettingValueId === i.inputSettingValueId,
-          ),
-        );
-
-      return loadedParameters;
-    },
-    [
-      NetGrossGrainSizeSettings,
-      NetGrossVariogramFamilySettings,
-      contParamsArchelSettings,
-      contParamsParamsSettings,
-      contParamsVariogramFamilySettings,
-      indicatorFamilySettings,
-      indicatorIndicatorSettings,
-      rowCase.computeMethod.name,
-      rowCase.inputSettings,
-    ],
-  );
-
-  const setIfLoadedValues = useCallback(
-    (method: string) => {
-      const loaded = selectedParamValue(method);
-      switch (method) {
-        case 'Indicator':
-          if (loaded)
-            getDefaultParameters(
-              loaded,
-              selectedIndicatorParameters,
-              setIndicatorParameters,
-            );
-          break;
-
-        case 'Variogram Family Filter':
-          if (loaded)
-            getDefaultParameters(
-              loaded,
-              selectedVariogramModels,
-              setVariogramModels,
-            );
-          break;
-
-        case 'Net-To-Gross':
-          if (loaded)
-            getDefaultParameters(loaded, selectedGrainSize, setGrainSize);
-          break;
-
-        case 'ContiniousParameter':
-          if (loaded)
-            getDefaultParameters(loaded, selectedParameters, setParameters);
-          break;
-
-        case 'Archel':
-          if (loaded)
-            getDefaultParameters(loaded, selectedArchelFilter, setArchelFilter);
-          break;
-      }
-    },
-    [
-      selectedArchelFilter,
-      selectedGrainSize,
-      selectedIndicatorParameters,
-      selectedParamValue,
-      selectedParameters,
-      selectedVariogramModels,
-    ],
-  );
-
-  const getDefaultParameters = (
-    loadedParameters: ListComputeSettingsInputValueDto[],
-    selectedParameter: ListComputeSettingsInputValueDto[] | undefined,
-    setParameter: (
-      value: React.SetStateAction<
-        ListComputeSettingsInputValueDto[] | undefined
-      >,
-    ) => void,
-  ) => {
-    if (selectedParameter === undefined) {
-      setParameter(loadedParameters);
-    }
-  };
-
-  useEffect(() => {
-    setIfLoadedValues('Indicator');
-    setIfLoadedValues('Variogram Family Filter');
-    setIfLoadedValues('Net-To-Gross');
-    setIfLoadedValues('ContiniousParameter');
-    setIfLoadedValues('Archel');
-  }, [selectedParamValue, setIfLoadedValues]);
-
   if (isLoading) return <p>Loading ...</p>;
 
   return (
@@ -616,7 +271,7 @@ export const CaseRow = ({
             existingCases={caseList}
             saved={saved}
             caseError={caseError}
-            selectedParamValue={selectedParamValue}
+            selectedParamValue={selectedValues}
           />
         )}
 
@@ -636,7 +291,7 @@ export const CaseRow = ({
             existingCases={caseList}
             saved={saved}
             caseError={caseError}
-            selectedParamValue={selectedParamValue}
+            selectedParamValue={selectedValues}
           />
         )}
 
@@ -661,7 +316,7 @@ export const CaseRow = ({
             existingCases={caseList}
             saved={saved}
             caseError={caseError}
-            selectedParamValue={selectedParamValue}
+            selectedParamValue={selectedValues}
           />
         )}
 
@@ -682,7 +337,7 @@ export const CaseRow = ({
           id={id}
           caseType={caseType === 'Object' ? 'Object' : 'Variogram'}
           saved={saved}
-          isProcessed={data?.data.isProcessed}
+          isProcessed={isProcessed}
           caseStatus={rowCase.jobStatus}
           hasUnsavedCase={hasUnsavedCase(id)}
           saveCase={() => handleSaveCase(id)}
