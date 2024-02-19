@@ -251,6 +251,11 @@ export const AreaCoordinates = ({
     setEdit(!edit);
   };
 
+  const handleCloseDialog = () => {
+    setActiveArea(defaultArea);
+    toggleOpen();
+  };
+
   if (modelAreas.isLoading || modelAreas.data === undefined || isLoading)
     return <p>Loading.....</p>;
 
@@ -353,7 +358,7 @@ export const AreaCoordinates = ({
         </Styled.Content>
 
         <Dialog.Actions>
-          <Button variant="outlined" onClick={toggleOpen}>
+          <Button variant="outlined" onClick={handleCloseDialog}>
             Close
           </Button>
         </Dialog.Actions>
