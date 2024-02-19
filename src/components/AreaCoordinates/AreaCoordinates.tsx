@@ -16,10 +16,12 @@ import {
   CoordinateDto,
   ModelAreaTypeDto,
 } from '../../api/generated';
+import Img from '../../features/ModelView/image.png';
 import { useFetchModel } from '../../hooks/useFetchModel';
 import { useFetchModelAreas } from '../../hooks/useFetchModelAreas';
 import { useMutateAreaCoordinates } from '../../hooks/useMutateAreaCoordinates';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
+import { ImageView } from '../ImageView/ImageView';
 import {
   CoordinateErrorType,
   validateCoordinates,
@@ -65,6 +67,7 @@ export const AreaCoordinates = ({
   const [activeArea, setActiveArea] = useState<ModelAreaTypeDto>(defaultArea);
   const [newArea, setNewArea] = useState<ModelAreaTypeDto>();
   const [errors, setErrors] = useState<CoordinateErrorType>({});
+  const [edit, setEdit] = useState<boolean>(false);
   const [areaCoordinate, setAreaCoordinate] = useState<AreaCoordinateType>({
     modelAreaId: '',
     coordinates: [
@@ -93,6 +96,7 @@ export const AreaCoordinates = ({
   const handleSelectChange = async (
     changes: AutocompleteChanges<ModelAreaTypeDto>,
   ) => {
+    setEdit(false);
     setErrors({});
 
     // If area dropdown is set to empty:
@@ -171,8 +175,7 @@ export const AreaCoordinates = ({
   };
 
   const clearAndUpdate = async () => {
-    setActiveArea(defaultArea);
-    setAreaCoordinate(defaultState);
+    setEdit(false);
     return 'success';
   };
 
@@ -244,6 +247,10 @@ export const AreaCoordinates = ({
     }
   };
 
+  const handleEditChange = () => {
+    setEdit(!edit);
+  };
+
   if (modelAreas.isLoading || modelAreas.data === undefined || isLoading)
     return <p>Loading.....</p>;
 
@@ -251,80 +258,103 @@ export const AreaCoordinates = ({
     <>
       <Styled.Dialog open={open}>
         <Dialog.Header>
-          <Dialog.Title>Model Areas</Dialog.Title>
+          <Dialog.Title>Manage model areas for {data?.data.name}</Dialog.Title>
         </Dialog.Header>
         <Styled.Content>
-          <Typography variant="body_long">
-            Select from predefined model areas and set the X/Y coordinates for
-            each area.
-          </Typography>
+          <Styled.ContentSplitter>
+            <Styled.Selects>
+              <Styled.CoordinateGroup className={'autocomplete-error'}>
+                <Autocomplete
+                  className={errors?.area && 'autocomplete-error'}
+                  label={'Select area'}
+                  options={modelAreas.data.data}
+                  optionLabel={(option) => option.name}
+                  onOptionsChange={handleSelectChange}
+                  selectedOptions={[activeArea]}
+                  variant={errors.area ? 'error' : undefined}
+                ></Autocomplete>
+              </Styled.CoordinateGroup>
 
-          <Styled.CoordinateGroup className={'autocomplete-error'}>
-            <Autocomplete
-              className={errors?.area && 'autocomplete-error'}
-              label={'Select area'}
-              options={modelAreas.data.data}
-              optionLabel={(option) => option.name}
-              onOptionsChange={handleSelectChange}
-              selectedOptions={[activeArea]}
-              variant={errors.area ? 'error' : undefined}
-            ></Autocomplete>
-          </Styled.CoordinateGroup>
+              {activeArea.modelAreaTypeId !== '' && (
+                <Styled.CoordinateFields>
+                  <Styled.CoordinateGroup>
+                    <Typography variant="h6">Top Left Corner</Typography>
+                    <Styled.CoordinateInputs>
+                      <CoordinateInput
+                        label="X start"
+                        error={errors.x0 ? true : false}
+                        areaCoordinate={areaCoordinate}
+                        setCoordinates={setCoordinates}
+                        position={0}
+                        axis="x"
+                        edit={edit}
+                      />
+                      <CoordinateInput
+                        label="Y start"
+                        error={errors.y0 ? true : false}
+                        areaCoordinate={areaCoordinate}
+                        setCoordinates={setCoordinates}
+                        position={0}
+                        axis="y"
+                        edit={edit}
+                      />
+                    </Styled.CoordinateInputs>
+                  </Styled.CoordinateGroup>
+                  <Styled.CoordinateGroup>
+                    <Typography variant="h6">Bottom Right Corner </Typography>
+                    <Styled.CoordinateInputs>
+                      <CoordinateInput
+                        label="X end"
+                        error={errors.x1 ? true : false}
+                        areaCoordinate={areaCoordinate}
+                        setCoordinates={setCoordinates}
+                        position={1}
+                        axis="x"
+                        edit={edit}
+                      />
+                      <CoordinateInput
+                        label="Y end"
+                        error={errors.y1 ? true : false}
+                        areaCoordinate={areaCoordinate}
+                        setCoordinates={setCoordinates}
+                        position={1}
+                        axis="y"
+                        edit={edit}
+                      />
+                    </Styled.CoordinateInputs>
 
-          <Styled.CoordinateGroup>
-            <Typography variant="h6">Top Left Corner</Typography>
-            <Styled.CoordinateInputs>
-              <CoordinateInput
-                label="X start"
-                error={errors.x0 ? true : false}
-                areaCoordinate={areaCoordinate}
-                setCoordinates={setCoordinates}
-                position={0}
-                axis="x"
-                activeArea={activeArea}
-              />
-              <CoordinateInput
-                label="Y start"
-                error={errors.y0 ? true : false}
-                areaCoordinate={areaCoordinate}
-                setCoordinates={setCoordinates}
-                position={0}
-                axis="y"
-                activeArea={activeArea}
-              />
-            </Styled.CoordinateInputs>
-          </Styled.CoordinateGroup>
-          <Styled.CoordinateGroup>
-            <Typography variant="h6">Bottom Right Corner </Typography>
-            <Styled.CoordinateInputs>
-              <CoordinateInput
-                label="X end"
-                error={errors.x1 ? true : false}
-                areaCoordinate={areaCoordinate}
-                setCoordinates={setCoordinates}
-                position={1}
-                axis="x"
-                activeArea={activeArea}
-              />
-              <CoordinateInput
-                label="Y end"
-                error={errors.y1 ? true : false}
-                areaCoordinate={areaCoordinate}
-                setCoordinates={setCoordinates}
-                position={1}
-                axis="y"
-                activeArea={activeArea}
-              />
-            </Styled.CoordinateInputs>
+                    {errors && <ErrorMessage errors={errors}></ErrorMessage>}
+                  </Styled.CoordinateGroup>
 
-            {errors && <ErrorMessage errors={errors}></ErrorMessage>}
-          </Styled.CoordinateGroup>
+                  <Styled.Buttons>
+                    {edit ? (
+                      <>
+                        <Button onClick={handleSubmit}>Save coordinates</Button>
+                        <Button variant="outlined" onClick={handleEditChange}>
+                          Cancel
+                        </Button>
+                      </>
+                    ) : (
+                      <Button variant="outlined" onClick={handleEditChange}>
+                        Edit coordinates
+                      </Button>
+                    )}
+                  </Styled.Buttons>
+                </Styled.CoordinateFields>
+              )}
+            </Styled.Selects>
+
+            <ImageView
+              text="Model placeholder image"
+              img={Img}
+              altText="Model placeholder image"
+            />
+          </Styled.ContentSplitter>
         </Styled.Content>
 
         <Dialog.Actions>
-          <Button onClick={handleSubmit}>Save</Button>
-          <Button variant="ghost" onClick={toggleOpen}>
-            Cancel
+          <Button variant="outlined" onClick={toggleOpen}>
+            Close
           </Button>
         </Dialog.Actions>
       </Styled.Dialog>
@@ -333,7 +363,7 @@ export const AreaCoordinates = ({
         autoHideDuration={3000}
         onClose={clearStatus}
       >
-        {'Saved model area'}
+        {'Area coordinate saved'}
       </Snackbar>
     </>
   );

@@ -19,8 +19,8 @@ export const ModelView = () => {
       <Styled.MetadataWrapper>
         <Styled.InnerMetadataWrapper>
           <ModelMetadataView />
-          <ModelFilesView />
           <ModelAreaCoordinates toggleOpen={toggleOpen}></ModelAreaCoordinates>
+          <ModelFilesView />
         </Styled.InnerMetadataWrapper>
         <ImageView
           text="Model placeholder image"
@@ -28,7 +28,6 @@ export const ModelView = () => {
           altText="Model placeholder image"
         />
       </Styled.MetadataWrapper>
-
       <AreaCoordinates open={open} toggleOpen={toggleOpen} />
     </>
   );

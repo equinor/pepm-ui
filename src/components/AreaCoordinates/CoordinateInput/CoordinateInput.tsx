@@ -1,6 +1,5 @@
 import { Icon, Input, Label } from '@equinor/eds-core-react';
 import { error_filled as ERROR_FILLED } from '@equinor/eds-icons';
-import { ModelAreaTypeDto } from '../../../api/generated';
 import { AreaCoordinateType } from '../AreaCoordinates';
 
 export const CoordinateInput = ({
@@ -10,7 +9,7 @@ export const CoordinateInput = ({
   setCoordinates,
   position,
   axis,
-  activeArea,
+  edit,
 }: {
   label: string;
   error: boolean;
@@ -18,7 +17,7 @@ export const CoordinateInput = ({
   setCoordinates: (value: string, index: number, axis: string) => void;
   position: number;
   axis: string;
-  activeArea: ModelAreaTypeDto;
+  edit: boolean;
 }) => {
   return (
     <div>
@@ -40,7 +39,7 @@ export const CoordinateInput = ({
           )
         }
         variant={error ? 'error' : undefined}
-        disabled={activeArea?.modelAreaTypeId === ''}
+        disabled={!edit}
       />
     </div>
   );
