@@ -1,10 +1,14 @@
 /* eslint-disable max-lines-per-function */
+import { Typography } from '@equinor/eds-core-react';
 import { EdsDataGrid } from '@equinor/eds-data-grid-react';
+import { useState } from 'react';
 import { GetVariogramResultsDto } from '../../../../../../api/generated';
 import { useFetchCases } from '../../../../../../hooks/useFetchCases';
+import { ImageResult } from '../ImageResult/ImageResult';
 import * as Styled from './VariogramResultTable.styled';
 
 interface ResultObjectType {
+  computeCaseId: string;
   method: string;
   parameter: string;
   archelFilter: string;
@@ -20,6 +24,9 @@ export const VariogramResultTable = ({
 }: {
   resultList: GetVariogramResultsDto[];
 }) => {
+  const [open, setOpen] = useState(false);
+  const [imageId, setImageId] = useState('');
+
   const caseList = useFetchCases();
   const roundResultString = (value: number) => {
     if (value) {
@@ -45,6 +52,7 @@ export const VariogramResultTable = ({
     )[0].modelArea.name;
 
     const element: ResultObjectType = {
+      computeCaseId: e.computeCaseId,
       method: method ? method : '',
       parameter: parameter,
       archelFilter: e.archelFilter ? e.archelFilter : '',
@@ -57,48 +65,95 @@ export const VariogramResultTable = ({
     return element;
   });
 
+  const handleImageDialog = (id: string) => {
+    const resultRow = resultList.find((e) => e.computeCaseId === id);
+    const resultFile = resultRow?.variogramResultFiles.find((x) =>
+      x.fileName.includes('variogram_slices_'),
+    );
+
+    const imageId = resultFile ? resultFile.variogramResultFileId : '';
+    setImageId(imageId);
+    setOpen(!open);
+  };
+
   return (
-    <Styled.Table>
-      <EdsDataGrid
-        enableSorting
-        enablePagination
-        emptyMessage="No results to show"
-        columnResizeMode="onChange"
-        rows={resultElementsList}
-        pageSize={50}
-        columns={[
-          {
-            accessorKey: 'method',
-            header: 'Compute method',
-            id: 'method',
-          },
-          {
-            accessorKey: 'parameter',
-            header: 'Parameter',
-            id: 'parameter',
-          },
-          {
-            accessorKey: 'archelFilter',
-            header: 'Archel Filter',
-            id: 'archelFilter',
-          },
-          {
-            accessorKey: 'modelArea',
-            header: 'Archel Filter',
-            id: 'modelArea',
-          },
-          {
-            accessorKey: 'variogramModel',
-            header: 'Variogram model',
-            id: 'variogramModel',
-          },
-          {
-            accessorKey: 'quality',
-            header: 'Variogram model',
-            id: 'quality',
-          },
-        ]}
-      />
-    </Styled.Table>
+    <>
+      <Styled.Table>
+        <EdsDataGrid
+          enableSorting
+          enablePagination
+          emptyMessage="No results to show"
+          columnResizeMode="onChange"
+          rows={resultElementsList}
+          pageSize={50}
+          columns={[
+            {
+              accessorKey: 'method',
+              header: 'Compute method',
+              id: 'method',
+            },
+            {
+              accessorKey: 'parameter',
+              header: 'Parameter',
+              id: 'parameter',
+            },
+            {
+              accessorKey: 'archelFilter',
+              header: 'Archel Filter',
+              id: 'archelFilter',
+            },
+            {
+              accessorKey: 'modelArea',
+              header: 'Archel Filter',
+              id: 'modelArea',
+            },
+            {
+              accessorKey: 'variogramModel',
+              header: 'Variogram model',
+              id: 'variogramModel',
+              cell: ({ row }) => (
+                <div>
+                  <Typography
+                    onClick={() =>
+                      handleImageDialog(row.original.computeCaseId)
+                    }
+                    link
+                  >
+                    {row.original.variogramModel}
+                  </Typography>
+                </div>
+              ),
+            },
+            {
+              accessorKey: 'quality',
+              header: 'Quality factor',
+              id: 'quality',
+            },
+            // {
+            //   accessorKey: 'img',
+            //   header: 'Image',
+            //   id: 'img',
+            //   cell: ({ row }) => (
+            //     <div>
+            //       <Button
+            //         variant="outlined"
+            //         onClick={() =>
+            //           handleImageDialog(row.original.computeCaseId)
+            //         }
+            //       >
+            //         View image
+            //       </Button>
+            //     </div>
+            //   ),
+            // },
+          ]}
+        />
+      </Styled.Table>
+      <ImageResult
+        imageId={imageId}
+        open={open}
+        setOpen={setOpen}
+      ></ImageResult>
+    </>
   );
 };

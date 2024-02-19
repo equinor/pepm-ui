@@ -1,33 +1,47 @@
+import { Button, Dialog } from '@equinor/eds-core-react';
 import { useQuery } from '@tanstack/react-query';
 import { getVariogramImage } from '../../../../../../api/custom/getImageById';
-import { GetVariogramResultsVariogramResultFileDto } from '../../../../../../api/generated';
 import { ImageView } from '../../../../../../components/ImageView/ImageView';
+import * as Styled from './ImageResult.styled';
 
 export const ImageResult = ({
-  resultFiels,
+  imageId,
+  open,
+  setOpen,
 }: {
-  resultFiels: GetVariogramResultsVariogramResultFileDto[];
+  imageId: string;
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const wantedResultFile = resultFiels.find((x) =>
-    x.fileName.includes('variogram_slices_'),
-  );
-
-  const imageId = wantedResultFile
-    ? wantedResultFile.variogramResultFileId
-    : '';
-
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['case-image', imageId],
     queryFn: () => getVariogramImage(imageId),
+    enabled: open,
   });
 
   return (
     <>
-      <ImageView
-        text="Case results"
-        img={data ? data : ''}
-        altText="Case results"
-      ></ImageView>
+      <Styled.Dialog open={open} isDismissable={true}>
+        <Dialog.Header>
+          <Dialog.Title>Result image</Dialog.Title>
+        </Dialog.Header>
+        <Styled.Content>
+          {isLoading && <>Loading ...</>}
+          {data && (
+            <ImageView
+              text="Case results"
+              img={data ? data : ''}
+              altText="Case results"
+            ></ImageView>
+          )}
+        </Styled.Content>
+
+        <Dialog.Actions>
+          <Button variant="ghost" onClick={() => setOpen(!open)}>
+            Cancel
+          </Button>
+        </Dialog.Actions>
+      </Styled.Dialog>
     </>
   );
 };
