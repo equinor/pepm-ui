@@ -4,9 +4,11 @@ import { useFetchCases } from '../../../../hooks/useFetchCases';
 import { useFetchVariogramResults } from '../../../../hooks/useFetchVariogramResults';
 
 export const VariogramResults = () => {
-  const { data } = useFetchVariogramResults();
+  const { data, isLoading } = useFetchVariogramResults();
   const cases = useFetchCases();
   const variogramResults = data?.data;
+
+  if (isLoading) return <>Loading ...</>;
 
   return (
     <>

@@ -17,9 +17,10 @@ export type GetVariogramResultsDto = {
     rvertical: number;
     sigma: number;
     quality: number;
-    family?: string | null;
+    family: string;
     archelFilter?: string | null;
     indicator?: string | null;
+    customIndicator?: string | null;
     attribute?: string | null;
     box: Array<CoordinateDto>;
 };

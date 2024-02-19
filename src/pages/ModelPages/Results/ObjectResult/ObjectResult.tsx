@@ -5,8 +5,10 @@ import { useFetchChannelResults } from '../../../../hooks/useFetchChannelResults
 
 export const ObjectResult = () => {
   const cases = useFetchCases();
-  const { data } = useFetchChannelResults();
+  const { data, isLoading } = useFetchChannelResults();
   const objectResults = data?.data;
+
+  if (isLoading) return <>Loading ...</>;
 
   return (
     <>

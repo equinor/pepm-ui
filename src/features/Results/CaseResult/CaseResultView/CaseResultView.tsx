@@ -8,7 +8,7 @@ import {
   GetVariogramResultsDto,
 } from '../../../../api/generated';
 import { ChannelResult } from './ObjectCaseResult/ChannelResult';
-import { VariogramCaseResult } from './VariogramCaseResult/VariogramCaseResult';
+import { VariogramResultTable } from './VariogramCaseResult/VariogramResultTable/VariogramResultTable';
 
 export const CaseResultView = ({
   channelResultList,
@@ -37,9 +37,9 @@ export const CaseResultView = ({
       </Typography>
       <Styled.CaseResultList>
         {variogramResultList && (
-          <VariogramCaseResult
+          <VariogramResultTable
             resultList={variogramResultList}
-          ></VariogramCaseResult>
+          ></VariogramResultTable>
         )}
         {channelResultList &&
           channelResultList.map((obj, index) => (
