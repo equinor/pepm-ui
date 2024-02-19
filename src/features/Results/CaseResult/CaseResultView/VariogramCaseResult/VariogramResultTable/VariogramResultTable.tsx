@@ -129,23 +129,6 @@ export const VariogramResultTable = ({
               header: 'Quality factor',
               id: 'quality',
             },
-            // {
-            //   accessorKey: 'img',
-            //   header: 'Image',
-            //   id: 'img',
-            //   cell: ({ row }) => (
-            //     <div>
-            //       <Button
-            //         variant="outlined"
-            //         onClick={() =>
-            //           handleImageDialog(row.original.computeCaseId)
-            //         }
-            //       >
-            //         View image
-            //       </Button>
-            //     </div>
-            //   ),
-            // },
           ]}
         />
       </Styled.Table>
