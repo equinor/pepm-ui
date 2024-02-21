@@ -7,6 +7,8 @@ export const Table = styled.div`
   padding-bottom: ${spacings.MEDIUM};
 
   > div {
+    overflow-y: hidden;
+
     > table {
       min-width: 1150px;
     }

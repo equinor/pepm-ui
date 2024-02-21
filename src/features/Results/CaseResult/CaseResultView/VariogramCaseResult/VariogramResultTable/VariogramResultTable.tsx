@@ -81,6 +81,7 @@ export const VariogramResultTable = ({
       <Styled.Table>
         <EdsDataGrid
           enableSorting
+          enableColumnFiltering
           enablePagination
           emptyMessage="No results to show"
           columnResizeMode="onChange"
@@ -104,7 +105,7 @@ export const VariogramResultTable = ({
             },
             {
               accessorKey: 'modelArea',
-              header: 'Archel Filter',
+              header: 'Model Area',
               id: 'modelArea',
             },
             {
@@ -128,6 +129,7 @@ export const VariogramResultTable = ({
               accessorKey: 'quality',
               header: 'Quality factor',
               id: 'quality',
+              enableColumnFilter: false,
             },
           ]}
         />
