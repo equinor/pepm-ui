@@ -1,6 +1,6 @@
 /* eslint-disable max-lines-per-function */
-import { ModelAreaTypeDto } from '../../api/generated';
-import { AreaCoordinateType } from './AreaCoordinates';
+import { ModelAreaTypeDto } from '../../../api/generated';
+import { AreaCoordinateType } from '../AreaCoordinates';
 
 export type CoordinateErrorType = {
   area?: string;

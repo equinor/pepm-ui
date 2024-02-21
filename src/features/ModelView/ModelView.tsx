@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AreaCoordinates } from '../../components/AreaCoordinates/AreaCoordinates';
+import { CoordinatesDialog } from '../../components/AreaCoordinates/CoordinatesDialog/CoordinatesDialog';
 import { ImageView } from '../../components/ImageView/ImageView';
 import { ModelMetadataView } from '../../features/ModelView/ModelMetadataView/ModelMetadataView';
 import { ModelAreaCoordinates } from './ModelAreaCoordinates/ModelAreaCoordinates';
@@ -28,7 +28,7 @@ export const ModelView = () => {
           altText="Model placeholder image"
         />
       </Styled.MetadataWrapper>
-      <AreaCoordinates open={open} toggleOpen={toggleOpen} />
+      <CoordinatesDialog open={open} toggleOpen={toggleOpen} />
     </>
   );
 };

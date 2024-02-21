@@ -1,4 +1,4 @@
-import { CoordinateErrorType } from '../AreaCoordinates/AreaCoordinates.hooks';
+import { CoordinateErrorType } from '../AreaCoordinates/hooks/AreaCoordinates.hooks';
 
 export const ErrorMessage = ({ errors }: { errors: CoordinateErrorType }) => {
   return (

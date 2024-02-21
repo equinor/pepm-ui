@@ -4,9 +4,8 @@
 import {
   Autocomplete,
   AutocompleteChanges,
+  Banner,
   Button,
-  Dialog,
-  Snackbar,
   Typography,
 } from '@equinor/eds-core-react';
 import { useState } from 'react';
@@ -22,12 +21,13 @@ import { useFetchModelAreas } from '../../hooks/useFetchModelAreas';
 import { useMutateAreaCoordinates } from '../../hooks/useMutateAreaCoordinates';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { ImageView } from '../ImageView/ImageView';
+import * as Styled from './AreaCoordinates.styled';
+import { CoordinateInput } from './CoordinateInput/CoordinateInput';
 import {
   CoordinateErrorType,
   validateCoordinates,
-} from './AreaCoordinates.hooks';
-import * as Styled from './AreaCoordinates.styled';
-import { CoordinateInput } from './CoordinateInput/CoordinateInput';
+} from './hooks/AreaCoordinates.hooks';
+import { useModelResults } from './hooks/useModelResults';
 
 export type AreaCoordinateType = {
   modelAreaId: string;
@@ -57,13 +57,10 @@ const defaultArea: ModelAreaTypeDto = {
 };
 
 export const AreaCoordinates = ({
-  open,
-  toggleOpen,
+  setSaveAlert,
 }: {
-  open: boolean;
-  toggleOpen: () => void;
+  setSaveAlert: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const [showSaveAlert, setSaveAlert] = useState(false);
   const [activeArea, setActiveArea] = useState<ModelAreaTypeDto>(defaultArea);
   const [newArea, setNewArea] = useState<ModelAreaTypeDto>();
   const [errors, setErrors] = useState<CoordinateErrorType>({});
@@ -84,14 +81,10 @@ export const AreaCoordinates = ({
     ],
   });
   const { modelId } = useParams();
-
   const { data, isLoading } = useFetchModel(modelId);
+  const { activeAreaResultList } = useModelResults(activeArea.name);
   const modelAreas = useFetchModelAreas();
   const mutateAreaCoordinates = useMutateAreaCoordinates();
-
-  function clearStatus() {
-    setSaveAlert(false);
-  }
 
   const handleSelectChange = async (
     changes: AutocompleteChanges<ModelAreaTypeDto>,
@@ -251,125 +244,111 @@ export const AreaCoordinates = ({
     setEdit(!edit);
   };
 
-  const handleCloseDialog = () => {
-    setActiveArea(defaultArea);
-    toggleOpen();
-  };
-
   if (modelAreas.isLoading || modelAreas.data === undefined || isLoading)
     return <p>Loading.....</p>;
 
   return (
     <>
-      <Styled.Dialog open={open}>
-        <Dialog.Header>
-          <Dialog.Title>Manage model areas for {data?.data.name}</Dialog.Title>
-        </Dialog.Header>
-        <Styled.Content>
-          <Styled.ContentSplitter>
-            <Styled.Selects>
-              <Styled.CoordinateGroup className={'autocomplete-error'}>
-                <Autocomplete
-                  className={errors?.area && 'autocomplete-error'}
-                  label={'Select area'}
-                  options={modelAreas.data.data}
-                  optionLabel={(option) => option.name}
-                  onOptionsChange={handleSelectChange}
-                  selectedOptions={[activeArea]}
-                  variant={errors.area ? 'error' : undefined}
-                ></Autocomplete>
+      <Styled.ContentSplitter>
+        <Styled.Selects>
+          <Styled.CoordinateGroup className={'autocomplete-error'}>
+            <Autocomplete
+              className={errors?.area && 'autocomplete-error'}
+              label={'Select area'}
+              options={modelAreas.data.data}
+              optionLabel={(option) => option.name}
+              onOptionsChange={handleSelectChange}
+              selectedOptions={[activeArea]}
+              variant={errors.area ? 'error' : undefined}
+            ></Autocomplete>
+          </Styled.CoordinateGroup>
+
+          {activeArea.modelAreaTypeId !== '' && (
+            <Styled.CoordinateFields>
+              <Styled.CoordinateGroup>
+                <Typography variant="h6">Top Left Corner</Typography>
+                <Styled.CoordinateInputs>
+                  <CoordinateInput
+                    label="X start"
+                    error={errors.x0 ? true : false}
+                    areaCoordinate={areaCoordinate}
+                    setCoordinates={setCoordinates}
+                    position={0}
+                    axis="x"
+                    edit={edit}
+                  />
+                  <CoordinateInput
+                    label="Y start"
+                    error={errors.y0 ? true : false}
+                    areaCoordinate={areaCoordinate}
+                    setCoordinates={setCoordinates}
+                    position={0}
+                    axis="y"
+                    edit={edit}
+                  />
+                </Styled.CoordinateInputs>
               </Styled.CoordinateGroup>
+              <Styled.CoordinateGroup>
+                <Typography variant="h6">Bottom Right Corner </Typography>
+                <Styled.CoordinateInputs>
+                  <CoordinateInput
+                    label="X end"
+                    error={errors.x1 ? true : false}
+                    areaCoordinate={areaCoordinate}
+                    setCoordinates={setCoordinates}
+                    position={1}
+                    axis="x"
+                    edit={edit}
+                  />
+                  <CoordinateInput
+                    label="Y end"
+                    error={errors.y1 ? true : false}
+                    areaCoordinate={areaCoordinate}
+                    setCoordinates={setCoordinates}
+                    position={1}
+                    axis="y"
+                    edit={edit}
+                  />
+                </Styled.CoordinateInputs>
 
-              {activeArea.modelAreaTypeId !== '' && (
-                <Styled.CoordinateFields>
-                  <Styled.CoordinateGroup>
-                    <Typography variant="h6">Top Left Corner</Typography>
-                    <Styled.CoordinateInputs>
-                      <CoordinateInput
-                        label="X start"
-                        error={errors.x0 ? true : false}
-                        areaCoordinate={areaCoordinate}
-                        setCoordinates={setCoordinates}
-                        position={0}
-                        axis="x"
-                        edit={edit}
-                      />
-                      <CoordinateInput
-                        label="Y start"
-                        error={errors.y0 ? true : false}
-                        areaCoordinate={areaCoordinate}
-                        setCoordinates={setCoordinates}
-                        position={0}
-                        axis="y"
-                        edit={edit}
-                      />
-                    </Styled.CoordinateInputs>
-                  </Styled.CoordinateGroup>
-                  <Styled.CoordinateGroup>
-                    <Typography variant="h6">Bottom Right Corner </Typography>
-                    <Styled.CoordinateInputs>
-                      <CoordinateInput
-                        label="X end"
-                        error={errors.x1 ? true : false}
-                        areaCoordinate={areaCoordinate}
-                        setCoordinates={setCoordinates}
-                        position={1}
-                        axis="x"
-                        edit={edit}
-                      />
-                      <CoordinateInput
-                        label="Y end"
-                        error={errors.y1 ? true : false}
-                        areaCoordinate={areaCoordinate}
-                        setCoordinates={setCoordinates}
-                        position={1}
-                        axis="y"
-                        edit={edit}
-                      />
-                    </Styled.CoordinateInputs>
+                {errors && <ErrorMessage errors={errors}></ErrorMessage>}
+              </Styled.CoordinateGroup>
+              {activeAreaResultList &&
+                activeAreaResultList?.length > 0 &&
+                edit && (
+                  <Styled.Warning elevation="none">
+                    <Banner.Message>
+                      IMPORTANT - this model area has one or more results in
+                      object or variogram cases. Changing the coordinates will
+                      discard any associated result.
+                    </Banner.Message>
+                  </Styled.Warning>
+                )}
 
-                    {errors && <ErrorMessage errors={errors}></ErrorMessage>}
-                  </Styled.CoordinateGroup>
+              <Styled.Buttons>
+                {edit ? (
+                  <>
+                    <Button onClick={handleSubmit}>Save coordinates</Button>
+                    <Button variant="outlined" onClick={handleEditChange}>
+                      Cancel
+                    </Button>
+                  </>
+                ) : (
+                  <Button variant="outlined" onClick={handleEditChange}>
+                    Edit coordinates
+                  </Button>
+                )}
+              </Styled.Buttons>
+            </Styled.CoordinateFields>
+          )}
+        </Styled.Selects>
 
-                  <Styled.Buttons>
-                    {edit ? (
-                      <>
-                        <Button onClick={handleSubmit}>Save coordinates</Button>
-                        <Button variant="outlined" onClick={handleEditChange}>
-                          Cancel
-                        </Button>
-                      </>
-                    ) : (
-                      <Button variant="outlined" onClick={handleEditChange}>
-                        Edit coordinates
-                      </Button>
-                    )}
-                  </Styled.Buttons>
-                </Styled.CoordinateFields>
-              )}
-            </Styled.Selects>
-
-            <ImageView
-              text="Model placeholder image"
-              img={Img}
-              altText="Model placeholder image"
-            />
-          </Styled.ContentSplitter>
-        </Styled.Content>
-
-        <Dialog.Actions>
-          <Button variant="outlined" onClick={handleCloseDialog}>
-            Close
-          </Button>
-        </Dialog.Actions>
-      </Styled.Dialog>
-      <Snackbar
-        open={!!showSaveAlert}
-        autoHideDuration={3000}
-        onClose={clearStatus}
-      >
-        {'Area coordinate saved'}
-      </Snackbar>
+        <ImageView
+          text="Model placeholder image"
+          img={Img}
+          altText="Model placeholder image"
+        />
+      </Styled.ContentSplitter>
     </>
   );
 };

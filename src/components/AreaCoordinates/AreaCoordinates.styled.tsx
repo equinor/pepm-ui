@@ -1,6 +1,7 @@
-import { Dialog } from '@equinor/eds-core-react';
+import { Banner, Dialog } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 import { spacings } from '../../tokens/spacings';
+import { theme } from '../../tokens/theme';
 
 export const StyledDialog = styled(Dialog)`
   width: fit-content;
@@ -45,6 +46,13 @@ export const CoordinateInputs = styled.div`
   display: flex;
   flex-direction: row;
   column-gap: ${spacings.MEDIUM};
+`;
+
+export const Warning = styled(Banner)`
+  div {
+    background-color: ${theme.light.info.warning};
+    max-width: 450px;
+  }
 `;
 
 export const Buttons = styled.div`

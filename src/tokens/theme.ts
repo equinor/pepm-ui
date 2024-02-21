@@ -4,6 +4,7 @@ const interactive = tokens.colors.interactive;
 const text = tokens.colors.text;
 const ui = tokens.colors.ui;
 const base = tokens.elevation;
+const infographic = tokens.colors.infographic;
 
 export const theme = {
   light: {
@@ -31,6 +32,9 @@ export const theme = {
       elevation: {
         raised: base.raised,
       },
+    },
+    info: {
+      warning: infographic.primary__spruce_wood.hex,
     },
   },
 };
