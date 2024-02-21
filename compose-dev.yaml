@@ -3,11 +3,11 @@ services:
   pepm-ui:
     image: pepm-ui:dev
     build:
-      target: development
+      target: local
       context: .
     volumes:
       - ./src:/code/src
     env_file:
-      - .env.development.local
+      - .env.local
     ports:
       - 3000:3000
