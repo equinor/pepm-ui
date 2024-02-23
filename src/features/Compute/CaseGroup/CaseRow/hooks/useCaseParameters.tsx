@@ -18,7 +18,7 @@ export const useCaseParameters = (
     useState<ListComputeSettingsInputValueDto[]>();
   const [selectedGrainSize, setGrainSize] =
     useState<ListComputeSettingsInputValueDto[]>();
-  const [selectedParameters, setParameters] =
+  const [selectedContiniousParameters, setContiniousParameters] =
     useState<ListComputeSettingsInputValueDto[]>();
   const [selectedArchelFilter, setArchelFilter] =
     useState<ListComputeSettingsInputValueDto[]>();
@@ -182,7 +182,11 @@ export const useCaseParameters = (
 
         case 'ContiniousParameter':
           if (loaded)
-            getDefaultParameters(loaded, selectedParameters, setParameters);
+            getDefaultParameters(
+              loaded,
+              selectedContiniousParameters,
+              setContiniousParameters,
+            );
           break;
 
         case 'Archel':
@@ -196,7 +200,7 @@ export const useCaseParameters = (
       selectedGrainSize,
       selectedIndicatorParameters,
       selectedParamValue,
-      selectedParameters,
+      selectedContiniousParameters,
       selectedVariogramModels,
     ],
   );
@@ -212,12 +216,12 @@ export const useCaseParameters = (
   return {
     selectedIndicatorParameters,
     selectedGrainSize,
-    selectedParameters,
+    selectedContiniousParameters,
     selectedArchelFilter,
     selectedVariogramModels,
     setIndicatorParameters,
     setGrainSize,
-    setParameters,
+    setContiniousParameters,
     setArchelFilter,
     setVariogramModels,
     selectedValues: selectedParamValue,
