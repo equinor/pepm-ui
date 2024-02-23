@@ -127,10 +127,8 @@ export const VariogramOptionSelect = ({
         break;
 
       case 'Archel':
-        if (loaded) {
-          const res = getDefaultParameters(loaded, selectedArchelFilter);
-          return res;
-        }
+        if (loaded) return getDefaultParameters(loaded, selectedArchelFilter);
+
         break;
     }
   };
