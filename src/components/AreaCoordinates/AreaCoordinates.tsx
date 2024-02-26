@@ -163,7 +163,10 @@ export const AreaCoordinates = ({
 
       setActiveArea(changes.selectedItems[0]);
 
-      if (fallbackAreaCoordinate === undefined) {
+      if (
+        fallbackAreaCoordinate === undefined ||
+        activeArea.modelAreaTypeId !== fallbackAreaCoordinate.modelAreaId
+      ) {
         setfallbackAreaCoordinate(cloneDeep(newState));
       }
 
