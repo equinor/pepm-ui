@@ -22,6 +22,7 @@
     "@types/react-dom": "^18.0.0",
     "axios": "^1.6.0",
     "env-cmd": "^10.1.0",
+    "lodash": "^4.17.21",
     "openapi-fetch": "^0.7.2",
     "openapi-typescript-codegen": "^0.25.0",
     "react": "^18.2.0",
@@ -66,6 +67,7 @@
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^4.32.5",
+    "@types/lodash": "^4.14.202",
     "@types/styled-components": "^5.1.26",
     "eslint": "^8.31.0",
     "eslint-config-prettier": "^8.5.0",
