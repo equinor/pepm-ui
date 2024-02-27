@@ -86,31 +86,31 @@ export const VariogramResultTable = ({
           emptyMessage="No results to show"
           columnResizeMode="onChange"
           rows={resultElementsList}
-          pageSize={50}
+          pageSize={20}
           columns={[
             {
               accessorKey: 'method',
-              header: 'Compute method',
+              header: () => <Styled.Column>Compute method</Styled.Column>,
               id: 'method',
             },
             {
               accessorKey: 'parameter',
-              header: 'Parameter',
+              header: () => <Styled.Column>Parameter</Styled.Column>,
               id: 'parameter',
             },
             {
               accessorKey: 'archelFilter',
-              header: 'Archel Filter',
+              header: () => <Styled.Column>Archel Filter</Styled.Column>,
               id: 'archelFilter',
             },
             {
               accessorKey: 'modelArea',
-              header: 'Model Area',
+              header: () => <Styled.Column>Model Area</Styled.Column>,
               id: 'modelArea',
             },
             {
               accessorKey: 'variogramModel',
-              header: 'Variogram model',
+              header: () => <Styled.Column>Variogram model</Styled.Column>,
               id: 'variogramModel',
               cell: ({ row }) => (
                 <div>
@@ -127,9 +127,12 @@ export const VariogramResultTable = ({
             },
             {
               accessorKey: 'quality',
-              header: 'Quality factor',
+              header: () => <Styled.Column>Quality factor</Styled.Column>,
               id: 'quality',
               enableColumnFilter: false,
+              cell: ({ row }) => (
+                <Styled.Quality>{row.original.quality}</Styled.Quality>
+              ),
             },
           ]}
         />
