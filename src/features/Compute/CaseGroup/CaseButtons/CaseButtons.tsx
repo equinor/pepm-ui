@@ -217,6 +217,7 @@ export const CaseButtons = ({
         <ConfirmDialog
           isOpen={deleteConfirm}
           message="By pressing OK, the case and belonging results will be deleted."
+          danger={true}
           confirmAction={handleConfirmDelete}
           setIsOpen={setDeleteConfirm}
         ></ConfirmDialog>
@@ -226,6 +227,7 @@ export const CaseButtons = ({
           isOpen={saveConfirm}
           message="By pressing OK, the current case will be overwritten, deleting old
       results."
+          danger={false}
           confirmAction={handleConfirmSave}
           setIsOpen={setSaveConfirm}
         ></ConfirmDialog>
