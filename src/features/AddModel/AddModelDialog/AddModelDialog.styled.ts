@@ -5,10 +5,6 @@ import { spacings } from '../../../tokens/spacings';
 const StyledDialog = styled(Dialog)`
   min-width: 600px;
   overflow-y: scroll;
-
-  @media (max-height: 1000px) {
-    height: 90vh;
-  }
 `;
 
 const StyledDialogCustomContent = styled(Dialog.CustomContent)`
@@ -16,6 +12,7 @@ const StyledDialogCustomContent = styled(Dialog.CustomContent)`
   flex-direction: column;
   row-gap: ${spacings.X_LARGE};
   height: fit-content;
+  padding-top: ${spacings.XX_LARGE};
   padding-bottom: ${spacings.XXX_LARGE};
 
   > p {
