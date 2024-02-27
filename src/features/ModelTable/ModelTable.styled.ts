@@ -35,6 +35,8 @@ export const Buttons = styled.div`
 export const List = styled.div`
   display: flex;
   flex-direction: row;
+  white-space: nowrap;
+
   > p {
     padding-right: ${spacings.X_SMALL};
   }
