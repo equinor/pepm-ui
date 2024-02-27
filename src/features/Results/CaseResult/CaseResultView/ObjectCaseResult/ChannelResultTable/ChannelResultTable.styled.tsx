@@ -5,17 +5,21 @@ import { theme } from '../../../../../../tokens/theme';
 
 const StyledTable = styled(Table)`
   width: 100%;
-  max-width: 950px;
+  max-width: 800px;
 `;
 export const ColumnCell = styled(Table.Cell)`
   background: ${theme.light.ui.background.light};
   border: solid 0.5px ${theme.light.ui.background.medium};
+  white-space: nowrap;
 `;
 
 export const DataCell = styled(Table.Cell)`
   text-align: right;
   border: solid 0.5px ${theme.light.ui.background.medium};
-  width: 25%;
+  width: 150px;
+  white-space: nowrap;
+  font-family: Equinor Mono;
+
   > div {
     display: flex;
     justify-content: right;
