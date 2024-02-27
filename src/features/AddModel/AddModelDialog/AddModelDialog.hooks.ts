@@ -48,14 +48,6 @@ export const validateValues = (
   }
 
   if (
-    inputValues?.metadata === undefined ||
-    inputValues?.metadata?.filter((m) => m.metadataType === 'Formation')
-      .length <= 0
-  ) {
-    errors.formation = 'Formation not selected';
-  }
-
-  if (
     inputValues?.analogues === undefined ||
     inputValues?.analogues?.length <= 0
   ) {

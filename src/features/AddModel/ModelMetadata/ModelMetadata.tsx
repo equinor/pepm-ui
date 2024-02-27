@@ -61,11 +61,17 @@ export const ModelMetadata = ({
     propType: string,
   ) {
     if (!metadata.metadata) return;
-    const metadataList: MetadataDto[] = metadata.metadata.filter(
-      (i) => i.metadataType !== propType,
-    );
+
+    // Filert out metadata of the same type as dropdown props type
+    const metadataList: MetadataDto[] = metadata.metadata
+      .filter((i) => i.metadataType !== propType)
+      .filter((n) => n.metadataId !== propType);
 
     const newList = [...metadataList, ...e.selectedItems];
+
+    if (propType === 'Formation') console.log(e.selectedItems);
+    if (propType === 'Formation') console.log(newList);
+
     setMetadata({
       ...metadata,
       metadata: [...newList],
