@@ -117,7 +117,7 @@ export const ComputeVariogram = () => {
               }
             >
               <Icon data={ADD} size={18}></Icon>
-              Net-To-Gross
+              Net-to-gross
             </Button>
             <Button
               variant="outlined"
@@ -128,7 +128,7 @@ export const ComputeVariogram = () => {
               }
             >
               <Icon data={ADD} size={18}></Icon>
-              ContiniousParameter
+              Continious parameter
             </Button>
           </Styled.ButtonGroup>
           <Styled.ButtonGroup>
