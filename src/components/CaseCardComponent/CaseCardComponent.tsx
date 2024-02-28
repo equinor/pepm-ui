@@ -3,6 +3,7 @@ import { Typography } from '@equinor/eds-core-react';
 import { ComputeCaseDto } from '../../api/generated';
 import { AddCaseButtons } from '../AddCaseButtons/AddCaseButtons';
 import * as Styled from './CaseCardComponent.styled';
+import { titleMapping } from './FormattedMethodNames';
 
 export const CaseCardComponent = ({
   children,
@@ -19,23 +20,12 @@ export const CaseCardComponent = ({
   localList?: ComputeCaseDto[];
   addCase?: (methodType: string) => void;
 }) => {
-  const formattedTitle = () => {
-    let res = '';
-    if (title === 'Indicator') {
-      res = 'Indicator';
-    } else if (title === 'Net-To-Gross') {
-      res = 'Net-to-gross';
-    } else if (title === 'ContiniousParameter') {
-      res = 'Continious parameter';
-    }
-    return res;
-  };
   return (
     <Styled.CaseBorder>
       <Styled.Wrapper>
         <Styled.ButtonGroup>
           <Styled.Title>
-            <Typography variant="h4">{formattedTitle()}</Typography>
+            <Typography variant="h4">{titleMapping[title]}</Typography>
             <Typography variant="h6">{subTitle}</Typography>
           </Styled.Title>
           <AddCaseButtons

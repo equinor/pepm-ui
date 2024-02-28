@@ -24,10 +24,23 @@ export const AutocompleteRow = styled.div`
 
   > div {
     flex-grow: 1;
+    > div {
+      > label {
+        white-space: nowrap;
+      }
+    }
   }
 `;
 
 export const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
+`;
+
+export const MetadataWrapper = styled.div`
+  > div {
+    > label {
+      white-space: nowrap;
+    }
+  }
 `;

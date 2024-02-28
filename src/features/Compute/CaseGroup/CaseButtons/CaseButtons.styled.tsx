@@ -13,6 +13,7 @@ export const ButtonDiv = styled.div`
 
 const StyledButton = styled(Button)`
   white-space: nowrap;
+  width: 100px;
 `;
 
 export { StyledButton as Button };

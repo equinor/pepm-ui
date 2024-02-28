@@ -112,14 +112,14 @@ export const CaseButtons = ({
       {caseType === 'Object' ? (
         <>
           {caseStatus === 'Succeeded' ? (
-            <Button
+            <Styled.Button
               variant="outlined"
               onClick={() => {
                 navigate('../results/object');
               }}
             >
               View Results{' '}
-            </Button>
+            </Styled.Button>
           ) : saved ? (
             <Tooltip
               title={
@@ -133,6 +133,7 @@ export const CaseButtons = ({
               }
             >
               <Button
+                color={caseStatus === 'Failed' ? 'danger' : undefined}
                 variant="outlined"
                 onClick={saved ? runCase : saveCase}
                 disabled={
@@ -148,7 +149,7 @@ export const CaseButtons = ({
                 caseStatus === 'Running'
                   ? 'Running ... '
                   : caseStatus === 'Failed'
-                  ? 'Run Failed. Re-run Case'
+                  ? 'Re-run'
                   : 'Run'}
               </Button>
             </Tooltip>
@@ -183,6 +184,7 @@ export const CaseButtons = ({
               </Styled.Button>
             ) : (
               <Styled.Button
+                color={caseStatus === 'Failed' && 'danger'}
                 variant="outlined"
                 onClick={runCase}
                 disabled={
@@ -199,7 +201,7 @@ export const CaseButtons = ({
                 caseStatus === 'Running'
                   ? 'Running ... '
                   : caseStatus === 'Failed'
-                  ? 'Run Failed. Re-run Case'
+                  ? 'Re-run'
                   : 'Run'}
               </Styled.Button>
             )}
