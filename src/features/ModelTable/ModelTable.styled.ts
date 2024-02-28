@@ -4,6 +4,7 @@ import { spacings } from '../../tokens/spacings';
 export const Table = styled.div`
   overflow-x: auto;
   padding-bottom: ${spacings.MEDIUM};
+  max-width: 1750px;
 
   > div {
     > table {
