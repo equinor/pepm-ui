@@ -40,13 +40,6 @@ export const validateValues = (
     errors.description = 'Description not provided';
   }
 
-  if (
-    inputValues?.analogues === undefined ||
-    inputValues?.analogues?.length <= 0
-  ) {
-    errors.analogues = 'Analogues not selected';
-  }
-
   if (!files.NC && !isEdit) {
     errors.file = 'NC file missing';
   }

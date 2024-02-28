@@ -81,9 +81,11 @@ export const ModelTable = ({
             size: 100,
             cell: ({ row }) => (
               <Styled.List>
-                {row.original.analogues.map((a) => (
-                  <p key={a.analogueId}>{a.name + ', '}</p>
-                ))}
+                {row.original.analogues.length > 0
+                  ? row.original.analogues.map((a) => (
+                      <p key={a.analogueId}>{a.name + ', '}</p>
+                    ))
+                  : 'Not relevant'}
               </Styled.List>
             ),
           },
