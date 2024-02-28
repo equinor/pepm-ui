@@ -4,7 +4,11 @@ import { Button, LinearProgress } from '@equinor/eds-core-react';
 import { EdsDataGrid } from '@equinor/eds-data-grid-react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { AnalogueModelsService, OpenAPI } from '../../api/generated';
+import {
+  AnalogueModelsService,
+  MetadataDto,
+  OpenAPI,
+} from '../../api/generated';
 import { useAccessToken } from '../../hooks/useAccessToken';
 import * as Styled from './ModelTable.styled';
 
@@ -53,6 +57,10 @@ export const ModelTable = ({
     }
   };
 
+  const hasSelectedOptions = (metadata: MetadataDto[], type: string) => {
+    return metadata.filter((d) => d.metadataType === type).length > 0;
+  };
+
   return (
     <Styled.Table>
       <EdsDataGrid
@@ -87,11 +95,11 @@ export const ModelTable = ({
             size: 150,
             cell: ({ row }) => (
               <Styled.List>
-                {row.original.metadata
-                  .filter((data) => data.metadataType === 'Formation')
-                  .map((f) => (
-                    <p key={f.metadataId}>{f.value + ', '}</p>
-                  ))}
+                {hasSelectedOptions(row.original.metadata, 'Formation')
+                  ? row.original.metadata
+                      .filter((data) => data.metadataType === 'Formation')
+                      .map((f) => <p key={f.metadataId}>{f.value + ', '}</p>)
+                  : 'Not relevant'}
               </Styled.List>
             ),
           },
@@ -103,11 +111,11 @@ export const ModelTable = ({
             size: 150,
             cell: ({ row }) => (
               <Styled.List>
-                {row.original.metadata
-                  .filter((data) => data.metadataType === 'Zone')
-                  .map((z) => (
-                    <p key={z.metadataId}>{z.value + ', '}</p>
-                  ))}
+                {hasSelectedOptions(row.original.metadata, 'Zone')
+                  ? row.original.metadata
+                      .filter((data) => data.metadataType === 'Zone')
+                      .map((z) => <p key={z.metadataId}>{z.value + ', '}</p>)
+                  : 'Not relevant'}
               </Styled.List>
             ),
           },
@@ -119,11 +127,13 @@ export const ModelTable = ({
             size: 200,
             cell: ({ row }) => (
               <Styled.List>
-                {row.original.metadata
-                  .filter((data) => data.metadataType === 'Field')
-                  .map((filed) => (
-                    <p key={filed.metadataId}>{filed.value + ', '}</p>
-                  ))}
+                {hasSelectedOptions(row.original.metadata, 'Field')
+                  ? row.original.metadata
+                      .filter((data) => data.metadataType === 'Field')
+                      .map((filed) => (
+                        <p key={filed.metadataId}>{filed.value + ', '}</p>
+                      ))
+                  : 'Not relevant'}
               </Styled.List>
             ),
           },

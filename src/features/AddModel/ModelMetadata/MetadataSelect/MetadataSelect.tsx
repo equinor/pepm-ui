@@ -1,3 +1,6 @@
+/* eslint-disable max-lines-per-function */
+/* eslint-disable react/prop-types */
+
 import { Autocomplete, AutocompleteChanges } from '@equinor/eds-core-react';
 import { MetadataDto } from '../../../../api/generated';
 
@@ -19,30 +22,40 @@ export const MetadataSelect = ({
     type: string,
   ) => void;
 }) => {
-  const setSelectedMetadataOptions = (type: string) => {
-    if (!isLoading && data && metadata) {
-      const dataProps = data.filter((z) => z.metadataType === type);
+  const emptyOption: MetadataDto[] = [
+    {
+      metadataId: type,
+      metadataType: 'NoRelevant',
+      value: 'Not relevant',
+    },
+  ];
 
-      const selectedProps = metadata.filter((m) => m.metadataType === type);
+  const selectedOptions =
+    metadata !== undefined && metadata?.length > 0
+      ? metadata.filter((m) => m.metadataType === type)
+      : emptyOption;
+  const filteredOptions = data.filter((d) => d.metadataType === type);
+  const optionList: MetadataDto[] = filteredOptions
+    ? emptyOption.concat(filteredOptions)
+    : emptyOption;
 
-      return dataProps.filter(
-        (c) =>
-          selectedProps.findIndex((x: MetadataDto) => x.value === c.value) > -1,
-      );
-    }
-  };
+  const intersection = optionList.filter((a) =>
+    selectedOptions.some((b) => JSON.stringify(a) === JSON.stringify(b)),
+  );
 
   return (
     <Autocomplete
       variant={errors ? 'error' : undefined}
       label={type}
-      options={data.filter((d) => d.metadataType === type)}
+      options={optionList}
       optionLabel={(option) => option.value}
-      selectedOptions={setSelectedMetadataOptions(type)}
       multiple
-      onOptionsChange={(e: AutocompleteChanges<MetadataDto>) =>
-        handleAddMetadata(e, type)
+      initialSelectedOptions={
+        intersection.length === 0 ? emptyOption : intersection
       }
-    ></Autocomplete>
+      onOptionsChange={(e: AutocompleteChanges<MetadataDto>) => {
+        handleAddMetadata(e, type);
+      }}
+    />
   );
 };

@@ -97,8 +97,11 @@ export const ModelMetadataView = () => {
   const analougueList: AddAnalogueDto[] = [];
 
   function addMetadataFields(metadata?: MetadataDto[]) {
-    if (!metadata) return;
-    const obj = metadata.map((x) => ({ metadataId: x.metadataId }));
+    const filteredMetadata = metadata?.filter(
+      (m) => m.metadataType !== 'NoRelevant',
+    );
+    if (!filteredMetadata) return;
+    const obj = filteredMetadata.map((x) => ({ metadataId: x.metadataId }));
     metadataList.push(...obj);
   }
 

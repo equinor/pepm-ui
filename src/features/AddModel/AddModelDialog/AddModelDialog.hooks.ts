@@ -41,32 +41,10 @@ export const validateValues = (
   }
 
   if (
-    inputValues?.metadata === undefined ||
-    inputValues?.metadata?.filter((m) => m.metadataType === 'Field').length <= 0
-  ) {
-    errors.field = 'Field not selected';
-  }
-
-  if (
-    inputValues?.metadata === undefined ||
-    inputValues?.metadata?.filter((m) => m.metadataType === 'Formation')
-      .length <= 0
-  ) {
-    errors.formation = 'Formation not selected';
-  }
-
-  if (
     inputValues?.analogues === undefined ||
     inputValues?.analogues?.length <= 0
   ) {
     errors.analogues = 'Analogues not selected';
-  }
-
-  if (
-    inputValues?.metadata === undefined ||
-    inputValues?.metadata?.filter((m) => m.metadataType === 'Zone').length <= 0
-  ) {
-    errors.zone = 'Zone not selected';
   }
 
   if (!files.NC && !isEdit) {
