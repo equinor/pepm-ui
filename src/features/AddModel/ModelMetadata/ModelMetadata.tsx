@@ -67,10 +67,15 @@ export const ModelMetadata = ({
       .filter((i) => i.metadataType !== propType)
       .filter((n) => n.metadataId !== propType);
 
-    const newList = [...metadataList, ...e.selectedItems];
+    const removeNotSelected = e.selectedItems.filter(
+      (i) => i.metadataType === propType,
+    );
+    // console.log(removeNotSelected)
 
-    if (propType === 'Formation') console.log(e.selectedItems);
-    if (propType === 'Formation') console.log(newList);
+    const newList = [...metadataList, ...removeNotSelected];
+
+    // if (propType === 'Formation') console.log(e.selectedItems);
+    // if (propType === 'Formation') console.log(newList);
 
     setMetadata({
       ...metadata,

@@ -1,4 +1,6 @@
 /* eslint-disable max-lines-per-function */
+/* eslint-disable react/prop-types */
+
 import { Autocomplete, AutocompleteChanges } from '@equinor/eds-core-react';
 import { MetadataDto } from '../../../../api/generated';
 
@@ -27,47 +29,19 @@ export const MetadataSelect = ({
       value: 'Not relevant',
     },
   ];
+
+  const props =
+    metadata != undefined && metadata!.length > 0
+      ? metadata.filter((m) => m.metadataType === type)
+      : emptyOption;
   const filteredOptions = data.filter((d) => d.metadataType === type);
   const optionList: MetadataDto[] = filteredOptions
     ? emptyOption.concat(filteredOptions)
     : emptyOption;
 
-  const setSelectedMetadataOptions = (type: string) => {
-    let selectedOptions: MetadataDto[] = [];
-
-    if (!isLoading && data && metadata) {
-      const selectedProps = metadata.filter((m) => m.metadataType === type);
-
-      const noRelevantSelected = metadata
-        .filter((m) => m.metadataType === 'NoRelevant')
-        .filter((t) => t.metadataId === type);
-
-      const loadedProps = optionList.filter(
-        (c) =>
-          selectedProps.findIndex((x: MetadataDto) => x.value === c.value) > -1,
-      );
-
-      if (
-        metadata.length > 0 &&
-        selectedProps.length > 0 &&
-        noRelevantSelected.length === 0
-      ) {
-        selectedOptions = loadedProps;
-      } else if (
-        selectedProps.length === 0 &&
-        noRelevantSelected.length === 0
-      ) {
-        selectedOptions = emptyOption;
-      } else if (
-        selectedProps.length === 0 &&
-        noRelevantSelected.length !== 0
-      ) {
-        selectedOptions = [];
-      }
-    }
-    return selectedOptions;
-  };
-  const resLitstLength = setSelectedMetadataOptions(type)?.length;
+  const intersection = optionList.filter((a) =>
+    props.some((b) => JSON.stringify(a) === JSON.stringify(b)),
+  );
 
   return (
     <Autocomplete
@@ -75,26 +49,14 @@ export const MetadataSelect = ({
       label={type}
       options={optionList}
       optionLabel={(option) => option.value}
-      selectedOptions={
-        setSelectedMetadataOptions(type) &&
-        setSelectedMetadataOptions(type) !== undefined &&
-        resLitstLength &&
-        resLitstLength > 0
-          ? setSelectedMetadataOptions(type)
-          : resLitstLength && resLitstLength === 0
-          ? [
-              {
-                metadataId: type,
-                metadataType: 'NoRelevant',
-                value: 'Not relevant',
-              },
-            ]
-          : []
-      }
       multiple
-      onOptionsChange={(e: AutocompleteChanges<MetadataDto>) =>
-        handleAddMetadata(e, type)
+      initialSelectedOptions={
+        intersection.length === 0 ? emptyOption : intersection
       }
-    ></Autocomplete>
+      onOptionsChange={(e: AutocompleteChanges<MetadataDto>) => {
+        handleAddMetadata(e, type);
+        console.log(e.selectedItems);
+      }}
+    />
   );
 };
