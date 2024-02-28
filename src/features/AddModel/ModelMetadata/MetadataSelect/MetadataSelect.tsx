@@ -30,8 +30,8 @@ export const MetadataSelect = ({
     },
   ];
 
-  const props =
-    metadata != undefined && metadata!.length > 0
+  const selectedOptions =
+    metadata !== undefined && metadata?.length > 0
       ? metadata.filter((m) => m.metadataType === type)
       : emptyOption;
   const filteredOptions = data.filter((d) => d.metadataType === type);
@@ -40,7 +40,7 @@ export const MetadataSelect = ({
     : emptyOption;
 
   const intersection = optionList.filter((a) =>
-    props.some((b) => JSON.stringify(a) === JSON.stringify(b)),
+    selectedOptions.some((b) => JSON.stringify(a) === JSON.stringify(b)),
   );
 
   return (
@@ -55,7 +55,6 @@ export const MetadataSelect = ({
       }
       onOptionsChange={(e: AutocompleteChanges<MetadataDto>) => {
         handleAddMetadata(e, type);
-        console.log(e.selectedItems);
       }}
     />
   );

@@ -25,7 +25,7 @@ export const TableDataCell = ({
             <Typography key={m.metadataId}>{m.value + ', '}</Typography>
           ))
       ) : (
-        <Typography> - </Typography>
+        <Typography> Not relevant </Typography>
       )}
     </Styled.DataCell>
   );
