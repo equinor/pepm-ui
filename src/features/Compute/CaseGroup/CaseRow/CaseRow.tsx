@@ -72,12 +72,12 @@ export const CaseRow = ({
   const {
     selectedIndicatorParameters,
     selectedGrainSize,
-    selectedParameters,
+    selectedContiniousParameters,
     selectedArchelFilter,
     selectedVariogramModels,
     setIndicatorParameters,
     setGrainSize,
-    setParameters,
+    setContiniousParameters,
     setArchelFilter,
     setVariogramModels,
     selectedValues,
@@ -105,7 +105,7 @@ export const CaseRow = ({
     selectedIndicatorParameters,
     selectedArchelFilter,
     selectedGrainSize,
-    selectedParameters,
+    selectedContiniousParameters,
     selectedVariogramModels,
   );
 
@@ -306,11 +306,11 @@ export const CaseRow = ({
             contParamsParamsSettings={contParamsParamsSettings}
             contParamsArchelSettings={contParamsArchelSettings}
             selectedModelArea={selectedRowArea(rowCase.computeCaseId)}
-            selectedParameters={selectedParameters}
+            selectedContiniousParameters={selectedContiniousParameters}
             selectedArchelFilter={selectedArchelFilter}
             selectedVariogramModels={selectedVariogramModels}
             setModelArea={setModelArea}
-            setParameters={setParameters}
+            setContiniousParameters={setContiniousParameters}
             setArchelFilter={setArchelFilter}
             setVariogramModels={setVariogramModels}
             existingCases={caseList}

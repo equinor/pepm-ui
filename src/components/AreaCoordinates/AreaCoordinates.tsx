@@ -8,6 +8,7 @@ import {
   Button,
   Typography,
 } from '@equinor/eds-core-react';
+import { cloneDeep } from 'lodash';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
@@ -80,6 +81,8 @@ export const AreaCoordinates = ({
       },
     ],
   });
+  const [fallbackAreaCoordinate, setfallbackAreaCoordinate] =
+    useState<AreaCoordinateType>();
   const { modelId } = useParams();
   const { data, isLoading } = useFetchModel(modelId);
   const { activeAreaResultList } = useModelResults(activeArea.name);
@@ -159,7 +162,15 @@ export const AreaCoordinates = ({
       };
 
       setActiveArea(changes.selectedItems[0]);
-      setAreaCoordinate(newState);
+
+      if (
+        fallbackAreaCoordinate === undefined ||
+        activeArea.modelAreaTypeId !== fallbackAreaCoordinate.modelAreaId
+      ) {
+        setfallbackAreaCoordinate(cloneDeep(newState));
+      }
+
+      setAreaCoordinate(cloneDeep(newState));
     } else {
       setNewArea(undefined);
       setActiveArea(changes.selectedItems[0]);
@@ -241,6 +252,14 @@ export const AreaCoordinates = ({
   };
 
   const handleEditChange = () => {
+    setEdit(!edit);
+  };
+
+  const handleCancleEdit = () => {
+    fallbackAreaCoordinate &&
+      setAreaCoordinate(cloneDeep(fallbackAreaCoordinate));
+
+    setErrors({});
     setEdit(!edit);
   };
 
@@ -329,7 +348,7 @@ export const AreaCoordinates = ({
                 {edit ? (
                   <>
                     <Button onClick={handleSubmit}>Save coordinates</Button>
-                    <Button variant="outlined" onClick={handleEditChange}>
+                    <Button variant="outlined" onClick={handleCancleEdit}>
                       Cancel
                     </Button>
                   </>

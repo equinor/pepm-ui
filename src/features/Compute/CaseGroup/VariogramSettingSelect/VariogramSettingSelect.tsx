@@ -21,13 +21,13 @@ export const VariogramOptionSelect = ({
   selectedModelArea,
   selectedIndicatorParameters,
   selectedGrainSize,
-  selectedParameters,
+  selectedContiniousParameters,
   selectedArchelFilter,
   selectedVariogramModels,
   setModelArea,
   setIndicatorParameters,
   setGrainSize,
-  setParameters,
+  setContiniousParameters,
   setArchelFilter,
   setVariogramModels,
   NetGrossGrainSizeSettings,
@@ -48,7 +48,7 @@ export const VariogramOptionSelect = ({
   selectedModelArea?: ModelAreaDto[] | undefined;
   selectedIndicatorParameters?: ListComputeSettingsInputValueDto[];
   selectedGrainSize?: ListComputeSettingsInputValueDto[];
-  selectedParameters?: ListComputeSettingsInputValueDto[];
+  selectedContiniousParameters?: ListComputeSettingsInputValueDto[];
   selectedArchelFilter?: ListComputeSettingsInputValueDto[] | undefined;
   selectedVariogramModels: ListComputeSettingsInputValueDto[] | undefined;
 
@@ -61,7 +61,7 @@ export const VariogramOptionSelect = ({
   setGrainSize?: React.Dispatch<
     React.SetStateAction<ListComputeSettingsInputValueDto[] | undefined>
   >;
-  setParameters?: React.Dispatch<
+  setContiniousParameters?: React.Dispatch<
     React.SetStateAction<ListComputeSettingsInputValueDto[] | undefined>
   >;
   setArchelFilter?: React.Dispatch<
@@ -122,14 +122,13 @@ export const VariogramOptionSelect = ({
         break;
 
       case 'ContiniousParameter':
-        if (loaded) return getDefaultParameters(loaded, selectedParameters);
+        if (loaded)
+          return getDefaultParameters(loaded, selectedContiniousParameters);
         break;
 
       case 'Archel':
-        if (loaded) {
-          const res = getDefaultParameters(loaded, selectedArchelFilter);
-          return res;
-        }
+        if (loaded) return getDefaultParameters(loaded, selectedArchelFilter);
+
         break;
     }
   };
@@ -200,7 +199,7 @@ export const VariogramOptionSelect = ({
           />
         </ViewSelectedVariogramSettings>
       )}
-      {setParameters && caseType === 'ContiniousParameter' && (
+      {setContiniousParameters && caseType === 'ContiniousParameter' && (
         <ViewSelectedVariogramSettings
           expandSettings={expandSettings}
           selecteSettings={
@@ -216,7 +215,7 @@ export const VariogramOptionSelect = ({
             selectedValue={
               setIfLoadedValues && setIfLoadedValues('ContiniousParameter')
             }
-            setValue={setParameters}
+            setValue={setContiniousParameters}
           />
         </ViewSelectedVariogramSettings>
       )}

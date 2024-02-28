@@ -14,7 +14,7 @@ export const useGetParameterList = (
   selectedIndicatorParameters: ListComputeSettingsInputValueDto[] | undefined,
   selectedArchelFilter: ListComputeSettingsInputValueDto[] | undefined,
   selectedGrainSize: ListComputeSettingsInputValueDto[] | undefined,
-  selectedParameters: ListComputeSettingsInputValueDto[] | undefined,
+  selectedContiniousParameters: ListComputeSettingsInputValueDto[] | undefined,
   selectedVariogramModels: ListComputeSettingsInputValueDto[] | undefined,
 ) => {
   const addSelectedSettings = (
@@ -58,7 +58,7 @@ export const useGetParameterList = (
     methodType: string,
   ) => {
     let newList = [...settingList];
-    if (setting) {
+    if (setting && setting.length > 0) {
       const inputSettingTypeId = addSelectedSettings(
         setting,
         settingType,
@@ -122,7 +122,7 @@ export const useGetParameterList = (
 
     case 'ContiniousParameter': {
       const firstUpdate = updateList(
-        selectedParameters,
+        selectedContiniousParameters,
         inputSettingsList,
         'ContiniousParameter',
         'ContiniousParameter',
