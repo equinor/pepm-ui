@@ -5,8 +5,8 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-
-  width: 500px;
+  padding-left: ${spacings.LARGE};
+  min-width: 320px;
 `;
 
 export const Info = styled.div`

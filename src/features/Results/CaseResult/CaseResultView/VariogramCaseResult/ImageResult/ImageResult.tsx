@@ -21,7 +21,7 @@ export const ImageResult = ({
 
   return (
     <>
-      <Styled.Dialog open={open} isDismissable={true}>
+      <Styled.Dialog open={open} isDismissable>
         <Dialog.Header>
           <Dialog.Title>Result image</Dialog.Title>
         </Dialog.Header>
@@ -38,7 +38,7 @@ export const ImageResult = ({
 
         <Dialog.Actions>
           <Button variant="ghost" onClick={() => setOpen(!open)}>
-            Cancel
+            Close
           </Button>
         </Dialog.Actions>
       </Styled.Dialog>

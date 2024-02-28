@@ -4,6 +4,7 @@ import { spacings } from '../../tokens/spacings';
 export const Table = styled.div`
   overflow-x: auto;
   padding-bottom: ${spacings.MEDIUM};
+  max-width: 1750px;
 
   > div {
     > table {
@@ -35,6 +36,8 @@ export const Buttons = styled.div`
 export const List = styled.div`
   display: flex;
   flex-direction: row;
+  white-space: nowrap;
+
   > p {
     padding-right: ${spacings.X_SMALL};
   }

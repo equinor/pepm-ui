@@ -13,7 +13,7 @@ export const Case = styled.div`
   width: 70vw;
   max-width: 1400px;
 
-  @media (max-width: 1725px) {
+  @media (max-width: 1800px) {
     width: 100%;
   }
 

@@ -42,25 +42,18 @@ export const CaseResultView = ({
           ></VariogramResultTable>
         )}
         {channelResultList &&
-          channelResultList.map((obj, index) => (
-            <Styled.Wrapper key={obj.computeCaseId}>
-              <ChannelResult
-                data={obj}
-                computeCase={
-                  computeCases && computeCases.length > 0
-                    ? computeCases.filter(
-                        (c) => c.computeCaseId === obj.computeCaseId,
-                      )
-                    : []
-                }
-              ></ChannelResult>
-              {index < channelResultList.length - 1 && (
-                <Styled.StyledDivider
-                  variant="small"
-                  color="medium"
-                ></Styled.StyledDivider>
-              )}
-            </Styled.Wrapper>
+          channelResultList.map((obj) => (
+            <ChannelResult
+              key={obj.computeCaseId}
+              data={obj}
+              computeCase={
+                computeCases && computeCases.length > 0
+                  ? computeCases.filter(
+                      (c) => c.computeCaseId === obj.computeCaseId,
+                    )
+                  : []
+              }
+            ></ChannelResult>
           ))}
       </Styled.CaseResultList>
     </Styled.CaseResultView>

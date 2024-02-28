@@ -1,3 +1,4 @@
+import { Button } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 import { spacings } from '../../../../tokens/spacings';
 
@@ -9,3 +10,10 @@ export const ButtonDiv = styled.div`
   align-items: start;
   padding-top: ${spacings.MEDIUM};
 `;
+
+const StyledButton = styled(Button)`
+  white-space: nowrap;
+  width: 100px;
+`;
+
+export { StyledButton as Button };

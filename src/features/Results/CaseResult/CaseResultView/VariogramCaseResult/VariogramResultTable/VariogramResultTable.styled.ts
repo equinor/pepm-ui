@@ -10,20 +10,16 @@ export const Table = styled.div`
     overflow-y: hidden;
 
     > table {
-      min-width: 1150px;
+      > thead {
+        > tr {
+          > th {
+            vertical-align: baseline !important;
+          }
+        }
+      }
     }
     > div {
       margin-top: 2rem;
-      min-width: 1150px;
-    }
-
-    @media (max-width: 1750px) {
-      > table {
-        min-width: 100% !important;
-      }
-      > div {
-        min-width: 100% !important;
-      }
     }
   }
 `;
@@ -33,11 +29,15 @@ export const StyledDialog = styled(Dialog)`
   min-height: 500px;
 `;
 
-export const Content = styled(Dialog.CustomContent)`
+export const Column = styled.span`
+  white-space: nowrap;
+`;
+
+export const Quality = styled.span`
   display: flex;
   flex-direction: column;
-
-  row-gap: ${spacings.SMALL};
+  align-items: end;
+  font-family: Equinor Mono;
 `;
 
 export { StyledDialog as Dialog };

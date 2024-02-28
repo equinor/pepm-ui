@@ -7,6 +7,7 @@ import {
   save as SAVE,
 } from '@equinor/eds-icons';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   ComputeJobStatus,
   ListComputeCasesByAnalogueModelIdQueryResponse,
@@ -43,7 +44,7 @@ export const CaseButtons = ({
 }) => {
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [saveConfirm, setSaveConfirm] = useState(false);
-
+  const navigate = useNavigate();
   const handleConfirmSave = () => {
     saveCase();
     setSaveConfirm(false);
@@ -110,7 +111,16 @@ export const CaseButtons = ({
 
       {caseType === 'Object' ? (
         <>
-          {saved ? (
+          {caseStatus === 'Succeeded' ? (
+            <Styled.Button
+              variant="outlined"
+              onClick={() => {
+                navigate('../results/object');
+              }}
+            >
+              View Results{' '}
+            </Styled.Button>
+          ) : saved ? (
             <Tooltip
               title={
                 !isProcessed
@@ -123,27 +133,23 @@ export const CaseButtons = ({
               }
             >
               <Button
+                color={caseStatus === 'Failed' ? 'danger' : undefined}
                 variant="outlined"
                 onClick={saved ? runCase : saveCase}
                 disabled={
                   !isProcessed ||
                   caseStatus === 'Created' ||
                   caseStatus === 'Waiting' ||
-                  caseStatus === 'Running' ||
-                  caseStatus === 'Succeeded'
+                  caseStatus === 'Running'
                 }
               >
-                {caseStatus !== 'Succeeded' && (
-                  <Icon data={PLAY} size={18}></Icon>
-                )}
+                <Icon data={PLAY} size={18}></Icon>
                 {caseStatus === 'Created' ||
                 caseStatus === 'Waiting' ||
                 caseStatus === 'Running'
                   ? 'Running ... '
                   : caseStatus === 'Failed'
-                  ? 'Run Failed. Re-run Case'
-                  : caseStatus === 'Succeeded'
-                  ? 'Success'
+                  ? 'Re-run'
                   : 'Run'}
               </Button>
             </Tooltip>
@@ -167,31 +173,38 @@ export const CaseButtons = ({
                 : ''
             }
           >
-            <Button
-              variant="outlined"
-              onClick={runCase}
-              disabled={
-                !isProcessed ||
-                id.length < 3 ||
-                caseStatus === 'Created' ||
-                caseStatus === 'Waiting' ||
-                caseStatus === 'Running' ||
-                caseStatus === 'Succeeded'
-              }
-            >
-              {caseStatus !== 'Succeeded' && (
+            {caseStatus === 'Succeeded' ? (
+              <Styled.Button
+                variant="outlined"
+                onClick={() => {
+                  navigate('../results/variogram');
+                }}
+              >
+                View Results{' '}
+              </Styled.Button>
+            ) : (
+              <Styled.Button
+                color={caseStatus === 'Failed' && 'danger'}
+                variant="outlined"
+                onClick={runCase}
+                disabled={
+                  !isProcessed ||
+                  id.length < 3 ||
+                  caseStatus === 'Created' ||
+                  caseStatus === 'Waiting' ||
+                  caseStatus === 'Running'
+                }
+              >
                 <Icon data={PLAY} size={18}></Icon>
-              )}
-              {caseStatus === 'Created' ||
-              caseStatus === 'Waiting' ||
-              caseStatus === 'Running'
-                ? 'Running ... '
-                : caseStatus === 'Failed'
-                ? 'Run Failed. Re-run Case'
-                : caseStatus === 'Succeeded'
-                ? 'Success'
-                : 'Run'}
-            </Button>
+                {caseStatus === 'Created' ||
+                caseStatus === 'Waiting' ||
+                caseStatus === 'Running'
+                  ? 'Running ... '
+                  : caseStatus === 'Failed'
+                  ? 'Re-run'
+                  : 'Run'}
+              </Styled.Button>
+            )}
           </Tooltip>
           <Button
             variant="outlined"
@@ -206,6 +219,7 @@ export const CaseButtons = ({
         <ConfirmDialog
           isOpen={deleteConfirm}
           message="By pressing OK, the case and belonging results will be deleted."
+          danger={true}
           confirmAction={handleConfirmDelete}
           setIsOpen={setDeleteConfirm}
         ></ConfirmDialog>
@@ -215,6 +229,7 @@ export const CaseButtons = ({
           isOpen={saveConfirm}
           message="By pressing OK, the current case will be overwritten, deleting old
       results."
+          danger={false}
           confirmAction={handleConfirmSave}
           setIsOpen={setSaveConfirm}
         ></ConfirmDialog>

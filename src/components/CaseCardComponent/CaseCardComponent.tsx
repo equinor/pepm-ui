@@ -3,6 +3,7 @@ import { Typography } from '@equinor/eds-core-react';
 import { ComputeCaseDto } from '../../api/generated';
 import { AddCaseButtons } from '../AddCaseButtons/AddCaseButtons';
 import * as Styled from './CaseCardComponent.styled';
+import { titleMapping } from './FormattedMethodNames';
 
 export const CaseCardComponent = ({
   children,
@@ -24,7 +25,7 @@ export const CaseCardComponent = ({
       <Styled.Wrapper>
         <Styled.ButtonGroup>
           <Styled.Title>
-            <Typography variant="h4">{title}</Typography>
+            <Typography variant="h4">{titleMapping[title]}</Typography>
             <Typography variant="h6">{subTitle}</Typography>
           </Styled.Title>
           <AddCaseButtons
