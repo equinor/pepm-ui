@@ -18,7 +18,7 @@ export const DataCell = styled(Table.Cell)`
   border: solid 0.5px ${theme.light.ui.background.medium};
   width: 150px;
   white-space: nowrap;
-  font-family: Equinor Mono;
+  font-family: cell_numeric_monospaced;
 
   > div {
     display: flex;
