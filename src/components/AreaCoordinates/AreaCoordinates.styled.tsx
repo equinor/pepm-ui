@@ -5,6 +5,13 @@ import { theme } from '../../tokens/theme';
 
 export const StyledDialog = styled(Dialog)`
   width: fit-content;
+  max-width: 90vw;
+  max-height: 90vh;
+
+  @media (min-width: 700px) {
+    max-height: 90vh;
+    overflow-x: scroll;
+  }
 `;
 
 export const ContentSplitter = styled.div`
@@ -19,7 +26,9 @@ export const Selects = styled.div`
 
   row-gap: ${spacings.XXX_LARGE};
 
-  min-width: 450px;
+  @media (min-width: 750px) {
+    min-width: 450px;
+  }
 `;
 
 export const CoordinateFields = styled.div`
