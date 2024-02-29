@@ -16,7 +16,7 @@ export const TableDataCell = ({
             <Typography key={m.analogueId}>{m.name}</Typography>
           ))
         ) : (
-          <Typography> - </Typography>
+          <Typography> Not relevant </Typography>
         )
       ) : data.metadata?.filter((m) => m.metadataType === type).length ? (
         data.metadata

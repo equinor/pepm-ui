@@ -1,6 +1,5 @@
 /* eslint-disable max-lines-per-function */
 import {
-  Autocomplete,
   AutocompleteChanges,
   Label,
   Typography,
@@ -10,7 +9,6 @@ import { ErrorType } from '../AddModelDialog/AddModelDialog';
 import { useMsal } from '@azure/msal-react';
 import { useQuery } from '@tanstack/react-query';
 import {
-  AnalogueList,
   AnalogueModelDetail,
   AnaloguesService,
   MetadataDto,
@@ -18,6 +16,7 @@ import {
   OpenAPI,
 } from '../../../api/generated';
 import { useAccessToken } from '../../../hooks/useAccessToken';
+import { AnalogueSelect } from './AnalogueSelect/AnalogueSelect';
 import { MetadataSelect } from './MetadataSelect/MetadataSelect';
 import * as Styled from './ModelMetadata.styled';
 
@@ -46,16 +45,6 @@ export const ModelMetadata = ({
     enabled: !!token,
   });
 
-  const setSelectedAnalogueOptions = () => {
-    if (analougeData.data?.success && metadata.analogues) {
-      const analogue = metadata?.analogues;
-
-      return analougeData.data?.data.filter(
-        (c) => analogue.findIndex((x: AnalogueList) => x.name === c.name) > -1,
-      );
-    }
-  };
-
   function handleAddMetadata(
     e: AutocompleteChanges<MetadataDto>,
     propType: string,
@@ -70,12 +59,8 @@ export const ModelMetadata = ({
     const removeNotSelected = e.selectedItems.filter(
       (i) => i.metadataType === propType,
     );
-    // console.log(removeNotSelected)
 
     const newList = [...metadataList, ...removeNotSelected];
-
-    // if (propType === 'Formation') console.log(e.selectedItems);
-    // if (propType === 'Formation') console.log(newList);
 
     setMetadata({
       ...metadata,
@@ -152,20 +137,13 @@ export const ModelMetadata = ({
           </Styled.AutocompleteRow>
           <Styled.AutocompleteRow>
             <Styled.Required>
-              <Autocomplete
-                variant={errors.analogues ? 'error' : undefined}
-                label="Analogue"
-                options={analougeData.data.data}
-                optionLabel={(option) => option.name}
-                selectedOptions={setSelectedAnalogueOptions()}
-                multiple
-                onOptionsChange={(e: AutocompleteChanges<AnalogueList>) =>
-                  setMetadata({
-                    ...metadata,
-                    analogues: e.selectedItems,
-                  })
-                }
-              ></Autocomplete>
+              <AnalogueSelect
+                errors={errors.analogues}
+                data={analougeData.data.data}
+                analogue={analougeData.data.data}
+                metadata={metadata}
+                setMetadata={setMetadata}
+              />
               {errors.analogues && (
                 <Label label="This field is required"></Label>
               )}
