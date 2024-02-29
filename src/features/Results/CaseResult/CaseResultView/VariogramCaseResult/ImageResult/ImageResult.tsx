@@ -1,7 +1,6 @@
-import { Button, Dialog } from '@equinor/eds-core-react';
+import { Button, Dialog, Typography } from '@equinor/eds-core-react';
 import { useQuery } from '@tanstack/react-query';
 import { getVariogramImage } from '../../../../../../api/custom/getImageById';
-import { ImageView } from '../../../../../../components/ImageView/ImageView';
 import * as Styled from './ImageResult.styled';
 
 export const ImageResult = ({
@@ -20,28 +19,22 @@ export const ImageResult = ({
   });
 
   return (
-    <>
-      <Styled.Dialog open={open} isDismissable>
-        <Dialog.Header>
-          <Dialog.Title>Result image</Dialog.Title>
-        </Dialog.Header>
-        <Styled.Content>
-          {isLoading && <>Loading ...</>}
-          {data && (
-            <ImageView
-              text="Case results"
-              img={data ? data : ''}
-              altText="Case results"
-            ></ImageView>
-          )}
-        </Styled.Content>
+    <Styled.Dialog open={open} isDismissable>
+      <Styled.Content>
+        {isLoading && <>Loading ...</>}
+        {data && (
+          <Styled.ImageWrapper>
+            <img className="image" alt="Case results" src={data ? data : ''} />
+            <Typography variant="h5">Case results</Typography>
+          </Styled.ImageWrapper>
+        )}
+      </Styled.Content>
 
-        <Dialog.Actions>
-          <Button variant="ghost" onClick={() => setOpen(!open)}>
-            Close
-          </Button>
-        </Dialog.Actions>
-      </Styled.Dialog>
-    </>
+      <Dialog.Actions>
+        <Button variant="ghost" onClick={() => setOpen(!open)}>
+          Close
+        </Button>
+      </Dialog.Actions>
+    </Styled.Dialog>
   );
 };
