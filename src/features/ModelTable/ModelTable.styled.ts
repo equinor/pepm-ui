@@ -2,13 +2,21 @@ import styled from 'styled-components';
 import { spacings } from '../../tokens/spacings';
 
 export const Table = styled.div`
-  overflow-x: auto;
   padding-bottom: ${spacings.MEDIUM};
   max-width: 1750px;
-
   > div {
+    height: 100%;
+    overflow: hidden;
     > table {
       min-width: 90% !important;
+
+      > thead {
+        > tr {
+          > th {
+            vertical-align: middle !important;
+          }
+        }
+      }
     }
     > div {
       margin-top: 2rem;
