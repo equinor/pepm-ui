@@ -3,8 +3,17 @@ import styled from 'styled-components';
 import { spacings } from '../../../tokens/spacings';
 
 const StyledDialog = styled(Dialog)`
-  min-width: 600px;
   overflow-y: scroll;
+  width: fit-content;
+  max-width: 90vw;
+  max-height: 90vh;
+
+  @media (min-width: 650px) {
+    min-width: 600px;
+
+    max-height: 90vh;
+    overflow-x: scroll;
+  }
 `;
 
 const StyledDialogCustomContent = styled(Dialog.CustomContent)`
