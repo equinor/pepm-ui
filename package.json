@@ -23,6 +23,7 @@
     "axios": "^1.6.0",
     "env-cmd": "^10.1.0",
     "lodash": "^4.17.21",
+    "msal-react-tester": "^0.3.1",
     "openapi-fetch": "^0.7.2",
     "openapi-typescript-codegen": "^0.25.0",
     "react": "^18.2.0",

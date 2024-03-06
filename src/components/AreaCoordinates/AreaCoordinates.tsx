@@ -353,7 +353,11 @@ export const AreaCoordinates = ({
                     </Button>
                   </>
                 ) : (
-                  <Button variant="outlined" onClick={handleEditChange}>
+                  <Button
+                    name="edit"
+                    variant="outlined"
+                    onClick={handleEditChange}
+                  >
                     Edit coordinates
                   </Button>
                 )}
