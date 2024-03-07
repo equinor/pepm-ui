@@ -1,4 +1,5 @@
 # PEPM-UI
+[![SCM Compliance](https://scm-compliance-api.radix.equinor.com/repos/equinor/pepm-ui/badge)](https://scm-compliance-api.radix.equinor.com/repos/equinor/pepm-ui/badge)
 
 User Interface for **Parameter Estimation from Process Models**.
 
