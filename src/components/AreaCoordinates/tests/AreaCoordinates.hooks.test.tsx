@@ -9,6 +9,7 @@ import { useFetchCases } from '../../../hooks/useFetchCases';
 import { useFetchModel } from '../../../hooks/useFetchModel';
 import { useFetchModelAreas } from '../../../hooks/useFetchModelAreas';
 import { AreaCoordinates } from '../AreaCoordinates';
+import { useModelResults } from '../hooks/useModelResults';
 import {
   defaultArea,
   mockAnalogueModelDetail,
@@ -16,7 +17,6 @@ import {
   mockedModelAreaType,
   modelId,
 } from './mockedData';
-import { useModelResults } from './useModelResults';
 
 let msalTester: MsalReactTester;
 
