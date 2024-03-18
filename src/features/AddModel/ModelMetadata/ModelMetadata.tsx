@@ -6,16 +6,9 @@ import {
 } from '@equinor/eds-core-react';
 import { ErrorType } from '../AddModelDialog/AddModelDialog';
 
-import { useMsal } from '@azure/msal-react';
-import { useQuery } from '@tanstack/react-query';
-import {
-  AnalogueModelDetail,
-  AnaloguesService,
-  MetadataDto,
-  MetadataService,
-  OpenAPI,
-} from '../../../api/generated';
-import { useAccessToken } from '../../../hooks/useAccessToken';
+import { AnalogueModelDetail, MetadataDto } from '../../../api/generated';
+import { useFetchAnalogues } from '../../../hooks/useFetchAnalogues';
+import { useFetchMetadata } from '../../../hooks/useFethcMetadata';
 import { AnalogueSelect } from './AnalogueSelect/AnalogueSelect';
 import { MetadataSelect } from './MetadataSelect/MetadataSelect';
 import * as Styled from './ModelMetadata.styled';
@@ -29,21 +22,8 @@ export const ModelMetadata = ({
   metadata: AnalogueModelDetail;
   setMetadata: (metadata: AnalogueModelDetail) => void;
 }) => {
-  const { instance, accounts } = useMsal();
-  const token = useAccessToken(instance, accounts[0]);
-  if (token) OpenAPI.TOKEN = token;
-
-  const { isLoading, data } = useQuery({
-    queryKey: ['metadata'],
-    queryFn: () => MetadataService.getApiMetadata(),
-    enabled: !!token,
-  });
-
-  const analougeData = useQuery({
-    queryKey: ['apiParameters'],
-    queryFn: () => AnaloguesService.getApiAnalogues(),
-    enabled: !!token,
-  });
+  const { isLoading, data } = useFetchMetadata();
+  const analougeData = useFetchAnalogues();
 
   function handleAddMetadata(
     e: AutocompleteChanges<MetadataDto>,
