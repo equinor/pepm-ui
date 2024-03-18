@@ -5,19 +5,18 @@ import * as ReactQuery from '@tanstack/react-query';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { cleanup, renderHook, screen, waitFor } from '@testing-library/react';
 import { MsalReactTester } from 'msal-react-tester';
+import { useFetchCases } from '../../../hooks/useFetchCases';
+import { useFetchModel } from '../../../hooks/useFetchModel';
+import { useFetchModelAreas } from '../../../hooks/useFetchModelAreas';
+import { AreaCoordinates } from '../AreaCoordinates';
 import {
-  AnalogueModelSourceType,
-  ComputeJobStatus,
-  ModelAreaTypeDto,
-  UploadFileCategory,
-  UploadFileType,
-  UploadStatus,
-} from '../../api/generated';
-import { useFetchCases } from '../../hooks/useFetchCases';
-import { useFetchModel } from '../../hooks/useFetchModel';
-import { useFetchModelAreas } from '../../hooks/useFetchModelAreas';
-import { AreaCoordinates } from './AreaCoordinates';
-import { useModelResults } from './hooks/useModelResults';
+  defaultArea,
+  mockAnalogueModelDetail,
+  mockedComputeCase,
+  mockedModelAreaType,
+  modelId,
+} from './mockedData';
+import { useModelResults } from './useModelResults';
 
 let msalTester: MsalReactTester;
 
@@ -32,93 +31,6 @@ function wrapper(props: { children: React.ReactNode }) {
     </MsalProvider>
   );
 }
-
-const modelId = '1234-5678-9010';
-
-const mockAnalogueModelDetail = {
-  analogueModelId: '1234-5678-9010',
-  name: 'string',
-  description: 'string',
-  isProcessed: true,
-  sourceType: AnalogueModelSourceType.RES_QML,
-  analogues: [
-    {
-      analogueId: 'test2',
-      name: 'string',
-      description: 'string',
-    },
-  ],
-  fileUploads: [
-    {
-      uploadId: 'string',
-      analogueModelId: 'string',
-      originalFileName: 'string',
-      uploadStatus: UploadStatus.COMPLETED,
-      uploadFileType: UploadFileType.NET_CDF,
-      uploadFileCategory: UploadFileCategory.INPUT_METADATA,
-    },
-  ],
-  parameters: [
-    {
-      parameterId: 'string',
-      identifier: 'string',
-      name: 'string',
-      description: 'string',
-    },
-  ],
-  metadata: [
-    {
-      metadataId: 'string',
-      metadataType: 'string',
-      value: 'string',
-    },
-  ],
-  modelAreas: [
-    {
-      modelAreaId: 'string',
-      modelAreaType: 'string',
-      coordinates: [
-        {
-          x: 100,
-          y: 200,
-          m: 0,
-        },
-        {
-          x: 100,
-          y: 200,
-          m: 1,
-        },
-      ],
-    },
-  ],
-};
-
-const mockedComputeCase = {
-  computeCaseId: 'string',
-  computeMethod: {
-    computeMethodId: 'string',
-    name: 'string',
-  },
-  modelArea: {
-    modelAreaId: 'string',
-    name: 'Test area',
-  },
-  inputSettings: [
-    {
-      inputSettingValueId: 'string',
-      inputSettingTypeId: 'string',
-      valueName: 'string',
-      typeName: 'string',
-    },
-  ],
-  jobStatus: ComputeJobStatus.SUCCEEDED,
-};
-
-const defaultArea: ModelAreaTypeDto = {
-  description: 'A test area',
-  modelAreaTypeId: '1111-2222-3333',
-  name: 'Test area',
-};
 
 const mockGetData = async (data: any) => {
   const mock = jest.spyOn(ReactQuery, 'useQuery');
@@ -187,19 +99,6 @@ test('Calls useModelResult hook with mock data', async () => {
   await waitFor(() => expect(mock).toHaveBeenCalled());
   await waitFor(() => expect(res.activeAreaResultList).toHaveLength(1));
 });
-
-const mockedModelAreaType = [
-  {
-    modelAreaTypeId: 'string',
-    name: 'string',
-    description: 'string',
-  },
-  {
-    modelAreaTypeId: 'string1',
-    name: 'string1',
-    description: 'string1',
-  },
-];
 
 test('Calls useFetchModelAreas hook with mock data', async () => {
   const mock = await mockGetData(mockedModelAreaType);
