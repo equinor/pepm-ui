@@ -2,7 +2,7 @@
 /* eslint-disable max-lines-per-function */
 import { useMsal } from '@azure/msal-react';
 import { Button, Icon, Tooltip } from '@equinor/eds-core-react';
-import { add as ADD, play as PLAY } from '@equinor/eds-icons';
+import { add as ADD } from '@equinor/eds-icons';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -332,19 +332,6 @@ export const CaseGroup = ({
               >
                 <Icon data={ADD} size={18}></Icon>
                 {methodName}
-              </Button>
-            </Tooltip>
-          </Styled.ButtonGroup>
-          <Styled.ButtonGroup>
-            <Tooltip title="Functionality not implemented yet.">
-              <Button
-                variant="outlined"
-                // eslint-disable-next-line no-console
-                onClick={() => console.log('Running all')}
-                disabled
-              >
-                <Icon data={PLAY} size={18}></Icon>
-                Run all
               </Button>
             </Tooltip>
           </Styled.ButtonGroup>
