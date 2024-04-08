@@ -287,7 +287,7 @@ export const AreaCoordinates = ({
             ></Autocomplete>
           </Styled.CoordinateGroup>
 
-          {activeArea.modelAreaTypeId !== '' && (
+          {activeArea.name !== '' && (
             <Styled.CoordinateFields>
               <Styled.CoordinateGroup>
                 <Typography variant="h6">Top Left Corner</Typography>

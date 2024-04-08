@@ -36,16 +36,39 @@ export const mockedComputeCase = {
   jobStatus: ComputeJobStatus.SUCCEEDED,
 };
 
+export const mockedActiveComputeCase = [
+  {
+    computeCaseId: '1111-1111-1111',
+    computeMethod: {
+      computeMethodId: '1111-1111',
+      name: 'TestArea1',
+    },
+    modelArea: {
+      modelAreaId: 'string',
+      name: 'Test area',
+    },
+    inputSettings: [
+      {
+        inputSettingValueId: 'string',
+        inputSettingTypeId: 'string',
+        valueName: 'string',
+        typeName: 'string',
+      },
+    ],
+    jobStatus: ComputeJobStatus.SUCCEEDED,
+  },
+];
+
 export const mockedModelAreaType = [
   {
-    modelAreaTypeId: 'string',
-    name: 'string',
-    description: 'string',
+    description: 'a test area',
+    modelAreaTypeId: '1111-1111',
+    name: 'TestArea1',
   },
   {
-    modelAreaTypeId: 'string1',
-    name: 'string1',
-    description: 'string1',
+    description: 'a test area2',
+    modelAreaTypeId: '1111-2222',
+    name: 'TestArea2',
   },
 ];
 
@@ -89,8 +112,24 @@ export const mockAnalogueModelDetail = {
   ],
   modelAreas: [
     {
-      modelAreaId: 'string',
-      modelAreaType: 'string',
+      modelAreaId: '1111-1111',
+      modelAreaType: 'TestArea1',
+      coordinates: [
+        {
+          x: 100,
+          y: 200,
+          m: 0,
+        },
+        {
+          x: 100,
+          y: 200,
+          m: 1,
+        },
+      ],
+    },
+    {
+      modelAreaId: '1111-2222',
+      modelAreaType: 'TestArea2',
       coordinates: [
         {
           x: 100,
