@@ -70,6 +70,12 @@ spec:
                   envVar: AZURE_CLIENT_SECRET
                 - name: AzureAd--TenantId
                   envVar: AZURE_TENANT_ID
+                - name: Smda--ResourceId
+                  envVar: AzureAdSmda__ResourceId
+                - name: Smda--SubscriptionKey
+                  envVar: AzureAdSmda__SubscriptionKey
+                - name: ApiBaseUri
+                  envVar: AzureAdSmda__ApiBaseUri
         - environment: test
           imageTagName: latest
           variables:
@@ -91,13 +97,19 @@ spec:
                   envVar: ConnectionStrings__PepmConnectionString
                 - name: AzureAd--TenantId
                   envVar: AzureAd__TenantId
-
                 - name: AzureAd--ClientId
                   envVar: AZURE_CLIENT_ID
                 - name: AzureAd--ClientSecret
                   envVar: AZURE_CLIENT_SECRET
                 - name: AzureAd--TenantId
                   envVar: AZURE_TENANT_ID
+                - name: Smda--ResourceId
+                  envVar: AzureAdSmda__ResourceId
+                - name: Smda--SubscriptionKey
+                  envVar: AzureAdSmda__SubscriptionKey
+                - name: ApiBaseUri
+                  envVar: AzureAdSmda__ApiBaseUri
+
         - environment: prod
           imageTagName: latest
           variables:
