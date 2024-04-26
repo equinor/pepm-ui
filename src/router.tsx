@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { ModelView } from './features/ModelView/ModelView';
 import { About } from './pages/About/About';
+import { AddModel } from './pages/AddModel/AddModel';
 import { Api } from './pages/Api/Api';
 import { Browse } from './pages/Browse/Browse';
 import { InvalidURL } from './pages/InvalidURL/InvalidURL';
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: 'about',
         element: <About />,
+      },
+      {
+        path: 'add-model',
+        element: <AddModel />,
       },
       {
         path: ':modelId/',

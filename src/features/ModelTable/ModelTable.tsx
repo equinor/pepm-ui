@@ -1,6 +1,7 @@
+/* eslint-disable no-empty-pattern */
 /* eslint-disable max-lines-per-function */
 import { useMsal } from '@azure/msal-react';
-import { Button, LinearProgress } from '@equinor/eds-core-react';
+import { Button } from '@equinor/eds-core-react';
 import { EdsDataGrid } from '@equinor/eds-data-grid-react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
@@ -12,15 +13,7 @@ import {
 import { useAccessToken } from '../../hooks/useAccessToken';
 import * as Styled from './ModelTable.styled';
 
-export const ModelTable = ({
-  progress,
-  activeUploadId,
-  transforming,
-}: {
-  progress: number;
-  activeUploadId: string;
-  transforming: boolean;
-}) => {
+export const ModelTable = () => {
   const { instance, accounts } = useMsal();
   const token = useAccessToken(instance, accounts[0]);
   if (token) OpenAPI.TOKEN = token;
@@ -34,28 +27,6 @@ export const ModelTable = ({
   });
 
   if (isLoading || !data?.success) return <p>Loading...</p>;
-
-  const isActiveModel = (id: string) => {
-    let isActive = false;
-    let started = false;
-    if (progress < 100 && id === activeUploadId) {
-      isActive = true;
-      started = true;
-    }
-    if (progress === 0 && started && id === activeUploadId) {
-      isActive = false;
-      started = false;
-    }
-    return isActive;
-  };
-
-  const isTransforming = (id: string, status: boolean) => {
-    if (transforming && id === activeUploadId && !status) {
-      return <>Transforming model</>;
-    } else {
-      return status && <>Ready</>;
-    }
-  };
 
   const hasSelectedOptions = (metadata: MetadataDto[], type: string) => {
     return metadata.filter((d) => d.metadataType === type).length > 0;
@@ -147,24 +118,7 @@ export const ModelTable = ({
             enableColumnFilter: false,
             size: 100,
             cell: ({ row }) => (
-              <>
-                {isActiveModel(row.original.analogueModelId) ? (
-                  <Styled.Upload>
-                    <p>Uploading {Math.round(progress)}%</p>
-                    <LinearProgress
-                      variant="determinate"
-                      value={progress}
-                    ></LinearProgress>
-                  </Styled.Upload>
-                ) : (
-                  <>
-                    {isTransforming(
-                      row.original.analogueModelId,
-                      row.original.isProcessed,
-                    )}
-                  </>
-                )}
-              </>
+              <>{row.original.isProcessed ? 'Success' : 'Failed'}</>
             ),
           },
 
@@ -179,7 +133,6 @@ export const ModelTable = ({
               <Styled.Buttons>
                 <Button
                   variant="outlined"
-                  disabled={isActiveModel(row.original.analogueModelId)}
                   onClick={() => {
                     navigate(`/${row.original.analogueModelId}/details`);
                   }}

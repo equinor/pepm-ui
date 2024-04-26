@@ -53,13 +53,13 @@ export const FileColumn = ({
 
   return (
     <Table.Row className={`${INI ? 'ini' : 'nc'}-file`}>
-      <Styled.uploadCell>
+      <Styled.UploadCell>
         <FileUploader
           onChange={onChange}
           file={file}
           acceptType={INI ? 'INI' : 'NC'}
         />
-      </Styled.uploadCell>
+      </Styled.UploadCell>
       <Table.Cell>
         {file && INI && (
           <Button variant="outlined" onClick={fileDisplay?.toggle}>
@@ -67,12 +67,12 @@ export const FileColumn = ({
           </Button>
         )}
       </Table.Cell>
-      <Styled.filesizeCell>
+      <Styled.FilesizeCell>
         {fileSize ? humanFileSize(fileSize) : '-'}
-      </Styled.filesizeCell>
-      <Styled.deleteCell>
+      </Styled.FilesizeCell>
+      <Styled.DeleteCell>
         {file && <DeleteButton onDelete={onDelete} />}
-      </Styled.deleteCell>
+      </Styled.DeleteCell>
     </Table.Row>
   );
 };
