@@ -12,3 +12,17 @@ export const CustomContent = styled.div`
   flex-direction: column;
   row-gap: ${spacings.X_LARGE};
 `;
+
+export const UploadDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  row-gap: ${spacings.LARGE};
+`;
+
+export const ErrorDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  row-gap: ${spacings.SMALL};
+`;

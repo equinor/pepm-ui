@@ -1,7 +1,9 @@
 /* eslint-disable max-lines-per-function */
 import { Button, LinearProgress, Typography } from '@equinor/eds-core-react';
+import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { AnalogueModelDetail } from '../../../api/generated';
+import { ErrorBanner } from '../../../components/ErrorBanner/ErrorBanner';
 import { ModelInputFilesTable } from '../ModelInputFilesTable/ModelInputFilesTable';
 import { ModelMetadata } from '../ModelMetadata/ModelMetadata';
 import {
@@ -44,7 +46,6 @@ export const HandleModelComponent = ({
   confirm,
   edit,
   progress,
-  // cancel,
   uploading,
   defaultMetadata,
   isEdit,
@@ -117,6 +118,23 @@ export const HandleModelComponent = ({
   }
   const INIFileContent = () => <p>Not implemented yet...</p>;
 
+  const getErroMessageList = () => {
+    if (_.isEmpty(errors)) return;
+
+    const errorList: string[] = [];
+
+    Object.keys(errors).forEach(function (key) {
+      // TODO: Fix the TS error for errors[key]
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const message = errors[key];
+      errorList.push(message);
+    });
+    return errorList;
+  };
+
+  const ErrorList = getErroMessageList();
+
   return (
     <Styled.Wrapper>
       <Typography variant="h3">
@@ -141,9 +159,13 @@ export const HandleModelComponent = ({
           metadata={metadata}
           setMetadata={setMetadata}
         />
-        {Object.keys(errors).includes('file') && (
-          <Typography className="error">NC file missing</Typography>
-        )}
+        <Styled.ErrorDiv>
+          {!_.isEmpty(errors) &&
+            ErrorList !== undefined &&
+            ErrorList.map((e, i) => {
+              return <ErrorBanner key={i} text={e} />;
+            })}
+        </Styled.ErrorDiv>
       </Styled.CustomContent>
       <div>
         <Button onClick={handleSubmit} disabled={uploading}>
@@ -153,8 +175,15 @@ export const HandleModelComponent = ({
             ? 'Wait for model to finish uploading'
             : 'Confirm and start uploading'}
         </Button>
-        {uploading && <LinearProgress variant="determinate" value={progress} />}
       </div>
+      {uploading && (
+        <Styled.UploadDiv>
+          <Typography variant="h3">
+            Upload progress: {progress !== undefined && progress.toFixed(0)}%
+          </Typography>
+          {<LinearProgress variant="determinate" value={progress} />}
+        </Styled.UploadDiv>
+      )}
     </Styled.Wrapper>
   );
 };
