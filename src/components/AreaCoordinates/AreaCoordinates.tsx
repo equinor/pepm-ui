@@ -17,6 +17,7 @@ import {
   ModelAreaTypeDto,
 } from '../../api/generated';
 import Img from '../../features/ModelView/image.png';
+import { useFetchCases } from '../../hooks/useFetchCases';
 import { useFetchModel } from '../../hooks/useFetchModel';
 import { useFetchModelAreas } from '../../hooks/useFetchModelAreas';
 import { useMutateAreaCoordinates } from '../../hooks/useMutateAreaCoordinates';
@@ -85,7 +86,11 @@ export const AreaCoordinates = ({
     useState<AreaCoordinateType>();
   const { modelId } = useParams();
   const { data, isLoading } = useFetchModel(modelId);
-  const { activeAreaResultList } = useModelResults(activeArea.name);
+  const cases = useFetchCases();
+  const { activeAreaResultList } = useModelResults(
+    activeArea.name,
+    cases.data?.data,
+  );
   const modelAreas = useFetchModelAreas();
   const mutateAreaCoordinates = useMutateAreaCoordinates();
 
@@ -282,7 +287,7 @@ export const AreaCoordinates = ({
             ></Autocomplete>
           </Styled.CoordinateGroup>
 
-          {activeArea.modelAreaTypeId !== '' && (
+          {activeArea.name !== '' && (
             <Styled.CoordinateFields>
               <Styled.CoordinateGroup>
                 <Typography variant="h6">Top Left Corner</Typography>
