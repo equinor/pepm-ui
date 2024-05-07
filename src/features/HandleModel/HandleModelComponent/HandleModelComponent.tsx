@@ -1,17 +1,21 @@
 /* eslint-disable max-lines-per-function */
-import { Button, Typography } from '@equinor/eds-core-react';
+import { Button, LinearProgress, Typography } from '@equinor/eds-core-react';
+import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { AnalogueModelDetail } from '../../../api/generated';
+import { ErrorBanner } from '../../../components/ErrorBanner/ErrorBanner';
 import { ModelInputFilesTable } from '../ModelInputFilesTable/ModelInputFilesTable';
 import { ModelMetadata } from '../ModelMetadata/ModelMetadata';
-import { useAddModelDialog, validateValues } from './AddModelDialog.hooks';
-import * as Styled from './AddModelDialog.styled';
+import {
+  useHandleModelComponent,
+  validateValues,
+} from './HandleModelComponent.hooks';
+import * as Styled from './HandleModelComponent.styled';
 
 interface AddModelDialogProps {
-  isOpen: boolean;
   confirm?: (file: File, metadata: AnalogueModelDetail) => Promise<void>;
   edit?: (metadata: AnalogueModelDetail) => Promise<void>;
-  cancel: () => void;
+  progress?: number;
   uploading?: boolean;
   defaultMetadata: AnalogueModelDetail;
   isEdit?: boolean;
@@ -38,11 +42,10 @@ const defaultFiles = {
   INI: undefined,
 };
 
-export const AddModelDialog = ({
-  isOpen,
+export const HandleModelComponent = ({
   confirm,
   edit,
-  cancel,
+  progress,
   uploading,
   defaultMetadata,
   isEdit,
@@ -57,18 +60,17 @@ export const AddModelDialog = ({
   const [fileSize, setFileSize] = useState(0);
   const [rawFile, setrawFile] = useState<File>();
 
-  useAddModelDialog(setFileSize, setMetadata, files, rawFile, existingData);
+  useHandleModelComponent(
+    setFileSize,
+    setMetadata,
+    files,
+    rawFile,
+    existingData,
+  );
 
   const handleSubmit = () => {
     setErrors(validateValues(metadata, files, isEdit));
     setSubmitting(true);
-  };
-
-  const handleCancle = () => {
-    setMetadata(defaultMetadata);
-    setFiles(defaultFiles);
-    setErrors({});
-    cancel();
   };
 
   const fileAdded = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -116,14 +118,29 @@ export const AddModelDialog = ({
   }
   const INIFileContent = () => <p>Not implemented yet...</p>;
 
+  const getErroMessageList = () => {
+    if (_.isEmpty(errors)) return;
+
+    const errorList: string[] = [];
+
+    Object.keys(errors).forEach(function (key) {
+      // TODO: Fix the TS error for errors[key]
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const message = errors[key];
+      errorList.push(message);
+    });
+    return errorList;
+  };
+
+  const ErrorList = getErroMessageList();
+
   return (
-    <Styled.Dialog open={isOpen}>
-      <Styled.Dialog.Header>
-        <Styled.Dialog.Title>
-          {isEdit ? 'Edit model details' : 'Add new model'}
-        </Styled.Dialog.Title>
-      </Styled.Dialog.Header>
-      <Styled.DialogCustomContent scrollable>
+    <Styled.Wrapper>
+      <Typography variant="h3">
+        {isEdit ? 'Edit model details' : 'Add new model'}
+      </Typography>
+      <Styled.CustomContent>
         {!isEdit && (
           <ModelInputFilesTable
             files={files}
@@ -142,26 +159,31 @@ export const AddModelDialog = ({
           metadata={metadata}
           setMetadata={setMetadata}
         />
-        {Object.keys(errors).includes('file') && (
-          <Typography className="error">NC file missing</Typography>
-        )}
-      </Styled.DialogCustomContent>
-      <Styled.DialogActions>
-        {uploading && (
-          <Typography>
-            You have to wait until current upload has finnished before a new one
-            can start.{' '}
+        <Styled.ErrorDiv>
+          {!_.isEmpty(errors) &&
+            ErrorList !== undefined &&
+            ErrorList.map((e, i) => {
+              return <ErrorBanner key={i} text={e} />;
+            })}
+        </Styled.ErrorDiv>
+      </Styled.CustomContent>
+      <div>
+        <Button onClick={handleSubmit} disabled={uploading}>
+          {isEdit
+            ? 'Save changes'
+            : uploading
+            ? 'Wait for model to finish uploading'
+            : 'Confirm and start uploading'}
+        </Button>
+      </div>
+      {uploading && (
+        <Styled.UploadDiv>
+          <Typography variant="h3">
+            Upload progress: {progress !== undefined && progress.toFixed(0)}%
           </Typography>
-        )}
-        <div>
-          <Button onClick={handleSubmit} disabled={uploading}>
-            {!isEdit ? 'Confirm and start uploading' : 'Save changes'}
-          </Button>
-          <Button variant="outlined" onClick={handleCancle}>
-            Cancel
-          </Button>
-        </div>
-      </Styled.DialogActions>
-    </Styled.Dialog>
+          {<LinearProgress variant="determinate" value={progress} />}
+        </Styled.UploadDiv>
+      )}
+    </Styled.Wrapper>
   );
 };

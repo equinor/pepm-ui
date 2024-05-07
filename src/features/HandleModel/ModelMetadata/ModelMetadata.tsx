@@ -4,7 +4,7 @@ import {
   Label,
   Typography,
 } from '@equinor/eds-core-react';
-import { ErrorType } from '../AddModelDialog/AddModelDialog';
+import { ErrorType } from '../HandleModelComponent/HandleModelComponent';
 
 import { AnalogueModelDetail, MetadataDto } from '../../../api/generated';
 import { useFetchAnalogues } from '../../../hooks/useFetchAnalogues';
@@ -120,7 +120,6 @@ export const ModelMetadata = ({
               <AnalogueSelect
                 errors={errors.analogues}
                 data={analougeData.data.data}
-                analogue={analougeData.data.data}
                 metadata={metadata}
                 setMetadata={setMetadata}
               />

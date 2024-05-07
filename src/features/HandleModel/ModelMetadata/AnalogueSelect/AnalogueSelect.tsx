@@ -7,13 +7,11 @@ import { AnalogueList, AnalogueModelDetail } from '../../../../api/generated';
 export const AnalogueSelect = ({
   errors,
   data,
-  analogue,
   metadata,
   setMetadata,
 }: {
   errors: string | undefined;
   data: AnalogueList[];
-  analogue: AnalogueList[] | undefined;
   metadata: AnalogueModelDetail;
   setMetadata: (metadata: AnalogueModelDetail) => void;
 }) => {

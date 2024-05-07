@@ -18,7 +18,7 @@ import {
 import { AnalogueModelsService } from '../../../api/generated/services/AnalogueModelsService';
 import { queryClient } from '../../../auth/queryClient';
 import { useFetchModel } from '../../../hooks/useFetchModel';
-import { AddModelDialog } from '../../AddModel/AddModelDialog/AddModelDialog';
+import { HandleModelComponent } from '../../HandleModel/HandleModelComponent/HandleModelComponent';
 import { TableDataCell } from '../TableDataCell/TableDataCell';
 import * as Styled from './ModelMetadataView.styled';
 
@@ -180,14 +180,14 @@ export const ModelMetadataView = () => {
       >
         Edit description and metadata
       </Button>
-      <AddModelDialog
-        isOpen={isAddModelDialog}
-        edit={updateModelMetadata}
-        cancel={toggleDialog}
-        defaultMetadata={defaultMetadata}
-        isEdit={true}
-        existingData={data.data}
-      />
+      {isAddModelDialog && (
+        <HandleModelComponent
+          edit={updateModelMetadata}
+          defaultMetadata={defaultMetadata}
+          isEdit={true}
+          existingData={data.data}
+        />
+      )}
     </Styled.Metadata>
   );
 };

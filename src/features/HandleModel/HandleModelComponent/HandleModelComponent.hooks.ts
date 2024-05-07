@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { AnalogueModelDetail } from '../../../api/generated';
-import { ErrorType, FilesProps } from './AddModelDialog';
-export const useAddModelDialog = (
+import { ErrorType, FilesProps } from './HandleModelComponent';
+export const useHandleModelComponent = (
   setFileSize: React.Dispatch<React.SetStateAction<number>>,
   setMetadata: React.Dispatch<React.SetStateAction<AnalogueModelDetail>>,
   files: FilesProps,

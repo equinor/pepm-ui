@@ -1,7 +1,7 @@
 import { Table } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 
-export const uploadCell = styled(Table.Cell)`
+export const UploadCell = styled(Table.Cell)`
   alignitems: baseline;
   > form {
     > label {
@@ -12,9 +12,9 @@ export const uploadCell = styled(Table.Cell)`
   }
 `;
 
-export const filesizeCell = styled(Table.Cell)`
+export const FilesizeCell = styled(Table.Cell)`
   width: 15%;
 `;
-export const deleteCell = styled(Table.Cell)`
+export const DeleteCell = styled(Table.Cell)`
   width: 10%;
 `;

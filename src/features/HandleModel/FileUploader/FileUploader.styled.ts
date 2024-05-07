@@ -14,7 +14,7 @@ import { spacings } from '../../../tokens/spacings';
   to mean that the file input isn't interactive
 */
 
-const FileUpload = styled.label`
+export const FileUpload = styled.label`
   display: flex;
   align-items: center;
   gap: ${spacings.X_SMALL};
@@ -24,10 +24,10 @@ const FileUpload = styled.label`
   }
 `;
 
-const SelectFile = styled(Typography).attrs({ variant: 'body_short_link' })`
+export const SelectFile = styled(Typography).attrs({
+  variant: 'body_short_link',
+})`
   cursor: pointer;
   font-weight: 500;
   font-size: 14px;
 `;
-
-export { FileUpload, SelectFile };
