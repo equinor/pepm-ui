@@ -6,12 +6,18 @@ import { theme } from '../../tokens/theme';
 export const PageLayout = styled.div`
   display: flex;
   fled-direction: row;
+  flex: auto;
+  position: relative;
+  width: 100%;
   height: 100%;
 `;
 
 export const Content = styled.div`
   display: flex;
   fled-direction: row;
+
+  width: 100%;
+  overflow: scroll;
 
   padding: ${spacings.XX_LARGE} ${spacings.X_LARGE};
 `;
@@ -37,6 +43,14 @@ export const StyledBackButton = styled(SideBar.Link)`
   }
 
   padding: 0 0 ${spacings.MEDIUM} ${spacings.SMALL};
+`;
+
+export const SidebarWrapper = styled.div`
+  heigth: 100%;
+  max-width: 256px;
+  > div {
+    border-color: ${theme.light.ui.background.medium};
+  }
 `;
 
 export { StyledBackButton as Back, StyledSidebarContent as SidebarContent };

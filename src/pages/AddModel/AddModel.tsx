@@ -294,6 +294,7 @@ export const AddModel = () => {
   return (
     <Styled.PageLayout>
       <SidePane uploading={uploading} />
+
       <Styled.Content>
         <HandleModelComponent
           confirm={uploadModel}
@@ -324,25 +325,27 @@ const SidePane = ({ uploading }: { uploading: boolean }) => {
     active: false,
   };
   return (
-    <SideBar open>
-      <Styled.SidebarContent>
-        {uploading ? (
-          <Tooltip title="Button disabled until model has finished uploading.">
+    <Styled.SidebarWrapper>
+      <SideBar open>
+        <Styled.SidebarContent>
+          {uploading ? (
+            <Tooltip title="Button disabled until model has finished uploading.">
+              <Styled.Back
+                label={backItems.label}
+                icon={backItems.icon}
+              ></Styled.Back>
+            </Tooltip>
+          ) : (
             <Styled.Back
               label={backItems.label}
               icon={backItems.icon}
+              onClick={() => {
+                navigate('/');
+              }}
             ></Styled.Back>
-          </Tooltip>
-        ) : (
-          <Styled.Back
-            label={backItems.label}
-            icon={backItems.icon}
-            onClick={() => {
-              navigate('/');
-            }}
-          ></Styled.Back>
-        )}
-      </Styled.SidebarContent>
-    </SideBar>
+          )}
+        </Styled.SidebarContent>
+      </SideBar>
+    </Styled.SidebarWrapper>
   );
 };
