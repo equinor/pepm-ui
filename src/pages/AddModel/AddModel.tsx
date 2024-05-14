@@ -62,11 +62,13 @@ export const AddModel = () => {
     description: '',
     isProcessed: false,
     sourceType: AnalogueModelSourceType.DELTARES,
+    analogues: [],
     fileUploads: [],
     parameters: [],
     metadata: [],
-    analogues: [],
     modelAreas: [],
+    stratigraphicGroups: [],
+    geologicalGroups: [],
   };
 
   const createModel = useMutation({

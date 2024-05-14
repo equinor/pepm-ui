@@ -20,6 +20,8 @@ const mockMetadata = {
   metadata: [],
   analogues: [],
   modelAreas: [],
+  stratigraphicGroups: [],
+  geologicalGroups: [],
 };
 const errors = {};
 

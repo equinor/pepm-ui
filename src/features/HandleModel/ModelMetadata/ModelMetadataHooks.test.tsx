@@ -22,6 +22,8 @@ const mockMetadata = {
   metadata: [],
   analogues: [],
   modelAreas: [],
+  stratigraphicGroups: [],
+  geologicalGroups: [],
 };
 const errors = {};
 function wrapper(props: { children: React.ReactNode }) {

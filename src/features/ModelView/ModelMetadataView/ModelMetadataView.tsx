@@ -39,6 +39,8 @@ export const ModelMetadataView = () => {
     parameters: [],
     metadata: data?.data.metadata ? data?.data.metadata : [],
     modelAreas: [],
+    stratigraphicGroups: [],
+    geologicalGroups: [],
   };
 
   function toggleDialog() {
