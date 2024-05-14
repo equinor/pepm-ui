@@ -4,7 +4,7 @@
 /* eslint-disable */
 
 export type GeologicalStandardDto = {
-    geologicalStandardId?: string;
+    geologicalStandardId: string;
     identifier: string;
     geologicalStandardParentId?: string | null;
     geologyGroup: string;

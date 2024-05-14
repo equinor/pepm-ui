@@ -4,6 +4,10 @@
 /* eslint-disable */
 import type { AddAnalogueModelAreaCommandForm } from '../models/AddAnalogueModelAreaCommandForm';
 import type { AddAnalogueModelAreaCommandResponse } from '../models/AddAnalogueModelAreaCommandResponse';
+import type { AddGeologicalGroupCommandResponse } from '../models/AddGeologicalGroupCommandResponse';
+import type { AddGeologicalGroupForm } from '../models/AddGeologicalGroupForm';
+import type { AddStatigraphicGroupForm } from '../models/AddStatigraphicGroupForm';
+import type { AddStratigraphicGroupCommandResponse } from '../models/AddStratigraphicGroupCommandResponse';
 import type { CreateAnalogueModelCommand } from '../models/CreateAnalogueModelCommand';
 import type { CreateAnalogueModelCommandResponse } from '../models/CreateAnalogueModelCommandResponse';
 import type { GetAnalogueModelListQueryResponse } from '../models/GetAnalogueModelListQueryResponse';
@@ -236,6 +240,98 @@ export class AnalogueModelsService {
             },
             body: requestBody,
             mediaType: 'application/json-patch+json',
+        });
+    }
+
+    /**
+     * @param id
+     * @param requestBody
+     * @returns AddStratigraphicGroupCommandResponse Success
+     * @throws ApiError
+     */
+    public static postApiAnalogueModelsStratigraphicGroups(
+        id: string,
+        requestBody?: AddStatigraphicGroupForm,
+    ): CancelablePromise<AddStratigraphicGroupCommandResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/analogue-models/{id}/stratigraphic-groups',
+            path: {
+                'id': id,
+            },
+            body: requestBody,
+            mediaType: 'application/json-patch+json',
+        });
+    }
+
+    /**
+     * @param id
+     * @param requestBody
+     * @returns AddGeologicalGroupCommandResponse Success
+     * @throws ApiError
+     */
+    public static postApiAnalogueModelsGeologicalGroups(
+        id: string,
+        requestBody?: AddGeologicalGroupForm,
+    ): CancelablePromise<AddGeologicalGroupCommandResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/analogue-models/{id}/geological-groups',
+            path: {
+                'id': id,
+            },
+            body: requestBody,
+            mediaType: 'application/json-patch+json',
+        });
+    }
+
+    /**
+     * Deletes a geological group
+     * @param analogueModelId
+     * @param geologicalGroupId
+     * @returns void
+     * @throws ApiError
+     */
+    public static deleteApiAnalogueModelsGeologicalGroups(
+        analogueModelId: string,
+        geologicalGroupId: string,
+    ): CancelablePromise<void> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/api/analogue-models/{analogueModelId}/geological-groups/{geologicalGroupId}',
+            path: {
+                'analogueModelId': analogueModelId,
+                'geologicalGroupId': geologicalGroupId,
+            },
+            errors: {
+                400: `Bad Request`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * Deletes a stratigraphic group
+     * @param analogueModelId
+     * @param stratigraphicGroupId
+     * @returns void
+     * @throws ApiError
+     */
+    public static deleteApiAnalogueModelsStratigraphicGroups(
+        analogueModelId: string,
+        stratigraphicGroupId: string,
+    ): CancelablePromise<void> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/api/analogue-models/{analogueModelId}/stratigraphic-groups/{stratigraphicGroupId}',
+            path: {
+                'analogueModelId': analogueModelId,
+                'stratigraphicGroupId': stratigraphicGroupId,
+            },
+            errors: {
+                400: `Bad Request`,
+                404: `Not Found`,
+            },
         });
     }
 

@@ -5,15 +5,14 @@
 
 import type { CountryDto } from './CountryDto';
 import type { FieldDto } from './FieldDto';
-import type { GeologicalStandardDto } from './GeologicalStandardDto';
 import type { StratColumnDto } from './StratColumnDto';
 import type { StratUnitDto } from './StratUnitDto';
 
-export type ListAllQueryResponse = {
-    countries: Array<CountryDto>;
-    fields: Array<FieldDto>;
+export type StratigraphicGroupDto = {
+    stratigraphicGroupId: string;
+    country: CountryDto;
+    field: FieldDto;
+    stratColumn: StratColumnDto;
     stratUnits: Array<StratUnitDto>;
-    stratColumns: Array<StratColumnDto>;
-    geologicalStandards: Array<GeologicalStandardDto>;
 };
 
