@@ -49,14 +49,14 @@ export const VariogramResultTable = ({
 
     const modelArea = caseList.data?.data.filter(
       (c) => c.computeCaseId === e.computeCaseId,
-    )[0].modelArea.name;
+    )[0].modelArea;
 
     const element: ResultObjectType = {
       computeCaseId: e.computeCaseId,
       method: method ? method : '',
       parameter: parameter,
       archelFilter: e.archelFilter ? e.archelFilter : '',
-      modelArea: modelArea ? modelArea : '',
+      modelArea: modelArea ? modelArea.name : '',
       variogramModel: e.family ? e.family : '',
       quality: roundResultString(e.quality)
         ? roundResultString(e.quality)
