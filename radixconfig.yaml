@@ -29,7 +29,7 @@ spec:
         - environment: prod
           imageTagName: production.latest
     - name: api
-      image: ghcr.io/equinor/pepm-core-api/pepm-api:{imageTagName}
+      image: ghcr.io/equinor/pepm-core-api:{imageTagName}
       publicPort: http
       resources:
         requests:
