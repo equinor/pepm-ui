@@ -13,8 +13,6 @@ on:
       - "main"
     paths: 
       - "src/**"
-      - "package.json"
-      - "package-lock.json"
       - "yarn.lock"
       - "Dockerfile"
 

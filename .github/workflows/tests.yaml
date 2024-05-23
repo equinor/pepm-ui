@@ -4,8 +4,6 @@ on:
   pull_request:
     paths:
       - "src/**"
-      - "package.json"
-      - "package-lock.json"
       - "yarn.lock"
       - "Dockerfile"
     types: [
