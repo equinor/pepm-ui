@@ -35,7 +35,7 @@ jobs:
       uses: ./.github/workflows/deploy-to-radix.yml
       with:
         Environment: test
-        VersionTag: ${{ github.event.release.tag_name }}
+        VersionTag: test.${{ github.event.release.tag_name }}
       secrets:
         ClientId: ${{ secrets.CLIENT_ID }}
         TenantId: ${{ secrets.TENANT_ID }}
