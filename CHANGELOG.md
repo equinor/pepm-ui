@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.1](https://github.com/equinor/pepm-ui/compare/v1.0.0...v1.0.1) (2024-05-23)
+
+
+### Bug Fixes
+
+* **workflow:** scoped workflows to ignore changes in package.json and package-lock.json ([b473c6f](https://github.com/equinor/pepm-ui/commit/b473c6f8235f3c86aba09c59097283a3090d8730))
+* **workflow:** updated deploy-to-test workflow to push the right version tag to radix ([d62402e](https://github.com/equinor/pepm-ui/commit/d62402e53feac8c39ddd536fc659c89f57de3a76))
+* **workflow:** updated test workflow ([cc00cc6](https://github.com/equinor/pepm-ui/commit/cc00cc67e92e677c800c0cc6a33aecc37baa0142))
+
 ## 1.0.0 (2024-05-23)
 
 
