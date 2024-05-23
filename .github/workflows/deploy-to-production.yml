@@ -1,0 +1,71 @@
+name: Promote to Production
+
+# Only one workflow in a concurrency group may run at a time
+concurrency:
+  group: production-concurrency
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:
+
+env:
+    REGISTRY: ghcr.io
+
+jobs:
+    trigger-github-deployment:
+        name: Trigger GitHub Deployment
+        environment: prod
+        runs-on: ubuntu-latest
+        steps:
+          - name: Deploy production
+            run: echo "Deplying to production"
+
+    get-test-version:
+        name: Get version from test
+        needs: trigger-github-deployment
+        outputs:
+            versionTag: ${{ steps.get_version_tag.outputs.tags }}
+        runs-on: ubuntu-latest
+        environment: prod
+        steps:
+
+        - name: Checkout repository
+          uses: actions/checkout@v4
+  
+        - name: Log in to the Github Container registry
+          uses: docker/login-action@v3
+          with:
+            registry: ${{ env.REGISTRY }}
+            username: ${{ github.actor }}
+            password: ${{ secrets.GITHUB_TOKEN }}
+  
+        - name: Extract metadata (tags, labels) for Docker
+          id: get_version_tag
+          uses: docker/metadata-action@v5
+          with:
+            images: ${{ env.REGISTRY }}/${{ github.repository }}/test:latest
+            tags: |
+                type=semver,pattern=v{{version}}
+
+    build-and-publish-prod:
+        name: Build and publish Production
+        needs: get-test-version
+        uses: ./.github/workflows/build-and-publish.yml
+        with:
+            Registry: ghcr.io
+            ImageName: ${{ github.repository }}
+            Tag: prod.${{ needs.get-test-version.outputs.versionTag }}
+            Environment: prod
+            GitRef: ${{ needs.get-test-version.outputs.versionTag }}
+        secrets: inherit
+
+    deploy:
+        name: Update deployment in Production
+        needs: [get-test-version, trigger-github-deployment]
+        uses: ./.github/workflows/deploy-to-radix.yml
+        with:
+          Environment: prod
+          VersionTag: prod.${{ needs.get-test-version.outputs.versionTag }}
+        secrets:
+          ClientId: ${{ secrets.CLIENT_ID }}
+          TenantId: ${{ secrets.TENANT_ID }}

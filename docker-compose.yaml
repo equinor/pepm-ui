@@ -2,7 +2,7 @@ version: '3.9'
 services:
 
   pepm-ui:
-    image: ghcr.io/equinor/pepm-ui/pepm-ui:${ENVIRONMENT}.latest
+    image: ghcr.io/equinor/pepm-ui:${TAG}
     build:
       target: ${ENVIRONMENT}
       context: .

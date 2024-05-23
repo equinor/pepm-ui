@@ -1,0 +1,41 @@
+name: Deploy to Test
+
+# Only one workflow in a concurrency group may run at a time
+concurrency:
+  group: test-concurrency
+  cancel-in-progress: true
+
+on:
+  release:
+    types: [created]
+
+jobs:
+    trigger-github-deployment:
+      name: Trigger GitHub Deployment
+      environment: test
+      runs-on: ubuntu-latest
+      steps:
+        - name: Start deployment to test
+          run: echo "Deployment to test started"
+
+    build-and-publish-release-to-test:
+      name: Build and publish containers for test
+      uses: ./.github/workflows/build-and-publish.yml
+      needs: trigger-github-deployment
+      with:
+        Registry: ghcr.io
+        ImageName: ${{ github.repository }}
+        Tag: test.${{ github.event.release.tag_name }}
+        Environment: test
+      secrets: inherit
+    
+    deploy:
+      name: Update deployment in Test
+      needs: [trigger-github-deployment, build-and-publish-release-to-test]
+      uses: ./.github/workflows/deploy-to-radix.yml
+      with:
+        Environment: test
+        VersionTag: ${{ github.event.release.tag_name }}
+      secrets:
+        ClientId: ${{ secrets.CLIENT_ID }}
+        TenantId: ${{ secrets.TENANT_ID }}

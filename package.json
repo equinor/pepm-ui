@@ -38,9 +38,7 @@
   },
   "scripts": {
     "start": "env-cmd -f .env.local react-scripts start",
-    "build:dev": "env-cmd -f .env.dev react-scripts build",
-    "build:test": "env-cmd -f .env.test react-scripts build",
-    "build:production": "env-cmd -f .env.production react-scripts build",
+    "build:release": "env-cmd -f .env react-scripts build",
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
     "test:ts": "tsc --noEmit",

@@ -1,0 +1,54 @@
+name: Deploy to Radix
+
+on:
+    workflow_call:
+        inputs:
+            Environment:
+                required: true
+                type: string
+            VersionTag:
+                required: true
+                type: string
+        secrets:
+            ClientId:
+                required: true
+            TenantId:
+                required: true
+
+
+permissions:
+    id-token: write
+    contents: read
+
+jobs:
+    deploy:  
+      runs-on: ubuntu-latest
+      environment: ${{inputs.Environment}}
+      steps:
+        - uses: actions/checkout@v4 
+        
+        - name: 'Az CLI login'
+          uses: azure/login@v2
+          with:
+            client-id: ${{ secrets.ClientId}}
+            tenant-id:  ${{ secrets.TenantId}}
+            allow-no-subscriptions: true 
+
+        - name: RADIX Login
+          run: |
+            token=$(az account get-access-token --resource 6dae42f8-4368-4678-94ff-3960e28e3630 --query=accessToken -otsv | tr -d '[:space:]')
+            echo "::add-mask::$token"
+            echo "APP_SERVICE_ACCOUNT_TOKEN=$token" >> $GITHUB_ENV
+
+        - name: 'Deploy API on Radix'
+          uses: equinor/radix-github-actions@v1
+          with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            args: >
+              create pipeline-job
+              deploy
+              --application pepm
+              --component web
+              --environment ${{ inputs.Environment }}
+              --image-tag-name web=${{ inputs.VersionTag }}
+              --follow

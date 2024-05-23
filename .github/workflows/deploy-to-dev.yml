@@ -1,0 +1,71 @@
+name: Deploy to Development
+
+# Only one workflow in a concurrency group may run at a time
+concurrency:
+  group: development-concurrency
+  cancel-in-progress: true
+
+on:
+  release:
+    types: [created]
+  push:
+    branches:
+      - "main"
+    paths: 
+      - "src/**"
+      - "package.json"
+      - "package-lock.json"
+      - "yarn.lock"
+
+jobs:
+  trigger-github-deployment:
+    name: Trigger Github Deployment
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Notify
+        run: echo "Deployment started"
+
+  get-or-create-tag:
+    needs: trigger-github-deployment
+    name: Get or create tag
+    outputs:
+      tag: ${{ steps.get-tag.outputs.tag }}
+    runs-on: ubuntu-latest
+    steps:
+      - id: get-tag
+        run: |
+          if echo ${{ github.event_name }} | grep "release"
+          then
+            RELEASE_TAG=$(echo ${{ github.event.release.tag_name }})
+            echo "tag=$RELEASE_TAG" >> "$GITHUB_OUTPUT"
+          else
+            SHA_SHORT=$(echo ${{ github.sha }} | cut -c1-8)
+            echo "tag=$SHA_SHORT" >> "$GITHUB_OUTPUT"
+          fi
+        shell: bash
+  
+  build-and-publish-component:
+    name: "Build and publish component"
+    needs: [get-or-create-tag, trigger-github-deployment]
+    uses: ./.github/workflows/build-and-publish.yml
+    with:
+      Registry: ghcr.io
+      ImageName: ${{ github.repository }}
+      Environment: dev
+      # Add dev. prefix for the tags used in dev environment,
+      # due to the commit hash can be interpreted as an integer if only numbers
+      # PS: Needs to match deploy.with.Tag
+      Tag: dev.${{ needs.get-or-create-tag.outputs.tag }}
+    secrets: inherit
+
+  deploy:
+    name: Update deployment in Develompent
+    needs: [build-and-publish-component, trigger-github-deployment, get-or-create-tag]
+    uses: ./.github/workflows/deploy-to-radix.yml
+    with:
+      Environment: dev
+      VersionTag: "dev.${{ needs.get-or-create-tag.outputs.tag }}"
+    secrets:
+      ClientId: ${{ secrets.CLIENT_ID }}
+      TenantId: ${{ secrets.TENANT_ID }}
