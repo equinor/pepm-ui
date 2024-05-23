@@ -8,7 +8,7 @@ export const ModelMetadata = styled.div`
   row-gap: ${spacings.MEDIUM};
 `;
 
-export const Form = styled.form`
+export const Form = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: ${spacings.MEDIUM};

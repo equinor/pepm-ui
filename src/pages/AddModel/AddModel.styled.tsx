@@ -14,12 +14,18 @@ export const PageLayout = styled.div`
 
 export const Content = styled.div`
   display: flex;
-  fled-direction: row;
+  fled-direction: column;
 
   width: 100%;
   overflow: scroll;
 
   padding: ${spacings.XX_LARGE} ${spacings.X_LARGE};
+`;
+
+export const InnerContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  row-gap: ${spacings.X_LARGE};
 `;
 
 export const StyledSidebarContent = styled(SideBar.Content)`

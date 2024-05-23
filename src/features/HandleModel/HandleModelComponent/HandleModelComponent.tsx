@@ -1,10 +1,6 @@
+/* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
-import {
-  Button,
-  Dialog,
-  LinearProgress,
-  Typography,
-} from '@equinor/eds-core-react';
+import { Button, LinearProgress, Typography } from '@equinor/eds-core-react';
 import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import {
@@ -17,7 +13,6 @@ import {
 import { ErrorBanner } from '../../../components/ErrorBanner/ErrorBanner';
 import { ModelInputFilesTable } from '../ModelInputFilesTable/ModelInputFilesTable';
 import { ModelMetadata } from '../ModelMetadata/ModelMetadata';
-import { StratigraphicColumnSelect } from '../StratigraphicColumnSelect/StratigraphicColumnSelect';
 import {
   useHandleModelComponent,
   validateValues,
@@ -68,15 +63,6 @@ export interface StratColumnType {
   level3?: StratUnitDto;
 }
 
-const defaultStratColumnData: StratColumnType = {
-  country: undefined,
-  field: undefined,
-  stratColumn: undefined,
-  level1: undefined,
-  level2: undefined,
-  level3: undefined,
-};
-
 export const HandleModelComponent = ({
   confirm,
   edit,
@@ -87,17 +73,14 @@ export const HandleModelComponent = ({
   existingData,
 }: AddModelDialogProps) => {
   const [isFileDisplay, setFileDisplay] = useState<boolean>(false);
-  const [showStratColDialog, setShowStratColDialog] = useState<boolean>(false);
   const [files, setFiles] = useState<FilesProps>(defaultFiles);
   const [metadata, setMetadata] =
     useState<AnalogueModelDetail>(defaultMetadata);
-  const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [fileSize, setFileSize] = useState(0);
   const [rawFile, setrawFile] = useState<File>();
-  const [stratColumnObject, setStratColumnObject] = useState<StratColumnType>(
-    defaultStratColumnData,
-  );
+
+  const [errors, setErrors] = useState({});
 
   useHandleModelComponent(
     setFileSize,
@@ -174,19 +157,13 @@ export const HandleModelComponent = ({
 
   const ErrorList = getErroMessageList();
 
-  const handleStratColDialog = () => {
-    setShowStratColDialog(!showStratColDialog);
-  };
-
-  const handleSaveStratCol = () => {
-    console.log(stratColumnObject);
-  };
-
   return (
     <Styled.Wrapper>
-      <Typography variant="h3">
-        {isEdit ? 'Edit model details' : 'Add new model'}
-      </Typography>
+      {!isEdit && (
+        <Typography variant="h3">
+          {isEdit ? 'Edit model details' : 'Add new model'}
+        </Typography>
+      )}
       <Styled.CustomContent>
         {!isEdit && (
           <ModelInputFilesTable
@@ -206,9 +183,6 @@ export const HandleModelComponent = ({
           metadata={metadata}
           setMetadata={setMetadata}
         />
-        <div>
-          <Button onClick={handleStratColDialog}>Add Row</Button>
-        </div>
 
         <Styled.ErrorDiv>
           {!_.isEmpty(errors) &&
@@ -235,23 +209,6 @@ export const HandleModelComponent = ({
           {<LinearProgress variant="determinate" value={progress} />}
         </Styled.UploadDiv>
       )}
-
-      <Dialog open={showStratColDialog}>
-        <Dialog.Header>Add stratigraphic column</Dialog.Header>
-        <Dialog.CustomContent>
-          <StratigraphicColumnSelect
-            errors={errors}
-            stratColumnObject={stratColumnObject}
-            setStratColumnObject={setStratColumnObject}
-          />
-        </Dialog.CustomContent>
-        <Styled.Actions>
-          <Button onClick={handleSaveStratCol}>Add</Button>
-          <Button variant="outlined" onClick={handleStratColDialog}>
-            Close
-          </Button>
-        </Styled.Actions>
-      </Dialog>
     </Styled.Wrapper>
   );
 };

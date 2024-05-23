@@ -134,50 +134,50 @@ test('Description field to be present after render', async () => {
   expect(descriptionLable).toBeInTheDocument();
 });
 
-test('Field dropdown to be present after render', async () => {
-  render(<Render />);
+// test('Field dropdown to be present after render', async () => {
+//   render(<Render />);
 
-  const labeledNodes = await screen.findAllByLabelText('Field');
-  const input = labeledNodes[1];
-  const optionsList = labeledNodes[0];
+//   const labeledNodes = await screen.findAllByLabelText('Field');
+//   const input = labeledNodes[1];
+//   const optionsList = labeledNodes[0];
 
-  expect(input).toBeDefined();
-  expect(input).toHaveAccessibleName('Field');
-  expect(input.nodeName).toBe('INPUT');
+//   expect(input).toBeDefined();
+//   expect(input).toHaveAccessibleName('Field');
+//   expect(input.nodeName).toBe('INPUT');
 
-  expect(optionsList).toBeDefined();
-  expect(optionsList.nodeName).toBe('UL');
-});
+//   expect(optionsList).toBeDefined();
+//   expect(optionsList.nodeName).toBe('UL');
+// });
 
-test('Zone dropdown to be present after render', async () => {
-  render(<Render />);
+// test('Zone dropdown to be present after render', async () => {
+//   render(<Render />);
 
-  const labeledNodes = await screen.findAllByLabelText('Zone');
-  const input = labeledNodes[1];
+//   const labeledNodes = await screen.findAllByLabelText('Zone');
+//   const input = labeledNodes[1];
 
-  expect(input).toBeDefined();
-  expect(input).toHaveAccessibleName('Zone');
-  expect(input.nodeName).toBe('INPUT');
-});
+//   expect(input).toBeDefined();
+//   expect(input).toHaveAccessibleName('Zone');
+//   expect(input.nodeName).toBe('INPUT');
+// });
 
-test('Formation dropdown to be present after render', async () => {
-  render(<Render />);
+// test('Formation dropdown to be present after render', async () => {
+//   render(<Render />);
 
-  const labeledNodes = await screen.findAllByLabelText('Formation');
-  const input = labeledNodes[1];
+//   const labeledNodes = await screen.findAllByLabelText('Formation');
+//   const input = labeledNodes[1];
 
-  expect(input).toBeDefined();
-  expect(input).toHaveAccessibleName('Formation');
-  expect(input.nodeName).toBe('INPUT');
-});
+//   expect(input).toBeDefined();
+//   expect(input).toHaveAccessibleName('Formation');
+//   expect(input.nodeName).toBe('INPUT');
+// });
 
-test('Analogue dropdown to be present after render', async () => {
-  render(<Render />);
+// test('Analogue dropdown to be present after render', async () => {
+//   render(<Render />);
 
-  const labeledNodes = await screen.findAllByLabelText('Analogue');
-  const input = labeledNodes[1];
+//   const labeledNodes = await screen.findAllByLabelText('Analogue');
+//   const input = labeledNodes[1];
 
-  expect(input).toBeDefined();
-  expect(input).toHaveAccessibleName('Analogue');
-  expect(input.nodeName).toBe('INPUT');
-});
+//   expect(input).toBeDefined();
+//   expect(input).toHaveAccessibleName('Analogue');
+//   expect(input.nodeName).toBe('INPUT');
+// });

@@ -30,6 +30,7 @@ import {
 } from '../../api/generated';
 import { queryClient } from '../../auth/queryClient';
 import { HandleModelComponent } from '../../features/HandleModel/HandleModelComponent/HandleModelComponent';
+import { ModelMetadataView } from '../../features/ModelView/ModelMetadataView/ModelMetadataView';
 import * as Styled from './AddModel.styled';
 
 enum UploadProcess {
@@ -298,12 +299,21 @@ export const AddModel = () => {
       <SidePane uploading={uploading} />
 
       <Styled.Content>
-        <HandleModelComponent
-          confirm={uploadModel}
-          uploading={uploading}
-          defaultMetadata={defaultMetadata}
-          progress={progress}
-        />
+        <div>
+          <Styled.InnerContent>
+            <HandleModelComponent
+              confirm={uploadModel}
+              uploading={uploading}
+              defaultMetadata={defaultMetadata}
+              progress={progress}
+            />
+            {modelId !== '' && (
+              <>
+                <ModelMetadataView modelId={modelId} />
+              </>
+            )}
+          </Styled.InnerContent>
+        </div>
       </Styled.Content>
 
       <Snackbar
