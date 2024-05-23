@@ -11,11 +11,12 @@ on:
   push:
     branches:
       - "main"
-    paths: 
-      - "src/**"
-      - "package.json"
-      - "package-lock.json"
-      - "yarn.lock"
+    # paths: 
+    #   - "src/**"
+    #   - "package.json"
+    #   - "package-lock.json"
+    #   - "yarn.lock"
+    #   - "."
 
 jobs:
   trigger-github-deployment:
