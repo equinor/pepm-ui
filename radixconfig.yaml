@@ -112,7 +112,7 @@ spec:
             ASPNETCORE_ENVIRONMENT: "Production"
   jobs:
     - name: pepm-nrresqml
-      image: ghcr.io/equinor/pepm-worker-api/pepm-nrresqml:latest
+      image: ghcr.io/equinor/pepm-worker-api/resqml-converter:latest
       schedulerPort: 8090
       resources:
         requests:
@@ -178,7 +178,7 @@ spec:
 
 
     - name: pepm-nrchannest
-      image: ghcr.io/equinor/pepm-worker-api/pepm-nrchannest:latest
+      image: ghcr.io/equinor/pepm-worker-api/channel-estimation:latest
       schedulerPort: 8090
       backoffLimit: 1
       timeLimitSeconds: 43200
@@ -246,7 +246,7 @@ spec:
                   enabled: false
 
     - name: pepm-nrvargrest
-      image: ghcr.io/equinor/pepm-worker-api/pepm-nrvargrest:latest
+      image: ghcr.io/equinor/pepm-worker-api/variogram-estimation:latest
       schedulerPort: 8090
       backoffLimit: 1
       timeLimitSeconds: 43200
