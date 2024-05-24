@@ -3,11 +3,8 @@ kind: RadixApplication
 metadata:
   name: pepm
 spec:
-  build:
   environments:
     - name: dev
-      build:
-        from: main
     - name: test
     - name: prod
   components:
