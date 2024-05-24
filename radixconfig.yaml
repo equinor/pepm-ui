@@ -12,18 +12,18 @@ spec:
     - name: prod
   components:
     - name: web
-      image: ghcr.io/equinor/pepm-ui:{imageTagName}
+      image: ghcr.io/equinor/pepm-ui/{imageTagName}
       publicPort: http
       ports:
         - name: http
           port: 3000
       environmentConfig:
         - environment: dev
-          imageTagName: dev.latest
+          imageTagName: dev:latest
         - environment: test
-          imageTagName: test.latest
+          imageTagName: test:latest
         - environment: prod
-          imageTagName: production.latest
+          imageTagName: production:latest
     - name: api
       image: ghcr.io/equinor/pepm-core-api:{imageTagName}
       publicPort: http

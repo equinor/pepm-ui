@@ -54,7 +54,7 @@ jobs:
         with:
             Registry: ghcr.io
             ImageName: ${{ github.repository }}
-            Tag: prod.${{ needs.get-test-version.outputs.versionTag }}
+            Tag: ${{ needs.get-test-version.outputs.versionTag }}
             Environment: prod
             GitRef: ${{ needs.get-test-version.outputs.versionTag }}
         secrets: inherit
@@ -65,7 +65,7 @@ jobs:
         uses: ./.github/workflows/deploy-to-radix.yml
         with:
           Environment: prod
-          VersionTag: prod.${{ needs.get-test-version.outputs.versionTag }}
+          VersionTag: ${{ needs.get-test-version.outputs.versionTag }}
         secrets:
           ClientId: ${{ secrets.CLIENT_ID }}
           TenantId: ${{ secrets.TENANT_ID }}

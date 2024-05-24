@@ -64,5 +64,6 @@ jobs:
           target: release
           push: true
           tags: |
-            ${{ inputs.Registry }}/${{ inputs.ImageName }}:${{ inputs.Tag }}
+            ${{ inputs.Registry }}/${{ inputs.ImageName }}/${{ inputs.Environment }}:${{ inputs.Tag }}
+            ${{ inputs.Registry }}/${{ inputs.ImageName }}/${{ inputs.Environment }}:latest
           labels: ${{ steps.meta.outputs.labels }}

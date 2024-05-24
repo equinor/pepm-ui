@@ -25,7 +25,7 @@ jobs:
       with:
         Registry: ghcr.io
         ImageName: ${{ github.repository }}
-        Tag: test.${{ github.event.release.tag_name }}
+        Tag: ${{ github.event.release.tag_name }}
         Environment: test
       secrets: inherit
     
@@ -35,7 +35,7 @@ jobs:
       uses: ./.github/workflows/deploy-to-radix.yml
       with:
         Environment: test
-        VersionTag: test.${{ github.event.release.tag_name }}
+        VersionTag: ${{ github.event.release.tag_name }}
       secrets:
         ClientId: ${{ secrets.CLIENT_ID }}
         TenantId: ${{ secrets.TENANT_ID }}

@@ -50,5 +50,5 @@ jobs:
               --application pepm
               --component web
               --environment ${{ inputs.Environment }}
-              --image-tag-name web=${{ inputs.VersionTag }}
+              --image-tag-name web=${{ inputs.Environment }}:${{ inputs.VersionTag }}
               --follow

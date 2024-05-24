@@ -55,7 +55,7 @@ jobs:
       # Add dev. prefix for the tags used in dev environment,
       # due to the commit hash can be interpreted as an integer if only numbers
       # PS: Needs to match deploy.with.Tag
-      Tag: dev.${{ needs.get-or-create-tag.outputs.tag }}
+      Tag: ${{ needs.get-or-create-tag.outputs.tag }}
     secrets: inherit
 
   deploy:
@@ -64,7 +64,7 @@ jobs:
     uses: ./.github/workflows/deploy-to-radix.yml
     with:
       Environment: dev
-      VersionTag: "dev.${{ needs.get-or-create-tag.outputs.tag }}"
+      VersionTag: "${{ needs.get-or-create-tag.outputs.tag }}"
     secrets:
       ClientId: ${{ secrets.CLIENT_ID }}
       TenantId: ${{ secrets.TENANT_ID }}
