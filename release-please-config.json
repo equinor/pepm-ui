@@ -1,4 +1,5 @@
 {
+    "bootstrap-sha": "08a526ce5ca0626b39e9be46bde63d68572d851b",
     "release-type": "node",
     "changelog-sections": [
         {"type":"release", "section":"📦 Release package","hidden":false},
