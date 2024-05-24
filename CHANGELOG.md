@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/equinor/pepm-ui/compare/v1.0.2...v1.0.3) (2024-05-24)
+
+
+### 🐛 Bug Fixes
+
+* **ci:** removed build from radix config ([cb02395](https://github.com/equinor/pepm-ui/commit/cb023955f7e3d61ffbe09e0a28b2c0676d1481bb))
+
 ## [1.0.2](https://github.com/equinor/pepm-ui/compare/v1.0.1...v1.0.2) (2024-05-24)
 
 
