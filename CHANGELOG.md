@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2](https://github.com/equinor/pepm-ui/compare/pepm-ui-v1.0.1...pepm-ui-v1.0.2) (2024-05-24)
+
+
+### 🐛 Bug Fixes
+
+* **ci:** sat release please search after last release ([96d7414](https://github.com/equinor/pepm-ui/commit/96d741438b2e00870408a26d4baa014a70f219ea))
+* **ci:** updated release-please with new sections ([cab51e9](https://github.com/equinor/pepm-ui/commit/cab51e900e1859adccd18f31e5e3ab6a72b07441))
+
 ## [1.0.1](https://github.com/equinor/pepm-ui/compare/v1.0.0...v1.0.1) (2024-05-23)
 
 
