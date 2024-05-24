@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2](https://github.com/equinor/pepm-ui/compare/v1.0.1...v1.0.2) (2024-05-24)
+
+
+### Bug Fixes
+
+* **ci:** updated image base in radix config, updated image tags in deployment ([08a526c](https://github.com/equinor/pepm-ui/commit/08a526ce5ca0626b39e9be46bde63d68572d851b))
+* **radix-config:** updated jobs images ([e1bb377](https://github.com/equinor/pepm-ui/commit/e1bb3773ee5f92dd193baab1981fc234a86e0503))
+
 ## [1.0.1](https://github.com/equinor/pepm-ui/compare/v1.0.0...v1.0.1) (2024-05-23)
 
 
