@@ -24,9 +24,8 @@ const DataTable = styled(Table)`
   width: 85%;
 `;
 
-export const NameCell = styled(Table.Cell)`
-  width: 20%;
-  padding-right: ${spacings.X_LARGE};
+export const DescriptionWrapper = styled.div`
+  min-height: 200px;
 `;
 
 export const DataCell = styled(Table.Cell)`

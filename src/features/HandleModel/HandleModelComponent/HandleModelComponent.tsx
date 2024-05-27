@@ -26,7 +26,9 @@ interface AddModelDialogProps {
   uploading?: boolean;
   defaultMetadata: AnalogueModelDetail;
   isEdit?: boolean;
+  isAddUploading?: boolean;
   existingData?: AnalogueModelDetail;
+  closeDialog?: () => void;
 }
 
 export interface FilesProps {
@@ -70,7 +72,9 @@ export const HandleModelComponent = ({
   uploading,
   defaultMetadata,
   isEdit,
+  isAddUploading,
   existingData,
+  closeDialog,
 }: AddModelDialogProps) => {
   const [isFileDisplay, setFileDisplay] = useState<boolean>(false);
   const [files, setFiles] = useState<FilesProps>(defaultFiles);
@@ -93,6 +97,11 @@ export const HandleModelComponent = ({
   const handleSubmit = () => {
     setErrors(validateValues(metadata, files, isEdit));
     setSubmitting(true);
+  };
+
+  const handleClose = () => {
+    setMetadata(defaultMetadata);
+    if (closeDialog) closeDialog();
   };
 
   const fileAdded = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -156,16 +165,19 @@ export const HandleModelComponent = ({
   };
 
   const ErrorList = getErroMessageList();
+  console.log('IS EDIT ', isEdit);
+
+  console.log('isAddUploading ', isAddUploading);
 
   return (
     <Styled.Wrapper>
-      {!isEdit && (
+      {!isEdit && progress !== undefined && progress <= 0 && (
         <Typography variant="h3">
           {isEdit ? 'Edit model details' : 'Add new model'}
         </Typography>
       )}
       <Styled.CustomContent>
-        {!isEdit && (
+        {!isEdit && progress !== undefined && progress <= 0 && (
           <ModelInputFilesTable
             files={files}
             setFiles={setFiles}
@@ -178,29 +190,47 @@ export const HandleModelComponent = ({
           />
         )}
         {isFileDisplay && <INIFileContent />}
-        <ModelMetadata
-          errors={errors}
-          metadata={metadata}
-          setMetadata={setMetadata}
-        />
-
-        <Styled.ErrorDiv>
-          {!_.isEmpty(errors) &&
-            ErrorList !== undefined &&
-            ErrorList.map((e, i) => {
-              return <ErrorBanner key={i} text={e} />;
-            })}
-        </Styled.ErrorDiv>
+        {/* {!isEdit && progress !== undefined && progress <= 0 && ( */}
+        {(isEdit || !isAddUploading) && (
+          <>
+            <ModelMetadata
+              errors={errors}
+              metadata={metadata}
+              setMetadata={setMetadata}
+            />
+            {!_.isEmpty(errors) &&
+              ErrorList !== undefined &&
+              ErrorList.map((e, i) => {
+                return (
+                  <Styled.ErrorDiv key={i}>
+                    <ErrorBanner text={e} />
+                  </Styled.ErrorDiv>
+                );
+              })}
+          </>
+        )}
       </Styled.CustomContent>
-      <div>
-        <Button onClick={handleSubmit} disabled={uploading}>
-          {isEdit
-            ? 'Save changes'
-            : uploading
-            ? 'Wait for model to finish uploading'
-            : 'Confirm and start uploading'}
-        </Button>
-      </div>
+      {!isAddUploading && (
+        <div>
+          <Button onClick={handleSubmit} disabled={uploading}>
+            {isEdit
+              ? 'Save changes'
+              : uploading
+              ? 'Wait for model to finish uploading'
+              : 'Confirm and start uploading'}
+          </Button>
+          {isEdit && (
+            <Button
+              variant="outlined"
+              onClick={handleClose}
+              disabled={uploading}
+            >
+              Close
+            </Button>
+          )}
+        </div>
+      )}
+
       {uploading && (
         <Styled.UploadDiv>
           <Typography variant="h3">
@@ -208,6 +238,15 @@ export const HandleModelComponent = ({
           </Typography>
           {<LinearProgress variant="determinate" value={progress} />}
         </Styled.UploadDiv>
+      )}
+
+      {progress === 100 && (
+        <>
+          <Typography variant="h3">Model finish uploaded!</Typography>
+          <div>
+            <Button>Go to model view</Button>
+          </div>
+        </>
       )}
     </Styled.Wrapper>
   );

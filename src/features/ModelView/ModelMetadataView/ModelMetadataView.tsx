@@ -36,7 +36,13 @@ export const defaultStratColumnData: StratColumnType = {
   level3: undefined,
 };
 
-export const ModelMetadataView = ({ modelId }: { modelId?: string }) => {
+export const ModelMetadataView = ({
+  modelId,
+  isAddUploading,
+}: {
+  modelId?: string;
+  isAddUploading?: boolean;
+}) => {
   const { isLoading, data } = useFetchModel(modelId ? modelId : undefined);
   const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false);
   const [stratColumnObject, setStratColumnObject] = useState<StratColumnType>(
@@ -61,7 +67,7 @@ export const ModelMetadataView = ({ modelId }: { modelId?: string }) => {
     geologicalGroups: [],
   };
 
-  function toggleDialog() {
+  function toggleEditMetadata() {
     setAddModelDialog(!isAddModelDialog);
   }
 
@@ -163,7 +169,7 @@ export const ModelMetadataView = ({ modelId }: { modelId?: string }) => {
       requestBody: readyAnalogue,
     });
 
-    toggleDialog();
+    toggleEditMetadata();
   };
 
   const handleStratColDialog = () => {
@@ -190,8 +196,6 @@ export const ModelMetadataView = ({ modelId }: { modelId?: string }) => {
   });
 
   if (isLoading || !data?.success) return <p>Loading ...</p>;
-
-  console.log(modelId);
 
   const handleAddStratCol = async () => {
     const id = modelId ? modelId : defaultMetadata.analogueModelId;
@@ -234,19 +238,37 @@ export const ModelMetadataView = ({ modelId }: { modelId?: string }) => {
   return (
     <Styled.Wrapper>
       <Styled.Metadata>
-        <Typography variant="h3">Description and metadata</Typography>
+        {!isAddUploading && (
+          <>
+            <Typography variant="h3">Description and metadata</Typography>
 
-        {!isAddModelDialog && (
-          <>{data.data.description && <div>{data.data.description}</div>}</>
-        )}
+            {!isAddModelDialog && (
+              <Styled.DescriptionWrapper>
+                {data.data.description && <div>{data.data.description}</div>}
+              </Styled.DescriptionWrapper>
+            )}
 
-        {isAddModelDialog && (
-          <HandleModelComponent
-            edit={updateModelMetadata}
-            defaultMetadata={defaultMetadata}
-            isEdit={true}
-            existingData={data.data}
-          />
+            {isAddModelDialog && (
+              <HandleModelComponent
+                edit={updateModelMetadata}
+                defaultMetadata={defaultMetadata}
+                isEdit={true}
+                existingData={data.data}
+                closeDialog={toggleEditMetadata}
+              />
+            )}
+            <div>
+              {!isAddModelDialog && (
+                <Button
+                  onClick={toggleEditMetadata}
+                  variant="outlined"
+                  className="edit-metadata-button"
+                >
+                  Edit name and description
+                </Button>
+              )}
+            </div>
+          </>
         )}
 
         <div>
@@ -256,14 +278,6 @@ export const ModelMetadataView = ({ modelId }: { modelId?: string }) => {
           />
         </div>
       </Styled.Metadata>
-
-      <Button
-        onClick={toggleDialog}
-        variant="outlined"
-        className="edit-metadata-button"
-      >
-        Edit description and metadata
-      </Button>
 
       <Dialog open={showStratColDialog}>
         <Dialog.Header>Add stratigraphic column</Dialog.Header>

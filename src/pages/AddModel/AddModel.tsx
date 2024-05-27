@@ -43,6 +43,7 @@ const defaultCounterValue = 1;
 const defaultBeginningOfchunk = 0;
 export const AddModel = () => {
   const [progress, setProgress] = useState(0);
+  // const [progress, setProgress] = useState(12);
   const [counter, setCounter] = useState<number>(defaultCounterValue);
   const [fileToBeUpload, setFileToBeUpload] = useState<File>();
   const [beginingOfTheChunk, setBeginingOfTheChunk] = useState<number>(
@@ -52,9 +53,13 @@ export const AddModel = () => {
   const [fileSize, setFileSize] = useState(0);
   const [chunkSize, setChunkSize] = useState(0);
   const [chunkCount, setChunkCount] = useState(0);
+  // const [modelId, setModelId] = useState<string>(
+  //   'fa725ca1-ca33-4b7c-e742-08dc7b2938d0',
+  // );
   const [modelId, setModelId] = useState<string>('');
   const [uploadId, setUploadId] = useState<string>('');
   const [uploadStatus, setUploadStatus] = useState<string>();
+  // const [uploading, setUploading] = useState<boolean>(true);
   const [uploading, setUploading] = useState<boolean>(false);
 
   const defaultMetadata: AnalogueModelDetail = {
@@ -264,11 +269,10 @@ export const AddModel = () => {
             // eslint-disable-next-line max-depth
             if (convertModelFile.error === null && convert.success) {
               setUploadStatus(UploadProcess.SUCCESS);
-              setProgress(0);
               setUploading(false);
             } else {
               setUploadStatus(UploadProcess.FAILED);
-              setProgress(0);
+              setProgress(-99);
               setUploading(false);
             }
           }
@@ -306,10 +310,14 @@ export const AddModel = () => {
               uploading={uploading}
               defaultMetadata={defaultMetadata}
               progress={progress}
+              isAddUploading={progress > 0}
             />
             {modelId !== '' && (
               <>
-                <ModelMetadataView modelId={modelId} />
+                <ModelMetadataView
+                  modelId={modelId}
+                  isAddUploading={progress > 0}
+                />
               </>
             )}
           </Styled.InnerContent>
