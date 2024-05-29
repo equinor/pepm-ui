@@ -19,6 +19,14 @@ export const Metadata = styled.div`
   row-gap: ${spacings.LARGE};
 `;
 
+export const MetadataInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  row-gap: ${spacings.MEDIUM};
+
+  max-width: 60%;
+`;
+
 const DataTable = styled(Table)`
   min-width: 256px;
   width: 85%;

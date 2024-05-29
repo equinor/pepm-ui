@@ -270,6 +270,16 @@ export const ModelMetadataView = ({
             </div>
           </>
         )}
+        {isAddUploading && (
+          <Styled.MetadataInfo>
+            <Typography variant="h3">Add model metadata</Typography>
+            <Typography variant="body_long">
+              At least one type of metadata (outcrop analogue, stratigraphic
+              column, or deposition environment) is required when adding a new
+              model.
+            </Typography>
+          </Styled.MetadataInfo>
+        )}
 
         <div>
           <StratigrapicGroups

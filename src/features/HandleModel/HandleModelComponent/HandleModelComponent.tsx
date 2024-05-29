@@ -3,6 +3,7 @@
 import { Button, LinearProgress, Typography } from '@equinor/eds-core-react';
 import _ from 'lodash';
 import { useEffect, useState } from 'react';
+import { generatePath, useNavigate } from 'react-router-dom';
 import {
   AnalogueModelDetail,
   CountryDto,
@@ -29,6 +30,7 @@ interface AddModelDialogProps {
   isAddUploading?: boolean;
   existingData?: AnalogueModelDetail;
   closeDialog?: () => void;
+  modelId?: string;
 }
 
 export interface FilesProps {
@@ -75,6 +77,7 @@ export const HandleModelComponent = ({
   isAddUploading,
   existingData,
   closeDialog,
+  modelId,
 }: AddModelDialogProps) => {
   const [isFileDisplay, setFileDisplay] = useState<boolean>(false);
   const [files, setFiles] = useState<FilesProps>(defaultFiles);
@@ -85,6 +88,7 @@ export const HandleModelComponent = ({
   const [rawFile, setrawFile] = useState<File>();
 
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   useHandleModelComponent(
     setFileSize,
@@ -165,9 +169,6 @@ export const HandleModelComponent = ({
   };
 
   const ErrorList = getErroMessageList();
-  console.log('IS EDIT ', isEdit);
-
-  console.log('isAddUploading ', isAddUploading);
 
   return (
     <Styled.Wrapper>
@@ -190,7 +191,6 @@ export const HandleModelComponent = ({
           />
         )}
         {isFileDisplay && <INIFileContent />}
-        {/* {!isEdit && progress !== undefined && progress <= 0 && ( */}
         {(isEdit || !isAddUploading) && (
           <>
             <ModelMetadata
@@ -240,13 +240,22 @@ export const HandleModelComponent = ({
         </Styled.UploadDiv>
       )}
 
-      {progress === 100 && (
-        <>
+      {progress === 100 && modelId && (
+        <Styled.InfoNavigation>
           <Typography variant="h3">Model finish uploaded!</Typography>
           <div>
-            <Button>Go to model view</Button>
+            <Button
+              onClick={() => {
+                const path = generatePath('../:id/details', {
+                  id: modelId,
+                });
+                navigate(path);
+              }}
+            >
+              Go to model view
+            </Button>
           </div>
-        </>
+        </Styled.InfoNavigation>
       )}
     </Styled.Wrapper>
   );
