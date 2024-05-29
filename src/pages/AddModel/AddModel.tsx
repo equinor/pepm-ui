@@ -1,15 +1,8 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
-import {
-  SideBar,
-  SidebarLinkProps,
-  Snackbar,
-  Tooltip,
-} from '@equinor/eds-core-react';
-import { arrow_back as BACK } from '@equinor/eds-icons';
+import { Snackbar } from '@equinor/eds-core-react';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   AddAnalogueDto,
   AddAnalogueModelAnalogueCommandForm,
@@ -30,6 +23,7 @@ import {
 } from '../../api/generated';
 import { queryClient } from '../../auth/queryClient';
 import { HandleModelComponent } from '../../features/HandleModel/HandleModelComponent/HandleModelComponent';
+import { SidePane } from '../../features/HandleModel/SidePane/SidePane';
 import { ModelMetadataView } from '../../features/ModelView/ModelMetadataView/ModelMetadataView';
 import * as Styled from './AddModel.styled';
 
@@ -43,7 +37,17 @@ const defaultCounterValue = 1;
 const defaultBeginningOfchunk = 0;
 export const AddModel = () => {
   const [progress, setProgress] = useState(0);
+  const [modelId, setModelId] = useState<string>('');
+  const [uploading, setUploading] = useState<boolean>(false);
+
+  // Hard coded states for ease of development
+
   // const [progress, setProgress] = useState(12);
+  // const [modelId, setModelId] = useState<string>(
+  //   'fa725ca1-ca33-4b7c-e742-08dc7b2938d0',
+  // );
+  // const [uploading, setUploading] = useState<boolean>(true);
+
   const [counter, setCounter] = useState<number>(defaultCounterValue);
   const [fileToBeUpload, setFileToBeUpload] = useState<File>();
   const [beginingOfTheChunk, setBeginingOfTheChunk] = useState<number>(
@@ -53,14 +57,9 @@ export const AddModel = () => {
   const [fileSize, setFileSize] = useState(0);
   const [chunkSize, setChunkSize] = useState(0);
   const [chunkCount, setChunkCount] = useState(0);
-  // const [modelId, setModelId] = useState<string>(
-  //   'fa725ca1-ca33-4b7c-e742-08dc7b2938d0',
-  // );
-  const [modelId, setModelId] = useState<string>('');
+
   const [uploadId, setUploadId] = useState<string>('');
   const [uploadStatus, setUploadStatus] = useState<string>();
-  // const [uploading, setUploading] = useState<boolean>(true);
-  const [uploading, setUploading] = useState<boolean>(false);
 
   const defaultMetadata: AnalogueModelDetail = {
     analogueModelId: '',
@@ -311,6 +310,7 @@ export const AddModel = () => {
               defaultMetadata={defaultMetadata}
               progress={progress}
               isAddUploading={progress > 0}
+              modelId={modelId}
             />
             {modelId !== '' && (
               <>
@@ -332,40 +332,5 @@ export const AddModel = () => {
         {uploadStatus}
       </Snackbar>
     </Styled.PageLayout>
-  );
-};
-
-const SidePane = ({ uploading }: { uploading: boolean }) => {
-  const navigate = useNavigate();
-
-  const backItems: SidebarLinkProps = {
-    label: 'Back to models',
-    icon: BACK,
-    href: '/',
-    active: false,
-  };
-  return (
-    <Styled.SidebarWrapper>
-      <SideBar open>
-        <Styled.SidebarContent>
-          {uploading ? (
-            <Tooltip title="Button disabled until model has finished uploading.">
-              <Styled.Back
-                label={backItems.label}
-                icon={backItems.icon}
-              ></Styled.Back>
-            </Tooltip>
-          ) : (
-            <Styled.Back
-              label={backItems.label}
-              icon={backItems.icon}
-              onClick={() => {
-                navigate('/');
-              }}
-            ></Styled.Back>
-          )}
-        </Styled.SidebarContent>
-      </SideBar>
-    </Styled.SidebarWrapper>
   );
 };
