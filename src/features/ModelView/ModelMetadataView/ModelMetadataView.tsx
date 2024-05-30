@@ -1,7 +1,9 @@
+/* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
 import { Button, Dialog, Typography } from '@equinor/eds-core-react';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   AddAnalogueDto,
   AddAnalogueModelAnalogueCommandForm,
@@ -37,13 +39,15 @@ export const defaultStratColumnData: StratColumnType = {
 };
 
 export const ModelMetadataView = ({
-  modelId,
+  modelIdParent,
   isAddUploading,
 }: {
-  modelId?: string;
+  modelIdParent?: string;
   isAddUploading?: boolean;
 }) => {
-  const { isLoading, data } = useFetchModel(modelId ? modelId : undefined);
+  const { isLoading, data } = useFetchModel(
+    modelIdParent ? modelIdParent : undefined,
+  );
   const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false);
   const [stratColumnObject, setStratColumnObject] = useState<StratColumnType>(
     defaultStratColumnData,
@@ -66,6 +70,7 @@ export const ModelMetadataView = ({
     stratigraphicGroups: [],
     geologicalGroups: [],
   };
+  const { modelId } = useParams();
 
   function toggleEditMetadata() {
     setAddModelDialog(!isAddModelDialog);
@@ -195,10 +200,48 @@ export const ModelMetadataView = ({
     },
   });
 
+  const deleteStratColCase = useMutation({
+    mutationFn: ({
+      analogueModelId,
+      stratigraphicGroupId,
+    }: {
+      analogueModelId: string;
+      stratigraphicGroupId: string;
+    }) => {
+      return AnalogueModelsService.deleteApiAnalogueModelsStratigraphicGroups(
+        analogueModelId,
+        stratigraphicGroupId,
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['analogue-model']);
+    },
+  });
+
+  const deleteStratColRow = async (stratigraphicGroupId: string) => {
+    if (modelId) {
+      const res = await deleteStratColCase.mutateAsync({
+        analogueModelId: modelId,
+        stratigraphicGroupId: stratigraphicGroupId,
+      });
+      console.log(res);
+
+      return res;
+    } else if (modelIdParent) {
+      const res = await deleteStratColCase.mutateAsync({
+        analogueModelId: modelIdParent,
+        stratigraphicGroupId: stratigraphicGroupId,
+      });
+      console.log(res);
+
+      return res;
+    }
+  };
+
   if (isLoading || !data?.success) return <p>Loading ...</p>;
 
   const handleAddStratCol = async () => {
-    const id = modelId ? modelId : defaultMetadata.analogueModelId;
+    const id = modelIdParent ? modelIdParent : defaultMetadata.analogueModelId;
     if (
       id &&
       stratColumnObject.country &&
@@ -285,6 +328,7 @@ export const ModelMetadataView = ({
           <StratigrapicGroups
             stratColumnGroups={data.data.stratigraphicGroups}
             handleStratColDialog={handleStratColDialog}
+            deleteStratColRow={deleteStratColRow}
           />
         </div>
       </Styled.Metadata>

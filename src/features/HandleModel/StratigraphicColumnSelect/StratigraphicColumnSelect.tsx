@@ -42,7 +42,6 @@ export const StratigraphicColumnSelect = ({
   return (
     <Styled.AutocompleteList>
       <Autocomplete
-        // variant={errors.country ? 'error' : undefined}
         label="Country"
         options={countryData.data.data}
         optionLabel={(option) => option.identifier}
@@ -62,7 +61,6 @@ export const StratigraphicColumnSelect = ({
 
       <Autocomplete
         disabled={stratColumnObject.country === undefined}
-        // variant={errors.field ? 'error' : undefined}
         label="Field"
         options={fieldData.data.data.filter(
           (field) => field.countryId === stratColumnObject.country?.countryId,
@@ -82,7 +80,6 @@ export const StratigraphicColumnSelect = ({
 
       <Autocomplete
         disabled={stratColumnObject.country === undefined}
-        // variant={errors.stratColumn ? 'error' : undefined}
         label="Stratigraphic column"
         options={stratColumnData.data.data.filter(
           (c) =>
@@ -110,7 +107,6 @@ export const StratigraphicColumnSelect = ({
 
       <Autocomplete
         disabled={stratColumnObject.stratColumn === undefined}
-        // variant={errors.level1 ? 'error' : undefined}
         label="Level 1 (group)"
         options={stratUnitData.data.data
           .filter((s) => s.level === 1)
@@ -135,7 +131,6 @@ export const StratigraphicColumnSelect = ({
 
       <Autocomplete
         disabled={stratColumnObject.level1 === undefined}
-        // variant={errors.level2 ? 'error' : undefined}
         label="Level 2 (formation)"
         options={stratUnitData.data.data
           .filter((s) => s.level === 2)
@@ -163,7 +158,6 @@ export const StratigraphicColumnSelect = ({
 
       <Autocomplete
         disabled={stratColumnObject.level2 === undefined}
-        // variant={errors.level3 ? 'error' : undefined}
         label="Level 3 (formation/subzone)"
         options={stratUnitData.data.data
           .filter((s) => s.level === 3)

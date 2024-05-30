@@ -315,7 +315,7 @@ export const AddModel = () => {
             {modelId !== '' && (
               <>
                 <ModelMetadataView
-                  modelId={modelId}
+                  modelIdParent={modelId}
                   isAddUploading={progress > 0}
                 />
               </>
