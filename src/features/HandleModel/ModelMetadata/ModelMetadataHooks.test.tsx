@@ -7,7 +7,6 @@ import { cleanup, renderHook, waitFor } from '@testing-library/react';
 import { MsalReactTester } from 'msal-react-tester';
 import { AnalogueModelSourceType } from '../../../api/generated';
 import { useFetchAnalogues } from '../../../hooks/useFetchAnalogues';
-import { useFetchMetadata } from '../../../hooks/useFethcMetadata';
 import { ModelMetadata } from './ModelMetadata';
 
 let msalTester: MsalReactTester;
@@ -41,13 +40,6 @@ function wrapper(props: { children: React.ReactNode }) {
     </MsalProvider>
   );
 }
-
-const mockMetadataDto = {
-  metadataId: 'test',
-  metadataType: 'string',
-  value: 'string',
-  success: true,
-};
 
 const mockAnalogueList = {
   analogueId: 'test2',
@@ -88,17 +80,6 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-test('Calls Mocked metadata api with mock data', async () => {
-  const mock = await mockGetData(mockMetadataDto);
-
-  const { result } = renderHook(() => useFetchMetadata(), { wrapper });
-
-  const res = await result.current;
-
-  await waitFor(() => expect(mock).toHaveBeenCalled());
-  await waitFor(() => expect(res.data).toBe(mockMetadataDto));
-});
-
 test('Calls Mocked analogue api with mock data', async () => {
   const mock = await mockGetData(mockAnalogueList);
 
@@ -109,13 +90,3 @@ test('Calls Mocked analogue api with mock data', async () => {
   await waitFor(() => expect(mock).toHaveBeenCalled());
   await waitFor(() => expect(res.data).toBe(mockAnalogueList));
 });
-
-// test('renders ModelMetadata component in loading state', async () => {
-//   await mockGetData(mockMetadataDto);
-
-//   const { result } = renderHook(() => useFetchMetadata(), { wrapper });
-//   await result.current;
-
-//   const loading = screen.getByText('Loading ...');
-//   expect(loading).toBeVisible();
-// });

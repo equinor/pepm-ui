@@ -224,16 +224,12 @@ export const ModelMetadataView = ({
         analogueModelId: modelId,
         stratigraphicGroupId: stratigraphicGroupId,
       });
-      console.log(res);
-
       return res;
     } else if (modelIdParent) {
       const res = await deleteStratColCase.mutateAsync({
         analogueModelId: modelIdParent,
         stratigraphicGroupId: stratigraphicGroupId,
       });
-      console.log(res);
-
       return res;
     }
   };
