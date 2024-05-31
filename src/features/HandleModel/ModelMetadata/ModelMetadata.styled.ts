@@ -6,28 +6,13 @@ export const ModelMetadata = styled.div`
   flex-direction: column;
 
   row-gap: ${spacings.MEDIUM};
+  min-height: 200px;
 `;
 
-export const Form = styled.form`
+export const Form = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: ${spacings.MEDIUM};
-`;
-
-export const AutocompleteWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  row-gap: ${spacings.MEDIUM};
-`;
-export const AutocompleteRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex: end;
-  column-gap: ${spacings.MEDIUM};
-
-  > div {
-    flex-grow: 1;
-  }
 `;
 
 export const TextInput = styled(TextField)`
@@ -35,12 +20,6 @@ export const TextInput = styled(TextField)`
   flex-direction: column;
 `;
 export const InputfieldRequired = styled.div`
-  > label {
-    color: red;
-  }
-`;
-
-export const Required = styled.div`
   > label {
     color: red;
   }

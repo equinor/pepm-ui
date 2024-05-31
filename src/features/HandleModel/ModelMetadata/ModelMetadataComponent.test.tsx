@@ -5,7 +5,6 @@ import { cleanup, render, screen } from '@testing-library/react';
 import { MsalReactTester } from 'msal-react-tester';
 import { AnalogueModelSourceType } from '../../../api/generated';
 import { useFetchAnalogues } from '../../../hooks/useFetchAnalogues';
-import { useFetchMetadata } from '../../../hooks/useFethcMetadata';
 import { ModelMetadata } from './ModelMetadata';
 
 let msalTester: MsalReactTester;
@@ -20,6 +19,8 @@ const mockMetadata = {
   metadata: [],
   analogues: [],
   modelAreas: [],
+  stratigraphicGroups: [],
+  geologicalGroups: [],
 };
 const errors = {};
 
@@ -36,43 +37,10 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-jest.mock('../../../hooks/useFethcMetadata');
 jest.mock('../../../hooks/useFetchAnalogues');
 
 const Render = () => {
   const testQueryClient = new QueryClient();
-
-  // @ts-ignore because of error
-  useFetchMetadata.mockReturnValue({
-    data: {
-      data: [
-        {
-          metadataId: 'test1',
-          metadataType: 'Field',
-          value: 'string11',
-        },
-        {
-          metadataId: 'test2',
-          metadataType: 'Field',
-          value: 'string12',
-        },
-        {
-          metadataId: 'test5',
-          metadataType: 'Formation',
-          value: 'string55',
-        },
-        {
-          metadataId: 'test6',
-          metadataType: 'Zone',
-          value: 'string66',
-        },
-      ],
-      success: true,
-    },
-    isLoading: false,
-    isSuccess: true,
-    isError: false,
-  });
 
   // @ts-ignore because of error
   useFetchAnalogues.mockReturnValue({
@@ -130,52 +98,4 @@ test('Description field to be present after render', async () => {
 
   const descriptionLable = screen.getByLabelText('Model description');
   expect(descriptionLable).toBeInTheDocument();
-});
-
-test('Field dropdown to be present after render', async () => {
-  render(<Render />);
-
-  const labeledNodes = await screen.findAllByLabelText('Field');
-  const input = labeledNodes[1];
-  const optionsList = labeledNodes[0];
-
-  expect(input).toBeDefined();
-  expect(input).toHaveAccessibleName('Field');
-  expect(input.nodeName).toBe('INPUT');
-
-  expect(optionsList).toBeDefined();
-  expect(optionsList.nodeName).toBe('UL');
-});
-
-test('Zone dropdown to be present after render', async () => {
-  render(<Render />);
-
-  const labeledNodes = await screen.findAllByLabelText('Zone');
-  const input = labeledNodes[1];
-
-  expect(input).toBeDefined();
-  expect(input).toHaveAccessibleName('Zone');
-  expect(input.nodeName).toBe('INPUT');
-});
-
-test('Formation dropdown to be present after render', async () => {
-  render(<Render />);
-
-  const labeledNodes = await screen.findAllByLabelText('Formation');
-  const input = labeledNodes[1];
-
-  expect(input).toBeDefined();
-  expect(input).toHaveAccessibleName('Formation');
-  expect(input.nodeName).toBe('INPUT');
-});
-
-test('Analogue dropdown to be present after render', async () => {
-  render(<Render />);
-
-  const labeledNodes = await screen.findAllByLabelText('Analogue');
-  const input = labeledNodes[1];
-
-  expect(input).toBeDefined();
-  expect(input).toHaveAccessibleName('Analogue');
-  expect(input.nodeName).toBe('INPUT');
 });

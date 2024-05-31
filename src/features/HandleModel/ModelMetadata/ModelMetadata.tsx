@@ -1,16 +1,8 @@
 /* eslint-disable max-lines-per-function */
-import {
-  AutocompleteChanges,
-  Label,
-  Typography,
-} from '@equinor/eds-core-react';
+import { Label } from '@equinor/eds-core-react';
 import { ErrorType } from '../HandleModelComponent/HandleModelComponent';
 
-import { AnalogueModelDetail, MetadataDto } from '../../../api/generated';
-import { useFetchAnalogues } from '../../../hooks/useFetchAnalogues';
-import { useFetchMetadata } from '../../../hooks/useFethcMetadata';
-import { AnalogueSelect } from './AnalogueSelect/AnalogueSelect';
-import { MetadataSelect } from './MetadataSelect/MetadataSelect';
+import { AnalogueModelDetail } from '../../../api/generated';
 import * as Styled from './ModelMetadata.styled';
 
 export const ModelMetadata = ({
@@ -22,43 +14,9 @@ export const ModelMetadata = ({
   metadata: AnalogueModelDetail;
   setMetadata: (metadata: AnalogueModelDetail) => void;
 }) => {
-  const { isLoading, data } = useFetchMetadata();
-  const analougeData = useFetchAnalogues();
-
-  function handleAddMetadata(
-    e: AutocompleteChanges<MetadataDto>,
-    propType: string,
-  ) {
-    if (!metadata.metadata) return;
-
-    // Filert out metadata of the same type as dropdown props type
-    const metadataList: MetadataDto[] = metadata.metadata
-      .filter((i) => i.metadataType !== propType)
-      .filter((n) => n.metadataId !== propType);
-
-    const removeNotSelected = e.selectedItems.filter(
-      (i) => i.metadataType === propType,
-    );
-
-    const newList = [...metadataList, ...removeNotSelected];
-
-    setMetadata({
-      ...metadata,
-      metadata: [...newList],
-    });
-  }
-
-  if (
-    isLoading ||
-    !data?.success ||
-    analougeData.isLoading ||
-    !analougeData?.data?.success
-  )
-    return <p>Loading ...</p>;
-
   return (
     <Styled.ModelMetadata className="model-metadata">
-      <Typography variant="h4">Description and metadata</Typography>
+      {/* <Typography variant="h4">Description and metadata</Typography> */}
       <Styled.Form>
         <Styled.InputfieldRequired>
           <Styled.TextInput
@@ -87,59 +45,6 @@ export const ModelMetadata = ({
           />
           {errors.description && <Label label="This field is required"></Label>}
         </Styled.InputfieldRequired>
-
-        <Styled.AutocompleteWrapper>
-          <Styled.AutocompleteRow>
-            <Styled.Required>
-              <MetadataSelect
-                errors={errors.field}
-                type="Field"
-                data={data.data}
-                metadata={metadata.metadata}
-                isLoading={isLoading}
-                handleAddMetadata={handleAddMetadata}
-              />
-              {errors.field && <Label label="This field is required"></Label>}
-            </Styled.Required>
-            <Styled.Required>
-              <MetadataSelect
-                type="Formation"
-                errors={errors.formation}
-                data={data.data}
-                metadata={metadata.metadata}
-                isLoading={isLoading}
-                handleAddMetadata={handleAddMetadata}
-              />
-              {errors.formation && (
-                <Label label="This field is required"></Label>
-              )}
-            </Styled.Required>
-          </Styled.AutocompleteRow>
-          <Styled.AutocompleteRow>
-            <Styled.Required>
-              <AnalogueSelect
-                errors={errors.analogues}
-                data={analougeData.data.data}
-                metadata={metadata}
-                setMetadata={setMetadata}
-              />
-              {errors.analogues && (
-                <Label label="This field is required"></Label>
-              )}
-            </Styled.Required>
-            <Styled.Required>
-              <MetadataSelect
-                type="Zone"
-                errors={errors.zone}
-                data={data.data}
-                metadata={metadata.metadata}
-                isLoading={isLoading}
-                handleAddMetadata={handleAddMetadata}
-              />
-              {errors.zone && <Label label="This field is required"></Label>}
-            </Styled.Required>
-          </Styled.AutocompleteRow>
-        </Styled.AutocompleteWrapper>
       </Styled.Form>
     </Styled.ModelMetadata>
   );

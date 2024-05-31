@@ -1,12 +1,15 @@
+/* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
-import { Button, Table, Typography } from '@equinor/eds-core-react';
+import { Button, Dialog, Typography } from '@equinor/eds-core-react';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   AddAnalogueDto,
   AddAnalogueModelAnalogueCommandForm,
   AddAnalogueModelMetadataCommandForm,
   AddMetadataDto,
+  AddStatigraphicGroupForm,
   AnalogueList,
   AnalogueModelAnaloguesService,
   AnalogueModelDetail,
@@ -17,14 +20,39 @@ import {
 } from '../../../api/generated';
 import { AnalogueModelsService } from '../../../api/generated/services/AnalogueModelsService';
 import { queryClient } from '../../../auth/queryClient';
+import { StratigrapicGroups } from '../../../components/StratigrapicGroups/StratigrapicGroups';
 import { useFetchModel } from '../../../hooks/useFetchModel';
-import { HandleModelComponent } from '../../HandleModel/HandleModelComponent/HandleModelComponent';
-import { TableDataCell } from '../TableDataCell/TableDataCell';
+import {
+  HandleModelComponent,
+  StratColumnType,
+} from '../../HandleModel/HandleModelComponent/HandleModelComponent';
+import { StratigraphicColumnSelect } from '../../HandleModel/StratigraphicColumnSelect/StratigraphicColumnSelect';
 import * as Styled from './ModelMetadataView.styled';
 
-export const ModelMetadataView = () => {
+export const defaultStratColumnData: StratColumnType = {
+  country: undefined,
+  field: undefined,
+  stratColumn: undefined,
+  level1: undefined,
+  level2: undefined,
+  level3: undefined,
+};
+
+export const ModelMetadataView = ({
+  modelIdParent,
+  isAddUploading,
+}: {
+  modelIdParent?: string;
+  isAddUploading?: boolean;
+}) => {
+  const { isLoading, data } = useFetchModel(
+    modelIdParent ? modelIdParent : undefined,
+  );
   const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false);
-  const { isLoading, data } = useFetchModel();
+  const [stratColumnObject, setStratColumnObject] = useState<StratColumnType>(
+    defaultStratColumnData,
+  );
+  const [showStratColDialog, setShowStratColDialog] = useState<boolean>(false);
 
   const defaultMetadata: AnalogueModelDetail = {
     analogueModelId: data?.data.analogueModelId
@@ -39,9 +67,12 @@ export const ModelMetadataView = () => {
     parameters: [],
     metadata: data?.data.metadata ? data?.data.metadata : [],
     modelAreas: [],
+    stratigraphicGroups: [],
+    geologicalGroups: [],
   };
+  const { modelId } = useParams();
 
-  function toggleDialog() {
+  function toggleEditMetadata() {
     setAddModelDialog(!isAddModelDialog);
   }
 
@@ -143,51 +174,176 @@ export const ModelMetadataView = () => {
       requestBody: readyAnalogue,
     });
 
-    toggleDialog();
+    toggleEditMetadata();
+  };
+
+  const handleStratColDialog = () => {
+    setShowStratColDialog(!showStratColDialog);
+    setStratColumnObject(defaultStratColumnData);
+  };
+
+  const postSmdaMetadataRow = useMutation({
+    mutationFn: ({
+      id,
+      requestBody,
+    }: {
+      id: string;
+      requestBody: AddStatigraphicGroupForm;
+    }) => {
+      return AnalogueModelsService.postApiAnalogueModelsStratigraphicGroups(
+        id,
+        requestBody,
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['analogue-model'] });
+    },
+  });
+
+  const deleteStratColCase = useMutation({
+    mutationFn: ({
+      analogueModelId,
+      stratigraphicGroupId,
+    }: {
+      analogueModelId: string;
+      stratigraphicGroupId: string;
+    }) => {
+      return AnalogueModelsService.deleteApiAnalogueModelsStratigraphicGroups(
+        analogueModelId,
+        stratigraphicGroupId,
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['analogue-model']);
+    },
+  });
+
+  const deleteStratColRow = async (stratigraphicGroupId: string) => {
+    if (modelId) {
+      const res = await deleteStratColCase.mutateAsync({
+        analogueModelId: modelId,
+        stratigraphicGroupId: stratigraphicGroupId,
+      });
+      return res;
+    } else if (modelIdParent) {
+      const res = await deleteStratColCase.mutateAsync({
+        analogueModelId: modelIdParent,
+        stratigraphicGroupId: stratigraphicGroupId,
+      });
+      return res;
+    }
   };
 
   if (isLoading || !data?.success) return <p>Loading ...</p>;
 
-  return (
-    <Styled.Metadata>
-      <Typography variant="h3">Description and metadata</Typography>
-      {data.data.description && <div>{data.data.description}</div>}
-      <Styled.Table>
-        <Table.Body>
-          <Table.Row>
-            <Styled.NameCell>Field</Styled.NameCell>
-            <TableDataCell data={data.data} type="Field" />
-          </Table.Row>
-          <Table.Row>
-            <Styled.NameCell>Fomation</Styled.NameCell>
-            <TableDataCell data={data.data} type="Formation" />
-          </Table.Row>
-          <Table.Row>
-            <Styled.NameCell>Analouge</Styled.NameCell>
-            <TableDataCell data={data.data} type="Analouge" />
-          </Table.Row>
-          <Table.Row>
-            <Styled.NameCell>Zone</Styled.NameCell>
-            <TableDataCell data={data.data} type="Zone" />
-          </Table.Row>
-        </Table.Body>
-      </Styled.Table>
+  const handleAddStratCol = async () => {
+    const id = modelIdParent ? modelIdParent : defaultMetadata.analogueModelId;
+    if (
+      id &&
+      stratColumnObject.country &&
+      stratColumnObject.field &&
+      stratColumnObject.stratColumn
+    ) {
+      const stratUnitList: string[] = [];
+      if (stratColumnObject.level1 !== undefined)
+        stratUnitList.push(stratColumnObject.level1.stratUnitId);
+      if (
+        stratColumnObject.level1 !== undefined &&
+        stratColumnObject.level2 !== undefined
+      )
+        stratUnitList.push(stratColumnObject.level2.stratUnitId);
+      if (
+        stratColumnObject.level1 !== undefined &&
+        stratColumnObject.level2 !== undefined &&
+        stratColumnObject.level3 !== undefined
+      )
+        stratUnitList.push(stratColumnObject.level3.stratUnitId);
 
-      <Button
-        onClick={toggleDialog}
-        variant="outlined"
-        className="edit-metadata-button"
-      >
-        Edit description and metadata
-      </Button>
-      {isAddModelDialog && (
-        <HandleModelComponent
-          edit={updateModelMetadata}
-          defaultMetadata={defaultMetadata}
-          isEdit={true}
-          existingData={data.data}
-        />
-      )}
-    </Styled.Metadata>
+      const postRequestBody: AddStatigraphicGroupForm = {
+        countryId: stratColumnObject.country.countryId,
+        fieldId: stratColumnObject.field.fieldId,
+        stratigraphicColumnId: stratColumnObject.stratColumn.stratColumnId,
+        stratigraphicUnitIds: stratUnitList.length > 0 ? stratUnitList : [],
+      };
+
+      const rowUpload = await postSmdaMetadataRow.mutateAsync({
+        id: id,
+        requestBody: postRequestBody,
+      });
+      if (rowUpload.success) handleStratColDialog();
+    }
+  };
+
+  return (
+    <Styled.Wrapper>
+      <Styled.Metadata>
+        {!isAddUploading && (
+          <>
+            <Typography variant="h3">Description and metadata</Typography>
+
+            {!isAddModelDialog && (
+              <Styled.DescriptionWrapper>
+                {data.data.description && <div>{data.data.description}</div>}
+              </Styled.DescriptionWrapper>
+            )}
+
+            {isAddModelDialog && (
+              <HandleModelComponent
+                edit={updateModelMetadata}
+                defaultMetadata={defaultMetadata}
+                isEdit={true}
+                existingData={data.data}
+                closeDialog={toggleEditMetadata}
+              />
+            )}
+            <div>
+              {!isAddModelDialog && (
+                <Button
+                  onClick={toggleEditMetadata}
+                  variant="outlined"
+                  className="edit-metadata-button"
+                >
+                  Edit name and description
+                </Button>
+              )}
+            </div>
+          </>
+        )}
+        {isAddUploading && (
+          <Styled.MetadataInfo>
+            <Typography variant="h3">Add model metadata</Typography>
+            <Typography variant="body_long">
+              At least one type of metadata (outcrop analogue, stratigraphic
+              column, or deposition environment) is required when adding a new
+              model.
+            </Typography>
+          </Styled.MetadataInfo>
+        )}
+
+        <div>
+          <StratigrapicGroups
+            stratColumnGroups={data.data.stratigraphicGroups}
+            handleStratColDialog={handleStratColDialog}
+            deleteStratColRow={deleteStratColRow}
+          />
+        </div>
+      </Styled.Metadata>
+
+      <Dialog open={showStratColDialog}>
+        <Dialog.Header>Add stratigraphic column</Dialog.Header>
+        <Dialog.CustomContent>
+          <StratigraphicColumnSelect
+            stratColumnObject={stratColumnObject}
+            setStratColumnObject={setStratColumnObject}
+          />
+        </Dialog.CustomContent>
+        <Styled.Actions>
+          <Button onClick={handleAddStratCol}>Add</Button>
+          <Button variant="outlined" onClick={handleStratColDialog}>
+            Close
+          </Button>
+        </Styled.Actions>
+      </Dialog>
+    </Styled.Wrapper>
   );
 };

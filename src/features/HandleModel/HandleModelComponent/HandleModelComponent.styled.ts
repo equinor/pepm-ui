@@ -4,7 +4,8 @@ import { spacings } from '../../../tokens/spacings';
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  row-gap: ${spacings.X_LARGE};
+
+  row-gap: ${spacings.LARGE};
 `;
 
 export const CustomContent = styled.div`
@@ -25,4 +26,11 @@ export const ErrorDiv = styled.div`
   flex-direction: column;
 
   row-gap: ${spacings.SMALL};
+`;
+
+export const InfoNavigation = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  row-gap: ${spacings.MEDIUM};
 `;

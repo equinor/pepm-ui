@@ -4,8 +4,5 @@ import { spacings } from '../../tokens/spacings';
 
 export const Actions = styled(Dialog.Actions)`
   display: flex;
-  flex: row;
-  flex-direction: row;
   column-gap: ${spacings.SMALL};
-  align-items: start;
 `;
