@@ -20,15 +20,15 @@ import {
 } from '../../../api/generated';
 import { AnalogueModelsService } from '../../../api/generated/services/AnalogueModelsService';
 import { queryClient } from '../../../auth/queryClient';
-import { StratigrapicGroups } from '../../../components/StratigrapicGroups/StratigrapicGroups';
+import { GrossDepositionEnviromentGroup } from '../../../components/GrossDepositionEnviroment/GrossDepositionEnviromentGroup/GrossDepositionEnviromentGroup';
+import { StratigraphicColumnSelect } from '../../../components/StrategraphicColumn/StratigraphicColumnSelect/StratigraphicColumnSelect';
+import { StratigrapicGroups } from '../../../components/StrategraphicColumn/StratigrapicGroups/StratigrapicGroups';
 import { useFetchModel } from '../../../hooks/useFetchModel';
 import {
   HandleModelComponent,
   StratColumnType,
 } from '../../HandleModel/HandleModelComponent/HandleModelComponent';
-import { StratigraphicColumnSelect } from '../../HandleModel/StratigraphicColumnSelect/StratigraphicColumnSelect';
 import * as Styled from './ModelMetadataView.styled';
-
 export const defaultStratColumnData: StratColumnType = {
   country: undefined,
   field: undefined,
@@ -53,6 +53,7 @@ export const ModelMetadataView = ({
     defaultStratColumnData,
   );
   const [showStratColDialog, setShowStratColDialog] = useState<boolean>(false);
+  const [showGdeDialog, setShowGdeDialog] = useState<boolean>(false);
 
   const defaultMetadata: AnalogueModelDetail = {
     analogueModelId: data?.data.analogueModelId
@@ -325,6 +326,12 @@ export const ModelMetadataView = ({
             stratColumnGroups={data.data.stratigraphicGroups}
             handleStratColDialog={handleStratColDialog}
             deleteStratColRow={deleteStratColRow}
+          />
+        </div>
+        <div>
+          <GrossDepositionEnviromentGroup
+            showGdeDialog={showGdeDialog}
+            setShowGdeDialog={setShowGdeDialog}
           />
         </div>
       </Styled.Metadata>
