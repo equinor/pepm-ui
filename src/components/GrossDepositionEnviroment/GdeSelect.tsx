@@ -1,12 +1,16 @@
 /* eslint-disable max-lines-per-function */
 import { Autocomplete, AutocompleteChanges } from '@equinor/eds-core-react';
-import { useState } from 'react';
 import { GeologicalStandardDto } from '../../api/generated';
 import { useFetchGrossDepData } from '../../hooks/useFetchGrossDepData';
+import { GdeType } from './GrossDepositionEnviromentGroup/GrossDepositionEnviromentGroup';
 
-export const GdeSelect = () => {
-  const [SelectedGde, setSelectedGde] = useState<string>();
-
+export const GdeSelect = ({
+  gdeObject,
+  setGdeObject,
+}: {
+  gdeObject: GdeType;
+  setGdeObject: React.Dispatch<React.SetStateAction<GdeType>>;
+}) => {
   const GdeData = useFetchGrossDepData();
 
   if (GdeData.isLoading || !GdeData.data?.success) return <p>Loading .....</p>;
@@ -18,19 +22,19 @@ export const GdeSelect = () => {
   const De = GdeData.data.data.filter(
     (g) =>
       g.geologyGroup === 'DepositionalEnvironment' &&
-      g.geologicalStandardParentId === SelectedGde,
+      g.geologicalStandardParentId ===
+        gdeObject.grossDepEnv?.geologicalStandardId,
   );
 
   const SubEnvironment = GdeData.data.data.filter(
     (g) =>
       g.geologyGroup === 'Subenvironment' &&
-      g.geologicalStandardParentId === SelectedGde,
+      g.geologicalStandardParentId ===
+        gdeObject.grossDepEnv?.geologicalStandardId,
   );
 
   const ArchitecturalElement = GdeData.data.data.filter(
-    (g) =>
-      g.geologyGroup === 'Subenvironment' &&
-      g.geologicalStandardParentId === SelectedGde,
+    (g) => g.geologyGroup === 'Subenvironment',
   );
 
   return (
@@ -40,39 +44,51 @@ export const GdeSelect = () => {
         options={Gde}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<GeologicalStandardDto>) => {
-          setSelectedGde(e.selectedItems[0].geologicalStandardId);
+          setGdeObject({
+            ...gdeObject,
+            grossDepEnv: e.selectedItems[0],
+          });
         }}
         noOptionsText="No options"
       />
 
       <Autocomplete
         label="Depositional Environment"
-        disabled={SelectedGde === undefined}
+        disabled={gdeObject.grossDepEnv?.geologicalStandardId === undefined}
         options={De}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<GeologicalStandardDto>) => {
-          console.log(e.selectedItems[0].geologicalStandardId);
+          setGdeObject({
+            ...gdeObject,
+            depEnv: e.selectedItems[0],
+          });
         }}
         noOptionsText="No options"
       />
 
       <Autocomplete
         label="Subenvironment"
-        disabled={SelectedGde === undefined}
+        disabled={gdeObject.grossDepEnv?.geologicalStandardId === undefined}
         options={SubEnvironment}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<GeologicalStandardDto>) => {
-          console.log(e.selectedItems[0].geologicalStandardId);
+          setGdeObject({
+            ...gdeObject,
+            subenv: e.selectedItems[0],
+          });
         }}
         noOptionsText="No options"
       />
 
       <Autocomplete
-        label="ArchitecturalElement"
+        label="Architectural Element"
         options={ArchitecturalElement}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<GeologicalStandardDto>) => {
-          console.log(e.selectedItems[0].geologicalStandardId);
+          setGdeObject({
+            ...gdeObject,
+            architecturalElements: e.selectedItems,
+          });
         }}
         noOptionsText="No options"
       />

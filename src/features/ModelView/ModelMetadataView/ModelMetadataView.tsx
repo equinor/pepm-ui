@@ -53,7 +53,6 @@ export const ModelMetadataView = ({
     defaultStratColumnData,
   );
   const [showStratColDialog, setShowStratColDialog] = useState<boolean>(false);
-  const [showGdeDialog, setShowGdeDialog] = useState<boolean>(false);
 
   const defaultMetadata: AnalogueModelDetail = {
     analogueModelId: data?.data.analogueModelId
@@ -219,6 +218,24 @@ export const ModelMetadataView = ({
     },
   });
 
+  const deleteGdeCase = useMutation({
+    mutationFn: ({
+      analogueModelId,
+      geologicalGroupId,
+    }: {
+      analogueModelId: string;
+      geologicalGroupId: string;
+    }) => {
+      return AnalogueModelsService.deleteApiAnalogueModelsGeologicalGroups(
+        analogueModelId,
+        geologicalGroupId,
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['analogue-model']);
+    },
+  });
+
   const deleteStratColRow = async (stratigraphicGroupId: string) => {
     if (modelId) {
       const res = await deleteStratColCase.mutateAsync({
@@ -230,6 +247,22 @@ export const ModelMetadataView = ({
       const res = await deleteStratColCase.mutateAsync({
         analogueModelId: modelIdParent,
         stratigraphicGroupId: stratigraphicGroupId,
+      });
+      return res;
+    }
+  };
+
+  const deleteGdeRow = async (gdeGroupId: string) => {
+    if (modelId) {
+      const res = await deleteGdeCase.mutateAsync({
+        analogueModelId: modelId,
+        geologicalGroupId: gdeGroupId,
+      });
+      return res;
+    } else if (modelIdParent) {
+      const res = await deleteGdeCase.mutateAsync({
+        analogueModelId: modelIdParent,
+        geologicalGroupId: gdeGroupId,
       });
       return res;
     }
@@ -330,8 +363,10 @@ export const ModelMetadataView = ({
         </div>
         <div>
           <GrossDepositionEnviromentGroup
-            showGdeDialog={showGdeDialog}
-            setShowGdeDialog={setShowGdeDialog}
+            modelIdParent={modelIdParent}
+            defaultMetadata={defaultMetadata}
+            gdeGroups={data.data.geologicalGroups}
+            deleteGdeRow={deleteGdeRow}
           />
         </div>
       </Styled.Metadata>
