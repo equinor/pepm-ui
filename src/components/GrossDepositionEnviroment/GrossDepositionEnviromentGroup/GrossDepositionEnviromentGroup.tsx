@@ -128,15 +128,23 @@ export const GrossDepositionEnviromentGroup = ({
                     />
                   </Button>
                 </Table.Cell>
-                <Table.Cell>{row.grossDepEnv.identifier}</Table.Cell>
-                <Table.Cell>{row.depEnv.identifier}</Table.Cell>
-                <Table.Cell>{row.subenv.identifier}</Table.Cell>
                 <Table.Cell>
-                  <div>
+                  <Styled.ArcElCell>
+                    {row.grossDepEnv.identifier}
+                  </Styled.ArcElCell>
+                </Table.Cell>
+                <Table.Cell>
+                  <Styled.ArcElCell>{row.depEnv.identifier}</Styled.ArcElCell>
+                </Table.Cell>
+                <Table.Cell>
+                  <Styled.ArcElCell>{row.subenv.identifier}</Styled.ArcElCell>
+                </Table.Cell>
+                <Table.Cell>
+                  <Styled.ArcElCell>
                     {row.architecturalElements.map((a) => (
-                      <p key={a.geologicalStandardId}>{a.identifier}</p>
+                      <p key={a.geologicalStandardId}>{a.identifier},</p>
                     ))}
-                  </div>
+                  </Styled.ArcElCell>
                 </Table.Cell>
               </Table.Row>
             ))}
