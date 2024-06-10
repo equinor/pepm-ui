@@ -6,13 +6,13 @@ import {
   StratColumnDto,
   StratUnitDto,
 } from '../../../api/generated';
+import { StratColumnType } from '../../../features/HandleModel/HandleModelComponent/HandleModelComponent';
 import {
   useFetchSmdaCountries,
   useFetchSmdaFields,
   useFetchSmdaMetadataStratigraphicUnits,
   useFetchSmdaStratigraphicColumns,
 } from '../../../hooks/useFetchStratColData';
-import { StratColumnType } from '../HandleModelComponent/HandleModelComponent';
 import * as Styled from './StratigraphicColumnSelect.styled';
 
 export const StratigraphicColumnSelect = ({

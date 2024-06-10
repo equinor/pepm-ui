@@ -1,7 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import { Button, Icon, Table, Typography } from '@equinor/eds-core-react';
 import { delete_to_trash as deleteIcon } from '@equinor/eds-icons';
-import { StratigraphicGroupDto } from '../../api/generated';
+import { StratigraphicGroupDto } from '../../../api/generated';
 import * as Styled from './StratigrapicGroups.styled';
 
 export const StratigrapicGroups = ({

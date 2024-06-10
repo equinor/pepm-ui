@@ -20,15 +20,15 @@ import {
 } from '../../../api/generated';
 import { AnalogueModelsService } from '../../../api/generated/services/AnalogueModelsService';
 import { queryClient } from '../../../auth/queryClient';
-import { StratigrapicGroups } from '../../../components/StratigrapicGroups/StratigrapicGroups';
+import { GrossDepositionEnviromentGroup } from '../../../components/GrossDepositionEnviroment/GrossDepositionEnviromentGroup/GrossDepositionEnviromentGroup';
+import { StratigraphicColumnSelect } from '../../../components/StrategraphicColumn/StratigraphicColumnSelect/StratigraphicColumnSelect';
+import { StratigrapicGroups } from '../../../components/StrategraphicColumn/StratigrapicGroups/StratigrapicGroups';
 import { useFetchModel } from '../../../hooks/useFetchModel';
 import {
   HandleModelComponent,
   StratColumnType,
 } from '../../HandleModel/HandleModelComponent/HandleModelComponent';
-import { StratigraphicColumnSelect } from '../../HandleModel/StratigraphicColumnSelect/StratigraphicColumnSelect';
 import * as Styled from './ModelMetadataView.styled';
-
 export const defaultStratColumnData: StratColumnType = {
   country: undefined,
   field: undefined,
@@ -218,6 +218,24 @@ export const ModelMetadataView = ({
     },
   });
 
+  const deleteGdeCase = useMutation({
+    mutationFn: ({
+      analogueModelId,
+      geologicalGroupId,
+    }: {
+      analogueModelId: string;
+      geologicalGroupId: string;
+    }) => {
+      return AnalogueModelsService.deleteApiAnalogueModelsGeologicalGroups(
+        analogueModelId,
+        geologicalGroupId,
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['analogue-model']);
+    },
+  });
+
   const deleteStratColRow = async (stratigraphicGroupId: string) => {
     if (modelId) {
       const res = await deleteStratColCase.mutateAsync({
@@ -229,6 +247,22 @@ export const ModelMetadataView = ({
       const res = await deleteStratColCase.mutateAsync({
         analogueModelId: modelIdParent,
         stratigraphicGroupId: stratigraphicGroupId,
+      });
+      return res;
+    }
+  };
+
+  const deleteGdeRow = async (gdeGroupId: string) => {
+    if (modelId) {
+      const res = await deleteGdeCase.mutateAsync({
+        analogueModelId: modelId,
+        geologicalGroupId: gdeGroupId,
+      });
+      return res;
+    } else if (modelIdParent) {
+      const res = await deleteGdeCase.mutateAsync({
+        analogueModelId: modelIdParent,
+        geologicalGroupId: gdeGroupId,
       });
       return res;
     }
@@ -325,6 +359,14 @@ export const ModelMetadataView = ({
             stratColumnGroups={data.data.stratigraphicGroups}
             handleStratColDialog={handleStratColDialog}
             deleteStratColRow={deleteStratColRow}
+          />
+        </div>
+        <div>
+          <GrossDepositionEnviromentGroup
+            modelIdParent={modelIdParent}
+            defaultMetadata={defaultMetadata}
+            gdeGroups={data.data.geologicalGroups}
+            deleteGdeRow={deleteGdeRow}
           />
         </div>
       </Styled.Metadata>
