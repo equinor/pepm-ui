@@ -34,7 +34,7 @@ export const GdeSelect = ({
   );
 
   const ArchitecturalElement = GdeData.data.data.filter(
-    (g) => g.geologyGroup === 'Subenvironment',
+    (g) => g.geologyGroup === 'ArchitecturalElement',
   );
 
   return (
@@ -82,6 +82,7 @@ export const GdeSelect = ({
 
       <Autocomplete
         label="Architectural Element"
+        multiple
         options={ArchitecturalElement}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<GeologicalStandardDto>) => {

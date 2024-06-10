@@ -50,20 +50,40 @@ export const StratigrapicGroups = ({
                 </Button>
               </Table.Cell>
               <Table.Cell>{row.country.identifier}</Table.Cell>
-              <Table.Cell>{row.field.identifier}</Table.Cell>
-              <Table.Cell>{row.stratColumn.identifier}</Table.Cell>
+              <Table.Cell>
+                <Styled.StratColCell>
+                  {row.field.identifier}
+                </Styled.StratColCell>
+              </Table.Cell>
+              <Table.Cell>
+                <Styled.StratColCell>
+                  {row.stratColumn.identifier}
+                </Styled.StratColCell>
+              </Table.Cell>
               {filterUnitLevel(row, 1).length > 0 ? (
-                <Table.Cell>{filterUnitLevel(row, 1)[0].identifier}</Table.Cell>
+                <Table.Cell>
+                  <Styled.StratColCell>
+                    {filterUnitLevel(row, 1)[0].identifier}
+                  </Styled.StratColCell>
+                </Table.Cell>
               ) : (
                 <Table.Cell>---</Table.Cell>
               )}
               {filterUnitLevel(row, 2).length > 0 ? (
-                <Table.Cell>{filterUnitLevel(row, 2)[0].identifier}</Table.Cell>
+                <Table.Cell>
+                  <Styled.StratColCell>
+                    {filterUnitLevel(row, 2)[0].identifier}
+                  </Styled.StratColCell>
+                </Table.Cell>
               ) : (
                 <Table.Cell>---</Table.Cell>
               )}
               {filterUnitLevel(row, 3).length > 0 ? (
-                <Table.Cell>{filterUnitLevel(row, 3)[0].identifier}</Table.Cell>
+                <Table.Cell>
+                  <Styled.StratColCell>
+                    {filterUnitLevel(row, 3)[0].identifier}
+                  </Styled.StratColCell>
+                </Table.Cell>
               ) : (
                 <Table.Cell>---</Table.Cell>
               )}

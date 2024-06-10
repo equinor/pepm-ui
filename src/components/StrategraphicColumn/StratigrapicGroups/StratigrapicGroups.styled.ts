@@ -7,3 +7,13 @@ export const Wrapper = styled.div`
 
   row-gap: ${spacings.MEDIUM};
 `;
+
+export const StratColCell = styled.div`
+  display: flex;
+  flex-direction: row;
+  white-space: nowrap;
+
+  > p {
+    padding-right: ${spacings.X_SMALL};
+  }
+`;
