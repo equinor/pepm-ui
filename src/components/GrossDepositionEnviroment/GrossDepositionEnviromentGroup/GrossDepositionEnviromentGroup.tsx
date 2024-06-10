@@ -122,7 +122,10 @@ export const GrossDepositionEnviromentGroup = ({
                     variant="ghost_icon"
                     onClick={() => deleteGdeRow(row.geologicalGroupId)}
                   >
-                    <Icon data={deleteIcon} title={'Delete strat column row'} />
+                    <Icon
+                      data={deleteIcon}
+                      title={'Delete gross deposition enviroment row'}
+                    />
                   </Button>
                 </Table.Cell>
                 <Table.Cell>{row.grossDepEnv.identifier}</Table.Cell>
@@ -147,7 +150,7 @@ export const GrossDepositionEnviromentGroup = ({
       </Styled.Wrapper>
 
       <Dialog open={showGdeDialog}>
-        <Dialog.Header>Add stratigraphic column</Dialog.Header>
+        <Dialog.Header>Add Gross Deposition Enviroment</Dialog.Header>
         <Dialog.CustomContent>
           <GdeSelect gdeObject={gdeObject} setGdeObject={setGdeObject} />
         </Dialog.CustomContent>
