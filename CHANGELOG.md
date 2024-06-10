@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.1.0](https://github.com/equinor/pepm-ui/compare/v1.0.3...v1.1.0) (2024-06-10)
+
+
+### 🧹 Chores
+
+* deleted package-lock as we use yarn.lock ([c963cd7](https://github.com/equinor/pepm-ui/commit/c963cd70503a493c4c061f1a5d641604d368c20f))
+
+
+### ✨ Features
+
+* Add GDE select Dialog. ([#293](https://github.com/equinor/pepm-ui/issues/293)) ([1b386c7](https://github.com/equinor/pepm-ui/commit/1b386c785eff2941133fcce1bc592a8137f770bb))
+
+
+### 🐛 Bug Fixes
+
+* Missing Architectural Element in table. Architectural Element multiselect. Small styling changes. ([#294](https://github.com/equinor/pepm-ui/issues/294)) ([c44c92b](https://github.com/equinor/pepm-ui/commit/c44c92b7a248211e9676ff09abe232c5e0af7c11))
+
 ## [1.0.3](https://github.com/equinor/pepm-ui/compare/v1.0.2...v1.0.3) (2024-05-24)
 
 
