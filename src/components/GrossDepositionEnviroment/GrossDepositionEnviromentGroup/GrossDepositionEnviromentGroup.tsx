@@ -17,7 +17,7 @@ import {
   GeologicalStandardDto,
 } from '../../../api/generated';
 import { queryClient } from '../../../auth/queryClient';
-import { GdeSelect } from '../GdeSelect';
+import { GdeSelect } from '../GdeSelect/GdeSelect';
 import * as Styled from './GrossDepositionEnviromentGroup.styled';
 
 export interface GdeType {
@@ -91,8 +91,6 @@ export const GrossDepositionEnviromentGroup = ({
             ? architecturalElementsList
             : [],
       };
-      console.log(postRequestBody);
-
       const rowUpload = await postGdeRow.mutateAsync({
         id: id,
         requestBody: postRequestBody,
@@ -100,8 +98,6 @@ export const GrossDepositionEnviromentGroup = ({
       if (rowUpload.success) handleGdeDialog();
     }
   };
-
-  console.log(gdeGroups);
 
   return (
     <>

@@ -1,8 +1,8 @@
 /* eslint-disable max-lines-per-function */
 import { Autocomplete, AutocompleteChanges } from '@equinor/eds-core-react';
-import { GeologicalStandardDto } from '../../api/generated';
-import { useFetchGrossDepData } from '../../hooks/useFetchGrossDepData';
-import { GdeType } from './GrossDepositionEnviromentGroup/GrossDepositionEnviromentGroup';
+import { GeologicalStandardDto } from '../../../api/generated';
+import { useFetchGrossDepData } from '../../../hooks/useFetchGrossDepData';
+import { GdeType } from '../GrossDepositionEnviromentGroup/GrossDepositionEnviromentGroup';
 
 export const GdeSelect = ({
   gdeObject,
