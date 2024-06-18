@@ -6,7 +6,7 @@
 import type { JobStatus } from './JobStatus';
 import type { JobType } from './JobType';
 
-export type UpdateChannelEstimationStatusDto = {
+export type UpdateObjectEstimationStatusDto = {
     jobId: string;
     name: string;
     jobStatus: JobStatus;

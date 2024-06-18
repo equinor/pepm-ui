@@ -3,7 +3,7 @@ import { Snackbar } from '@equinor/eds-core-react';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { EstimateChannelCommand, JobsService } from '../../../../api/generated';
+import { EstimateObjectCommand, JobsService } from '../../../../api/generated';
 import { queryClient } from '../../../../auth/queryClient';
 import { CaseGroup } from '../../../../features/Compute/CaseGroup/CaseGroup';
 import { ComputeHeader } from '../../../../features/Compute/ComputeHeader/ComputeHeader';
@@ -33,7 +33,7 @@ export const ComputeObject = () => {
   const { data } = useFetchCases();
 
   const computeObject = useMutation({
-    mutationFn: JobsService.postApiJobsComputeChannelEstimations,
+    mutationFn: JobsService.postApiJobsComputeObjectEstimations,
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ['model-cases'] });
     },
@@ -41,7 +41,7 @@ export const ComputeObject = () => {
 
   const runComputeObject = async (computeCaseId: string) => {
     if (!modelId) return;
-    const requestBody: EstimateChannelCommand = {
+    const requestBody: EstimateObjectCommand = {
       modelId: modelId,
       computeCaseId: computeCaseId,
     };
@@ -57,6 +57,10 @@ export const ComputeObject = () => {
   const channel = data?.data.filter(
     (method) => method.computeMethod.name === 'Channel',
   );
+
+  // const mouthbar = data?.data.filter(
+  //   (method) => method.computeMethod.name === 'Mouthbar',
+  // )
 
   return (
     <>

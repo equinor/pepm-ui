@@ -1,7 +1,10 @@
 /* eslint-disable max-lines-per-function */
 import { Button, Icon, Table, Typography } from '@equinor/eds-core-react';
 import { delete_to_trash as deleteIcon } from '@equinor/eds-icons';
-import { StratigraphicGroupDto } from '../../../api/generated';
+import {
+  DeleteStratigraphicGroupCommandResponse,
+  StratigraphicGroupDto,
+} from '../../../api/generated';
 import * as Styled from './StratigrapicGroups.styled';
 
 export const StratigrapicGroups = ({
@@ -11,7 +14,9 @@ export const StratigrapicGroups = ({
 }: {
   stratColumnGroups: StratigraphicGroupDto[];
   handleStratColDialog: () => void;
-  deleteStratColRow: (stratigraphicGroupId: string) => Promise<void>;
+  deleteStratColRow: (
+    stratigraphicGroupId: string,
+  ) => Promise<DeleteStratigraphicGroupCommandResponse | undefined>;
 }) => {
   const filterUnitLevel = (row: StratigraphicGroupDto, level: number) => {
     return row.stratUnits.filter((unit) => unit.level === level);

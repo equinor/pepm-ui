@@ -5,7 +5,7 @@
 
 import type { RadixJobDto } from './RadixJobDto';
 
-export type UpdateChannelEstimationStatusCommand = {
+export type UpdateObjectEstimationStatusCommand = {
     name: string;
     started?: string | null;
     ended?: string | null;

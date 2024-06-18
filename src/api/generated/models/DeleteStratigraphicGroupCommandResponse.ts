@@ -3,13 +3,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { GetChannelResultsDto } from './GetChannelResultsDto';
-
-export type GetChanelResultsByModelIdQueryResponse = {
+export type DeleteStratigraphicGroupCommandResponse = {
     success?: boolean;
     count?: number | null;
     message?: string | null;
     validationErrors?: Array<string> | null;
-    data: Array<GetChannelResultsDto>;
+    data: string;
 };
 

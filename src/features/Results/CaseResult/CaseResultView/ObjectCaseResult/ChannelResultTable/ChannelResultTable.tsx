@@ -1,16 +1,12 @@
 /* eslint-disable max-lines-per-function */
 import { Table } from '@equinor/eds-core-react';
 
-import { GetChannelResultsDto } from '../../../../../../api/generated';
 import * as Styled from './ChannelResultTable.styled';
+import { GetObjectResultsDto } from '../../../../../../api/generated/models/GetObjectResultsDto';
 
 const NumberOfDecimals = 2;
 
-export const ChannelResultTable = ({
-  data,
-}: {
-  data: GetChannelResultsDto;
-}) => {
+export const ChannelResultTable = ({ data }: { data: GetObjectResultsDto }) => {
   const roundResultString = (value?: number) => {
     if (value) {
       return value.toFixed(NumberOfDecimals);
@@ -31,22 +27,20 @@ export const ChannelResultTable = ({
         <Table.Row>
           <Styled.ColumnCell>Channel width</Styled.ColumnCell>
           <Styled.DataCell>
-            {roundResultString(data.channelWidth?.mean)}
+            {roundResultString(data.width?.mean)}
           </Styled.DataCell>
-          <Styled.DataCell>
-            {roundResultString(data.channelWidth?.sd)}
-          </Styled.DataCell>
-          <Styled.DataCell>{data.channelWidth?.count}</Styled.DataCell>
+          <Styled.DataCell>{roundResultString(data.width?.sd)}</Styled.DataCell>
+          <Styled.DataCell>{data.width?.count}</Styled.DataCell>
         </Table.Row>
         <Table.Row>
           <Styled.ColumnCell>Channel height</Styled.ColumnCell>
           <Styled.DataCell>
-            {roundResultString(data.channelHeight?.mean)}
+            {roundResultString(data.height?.mean)}
           </Styled.DataCell>
           <Styled.DataCell>
-            {roundResultString(data.channelHeight?.sd)}
+            {roundResultString(data.height?.sd)}
           </Styled.DataCell>
-          <Styled.DataCell>{data.channelHeight?.count}</Styled.DataCell>
+          <Styled.DataCell>{data.height?.count}</Styled.DataCell>
         </Table.Row>
       </Table.Body>
     </Styled.Table>

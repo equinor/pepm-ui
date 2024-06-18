@@ -3,8 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type GetChannelResultsFileDto = {
-    fileName: string;
-    channelResultFileId: string;
+export type ObjectEstimationResultDto = {
+    mean: number;
+    sd: number;
+    count: number;
 };
 

@@ -4,7 +4,7 @@ import * as Styled from './CaseResultView.styled';
 import { Typography } from '@equinor/eds-core-react';
 import {
   ComputeCaseDto,
-  GetChannelResultsDto,
+  GetObjectResultsDto,
   GetVariogramResultsDto,
 } from '../../../../api/generated';
 import { ChannelResult } from './ObjectCaseResult/ChannelResult';
@@ -15,7 +15,7 @@ export const CaseResultView = ({
   variogramResultList,
   computeCases,
 }: {
-  channelResultList?: GetChannelResultsDto[];
+  channelResultList?: GetObjectResultsDto[];
   variogramResultList?: GetVariogramResultsDto[];
   computeCases?: ComputeCaseDto[];
 }) => {
