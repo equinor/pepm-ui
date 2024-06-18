@@ -115,6 +115,7 @@ export const CaseGroup = ({
     }
   };
 
+  const mouthbarSettings = settingsFilter('Mouthbar');
   const channelSettings = settingsFilter('Channel');
   const indicatorSettings = settingsFilter('Indicator');
   const NetToGrossSettings = settingsFilter('Net-To-Gross');
@@ -151,6 +152,9 @@ export const CaseGroup = ({
       let methodId = undefined;
 
       switch (methodType) {
+        case 'Mouthbar':
+          methodId = mouthbarSettings && mouthbarSettings[0].computeMethodId;
+          break;
         case 'Channel':
           methodId = channelSettings && channelSettings[0].computeMethodId;
           break;
@@ -190,6 +194,9 @@ export const CaseGroup = ({
         };
 
         switch (methodType) {
+          case 'Mouthbar':
+            setListItem('Mouthbar', newCase);
+            break;
           case 'Channel':
             setListItem('Channel', newCase);
             break;
@@ -206,6 +213,7 @@ export const CaseGroup = ({
       }
     },
     [
+      mouthbarSettings,
       ContiniousParameterSettings,
       NetToGrossSettings,
       channelSettings,

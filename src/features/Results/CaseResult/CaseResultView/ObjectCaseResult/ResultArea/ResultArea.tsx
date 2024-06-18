@@ -1,7 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import { Label, Typography } from '@equinor/eds-core-react';
-import { GetChannelResultsDto } from '../../../../../../api/generated';
 import * as Styled from './ResultArea.styled';
+import { GetObjectResultsDto } from '../../../../../../api/generated/models/GetObjectResultsDto';
 
 export const ResultArea = ({
   computeMethod,
@@ -10,7 +10,7 @@ export const ResultArea = ({
 }: {
   computeMethod?: string;
   modelArea: string;
-  data: GetChannelResultsDto;
+  data: GetObjectResultsDto;
 }) => {
   const xCoordinate = data.box?.filter((b) => b.m === 0)[0];
   const yCoordinate = data.box?.filter((b) => b.m === 1)[0];

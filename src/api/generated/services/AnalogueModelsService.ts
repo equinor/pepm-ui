@@ -10,6 +10,8 @@ import type { AddStatigraphicGroupForm } from '../models/AddStatigraphicGroupFor
 import type { AddStratigraphicGroupCommandResponse } from '../models/AddStratigraphicGroupCommandResponse';
 import type { CreateAnalogueModelCommand } from '../models/CreateAnalogueModelCommand';
 import type { CreateAnalogueModelCommandResponse } from '../models/CreateAnalogueModelCommandResponse';
+import type { DeleteGeologicalGroupCommandResponse } from '../models/DeleteGeologicalGroupCommandResponse';
+import type { DeleteStratigraphicGroupCommandResponse } from '../models/DeleteStratigraphicGroupCommandResponse';
 import type { GetAnalogueModelListQueryResponse } from '../models/GetAnalogueModelListQueryResponse';
 import type { GetAnalogueModelQueryResponse } from '../models/GetAnalogueModelQueryResponse';
 import type { Operation } from '../models/Operation';
@@ -289,13 +291,13 @@ export class AnalogueModelsService {
      * Deletes a geological group
      * @param analogueModelId
      * @param geologicalGroupId
-     * @returns void
+     * @returns DeleteGeologicalGroupCommandResponse Success
      * @throws ApiError
      */
     public static deleteApiAnalogueModelsGeologicalGroups(
         analogueModelId: string,
         geologicalGroupId: string,
-    ): CancelablePromise<void> {
+    ): CancelablePromise<DeleteGeologicalGroupCommandResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/api/analogue-models/{analogueModelId}/geological-groups/{geologicalGroupId}',
@@ -314,13 +316,13 @@ export class AnalogueModelsService {
      * Deletes a stratigraphic group
      * @param analogueModelId
      * @param stratigraphicGroupId
-     * @returns void
+     * @returns DeleteStratigraphicGroupCommandResponse Success
      * @throws ApiError
      */
     public static deleteApiAnalogueModelsStratigraphicGroups(
         analogueModelId: string,
         stratigraphicGroupId: string,
-    ): CancelablePromise<void> {
+    ): CancelablePromise<DeleteStratigraphicGroupCommandResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/api/analogue-models/{analogueModelId}/stratigraphic-groups/{stratigraphicGroupId}',

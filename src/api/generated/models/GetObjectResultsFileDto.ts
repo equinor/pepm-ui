@@ -3,8 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type EstimateChannelCommand = {
-    modelId: string;
-    computeCaseId: string;
+export type GetObjectResultsFileDto = {
+    fileName: string;
+    objectResultFileId: string;
 };
 

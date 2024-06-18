@@ -13,6 +13,7 @@ import {
   AddGeologicalGroupForm,
   AnalogueModelDetail,
   AnalogueModelsService,
+  DeleteGeologicalGroupCommandResponse,
   GeologicalGroupDto,
   GeologicalStandardDto,
 } from '../../../api/generated';
@@ -41,7 +42,9 @@ export const GrossDepositionEnviromentGroup = ({
   modelIdParent?: string;
   defaultMetadata: AnalogueModelDetail;
   gdeGroups: GeologicalGroupDto[];
-  deleteGdeRow: (geologicalGroupId: string) => Promise<void>;
+  deleteGdeRow: (
+    geologicalGroupId: string,
+  ) => Promise<DeleteGeologicalGroupCommandResponse | undefined>;
 }) => {
   const [showGdeDialog, setShowGdeDialog] = useState<boolean>(false);
   const [gdeObject, setGdeObject] = useState<GdeType>(defaultGdeData);

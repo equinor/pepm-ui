@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ConvertAnalogueModelCommand } from '../models/ConvertAnalogueModelCommand';
-import type { EstimateChannelCommand } from '../models/EstimateChannelCommand';
+import type { EstimateObjectCommand } from '../models/EstimateObjectCommand';
 import type { EstimateVariogramCommand } from '../models/EstimateVariogramCommand';
 import type { GetCurrentJobStatusCommandResponse } from '../models/GetCurrentJobStatusCommandResponse';
 import type { GetCurrentJobStatusListCommand } from '../models/GetCurrentJobStatusListCommand';
@@ -97,12 +97,12 @@ export class JobsService {
      * @returns any Accepted
      * @throws ApiError
      */
-    public static postApiJobsComputeChannelEstimations(
-        requestBody?: EstimateChannelCommand,
+    public static postApiJobsComputeObjectEstimations(
+        requestBody?: EstimateObjectCommand,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/jobs/compute/channel-estimations',
+            url: '/api/jobs/compute/object-estimations',
             body: requestBody,
             mediaType: 'application/json-patch+json',
         });

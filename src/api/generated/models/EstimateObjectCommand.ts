@@ -3,11 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type ChannelHeightDto = {
-    mean: number;
-    sd: number;
-    count: number;
-    modeSd: number;
-    modeMean: number;
+export type EstimateObjectCommand = {
+    modelId: string;
+    computeCaseId: string;
 };
 

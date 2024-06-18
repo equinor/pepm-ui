@@ -3,9 +3,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type ChannelEstimationResultDto = {
+export type ObjectHeightDto = {
     mean: number;
     sd: number;
     count: number;
+    modeSd: number;
+    modeMean: number;
 };
 

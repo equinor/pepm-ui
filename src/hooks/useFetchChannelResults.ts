@@ -13,7 +13,7 @@ export const useFetchChannelResults = () => {
   const query = useQuery({
     queryKey: ['channel-results', modelId],
     queryFn: () =>
-      ResultsService.getApiAnalogueModelsResultsChannel(modelId as string),
+      ResultsService.getApiAnalogueModelsResultsObject(modelId as string),
     enabled: !!token,
   });
 

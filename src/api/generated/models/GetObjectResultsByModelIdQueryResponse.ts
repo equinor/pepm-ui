@@ -3,13 +3,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { UpdateChannelEstimationStatusDto } from './UpdateChannelEstimationStatusDto';
+import type { GetObjectResultsDto } from './GetObjectResultsDto';
 
-export type UpdateChannelEstimationStatusCommandResponse = {
+export type GetObjectResultsByModelIdQueryResponse = {
     success?: boolean;
     count?: number | null;
     message?: string | null;
     validationErrors?: Array<string> | null;
-    data: Array<UpdateChannelEstimationStatusDto>;
+    data: Array<GetObjectResultsDto>;
 };
 

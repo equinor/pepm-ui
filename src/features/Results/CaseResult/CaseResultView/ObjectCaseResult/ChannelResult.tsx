@@ -1,6 +1,6 @@
 import {
   ComputeCaseDto,
-  GetChannelResultsDto,
+  GetObjectResultsDto,
 } from '../../../../../api/generated';
 import * as Styled from './ChannelResult.styled';
 import { ChannelResultTable } from './ChannelResultTable/ChannelResultTable';
@@ -10,7 +10,7 @@ export const ChannelResult = ({
   data,
   computeCase,
 }: {
-  data: GetChannelResultsDto;
+  data: GetObjectResultsDto;
   computeCase?: ComputeCaseDto[];
 }) => {
   let modelArea = '';

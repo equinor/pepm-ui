@@ -2,10 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { UpdateChannelEstimationStatusCommand } from '../models/UpdateChannelEstimationStatusCommand';
-import type { UpdateChannelEstimationStatusCommandResponse } from '../models/UpdateChannelEstimationStatusCommandResponse';
 import type { UpdateJobStatusCommand } from '../models/UpdateJobStatusCommand';
 import type { UpdateJobStatusCommandResponse } from '../models/UpdateJobStatusCommandResponse';
+import type { UpdateObjectEstimationStatusCommand } from '../models/UpdateObjectEstimationStatusCommand';
+import type { UpdateObjectEstimationStatusCommandResponse } from '../models/UpdateObjectEstimationStatusCommandResponse';
 import type { UpdateVariogramEstimationStatusCommand } from '../models/UpdateVariogramEstimationStatusCommand';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -33,12 +33,12 @@ export class WebhooksService {
 
     /**
      * @param requestBody
-     * @returns UpdateChannelEstimationStatusCommandResponse Success
+     * @returns UpdateObjectEstimationStatusCommandResponse Success
      * @throws ApiError
      */
     public static postApiWebhooksChannestStatus(
-        requestBody?: UpdateChannelEstimationStatusCommand,
-    ): CancelablePromise<UpdateChannelEstimationStatusCommandResponse> {
+        requestBody?: UpdateObjectEstimationStatusCommand,
+    ): CancelablePromise<UpdateObjectEstimationStatusCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/webhooks/channest/status',
@@ -49,12 +49,12 @@ export class WebhooksService {
 
     /**
      * @param requestBody
-     * @returns UpdateChannelEstimationStatusCommandResponse Success
+     * @returns UpdateObjectEstimationStatusCommandResponse Success
      * @throws ApiError
      */
     public static postApiWebhooksVargrestStatus(
         requestBody?: UpdateVariogramEstimationStatusCommand,
-    ): CancelablePromise<UpdateChannelEstimationStatusCommandResponse> {
+    ): CancelablePromise<UpdateObjectEstimationStatusCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/webhooks/vargrest/status',

@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { GetChanelResultsByModelIdQueryResponse } from '../models/GetChanelResultsByModelIdQueryResponse';
+import type { GetObjectResultsByModelIdQueryResponse } from '../models/GetObjectResultsByModelIdQueryResponse';
 import type { GetVariogramResultsByModelIdQueryResponse } from '../models/GetVariogramResultsByModelIdQueryResponse';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -14,15 +14,15 @@ export class ResultsService {
     /**
      * Returns channel estimation results
      * @param id
-     * @returns GetChanelResultsByModelIdQueryResponse Success
+     * @returns GetObjectResultsByModelIdQueryResponse Success
      * @throws ApiError
      */
-    public static getApiAnalogueModelsResultsChannel(
+    public static getApiAnalogueModelsResultsObject(
         id: string,
-    ): CancelablePromise<GetChanelResultsByModelIdQueryResponse> {
+    ): CancelablePromise<GetObjectResultsByModelIdQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/analogue-models/{id}/results/channel',
+            url: '/api/analogue-models/{id}/results/object',
             path: {
                 'id': id,
             },

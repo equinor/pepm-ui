@@ -6,4 +6,5 @@
 export enum ComputeType {
     VARIOGRAM = 'Variogram',
     CHANNEL = 'Channel',
+    MOUTHBAR = 'Mouthbar',
 }
