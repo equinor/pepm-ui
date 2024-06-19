@@ -43,10 +43,11 @@ export const Buttons = styled.div`
 
 export const List = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   white-space: nowrap;
 
   > p {
+    margin: 0;
     padding-right: ${spacings.X_SMALL};
   }
 `;

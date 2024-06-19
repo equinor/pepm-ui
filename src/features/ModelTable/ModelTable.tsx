@@ -7,8 +7,12 @@ import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import {
   AnalogueModelsService,
-  MetadataDto,
+  CountryDto,
+  FieldDto,
   OpenAPI,
+  StratColumnDto,
+  StratigraphicGroupDto,
+  StratUnitDto,
 } from '../../api/generated';
 import { useAccessToken } from '../../hooks/useAccessToken';
 import * as Styled from './ModelTable.styled';
@@ -28,8 +32,69 @@ export const ModelTable = () => {
 
   if (isLoading || !data?.success) return <p>Loading...</p>;
 
-  const hasSelectedOptions = (metadata: MetadataDto[], type: string) => {
-    return metadata.filter((d) => d.metadataType === type).length > 0;
+  const getRowCountries = (stratGroupList: StratigraphicGroupDto[]) => {
+    const countryList: CountryDto[] = [];
+
+    if (stratGroupList.length > 0) {
+      stratGroupList.forEach((i) => {
+        if (
+          countryList.filter((item) => item.countryId === i.country.countryId)
+            .length <= 0
+        )
+          countryList.push(i.country);
+      });
+    }
+    return countryList;
+  };
+
+  const getRowField = (stratGroupList: StratigraphicGroupDto[]) => {
+    const fieldList: FieldDto[] = [];
+
+    if (stratGroupList.length > 0) {
+      stratGroupList.forEach((i) => {
+        if (
+          fieldList.filter((item) => item.fieldId === i.field.fieldId).length <=
+          0
+        )
+          fieldList.push(i.field);
+      });
+    }
+    return fieldList;
+  };
+
+  const getRowStratCol = (stratGroupList: StratigraphicGroupDto[]) => {
+    const stratColList: StratColumnDto[] = [];
+
+    if (stratGroupList.length > 0) {
+      stratGroupList.forEach((i) => {
+        if (
+          stratColList.filter(
+            (item) => item.stratColumnId === i.stratColumn.stratColumnId,
+          ).length <= 0
+        )
+          stratColList.push(i.stratColumn);
+      });
+    }
+    return stratColList;
+  };
+
+  const getRowGroup = (stratGroupList: StratigraphicGroupDto[]) => {
+    const groupList: StratUnitDto[] = [];
+
+    if (stratGroupList.length > 0) {
+      stratGroupList.forEach((column) => {
+        column.stratUnits
+          .filter((item) => item.level === 1)
+          .forEach((i) => {
+            if (
+              groupList.filter((item) => i.stratUnitId === item.stratUnitId)
+                .length <= 0
+            )
+              groupList.push(i);
+          });
+      });
+    }
+    return groupList;
   };
 
   return (
@@ -52,43 +117,24 @@ export const ModelTable = () => {
             size: 100,
             cell: ({ row }) => (
               <Styled.List>
-                {row.original.analogues.length > 0
-                  ? row.original.analogues.map((a) => (
-                      <p key={a.analogueId}>{a.name + ', '}</p>
-                    ))
-                  : 'Not relevant'}
+                {row.original.analogues.length > 0 ??
+                  row.original.analogues.map((a) => (
+                    <p key={a.analogueId}>{a.name + ', '}</p>
+                  ))}
               </Styled.List>
             ),
           },
           {
-            accessorKey: 'formation',
-            id: 'formation',
-            header: 'Formation',
+            accessorKey: 'country',
+            id: 'country',
+            header: 'Country',
             enableColumnFilter: false,
-            size: 150,
+            size: 120,
             cell: ({ row }) => (
               <Styled.List>
-                {hasSelectedOptions(row.original.metadata, 'Formation')
-                  ? row.original.metadata
-                      .filter((data) => data.metadataType === 'Formation')
-                      .map((f) => <p key={f.metadataId}>{f.value + ', '}</p>)
-                  : 'Not relevant'}
-              </Styled.List>
-            ),
-          },
-          {
-            accessorKey: 'zone',
-            id: 'zone',
-            header: 'Zone',
-            enableColumnFilter: false,
-            size: 150,
-            cell: ({ row }) => (
-              <Styled.List>
-                {hasSelectedOptions(row.original.metadata, 'Zone')
-                  ? row.original.metadata
-                      .filter((data) => data.metadataType === 'Zone')
-                      .map((z) => <p key={z.metadataId}>{z.value + ', '}</p>)
-                  : 'Not relevant'}
+                {getRowCountries(row.original.stratigraphicGroups).map((i) => (
+                  <p key={i.countryId}>{i.identifier}, </p>
+                ))}
               </Styled.List>
             ),
           },
@@ -97,20 +143,43 @@ export const ModelTable = () => {
             id: 'field',
             header: 'Field',
             enableColumnFilter: false,
-            size: 200,
+            size: 120,
             cell: ({ row }) => (
               <Styled.List>
-                {hasSelectedOptions(row.original.metadata, 'Field')
-                  ? row.original.metadata
-                      .filter((data) => data.metadataType === 'Field')
-                      .map((filed) => (
-                        <p key={filed.metadataId}>{filed.value + ', '}</p>
-                      ))
-                  : 'Not relevant'}
+                {getRowField(row.original.stratigraphicGroups).map((i) => (
+                  <p key={i.fieldId}>{i.identifier}, </p>
+                ))}
               </Styled.List>
             ),
           },
-
+          {
+            accessorKey: 'stratigraphicColumn',
+            id: 'stratigraphicColumn',
+            header: 'Stratigraphic column',
+            enableColumnFilter: false,
+            size: 230,
+            cell: ({ row }) => (
+              <Styled.List>
+                {getRowStratCol(row.original.stratigraphicGroups).map((i) => (
+                  <p key={i.stratColumnId}>{i.identifier}, </p>
+                ))}
+              </Styled.List>
+            ),
+          },
+          {
+            accessorKey: 'group',
+            id: 'group',
+            header: 'Level 1 (group)',
+            enableColumnFilter: false,
+            size: 150,
+            cell: ({ row }) => (
+              <Styled.List>
+                {getRowGroup(row.original.stratigraphicGroups).map((i) => (
+                  <p key={i.stratUnitId}>{i.identifier}, </p>
+                ))}
+              </Styled.List>
+            ),
+          },
           {
             accessorKey: 'isProcessed',
             id: 'isProcessed',
