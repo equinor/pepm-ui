@@ -13,6 +13,9 @@ export const useSetSaved = (
       if (r.computeCaseId === id && r.computeMethod.name === 'Channel') {
         setSaved(false);
       }
+      if (r.computeCaseId === id && r.computeMethod.name === 'Mouthbar') {
+        setSaved(false);
+      }
     }
 
     allCasesList

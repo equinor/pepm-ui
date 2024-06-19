@@ -333,6 +333,19 @@ export const CaseRow = ({
           </Styled.AutocompleteWrapper>
         )}
 
+        {rowCase.computeMethod.name === 'Mouthbar' && (
+          <Styled.AutocompleteWrapper>
+            <ModelAreaSelect
+              disableSelect={saved}
+              modelAreas={areaList ? areaList : []}
+              selectedModelArea={selectedRowArea(rowCase.computeCaseId)}
+              setModelArea={setModelArea}
+              existingCases={caseList}
+              caseError={caseError}
+            />
+          </Styled.AutocompleteWrapper>
+        )}
+
         <CaseButtons
           id={id}
           caseType={caseType === 'Object' ? 'Object' : 'Variogram'}
