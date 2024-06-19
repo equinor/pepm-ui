@@ -58,9 +58,9 @@ export const ComputeObject = () => {
     (method) => method.computeMethod.name === 'Channel',
   );
 
-  // const mouthbar = data?.data.filter(
-  //   (method) => method.computeMethod.name === 'Mouthbar',
-  // )
+  const mouthbar = data?.data.filter(
+    (method) => method.computeMethod.name === 'Mouthbar',
+  );
 
   return (
     <>
@@ -68,7 +68,16 @@ export const ComputeObject = () => {
         <ComputeHeader caseInfo={ObjectCaseInfo} />
         <CaseGroup
           caseList={channel !== undefined && channel.length > 0 ? channel : []}
-          methodName={ObjectCaseInfo.type}
+          methodName="Channel"
+          setAlertMessage={setAlertMessage}
+          runCase={runComputeObject}
+        />
+
+        <CaseGroup
+          caseList={
+            mouthbar !== undefined && mouthbar.length > 0 ? mouthbar : []
+          }
+          methodName="Mouthbar"
           setAlertMessage={setAlertMessage}
           runCase={runComputeObject}
         />

@@ -137,7 +137,10 @@ export const CaseGroup = ({
       const setListItem = (methodType: string, newCase: ComputeCaseDto) => {
         const filteredList = filerLocalList(methodType);
 
-        if (methodType === 'Channel' && filteredList.length < 1) {
+        if (
+          (methodType === 'Channel' || methodType === 'Mouthbar') &&
+          filteredList.length < 1
+        ) {
           setLocalList([...localList, newCase]);
         } else if (
           methodType !== 'Channel' &&
@@ -325,7 +328,7 @@ export const CaseGroup = ({
 
   return (
     <>
-      {methodName === 'Channel' && (
+      {(methodName === 'Channel' || methodName === 'Mouthbar') && (
         <Styled.ButtonDiv>
           <Styled.ButtonGroup>
             <Tooltip
@@ -335,7 +338,7 @@ export const CaseGroup = ({
             >
               <Button
                 variant="outlined"
-                onClick={() => addCase('Channel')}
+                onClick={() => addCase(methodName)}
                 disabled={localList.length >= 1}
               >
                 <Icon data={ADD} size={18}></Icon>
@@ -353,7 +356,7 @@ export const CaseGroup = ({
         localList={localList}
       >
         <Styled.CaseList>
-          {methodName === 'Channel' ? (
+          {methodName === 'Channel' || methodName === 'Mouthbar' ? (
             <>
               {caseList.concat(localList).map((c, index) => (
                 <CaseRow
@@ -362,7 +365,11 @@ export const CaseGroup = ({
                   id={c.computeCaseId}
                   allCasesList={caseList.concat(localList)}
                   caseList={caseList}
-                  caseType={methodName === 'Channel' ? 'Object' : 'Variogram'}
+                  caseType={
+                    methodName === 'Channel' || methodName === 'Mouthbar'
+                      ? 'Object'
+                      : 'Variogram'
+                  }
                   saveCase={saveCase}
                   deleteCase={deleteCase}
                   setAlertMessage={setAlertMessage}
