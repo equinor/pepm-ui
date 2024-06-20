@@ -22,14 +22,11 @@ import * as Styled from './HandleModelComponent.styled';
 
 interface AddModelDialogProps {
   confirm?: (file: File, metadata: AnalogueModelDetail) => Promise<void>;
-  edit?: (metadata: AnalogueModelDetail) => Promise<void>;
   progress?: number;
   uploading?: boolean;
   defaultMetadata: AnalogueModelDetail;
-  isEdit?: boolean;
   isAddUploading?: boolean;
   existingData?: AnalogueModelDetail;
-  closeDialog?: () => void;
   modelId?: string;
 }
 
@@ -69,14 +66,11 @@ export interface StratColumnType {
 
 export const HandleModelComponent = ({
   confirm,
-  edit,
   progress,
   uploading,
   defaultMetadata,
-  isEdit,
   isAddUploading,
   existingData,
-  closeDialog,
   modelId,
 }: AddModelDialogProps) => {
   const [isFileDisplay, setFileDisplay] = useState<boolean>(false);
@@ -99,13 +93,8 @@ export const HandleModelComponent = ({
   );
 
   const handleSubmit = () => {
-    setErrors(validateValues(metadata, files, isEdit));
+    setErrors(validateValues(metadata, files));
     setSubmitting(true);
-  };
-
-  const handleClose = () => {
-    setMetadata(defaultMetadata);
-    if (closeDialog) closeDialog();
   };
 
   const fileAdded = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -118,7 +107,6 @@ export const HandleModelComponent = ({
 
   useEffect(() => {
     const cleanupStates = () => {
-      if (!isEdit) setMetadata(defaultMetadata);
       setFiles(defaultFiles);
       setrawFile(undefined);
       setFileSize(0);
@@ -126,10 +114,8 @@ export const HandleModelComponent = ({
     };
 
     const finishSubmit = () => {
-      if (files.NC && !isEdit && confirm) {
+      if (files.NC && confirm) {
         confirm(files.NC, metadata);
-      } else if (isEdit && edit) {
-        edit(metadata);
       }
       cleanupStates();
     };
@@ -137,16 +123,7 @@ export const HandleModelComponent = ({
     if (Object.keys(errors).length === 0 && submitting) {
       finishSubmit();
     }
-  }, [
-    confirm,
-    defaultMetadata,
-    edit,
-    errors,
-    files.NC,
-    isEdit,
-    metadata,
-    submitting,
-  ]);
+  }, [confirm, defaultMetadata, errors, files.NC, metadata, submitting]);
 
   function toggleINIFileContent() {
     setFileDisplay(!isFileDisplay);
@@ -172,13 +149,11 @@ export const HandleModelComponent = ({
 
   return (
     <Styled.Wrapper>
-      {!isEdit && progress !== undefined && progress <= 0 && (
-        <Typography variant="h3">
-          {isEdit ? 'Edit model details' : 'Add new model'}
-        </Typography>
+      {progress !== undefined && progress <= 0 && (
+        <Typography variant="h3">Add new model</Typography>
       )}
       <Styled.CustomContent>
-        {!isEdit && progress !== undefined && progress <= 0 && (
+        {progress !== undefined && progress <= 0 && (
           <ModelInputFilesTable
             files={files}
             setFiles={setFiles}
@@ -191,7 +166,7 @@ export const HandleModelComponent = ({
           />
         )}
         {isFileDisplay && <INIFileContent />}
-        {(isEdit || !isAddUploading) && (
+        {!isAddUploading && (
           <>
             <ModelMetadata
               errors={errors}
@@ -213,21 +188,10 @@ export const HandleModelComponent = ({
       {!isAddUploading && (
         <div>
           <Button onClick={handleSubmit} disabled={uploading}>
-            {isEdit
-              ? 'Save changes'
-              : uploading
+            {uploading
               ? 'Wait for model to finish uploading'
               : 'Confirm and start uploading'}
           </Button>
-          {isEdit && (
-            <Button
-              variant="outlined"
-              onClick={handleClose}
-              disabled={uploading}
-            >
-              Close
-            </Button>
-          )}
         </div>
       )}
 

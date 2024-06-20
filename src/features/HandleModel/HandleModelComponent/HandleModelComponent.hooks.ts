@@ -24,7 +24,7 @@ export const useHandleModelComponent = (
 
 export const validateValues = (
   inputValues: Partial<AnalogueModelDetail> | undefined,
-  files: FilesProps,
+  files?: FilesProps,
   isEdit?: boolean,
 ) => {
   const errors: ErrorType = {};
@@ -40,8 +40,10 @@ export const validateValues = (
     errors.description = 'Description not provided';
   }
 
-  if (!files.NC && !isEdit) {
-    errors.file = 'NC file missing';
+  if (files && !isEdit) {
+    if (!files.NC) {
+      errors.file = 'NC file missing';
+    }
   }
 
   return errors;
