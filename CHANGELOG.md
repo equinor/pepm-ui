@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.2.0](https://github.com/equinor/pepm-ui/compare/v1.1.0...v1.2.0) (2024-06-19)
+
+
+### 🧹 Chores
+
+* Update model table columns with new data. ([c424beb](https://github.com/equinor/pepm-ui/commit/c424bebc86341f6424abc97064435591c5c4aebd))
+
+
+### ✨ Features
+
+* Add mouthbar as option for compute object. ([#299](https://github.com/equinor/pepm-ui/issues/299)) ([5894133](https://github.com/equinor/pepm-ui/commit/58941331dce53f4177ad184baab2ea8e7a4271b1))
+
+
+### 🐛 Bug Fixes
+
+* script update ([#295](https://github.com/equinor/pepm-ui/issues/295)) ([3182786](https://github.com/equinor/pepm-ui/commit/31827860a505ff41b7674ae3877101f86d2cfd24))
+* upgrade @types/node from 16.18.51 to 16.18.97 ([#292](https://github.com/equinor/pepm-ui/issues/292)) ([d8e9edf](https://github.com/equinor/pepm-ui/commit/d8e9edfc62d8fac06ec7c4b1682d7403a7da2999))
+* upgrade zod from 3.22.4 to 3.23.8 ([#290](https://github.com/equinor/pepm-ui/issues/290)) ([403004b](https://github.com/equinor/pepm-ui/commit/403004bfbc79a0b11cde266e8821da642e568761))
+
 ## [1.1.0](https://github.com/equinor/pepm-ui/compare/v1.0.3...v1.1.0) (2024-06-10)
 
 
