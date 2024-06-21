@@ -16,6 +16,7 @@ export const VariogramResults = () => {
         <CaseResultView
           variogramResultList={variogramResults}
           computeCases={cases.data?.data}
+          type="Variogram"
         />
       ) : (
         <NoResults />

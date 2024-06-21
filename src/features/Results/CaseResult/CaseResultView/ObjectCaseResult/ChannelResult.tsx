@@ -34,7 +34,10 @@ export const ChannelResult = ({
           modelArea={modelArea}
           data={data}
         ></ResultArea>
-        <ChannelResultTable data={data}></ChannelResultTable>
+        <ChannelResultTable
+          data={data}
+          computeMethod={computeMethod}
+        ></ChannelResultTable>
       </Styled.InnerWrapper>
     </Styled.Wrapper>
   );

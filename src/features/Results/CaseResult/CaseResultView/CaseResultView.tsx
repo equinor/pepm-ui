@@ -14,27 +14,16 @@ export const CaseResultView = ({
   channelResultList,
   variogramResultList,
   computeCases,
+  type,
 }: {
   channelResultList?: GetObjectResultsDto[];
   variogramResultList?: GetVariogramResultsDto[];
   computeCases?: ComputeCaseDto[];
+  type: string;
 }) => {
-  const channelType =
-    channelResultList !== undefined && channelResultList[0].type
-      ? channelResultList[0].type
-      : '';
-  const variogramType = variogramResultList !== undefined ? 'Variogram' : '';
-
   return (
     <Styled.CaseResultView>
-      <Typography variant="h2">
-        {channelType !== ''
-          ? channelType
-          : variogramType !== ''
-          ? variogramType
-          : ''}{' '}
-        results
-      </Typography>
+      <Typography variant="h2">{type} results</Typography>
       <Styled.CaseResultList>
         {variogramResultList && (
           <VariogramResultTable
