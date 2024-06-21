@@ -24,10 +24,8 @@ import { GrossDepositionEnviromentGroup } from '../../../components/GrossDeposit
 import { StratigraphicColumnSelect } from '../../../components/StrategraphicColumn/StratigraphicColumnSelect/StratigraphicColumnSelect';
 import { StratigrapicGroups } from '../../../components/StrategraphicColumn/StratigrapicGroups/StratigrapicGroups';
 import { useFetchModel } from '../../../hooks/useFetchModel';
-import {
-  HandleModelComponent,
-  StratColumnType,
-} from '../../HandleModel/HandleModelComponent/HandleModelComponent';
+import { StratColumnType } from '../../HandleModel/HandleModelComponent/HandleModelComponent';
+import { EditNameDescription } from '../EditNameDescription/EditNameDescription';
 import * as Styled from './ModelMetadataView.styled';
 export const defaultStratColumnData: StratColumnType = {
   country: undefined,
@@ -315,21 +313,14 @@ export const ModelMetadataView = ({
           <>
             <Typography variant="h3">Description and metadata</Typography>
 
-            {!isAddModelDialog && (
-              <Styled.DescriptionWrapper>
-                {data.data.description && <div>{data.data.description}</div>}
-              </Styled.DescriptionWrapper>
-            )}
+            <>{data.data.description && <div>{data.data.description}</div>}</>
 
-            {isAddModelDialog && (
-              <HandleModelComponent
-                edit={updateModelMetadata}
-                defaultMetadata={defaultMetadata}
-                isEdit={true}
-                existingData={data.data}
-                closeDialog={toggleEditMetadata}
-              />
-            )}
+            <EditNameDescription
+              edit={updateModelMetadata}
+              isEdit={isAddModelDialog}
+              defaultMetadata={defaultMetadata}
+              closeDialog={toggleEditMetadata}
+            />
             <div>
               {!isAddModelDialog && (
                 <Button
