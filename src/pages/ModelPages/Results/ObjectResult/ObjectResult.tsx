@@ -16,6 +16,7 @@ export const ObjectResult = () => {
         <CaseResultView
           channelResultList={objectResults}
           computeCases={cases.data?.data}
+          type="Object"
         />
       ) : (
         <NoResults />
