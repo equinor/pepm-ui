@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { cleanup, render, screen } from '@testing-library/react';
 import { MsalReactTester } from 'msal-react-tester';
 import { AnalogueModelSourceType } from '../../../api/generated';
-import { useFetchAnalogues } from '../../../hooks/useFetchAnalogues';
+import { useFetchAnalogues } from '../../../hooks/useFetchOutcrops';
 import { ModelMetadata } from './ModelMetadata';
 
 let msalTester: MsalReactTester;
@@ -17,7 +17,7 @@ const mockMetadata = {
   fileUploads: [],
   parameters: [],
   metadata: [],
-  analogues: [],
+  outcrops: [],
   modelAreas: [],
   stratigraphicGroups: [],
   geologicalGroups: [],

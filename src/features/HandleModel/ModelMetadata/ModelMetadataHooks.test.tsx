@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { cleanup, renderHook, waitFor } from '@testing-library/react';
 import { MsalReactTester } from 'msal-react-tester';
 import { AnalogueModelSourceType } from '../../../api/generated';
-import { useFetchAnalogues } from '../../../hooks/useFetchAnalogues';
+import { useFetchAnalogues } from '../../../hooks/useFetchOutcrops';
 import { ModelMetadata } from './ModelMetadata';
 
 let msalTester: MsalReactTester;
@@ -19,7 +19,7 @@ const mockMetadata = {
   fileUploads: [],
   parameters: [],
   metadata: [],
-  analogues: [],
+  outcrops: [],
   modelAreas: [],
   stratigraphicGroups: [],
   geologicalGroups: [],
@@ -41,8 +41,15 @@ function wrapper(props: { children: React.ReactNode }) {
   );
 }
 
-const mockAnalogueList = {
-  analogueId: 'test2',
+// const mockAnalogueList = {
+//   analogueId: 'test2',
+//   name: 'string',
+//   description: 'string',
+//   success: true,
+// };
+
+const mockOutcropList = {
+  outcropId: 'test2',
   name: 'string',
   description: 'string',
   success: true,
@@ -81,12 +88,12 @@ afterEach(() => {
 });
 
 test('Calls Mocked analogue api with mock data', async () => {
-  const mock = await mockGetData(mockAnalogueList);
+  const mock = await mockGetData(mockOutcropList);
 
   const { result } = renderHook(() => useFetchAnalogues(), { wrapper });
 
   const res = await result.current;
 
   await waitFor(() => expect(mock).toHaveBeenCalled());
-  await waitFor(() => expect(res.data).toBe(mockAnalogueList));
+  await waitFor(() => expect(res.data).toBe(mockOutcropList));
 });

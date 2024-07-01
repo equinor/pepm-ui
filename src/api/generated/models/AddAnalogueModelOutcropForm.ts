@@ -3,9 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type AnalogueList = {
-    analogueId: string;
-    name: string;
-    description: string;
+export type AddAnalogueModelOutcropForm = {
+    outcropId?: string;
 };
 

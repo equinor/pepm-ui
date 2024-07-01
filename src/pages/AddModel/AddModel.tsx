@@ -4,12 +4,8 @@ import { Snackbar } from '@equinor/eds-core-react';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import {
-  AddAnalogueDto,
-  AddAnalogueModelAnalogueCommandForm,
   AddAnalogueModelMetadataCommandForm,
   AddMetadataDto,
-  AnalogueList,
-  AnalogueModelAnaloguesService,
   AnalogueModelDetail,
   AnalogueModelMetadataService,
   AnalogueModelSourceType,
@@ -67,7 +63,7 @@ export const AddModel = () => {
     description: '',
     isProcessed: false,
     sourceType: AnalogueModelSourceType.DELTARES,
-    analogues: [],
+    outcrops: [],
     fileUploads: [],
     parameters: [],
     metadata: [],
@@ -119,23 +115,23 @@ export const AddModel = () => {
     },
   });
 
-  const uploadModelAnalouges = useMutation({
-    mutationFn: ({
-      id,
-      requestBody,
-    }: {
-      id: string;
-      requestBody: AddAnalogueModelAnalogueCommandForm;
-    }) => {
-      return AnalogueModelAnaloguesService.putApiAnalogueModelsAnalogues(
-        id,
-        requestBody,
-      );
-    },
-  });
+  // const uploadModelAnalouges = useMutation({
+  //   mutationFn: ({
+  //     id,
+  //     requestBody,
+  //   }: {
+  //     id: string;
+  //     requestBody: AddAnalogueModelAnalogueCommandForm;
+  //   }) => {
+  //     return AnalogueModelAnaloguesService.putApiAnalogueModelsAnalogues(
+  //       id,
+  //       requestBody,
+  //     );
+  //   },
+  // });
 
   const metadataList: AddMetadataDto[] = [];
-  const analougueList: AddAnalogueDto[] = [];
+  // const analougueList: AddAnalogueDto[] = [];
 
   function addMetadataFields(metadata?: MetadataDto[]) {
     if (!metadata) return;
@@ -143,36 +139,36 @@ export const AddModel = () => {
     metadataList.push(...obj);
   }
 
-  function addAnalogueFields(metadata?: AnalogueList[]) {
-    if (!metadata) return;
-    const obj = metadata.map((x) => ({ analogueId: x.analogueId }));
-    analougueList.push(...obj);
-  }
+  // function addAnalogueFields(metadata?: AnalogueList[]) {
+  //   if (!metadata) return;
+  //   const obj = metadata.map((x) => ({ analogueId: x.analogueId }));
+  //   analougueList.push(...obj);
+  // }
 
   async function uploadMetadata(
     modelId: string,
     metadata: AnalogueModelDetail,
   ) {
     addMetadataFields(metadata.metadata);
-    addAnalogueFields(metadata.analogues);
+    // addAnalogueFields(metadata.analogues);
 
     const readyMetadata: AddAnalogueModelMetadataCommandForm = {
       metadata: metadataList,
     };
 
-    const readyAnalogue: AddAnalogueModelAnalogueCommandForm = {
-      analogues: analougueList,
-    };
+    // const readyAnalogue: AddAnalogueModelAnalogueCommandForm = {
+    //   analogues: analougueList,
+    // };
 
     await uploadModelMetadata.mutateAsync({
       id: modelId,
       requestBody: readyMetadata,
     });
 
-    await uploadModelAnalouges.mutateAsync({
-      id: modelId,
-      requestBody: readyAnalogue,
-    });
+    // await uploadModelAnalouges.mutateAsync({
+    //   id: modelId,
+    //   requestBody: readyAnalogue,
+    // });
   }
 
   async function uploadModel(file: File, metadata: AnalogueModelDetail) {

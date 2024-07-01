@@ -110,16 +110,16 @@ export const ModelTable = () => {
         columns={[
           { accessorKey: 'name', header: 'Model name', id: 'name' },
           {
-            accessorKey: 'analogues',
-            id: 'analogues',
-            header: 'Analogue',
+            accessorKey: 'outcrops',
+            id: 'outcrops',
+            header: 'Outcrop',
             enableColumnFilter: false,
             size: 100,
             cell: ({ row }) => (
               <Styled.List>
-                {row.original.analogues.length > 0 ??
-                  row.original.analogues.map((a) => (
-                    <p key={a.analogueId}>{a.name + ', '}</p>
+                {row.original.outcrops.length > 0 ??
+                  row.original.outcrops.map((a) => (
+                    <p key={a.outcropId}>{a.name + ', '}</p>
                   ))}
               </Styled.List>
             ),
