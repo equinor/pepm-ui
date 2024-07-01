@@ -63,12 +63,16 @@ spec:
                   envVar: AZURE_CLIENT_SECRET
                 - name: AzureAd--TenantId
                   envVar: AZURE_TENANT_ID
-                - name: Smda--ResourceId
+                - name: AzureAdSmda--ResourceId
                   envVar: AzureAdSmda__ResourceId
-                - name: Smda--SubscriptionKey
+                - name: AzureAdSmda--SubscriptionKey
                   envVar: AzureAdSmda__SubscriptionKey
-                - name: ApiBaseUri
-                  envVar: AzureAdSmda__ApiBaseUri
+                - name: AzureAdSmda--ApiBaseUri
+                  envVar: AzureAdSmda__ApiBaseUri                
+                - name: AzureAdPeacock--ApiBaseUri
+                  envVar: AzureAdPeacock__ApiBaseUri              
+                - name: AzureAdPeacock--ResourceId
+                  envVar: AzureAdPeacock__ResourceId   
         - environment: test
           imageTagName: latest
           variables:
@@ -96,13 +100,17 @@ spec:
                   envVar: AZURE_CLIENT_SECRET
                 - name: AzureAd--TenantId
                   envVar: AZURE_TENANT_ID
-                - name: Smda--ResourceId
+                - name: AzureAdSmda--ResourceId
                   envVar: AzureAdSmda__ResourceId
-                - name: Smda--SubscriptionKey
+                - name: AzureAdSmda--SubscriptionKey
                   envVar: AzureAdSmda__SubscriptionKey
-                - name: ApiBaseUri
-                  envVar: AzureAdSmda__ApiBaseUri
-
+                - name: AzureAdSmda--ApiBaseUri
+                  envVar: AzureAdSmda__ApiBaseUri                
+                - name: AzureAdPeacock--ApiBaseUri
+                  envVar: AzureAdPeacock__ApiBaseUri              
+                - name: AzureAdPeacock--ResourceId
+                  envVar: AzureAdPeacock__ResourceId               
+≈ß
         - environment: prod
           imageTagName: latest
           variables:
