@@ -6,8 +6,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { cleanup, renderHook, waitFor } from '@testing-library/react';
 import { MsalReactTester } from 'msal-react-tester';
 import { AnalogueModelSourceType } from '../../../api/generated';
-import { useFetchAnalogues } from '../../../hooks/useFetchOutcrops';
 import { ModelMetadata } from './ModelMetadata';
+import { useFetchOutcrops } from '../../../hooks/useFetchOutcrops';
 
 let msalTester: MsalReactTester;
 const mockMetadata = {
@@ -90,7 +90,7 @@ afterEach(() => {
 test('Calls Mocked analogue api with mock data', async () => {
   const mock = await mockGetData(mockOutcropList);
 
-  const { result } = renderHook(() => useFetchAnalogues(), { wrapper });
+  const { result } = renderHook(() => useFetchOutcrops(), { wrapper });
 
   const res = await result.current;
 

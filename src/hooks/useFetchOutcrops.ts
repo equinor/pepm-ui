@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { OutcropsService } from '../api/generated';
 import { useAccessToken } from './useAccessToken';
 
-export const useFetchAnalogues = () => {
+export const useFetchOutcrops = () => {
   const { instance, accounts } = useMsal();
   const token = useAccessToken(instance, accounts[0]);
 
