@@ -110,7 +110,6 @@ spec:
                   envVar: AzureAdPeacock__ApiBaseUri              
                 - name: AzureAdPeacock--ResourceId
                   envVar: AzureAdPeacock__ResourceId               
-≈ß
         - environment: prod
           imageTagName: latest
           variables:
