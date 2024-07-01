@@ -8,7 +8,11 @@ spec:
       build:
         from: main
     - name: test
+      build:
+        from: main
     - name: prod
+      build:
+        from: main
   components:
     - name: web
       image: ghcr.io/equinor/pepm-ui/{imageTagName}
