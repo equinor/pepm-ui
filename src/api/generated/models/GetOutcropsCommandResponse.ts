@@ -3,13 +3,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { AddAnalogueModelAnalogueDto } from './AddAnalogueModelAnalogueDto';
+import type { GetOutcropsDto } from './GetOutcropsDto';
 
-export type AddAnalogueModelAnalogueCommandResponse = {
+export type GetOutcropsCommandResponse = {
     success?: boolean;
     count?: number | null;
     message?: string | null;
     validationErrors?: Array<string> | null;
-    data: AddAnalogueModelAnalogueDto;
+    data: Array<GetOutcropsDto>;
 };
 

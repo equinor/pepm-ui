@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { AddAnalogueModelAreaCommandForm } from '../models/AddAnalogueModelAreaCommandForm';
 import type { AddAnalogueModelAreaCommandResponse } from '../models/AddAnalogueModelAreaCommandResponse';
+import type { AddAnalogueModelOutcropForm } from '../models/AddAnalogueModelOutcropForm';
 import type { AddGeologicalGroupCommandResponse } from '../models/AddGeologicalGroupCommandResponse';
 import type { AddGeologicalGroupForm } from '../models/AddGeologicalGroupForm';
 import type { AddStatigraphicGroupForm } from '../models/AddStatigraphicGroupForm';
@@ -239,6 +240,27 @@ export class AnalogueModelsService {
             path: {
                 'id': id,
                 'modelAreaId': modelAreaId,
+            },
+            body: requestBody,
+            mediaType: 'application/json-patch+json',
+        });
+    }
+
+    /**
+     * @param id
+     * @param requestBody
+     * @returns AddStratigraphicGroupCommandResponse Success
+     * @throws ApiError
+     */
+    public static postApiAnalogueModelsOutcrops(
+        id: string,
+        requestBody?: AddAnalogueModelOutcropForm,
+    ): CancelablePromise<AddStratigraphicGroupCommandResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/analogue-models/{id}/outcrops',
+            path: {
+                'id': id,
             },
             body: requestBody,
             mediaType: 'application/json-patch+json',

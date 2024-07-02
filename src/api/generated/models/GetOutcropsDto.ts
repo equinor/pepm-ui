@@ -3,9 +3,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type CreateAnalogueDto = {
-    analogueId?: string;
+export type GetOutcropsDto = {
+    outcropId?: string;
     name?: string | null;
-    description?: string | null;
+    outcropCategory?: string | null;
+    region?: string | null;
+    basins?: Array<string> | null;
 };
 

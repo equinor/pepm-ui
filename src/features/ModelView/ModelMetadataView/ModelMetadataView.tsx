@@ -5,13 +5,10 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
-  AddAnalogueDto,
-  AddAnalogueModelAnalogueCommandForm,
   AddAnalogueModelMetadataCommandForm,
+  // AddAnalogueModelOutcropForm,
   AddMetadataDto,
   AddStatigraphicGroupForm,
-  AnalogueList,
-  AnalogueModelAnaloguesService,
   AnalogueModelDetail,
   AnalogueModelMetadataService,
   AnalogueModelSourceType,
@@ -60,7 +57,7 @@ export const ModelMetadataView = ({
     description: data?.data.description ? data?.data.description : '',
     isProcessed: data?.data.isProcessed ? data?.data.isProcessed : false,
     sourceType: AnalogueModelSourceType.DELTARES,
-    analogues: data?.data.analogues ? data?.data.analogues : [],
+    outcrops: data?.data.outcrops ? data?.data.outcrops : [],
     fileUploads: data?.data.fileUploads ? data?.data.fileUploads : [],
     parameters: [],
     metadata: data?.data.metadata ? data?.data.metadata : [],
@@ -104,26 +101,26 @@ export const ModelMetadataView = ({
     },
   });
 
-  const uploadModelAnalouges = useMutation({
-    mutationFn: ({
-      id,
-      requestBody,
-    }: {
-      id: string;
-      requestBody: AddAnalogueModelAnalogueCommandForm;
-    }) => {
-      return AnalogueModelAnaloguesService.putApiAnalogueModelsAnalogues(
-        id,
-        requestBody,
-      );
-    },
-    onSuccess: () => {
-      queryClient.refetchQueries();
-    },
-  });
+  // const uploadModelAnalouges = useMutation({
+  //   mutationFn: ({
+  //     id,
+  //     requestBody,
+  //   }: {
+  //     id: string;
+  //     requestBody: AddAnalogueModelOutcropForm;
+  //   }) => {
+  //     return AnalogueModelsService.postApiAnalogueModelsOutcrops(
+  //       id,
+  //       requestBody,
+  //     );
+  //   },
+  //   onSuccess: () => {
+  //     queryClient.refetchQueries();
+  //   },
+  // });
 
   const metadataList: AddMetadataDto[] = [];
-  const analougueList: AddAnalogueDto[] = [];
+  // const outcropList: AddAnalogueModelOutcropForm[] = [];
 
   function addMetadataFields(metadata?: MetadataDto[]) {
     const filteredMetadata = metadata?.filter(
@@ -134,11 +131,11 @@ export const ModelMetadataView = ({
     metadataList.push(...obj);
   }
 
-  function addAnalogueFields(metadata?: AnalogueList[]) {
-    if (!metadata) return;
-    const obj = metadata.map((x) => ({ analogueId: x.analogueId }));
-    analougueList.push(...obj);
-  }
+  // function addAnalogueFields(metadata?: OutcropDto[]) {
+  //   if (!metadata) return;
+  //   const obj = metadata.map((x) => ({ outcropId: x.outcropId! }));
+  //   analougueList.push(...obj);
+  // }
 
   const updateModelMetadata = async (metadata: AnalogueModelDetail) => {
     const id = data?.data.analogueModelId ? data?.data.analogueModelId : '';
@@ -154,23 +151,21 @@ export const ModelMetadataView = ({
     });
 
     addMetadataFields(metadata.metadata);
-    addAnalogueFields(metadata.analogues);
+    // addAnalogueFields(metadata.outcrops);
 
     const readyMetadata: AddAnalogueModelMetadataCommandForm = {
       metadata: metadataList,
-    };
-    const readyAnalogue: AddAnalogueModelAnalogueCommandForm = {
-      analogues: analougueList,
     };
 
     await uploadModelMetadata.mutateAsync({
       id: id,
       requestBody: readyMetadata,
     });
-    await uploadModelAnalouges.mutateAsync({
-      id: id,
-      requestBody: readyAnalogue,
-    });
+
+    // await uploadModelAnalouges.mutateAsync({
+    //   id: id,
+    //   requestBody: readyAnalogue,
+    // });
 
     toggleEditMetadata();
   };

@@ -4,8 +4,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { cleanup, render, screen } from '@testing-library/react';
 import { MsalReactTester } from 'msal-react-tester';
 import { AnalogueModelSourceType } from '../../../api/generated';
-import { useFetchAnalogues } from '../../../hooks/useFetchAnalogues';
 import { ModelMetadata } from './ModelMetadata';
+import { useFetchOutcrops } from '../../../hooks/useFetchOutcrops';
 
 let msalTester: MsalReactTester;
 const mockMetadata = {
@@ -17,7 +17,7 @@ const mockMetadata = {
   fileUploads: [],
   parameters: [],
   metadata: [],
-  analogues: [],
+  outcrops: [],
   modelAreas: [],
   stratigraphicGroups: [],
   geologicalGroups: [],
@@ -37,22 +37,22 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-jest.mock('../../../hooks/useFetchAnalogues');
+jest.mock('../../../hooks/useFetchOutcrops');
 
 const Render = () => {
   const testQueryClient = new QueryClient();
 
   // @ts-ignore because of error
-  useFetchAnalogues.mockReturnValue({
+  useFetchOutcrops.mockReturnValue({
     data: {
       data: [
         {
-          analogueId: 'test12',
+          outcropId: 'test12',
           description: 'string122',
           name: 'stringA1',
         },
         {
-          analogueId: 'test13',
+          outcropId: 'test13',
           description: 'string123',
           name: 'stringA2',
         },
