@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.2.1](https://github.com/equinor/pepm-ui/compare/v1.2.0...v1.2.1) (2024-07-02)
+
+
+### 🧹 Chores
+
+* Change to dialog for edit name and description in modle view. ([#301](https://github.com/equinor/pepm-ui/issues/301)) ([b59be59](https://github.com/equinor/pepm-ui/commit/b59be5931cb0796f4002aa7c774bd51a8f61a6ef))
+* Update Object result compute type. ([#303](https://github.com/equinor/pepm-ui/issues/303)) ([76c5c76](https://github.com/equinor/pepm-ui/commit/76c5c76b0ac13a7cd1a795b5d7eb1edecaf1d6fd))
+
+
+### 🐛 Bug Fixes
+
+* need to rebuild config file ([fc11412](https://github.com/equinor/pepm-ui/commit/fc11412bb11119df56be704357fb87f78848e2e6))
+* removed deprecated endpoints from api services ([#306](https://github.com/equinor/pepm-ui/issues/306)) ([f772055](https://github.com/equinor/pepm-ui/commit/f7720551352366826fb0bec77463178e20349942))
+* removed typo in radix config ([d03dadf](https://github.com/equinor/pepm-ui/commit/d03dadf235aa301a47f5f70493e65ec580254c78))
+* updated radix config ([6f7db3d](https://github.com/equinor/pepm-ui/commit/6f7db3d9d1e739ada8c802bdab483ffad09711ad))
+* updated secrets in radix config ([fd8b808](https://github.com/equinor/pepm-ui/commit/fd8b808dfa6f05fa0766bd2f26628ae07df907df))
+
 ## [1.2.0](https://github.com/equinor/pepm-ui/compare/v1.1.0...v1.2.0) (2024-06-19)
 
 
