@@ -48,6 +48,20 @@ export const ChannelResultTable = ({
           </Styled.DataCell>
           <Styled.DataCell>{data.height?.count}</Styled.DataCell>
         </Table.Row>
+        {computeMethod === 'Mouthbar' ? (
+          <Table.Row>
+            <Styled.ColumnCell>{computeMethod} length</Styled.ColumnCell>
+            <Styled.DataCell>
+              {roundResultString(data.length?.mean)}
+            </Styled.DataCell>
+            <Styled.DataCell>
+              {roundResultString(data.length?.sd)}
+            </Styled.DataCell>
+            <Styled.DataCell>{data.length?.count}</Styled.DataCell>
+          </Table.Row>
+        ) : (
+          <></>
+        )}
       </Table.Body>
     </Styled.Table>
   );
