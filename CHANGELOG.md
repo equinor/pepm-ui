@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/equinor/pepm-ui/compare/v1.2.1...v1.3.0) (2024-07-03)
+
+
+### ✨ Features
+
+* added length to moutbar results ([#307](https://github.com/equinor/pepm-ui/issues/307)) ([caefa06](https://github.com/equinor/pepm-ui/commit/caefa06781914f70c2123e101856dc7ec36f441b))
+
 ## [1.2.1](https://github.com/equinor/pepm-ui/compare/v1.2.0...v1.2.1) (2024-07-02)
 
 
