@@ -16,6 +16,7 @@ export type GetObjectResultsDto = {
     objectResultFiles: Array<GetObjectResultsFileDto>;
     segmentWidth: ObjectEstimationResultDto;
     width: ObjectEstimationResultDto;
+    length: ObjectEstimationResultDto;
     segmentHeight: ObjectEstimationResultDto;
     height: ObjectHeightDto;
     box: Array<CoordinateDto>;
