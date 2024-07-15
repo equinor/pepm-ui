@@ -3,13 +3,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { GetOutcropsDto } from './GetOutcropsDto';
+import { OutcropDto } from './OutcropDto';
 
 export type GetOutcropsCommandResponse = {
-    success?: boolean;
-    count?: number | null;
-    message?: string | null;
-    validationErrors?: Array<string> | null;
-    data: Array<GetOutcropsDto>;
+  success?: boolean;
+  count?: number | null;
+  message?: string | null;
+  validationErrors?: Array<string> | null;
+  data: Array<OutcropDto>;
 };
-

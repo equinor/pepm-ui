@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   AddAnalogueModelMetadataCommandForm,
-  // AddAnalogueModelOutcropForm,
   AddMetadataDto,
   AddStatigraphicGroupForm,
   AnalogueModelDetail,
@@ -18,6 +17,7 @@ import {
 import { AnalogueModelsService } from '../../../api/generated/services/AnalogueModelsService';
 import { queryClient } from '../../../auth/queryClient';
 import { GrossDepositionEnviromentGroup } from '../../../components/GrossDepositionEnviroment/GrossDepositionEnviromentGroup/GrossDepositionEnviromentGroup';
+import { OutcropAnalogueGroup } from '../../../components/OutcropAnalogue/OutcropAnalogueGroup/OutcropAnalogueGroup';
 import { StratigraphicColumnSelect } from '../../../components/StrategraphicColumn/StratigraphicColumnSelect/StratigraphicColumnSelect';
 import { StratigrapicGroups } from '../../../components/StrategraphicColumn/StratigrapicGroups/StratigrapicGroups';
 import { useFetchModel } from '../../../hooks/useFetchModel';
@@ -101,27 +101,7 @@ export const ModelMetadataView = ({
     },
   });
 
-  // const uploadModelAnalouges = useMutation({
-  //   mutationFn: ({
-  //     id,
-  //     requestBody,
-  //   }: {
-  //     id: string;
-  //     requestBody: AddAnalogueModelOutcropForm;
-  //   }) => {
-  //     return AnalogueModelsService.postApiAnalogueModelsOutcrops(
-  //       id,
-  //       requestBody,
-  //     );
-  //   },
-  //   onSuccess: () => {
-  //     queryClient.refetchQueries();
-  //   },
-  // });
-
   const metadataList: AddMetadataDto[] = [];
-  // const outcropList: AddAnalogueModelOutcropForm[] = [];
-
   function addMetadataFields(metadata?: MetadataDto[]) {
     const filteredMetadata = metadata?.filter(
       (m) => m.metadataType !== 'NoRelevant',
@@ -130,12 +110,6 @@ export const ModelMetadataView = ({
     const obj = filteredMetadata.map((x) => ({ metadataId: x.metadataId }));
     metadataList.push(...obj);
   }
-
-  // function addAnalogueFields(metadata?: OutcropDto[]) {
-  //   if (!metadata) return;
-  //   const obj = metadata.map((x) => ({ outcropId: x.outcropId! }));
-  //   analougueList.push(...obj);
-  // }
 
   const updateModelMetadata = async (metadata: AnalogueModelDetail) => {
     const id = data?.data.analogueModelId ? data?.data.analogueModelId : '';
@@ -151,8 +125,6 @@ export const ModelMetadataView = ({
     });
 
     addMetadataFields(metadata.metadata);
-    // addAnalogueFields(metadata.outcrops);
-
     const readyMetadata: AddAnalogueModelMetadataCommandForm = {
       metadata: metadataList,
     };
@@ -161,12 +133,6 @@ export const ModelMetadataView = ({
       id: id,
       requestBody: readyMetadata,
     });
-
-    // await uploadModelAnalouges.mutateAsync({
-    //   id: id,
-    //   requestBody: readyAnalogue,
-    // });
-
     toggleEditMetadata();
   };
 
@@ -340,6 +306,14 @@ export const ModelMetadataView = ({
           </Styled.MetadataInfo>
         )}
 
+        <div>
+          <OutcropAnalogueGroup
+            modelIdParent={modelIdParent}
+            defaultMetadata={defaultMetadata}
+            outcropGroup={data.data.outcrops}
+            // deleteOutcropRow={deleteOutcropRow}
+          />
+        </div>
         <div>
           <StratigrapicGroups
             stratColumnGroups={data.data.stratigraphicGroups}
