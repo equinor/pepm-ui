@@ -20,7 +20,7 @@
     "@types/node": "^16.18.97",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
-    "axios": "^1.6.0",
+    "axios": "^1.7.4",
     "env-cmd": "^10.1.0",
     "lodash": "^4.17.21",
     "msal-react-tester": "^0.3.1",
