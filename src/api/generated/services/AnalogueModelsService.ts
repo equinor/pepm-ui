@@ -269,6 +269,26 @@ export class AnalogueModelsService {
 
     /**
      * @param id
+     * @param outcropId
+     * @returns AddStratigraphicGroupCommandResponse Success
+     * @throws ApiError
+     */
+    public static deleteApiAnalogueModelsOutcrops(
+        id: string,
+        outcropId: string,
+    ): CancelablePromise<AddStratigraphicGroupCommandResponse> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/api/analogue-models/{id}/outcrops/{outcropId}',
+            path: {
+                'id': id,
+                'outcropId': outcropId,
+            },
+        });
+    }
+
+    /**
+     * @param id
      * @param requestBody
      * @returns AddStratigraphicGroupCommandResponse Success
      * @throws ApiError

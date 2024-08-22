@@ -75,6 +75,18 @@ export const OutcropAnalogueGroup = ({
     },
   });
 
+  const deleteOutcropAnalogue = useMutation({
+    mutationFn: ({ id, outcropId }: { id: string; outcropId: string }) => {
+      return AnalogueModelsService.deleteApiAnalogueModelsOutcrops(
+        id,
+        outcropId,
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['analogue-model']);
+    },
+  });
+
   const handleAddOutcropAnalogue = async () => {
     const id = modelIdParent ? modelIdParent : defaultMetadata.analogueModelId;
 
@@ -92,9 +104,13 @@ export const OutcropAnalogueGroup = ({
     }
   };
 
-  const deleteRow = async (id: string) => {
-    // await deleteOutcropRow(id);
-    console.log('Delete Outcrop: ', id);
+  const handleDeleteOutcropAnalogue = async (stratigraphicGroupId: string) => {
+    const id = modelIdParent ? modelIdParent : defaultMetadata.analogueModelId;
+    const res = await deleteOutcropAnalogue.mutateAsync({
+      id: id,
+      outcropId: stratigraphicGroupId,
+    });
+    return res;
   };
 
   return (
@@ -120,7 +136,9 @@ export const OutcropAnalogueGroup = ({
                   <Button
                     variant="ghost_icon"
                     onClick={() =>
-                      deleteRow(row.outcropId ? row.outcropId : 'none')
+                      handleDeleteOutcropAnalogue(
+                        row.outcropId ? row.outcropId : 'none',
+                      )
                     }
                   >
                     <Icon data={deleteIcon} title={'Delete strat column row'} />
