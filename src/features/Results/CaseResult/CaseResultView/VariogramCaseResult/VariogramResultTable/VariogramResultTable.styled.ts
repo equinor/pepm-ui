@@ -37,7 +37,6 @@ export const Quality = styled.span`
   display: flex;
   flex-direction: column;
   align-items: end;
-  font-family: cell_numeric_monospaced;
 `;
 
 export { StyledDialog as Dialog };
