@@ -311,7 +311,6 @@ export const ModelMetadataView = ({
             modelIdParent={modelIdParent}
             defaultMetadata={defaultMetadata}
             outcropGroup={data.data.outcrops}
-            // deleteOutcropRow={deleteOutcropRow}
           />
         </div>
         <div>

@@ -39,14 +39,10 @@ export const OutcropAnalogueGroup = ({
   modelIdParent,
   defaultMetadata,
   outcropGroup,
-}: //   deleteOutcropRow,
-{
+}: {
   modelIdParent?: string;
   defaultMetadata: AnalogueModelDetail;
   outcropGroup: OutcropDto[];
-  //   deleteOutcropRow: (
-  //     stratigraphicGroupId: string,
-  //   ) => Promise<DeletedeleteOutcropRowResponse | undefined>;
 }) => {
   const [showOutcropDialog, setShowOutcropDialog] = useState<boolean>(false);
   const [outcropObject, setOutcropObject] =
