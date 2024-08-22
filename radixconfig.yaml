@@ -42,7 +42,7 @@ spec:
           port: 5003
       environmentConfig:
         - environment: dev
-          imageTagName: latest
+          imageTagName: dev.latest
           variables:
             ASPNETCORE_ENVIRONMENT: "Development"
           secretRefs:
