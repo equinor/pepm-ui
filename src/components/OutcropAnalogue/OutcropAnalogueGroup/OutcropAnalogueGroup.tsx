@@ -7,15 +7,13 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { delete_to_trash as deleteIcon } from '@equinor/eds-icons';
-import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import {
   AddAnalogueModelOutcropForm,
   AnalogueModelDetail,
-  AnalogueModelsService,
   OutcropDto,
 } from '../../../api/generated';
-import { queryClient } from '../../../auth/queryClient';
+import { useOutcropAnalouge } from '../../../hooks/useOutcropAnalogue';
 import { OutcropSelect } from '../OutcropSelect/OutcropSelect';
 import * as Styled from './OutcropAnalogueGroup.styled';
 
@@ -47,41 +45,12 @@ export const OutcropAnalogueGroup = ({
   const [showOutcropDialog, setShowOutcropDialog] = useState<boolean>(false);
   const [outcropObject, setOutcropObject] =
     useState<OutcropType>(defaultOutcropData);
+  const useOutcrop = useOutcropAnalouge();
 
   const handleOutcropDialog = () => {
     setShowOutcropDialog(!showOutcropDialog);
     setOutcropObject(defaultOutcropData);
   };
-
-  const postOutcropRow = useMutation({
-    mutationFn: ({
-      id,
-      requestBody,
-    }: {
-      id: string;
-      requestBody: AddAnalogueModelOutcropForm;
-    }) => {
-      return AnalogueModelsService.postApiAnalogueModelsOutcrops(
-        id,
-        requestBody,
-      );
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['analogue-model'] });
-    },
-  });
-
-  const deleteOutcropAnalogue = useMutation({
-    mutationFn: ({ id, outcropId }: { id: string; outcropId: string }) => {
-      return AnalogueModelsService.deleteApiAnalogueModelsOutcrops(
-        id,
-        outcropId,
-      );
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(['analogue-model']);
-    },
-  });
 
   const handleAddOutcropAnalogue = async () => {
     const id = modelIdParent ? modelIdParent : defaultMetadata.analogueModelId;
@@ -90,7 +59,7 @@ export const OutcropAnalogueGroup = ({
       const postRequestBody: AddAnalogueModelOutcropForm = {
         outcropId: outcropObject.outcropId,
       };
-      const rowUpload = await postOutcropRow.mutateAsync({
+      const rowUpload = await useOutcrop.postOutcropRow.mutateAsync({
         id: id,
         requestBody: postRequestBody,
       });
@@ -102,7 +71,7 @@ export const OutcropAnalogueGroup = ({
 
   const handleDeleteOutcropAnalogue = async (stratigraphicGroupId: string) => {
     const id = modelIdParent ? modelIdParent : defaultMetadata.analogueModelId;
-    const res = await deleteOutcropAnalogue.mutateAsync({
+    const res = await useOutcrop.deleteOutcropAnalogue.mutateAsync({
       id: id,
       outcropId: stratigraphicGroupId,
     });
@@ -113,7 +82,6 @@ export const OutcropAnalogueGroup = ({
     <>
       <Styled.Wrapper>
         <Typography variant="h3">Outcrop Analogue</Typography>
-
         <Table>
           <Table.Head>
             <Table.Row>
@@ -124,7 +92,6 @@ export const OutcropAnalogueGroup = ({
               <Table.Cell>Category</Table.Cell>
             </Table.Row>
           </Table.Head>
-
           <Table.Body>
             {outcropGroup.map((row) => (
               <Table.Row key={row.outcropId}>
@@ -164,7 +131,6 @@ export const OutcropAnalogueGroup = ({
           </Button>
         </div>
       </Styled.Wrapper>
-
       <Dialog open={showOutcropDialog}>
         <Dialog.Header>Add Outcrop Analogue</Dialog.Header>
         <Dialog.CustomContent>
