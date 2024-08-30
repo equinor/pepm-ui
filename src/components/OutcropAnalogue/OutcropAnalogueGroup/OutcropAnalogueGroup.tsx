@@ -170,6 +170,7 @@ export const OutcropAnalogueGroup = ({
         <Dialog.CustomContent>
           <OutcropSelect
             outcropObject={outcropObject}
+            outcropGroup={outcropGroup}
             setOutcropObject={setOutcropObject}
           />
         </Dialog.CustomContent>

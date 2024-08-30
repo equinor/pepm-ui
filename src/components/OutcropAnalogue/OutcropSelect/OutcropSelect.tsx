@@ -6,14 +6,23 @@ import { OutcropType } from '../OutcropAnalogueGroup/OutcropAnalogueGroup';
 
 export const OutcropSelect = ({
   outcropObject,
+  outcropGroup,
   setOutcropObject,
 }: {
   outcropObject: OutcropType;
+  outcropGroup: OutcropDto[];
   setOutcropObject: React.Dispatch<React.SetStateAction<OutcropType>>;
 }) => {
   const OutcropData = useFetchOutcropData();
   if (OutcropData.isLoading || !OutcropData.data?.success)
     return <p>Loading .....</p>;
+
+  const filterDisabled = (option: OutcropDto) => {
+    const caseExists = outcropGroup.filter(
+      (outcrop) => outcrop.outcropId === option.outcropId,
+    );
+    return caseExists.length > 0;
+  };
 
   return (
     <div>
@@ -42,6 +51,7 @@ export const OutcropSelect = ({
 
           setOutcropObject(copyObject);
         }}
+        optionDisabled={filterDisabled}
         noOptionsText="No options"
       />
 
