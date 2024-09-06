@@ -184,7 +184,7 @@ export const CaseButtons = ({
               </Styled.Button>
             ) : (
               <Styled.Button
-                color={caseStatus === 'Failed' && 'danger'}
+                color={caseStatus === 'Failed' ? 'danger' : undefined}
                 variant="outlined"
                 onClick={runCase}
                 disabled={

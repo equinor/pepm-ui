@@ -31,7 +31,7 @@ export const FileUploader = ({
         {INI && (
           <Icon fill={theme.light.text.staticIconsTertiary} data={arrowIcon} />
         )}
-        <SelectFile onClick={handleClick}>
+        <SelectFile onClick={() => handleClick}>
           {INI ? 'Select parameter INI file' : 'Select model NC file'}
         </SelectFile>
         {INI && '(optional)'}
