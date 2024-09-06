@@ -10,7 +10,7 @@
     "@equinor/eds-icons": "0.21.0",
     "@equinor/eds-tokens": "0.9.2",
     "@hookform/resolvers": "^3.3.2",
-    "@tanstack/react-query": "^5.55.0",
+    "@tanstack/react-query": "4.36.1",
     "@tanstack/react-query-devtools": "^5.55.0",
     "@tanstack/react-table": "^8.9.1",
     "@testing-library/dom": "10.4.0",
@@ -33,7 +33,7 @@
     "react-router-dom": "^6.23.1",
     "react-scripts": "5.0.1",
     "styled-components": "6.1.13",
-    "typescript": "^4.9.4",
+    "typescript": "^5.5.4",
     "web-vitals": "^2.1.0",
     "zod": "^3.23.8"
   },
@@ -47,7 +47,7 @@
     "lint": "eslint --fix --ext .ts,.tsx .",
     "prettier:fix": "prettier . --write",
     "prepare": "husky install",
-    "pre-commit": "yarn lint-staged",
+    "pre-commit": "yarn test --watchAll=false && yarn lint-staged",
     "generate-schema:radix": "npx openapi-typescript https://api-pepm-dev.radix.equinor.com/swagger/v1/swagger.yaml -o src/models/schema.d.ts"
   },
   "lint-staged": {
