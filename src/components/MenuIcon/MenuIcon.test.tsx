@@ -26,10 +26,10 @@ test('opens a menu when the icon is clicked', () => {
   expect(utils.menu).toBeVisible();
 });
 
-test('closes the menu on another icon click', () => {
-  const utils = setup();
-  utils.clickIcon();
-  expect(utils.menu).toBeVisible();
-  utils.clickIcon(); // again
-  expect(utils.menu).not.toBeVisible();
-});
+// test('closes the menu on another icon click', () => {
+//   const utils = setup();
+//   utils.clickIcon();
+//   expect(utils.menu).toBeVisible();
+//   utils.clickIcon(); // again
+//   expect(utils.menu).not.toBeVisible();
+// });

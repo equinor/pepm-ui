@@ -58,7 +58,7 @@ export const CaseGroup = ({
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(['model-cases']);
+      queryClient.invalidateQueries({ queryKey: ['model-cases'] });
     },
   });
 
@@ -79,7 +79,7 @@ export const CaseGroup = ({
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(['model-cases']);
+      queryClient.invalidateQueries({ queryKey: ['model-cases'] });
     },
   });
 
@@ -97,7 +97,7 @@ export const CaseGroup = ({
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(['model-cases']);
+      queryClient.invalidateQueries({ queryKey: ['model-cases'] });
     },
   });
 

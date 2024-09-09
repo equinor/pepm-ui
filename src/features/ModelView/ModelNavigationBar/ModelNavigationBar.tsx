@@ -96,7 +96,7 @@ export const ModelNavigationBar = () => {
           }}
         ></Styled.Back>
         <Styled.SidebarLink
-          className={menuItems.href === path && 'activeTab'}
+          className={menuItems.href === path ? 'activeTab' : undefined}
           label={menuItems.label}
           icon={menuItems.icon}
           active={menuItems.href === path}
@@ -117,7 +117,9 @@ export const ModelNavigationBar = () => {
         {objectItems.subItems?.map((item) => (
           <Styled.AccordionItem
             className={
-              item.name === path && path2 === item.type && 'activeTab actTab'
+              item.name === path && path2 === item.type
+                ? 'activeTab actTab'
+                : undefined
             }
             key={item.label}
             label={item.label}
@@ -138,7 +140,9 @@ export const ModelNavigationBar = () => {
         {variogramItems.subItems?.map((item) => (
           <Styled.AccordionItem
             className={
-              item.name === path && path2 === item.type && 'activeTab actTab'
+              item.name === path && path2 === item.type
+                ? 'activeTab actTab'
+                : undefined
             }
             key={item.label}
             label={item.label}

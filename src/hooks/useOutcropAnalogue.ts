@@ -32,7 +32,7 @@ export const useOutcropAnalouge = () => {
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(['analogue-model']);
+      queryClient.invalidateQueries({ queryKey: ['analogue-model'] });
     },
   });
   return { postOutcropRow, deleteOutcropAnalogue };

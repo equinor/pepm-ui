@@ -173,7 +173,7 @@ export const ModelMetadataView = ({
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(['analogue-model']);
+      queryClient.invalidateQueries({ queryKey: ['analogue-model'] });
     },
   });
 
@@ -191,7 +191,7 @@ export const ModelMetadataView = ({
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(['analogue-model']);
+      queryClient.invalidateQueries({ queryKey: ['analogue-model'] });
     },
   });
 
