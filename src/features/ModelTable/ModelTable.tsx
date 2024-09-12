@@ -107,6 +107,7 @@ export const ModelTable = () => {
         columnResizeMode="onChange"
         rows={data.data}
         pageSize={10}
+        scrollbarHorizontal
         columns={[
           { accessorKey: 'name', header: 'Model name', id: 'name' },
           {
