@@ -61,7 +61,9 @@ export const StratigraphicColumnSelect = ({
     <Styled.AutocompleteList>
       <Autocomplete
         label="Country"
-        options={filterCountries}
+        options={filterCountries.sort((a, b) =>
+          a.identifier.localeCompare(b.identifier),
+        )}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<CountryDto>) => {
           setStratColumnObject({
