@@ -39,11 +39,29 @@ export const StratigraphicColumnSelect = ({
   )
     return <p>Loading ...</p>;
 
+  const hasFields = (id: string) => {
+    const res = fieldData.data.data.filter((f) => f.countryId === id);
+    return res;
+  };
+
+  const hasStratCol = (id: string) => {
+    const StratColContryList = stratColumnData.data.data.map((col) =>
+      col.countries.filter((c) => c.countryId === id),
+    );
+    const res = StratColContryList.filter((col) => col.length > 0);
+    return res;
+  };
+
+  const filterCountries = countryData.data.data.filter(
+    (c) =>
+      hasStratCol(c.countryId).length > 0 || hasFields(c.countryId).length > 0,
+  );
+
   return (
     <Styled.AutocompleteList>
       <Autocomplete
         label="Country"
-        options={countryData.data.data}
+        options={filterCountries}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<CountryDto>) => {
           setStratColumnObject({
