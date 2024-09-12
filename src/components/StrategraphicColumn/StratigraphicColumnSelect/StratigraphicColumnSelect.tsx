@@ -13,7 +13,7 @@ import {
   useFetchSmdaMetadataStratigraphicUnits,
   useFetchSmdaStratigraphicColumns,
 } from '../../../hooks/useFetchStratColData';
-import * as Styled from './StratigraphicColumnSelect.styled';
+import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
 
 export const StratigraphicColumnSelect = ({
   stratColumnObject,
@@ -58,7 +58,7 @@ export const StratigraphicColumnSelect = ({
   );
 
   return (
-    <Styled.AutocompleteList>
+    <StyledDialog.AutocompleteList>
       <Autocomplete
         label="Country"
         options={filterCountries.sort((a, b) =>
@@ -201,6 +201,6 @@ export const StratigraphicColumnSelect = ({
         }
         noOptionsText="No options"
       />
-    </Styled.AutocompleteList>
+    </StyledDialog.AutocompleteList>
   );
 };

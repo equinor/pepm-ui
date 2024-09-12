@@ -14,6 +14,7 @@ import {
   OutcropDto,
 } from '../../../api/generated';
 import { useOutcropAnalouge } from '../../../hooks/useOutcropAnalogue';
+import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
 import { OutcropSelect } from '../OutcropSelect/OutcropSelect';
 import * as Styled from './OutcropAnalogueGroup.styled';
 
@@ -131,7 +132,7 @@ export const OutcropAnalogueGroup = ({
           </Button>
         </div>
       </Styled.Wrapper>
-      <Dialog open={showOutcropDialog}>
+      <StyledDialog.DialogWindow open={showOutcropDialog}>
         <Dialog.Header>Add Outcrop Analogue</Dialog.Header>
         <Dialog.CustomContent>
           <OutcropSelect
@@ -140,13 +141,13 @@ export const OutcropAnalogueGroup = ({
             setOutcropObject={setOutcropObject}
           />
         </Dialog.CustomContent>
-        <Dialog.Actions>
+        <StyledDialog.Actions>
           <Button onClick={handleAddOutcropAnalogue}>Add</Button>
           <Button variant="outlined" onClick={handleOutcropDialog}>
             Close
           </Button>
-        </Dialog.Actions>
-      </Dialog>
+        </StyledDialog.Actions>
+      </StyledDialog.DialogWindow>
     </>
   );
 };

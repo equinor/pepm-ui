@@ -2,6 +2,7 @@
 import { Autocomplete, AutocompleteChanges } from '@equinor/eds-core-react';
 import { OutcropDto } from '../../../api/generated';
 import { useFetchOutcropData } from '../../../hooks/useFetchOutcropData';
+import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
 import { OutcropType } from '../OutcropAnalogueGroup/OutcropAnalogueGroup';
 
 export const OutcropSelect = ({
@@ -25,7 +26,7 @@ export const OutcropSelect = ({
   };
 
   return (
-    <div>
+    <StyledDialog.AutocompleteList>
       <Autocomplete
         label="Analogue"
         options={OutcropData.data.data}
@@ -95,6 +96,6 @@ export const OutcropSelect = ({
         noOptionsText="No options"
         readOnly
       />
-    </div>
+    </StyledDialog.AutocompleteList>
   );
 };

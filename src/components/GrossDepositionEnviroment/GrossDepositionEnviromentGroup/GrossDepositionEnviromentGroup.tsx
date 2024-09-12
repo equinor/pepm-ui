@@ -18,6 +18,7 @@ import {
   GeologicalStandardDto,
 } from '../../../api/generated';
 import { queryClient } from '../../../auth/queryClient';
+import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
 import { GdeSelect } from '../GdeSelect/GdeSelect';
 import * as Styled from './GrossDepositionEnviromentGroup.styled';
 
@@ -160,18 +161,18 @@ export const GrossDepositionEnviromentGroup = ({
         </div>
       </Styled.Wrapper>
 
-      <Dialog open={showGdeDialog}>
+      <StyledDialog.DialogWindow open={showGdeDialog}>
         <Dialog.Header>Add Gross Deposition Enviroment</Dialog.Header>
         <Dialog.CustomContent>
           <GdeSelect gdeObject={gdeObject} setGdeObject={setGdeObject} />
         </Dialog.CustomContent>
-        <Dialog.Actions>
+        <StyledDialog.Actions>
           <Button onClick={handleAddGde}>Add</Button>
           <Button variant="outlined" onClick={handleGdeDialog}>
             Close
           </Button>
-        </Dialog.Actions>
-      </Dialog>
+        </StyledDialog.Actions>
+      </StyledDialog.DialogWindow>
     </>
   );
 };
