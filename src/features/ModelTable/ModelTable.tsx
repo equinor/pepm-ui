@@ -48,8 +48,6 @@ export const ModelTable = () => {
     return groupList;
   };
 
-  console.log(data.data);
-
   return (
     <Styled.Table>
       <EdsDataGrid

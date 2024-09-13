@@ -65,8 +65,6 @@ export const OutcropAnalogueGroup = ({
         requestBody: postRequestBody,
       });
       if (rowUpload.success) handleOutcropDialog();
-    } else {
-      console.log('Can not add');
     }
   };
 
