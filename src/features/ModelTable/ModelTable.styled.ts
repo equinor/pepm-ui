@@ -6,7 +6,6 @@ export const Table = styled.div`
   max-width: 1750px;
   > div {
     height: 100%;
-    overflow: hidden;
     > table {
       min-width: 90% !important;
 
@@ -49,15 +48,5 @@ export const List = styled.div`
   > p {
     margin: 0;
     padding-right: ${spacings.X_SMALL};
-  }
-`;
-
-export const Upload = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  row-gap: ${spacings.X_SMALL};
-  > p {
-    margin: 0;
   }
 `;
