@@ -13,7 +13,7 @@ import {
   useFetchSmdaMetadataStratigraphicUnits,
   useFetchSmdaStratigraphicColumns,
 } from '../../../hooks/useFetchStratColData';
-import * as Styled from './StratigraphicColumnSelect.styled';
+import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
 
 export const StratigraphicColumnSelect = ({
   stratColumnObject,
@@ -39,11 +39,31 @@ export const StratigraphicColumnSelect = ({
   )
     return <p>Loading ...</p>;
 
+  const hasFields = (id: string) => {
+    const res = fieldData.data.data.filter((f) => f.countryId === id);
+    return res;
+  };
+
+  const hasStratCol = (id: string) => {
+    const StratColContryList = stratColumnData.data.data.map((col) =>
+      col.countries.filter((c) => c.countryId === id),
+    );
+    const res = StratColContryList.filter((col) => col.length > 0);
+    return res;
+  };
+
+  const filterCountries = countryData.data.data.filter(
+    (c) =>
+      hasStratCol(c.countryId).length > 0 || hasFields(c.countryId).length > 0,
+  );
+
   return (
-    <Styled.AutocompleteList>
+    <StyledDialog.AutocompleteList>
       <Autocomplete
         label="Country"
-        options={countryData.data.data}
+        options={filterCountries.sort((a, b) =>
+          a.identifier.localeCompare(b.identifier),
+        )}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<CountryDto>) => {
           setStratColumnObject({
@@ -181,6 +201,6 @@ export const StratigraphicColumnSelect = ({
         }
         noOptionsText="No options"
       />
-    </Styled.AutocompleteList>
+    </StyledDialog.AutocompleteList>
   );
 };

@@ -21,6 +21,7 @@ import { OutcropAnalogueGroup } from '../../../components/OutcropAnalogue/Outcro
 import { StratigraphicColumnSelect } from '../../../components/StrategraphicColumn/StratigraphicColumnSelect/StratigraphicColumnSelect';
 import { StratigrapicGroups } from '../../../components/StrategraphicColumn/StratigrapicGroups/StratigrapicGroups';
 import { useFetchModel } from '../../../hooks/useFetchModel';
+import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
 import { StratColumnType } from '../../HandleModel/HandleModelComponent/HandleModelComponent';
 import { EditNameDescription } from '../EditNameDescription/EditNameDescription';
 import * as Styled from './ModelMetadataView.styled';
@@ -330,7 +331,7 @@ export const ModelMetadataView = ({
         </div>
       </Styled.Metadata>
 
-      <Dialog open={showStratColDialog}>
+      <StyledDialog.DialogWindow open={showStratColDialog}>
         <Dialog.Header>Add stratigraphic column</Dialog.Header>
         <Dialog.CustomContent>
           <StratigraphicColumnSelect
@@ -338,13 +339,13 @@ export const ModelMetadataView = ({
             setStratColumnObject={setStratColumnObject}
           />
         </Dialog.CustomContent>
-        <Styled.Actions>
+        <StyledDialog.Actions>
           <Button onClick={handleAddStratCol}>Add</Button>
           <Button variant="outlined" onClick={handleStratColDialog}>
             Close
           </Button>
-        </Styled.Actions>
-      </Dialog>
+        </StyledDialog.Actions>
+      </StyledDialog.DialogWindow>
     </Styled.Wrapper>
   );
 };

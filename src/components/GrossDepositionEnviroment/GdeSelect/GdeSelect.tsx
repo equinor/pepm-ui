@@ -2,6 +2,7 @@
 import { Autocomplete, AutocompleteChanges } from '@equinor/eds-core-react';
 import { GeologicalStandardDto } from '../../../api/generated';
 import { useFetchGrossDepData } from '../../../hooks/useFetchGrossDepData';
+import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
 import { GdeType } from '../GrossDepositionEnviromentGroup/GrossDepositionEnviromentGroup';
 
 export const GdeSelect = ({
@@ -38,7 +39,7 @@ export const GdeSelect = ({
   );
 
   return (
-    <div>
+    <StyledDialog.AutocompleteList>
       <Autocomplete
         label="Gross Depositional Environment (GDE)"
         options={Gde}
@@ -93,6 +94,6 @@ export const GdeSelect = ({
         }}
         noOptionsText="No options"
       />
-    </div>
+    </StyledDialog.AutocompleteList>
   );
 };
