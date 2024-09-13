@@ -28,6 +28,10 @@ export class WebhooksService {
             url: '/api/webhooks/nrresqml/status',
             body: requestBody,
             mediaType: 'application/json-patch+json',
+            errors: {
+                400: `Bad Request`,
+                404: `Not Found`,
+            },
         });
     }
 
@@ -44,6 +48,10 @@ export class WebhooksService {
             url: '/api/webhooks/channest/status',
             body: requestBody,
             mediaType: 'application/json-patch+json',
+            errors: {
+                400: `Bad Request`,
+                404: `Not Found`,
+            },
         });
     }
 
@@ -60,6 +68,10 @@ export class WebhooksService {
             url: '/api/webhooks/vargrest/status',
             body: requestBody,
             mediaType: 'application/json-patch+json',
+            errors: {
+                400: `Bad Request`,
+                404: `Not Found`,
+            },
         });
     }
 

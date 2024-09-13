@@ -18,6 +18,9 @@ export class ModelAreaTypeService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/modelareatype',
+            errors: {
+                404: `Not Found`,
+            },
         });
     }
 

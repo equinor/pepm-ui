@@ -31,6 +31,9 @@ export class AnalogueModelComputeCasesService {
             },
             body: requestBody,
             mediaType: 'application/json-patch+json',
+            errors: {
+                400: `Bad Request`,
+            },
         });
     }
 
@@ -47,6 +50,9 @@ export class AnalogueModelComputeCasesService {
             url: '/api/analogue-models/{id}/compute-cases',
             path: {
                 'id': id,
+            },
+            errors: {
+                400: `Bad Request`,
             },
         });
     }
@@ -72,6 +78,9 @@ export class AnalogueModelComputeCasesService {
             },
             body: requestBody,
             mediaType: 'application/json-patch+json',
+            errors: {
+                400: `Bad Request`,
+            },
         });
     }
 
@@ -91,6 +100,10 @@ export class AnalogueModelComputeCasesService {
             path: {
                 'id': id,
                 'computeCaseId': computeCaseId,
+            },
+            errors: {
+                400: `Bad Request`,
+                404: `Not Found`,
             },
         });
     }

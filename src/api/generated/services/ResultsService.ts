@@ -26,6 +26,9 @@ export class ResultsService {
             path: {
                 'id': id,
             },
+            errors: {
+                404: `Not Found`,
+            },
         });
     }
 
@@ -43,6 +46,9 @@ export class ResultsService {
             url: '/api/analogue-models/{id}/results/variogram',
             path: {
                 'id': id,
+            },
+            errors: {
+                404: `Not Found`,
             },
         });
     }

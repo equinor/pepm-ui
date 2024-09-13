@@ -42,7 +42,11 @@ export type { CreateComputeCaseCommandForm } from './models/CreateComputeCaseCom
 export type { CreateComputeCaseCommandResponse } from './models/CreateComputeCaseCommandResponse';
 export type { CreateComputeCaseInputSettingsForm } from './models/CreateComputeCaseInputSettingsForm';
 export type { CreateMetadataCommandForm } from './models/CreateMetadataCommandForm';
+export type { CreateMetadataCommandResponse } from './models/CreateMetadataCommandResponse';
+export type { CreateMetadataDto } from './models/CreateMetadataDto';
 export type { CreateParameterCommand } from './models/CreateParameterCommand';
+export type { CreateParameterCommandResponse } from './models/CreateParameterCommandResponse';
+export type { CreateParameterDto } from './models/CreateParameterDto';
 export type { DeleteGeologicalGroupCommandResponse } from './models/DeleteGeologicalGroupCommandResponse';
 export type { DeleteStratigraphicGroupCommandResponse } from './models/DeleteStratigraphicGroupCommandResponse';
 export type { ErrorResponse } from './models/ErrorResponse';
@@ -109,6 +113,7 @@ export type { PatchParameterCommandResponse } from './models/PatchParameterComma
 export type { PatchParameterDto } from './models/PatchParameterDto';
 export type { PrepareChunkedUploadCommandResponse } from './models/PrepareChunkedUploadCommandResponse';
 export type { PrepareChunkedUploadDto } from './models/PrepareChunkedUploadDto';
+export type { ProblemDetails } from './models/ProblemDetails';
 export type { RadixJobDto } from './models/RadixJobDto';
 export type { StratColumnDto } from './models/StratColumnDto';
 export type { StratigraphicGroupDto } from './models/StratigraphicGroupDto';
@@ -143,6 +148,7 @@ export { AnalogueModelMetadataService } from './services/AnalogueModelMetadataSe
 export { AnalogueModelParametersService } from './services/AnalogueModelParametersService';
 export { AnalogueModelsService } from './services/AnalogueModelsService';
 export { ComputeSettingsService } from './services/ComputeSettingsService';
+export { DownloadsService } from './services/DownloadsService';
 export { ImagesService } from './services/ImagesService';
 export { JobsService } from './services/JobsService';
 export { MetadataService } from './services/MetadataService';

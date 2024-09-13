@@ -29,6 +29,9 @@ export class AnalogueModelParametersService {
             },
             body: requestBody,
             mediaType: 'application/json-patch+json',
+            errors: {
+                400: `Bad Request`,
+            },
         });
     }
 

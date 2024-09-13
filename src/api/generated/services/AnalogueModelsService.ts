@@ -75,6 +75,9 @@ export class AnalogueModelsService {
             path: {
                 'id': id,
             },
+            errors: {
+                404: `Not Found`,
+            },
         });
     }
 
@@ -174,6 +177,9 @@ export class AnalogueModelsService {
             },
             formData: formData,
             mediaType: 'multipart/form-data',
+            errors: {
+                400: `Bad Request`,
+            },
         });
     }
 
@@ -198,6 +204,9 @@ export class AnalogueModelsService {
             },
             formData: formData,
             mediaType: 'multipart/form-data',
+            errors: {
+                400: `Bad Request`,
+            },
         });
     }
 
@@ -219,6 +228,9 @@ export class AnalogueModelsService {
             },
             body: requestBody,
             mediaType: 'application/json-patch+json',
+            errors: {
+                400: `Bad Request`,
+            },
         });
     }
 
@@ -243,6 +255,10 @@ export class AnalogueModelsService {
             },
             body: requestBody,
             mediaType: 'application/json-patch+json',
+            errors: {
+                400: `Bad Request`,
+                404: `Not Found`,
+            },
         });
     }
 
@@ -264,6 +280,9 @@ export class AnalogueModelsService {
             },
             body: requestBody,
             mediaType: 'application/json-patch+json',
+            errors: {
+                404: `Not Found`,
+            },
         });
     }
 
@@ -283,6 +302,10 @@ export class AnalogueModelsService {
             path: {
                 'id': id,
                 'outcropId': outcropId,
+            },
+            errors: {
+                400: `Bad Request`,
+                404: `Not Found`,
             },
         });
     }
@@ -305,6 +328,10 @@ export class AnalogueModelsService {
             },
             body: requestBody,
             mediaType: 'application/json-patch+json',
+            errors: {
+                400: `Bad Request`,
+                404: `Not Found`,
+            },
         });
     }
 
@@ -326,6 +353,10 @@ export class AnalogueModelsService {
             },
             body: requestBody,
             mediaType: 'application/json-patch+json',
+            errors: {
+                400: `Bad Request`,
+                404: `Not Found`,
+            },
         });
     }
 
