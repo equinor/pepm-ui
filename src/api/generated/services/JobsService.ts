@@ -3,8 +3,11 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ConvertAnalogueModelCommand } from '../models/ConvertAnalogueModelCommand';
+import type { ConvertAnalogueModelCommandResponse } from '../models/ConvertAnalogueModelCommandResponse';
 import type { EstimateObjectCommand } from '../models/EstimateObjectCommand';
+import type { EstimateObjectCommandResponse } from '../models/EstimateObjectCommandResponse';
 import type { EstimateVariogramCommand } from '../models/EstimateVariogramCommand';
+import type { EstimateVariogramCommandResponse } from '../models/EstimateVariogramCommandResponse';
 import type { GetCurrentJobStatusCommandResponse } from '../models/GetCurrentJobStatusCommandResponse';
 import type { GetCurrentJobStatusListCommand } from '../models/GetCurrentJobStatusListCommand';
 import type { GetJobDetailQueryResponse } from '../models/GetJobDetailQueryResponse';
@@ -25,6 +28,7 @@ export class JobsService {
             method: 'GET',
             url: '/api/jobs',
             errors: {
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -45,6 +49,7 @@ export class JobsService {
                 'id': id,
             },
             errors: {
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -66,6 +71,7 @@ export class JobsService {
                 'id': id,
             },
             errors: {
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -81,6 +87,7 @@ export class JobsService {
             method: 'GET',
             url: '/api/jobs/status',
             errors: {
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -89,19 +96,20 @@ export class JobsService {
     /**
      * Convert AnalogueModels to the internal format used by PEPM in order to perform calculations.
      * @param requestBody
-     * @returns any Accepted
+     * @returns ConvertAnalogueModelCommandResponse Accepted
      * @throws ApiError
      */
     public static postApiJobsComputeModelConversions(
         requestBody?: ConvertAnalogueModelCommand,
-    ): CancelablePromise<any> {
+    ): CancelablePromise<ConvertAnalogueModelCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/jobs/compute/model-conversions',
             body: requestBody,
             mediaType: 'application/json-patch+json',
             errors: {
-                400: `Bad Request`,
+                403: `Forbidden`,
+                404: `Not Found`,
             },
         });
     }
@@ -109,12 +117,12 @@ export class JobsService {
     /**
      * Estimate channel on a Deltares based model.
      * @param requestBody
-     * @returns any Accepted
+     * @returns EstimateObjectCommandResponse Accepted
      * @throws ApiError
      */
     public static postApiJobsComputeObjectEstimations(
         requestBody?: EstimateObjectCommand,
-    ): CancelablePromise<any> {
+    ): CancelablePromise<EstimateObjectCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/jobs/compute/object-estimations',
@@ -122,6 +130,7 @@ export class JobsService {
             mediaType: 'application/json-patch+json',
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
             },
         });
     }
@@ -129,12 +138,12 @@ export class JobsService {
     /**
      * Estimate channel on a Deltares based model.
      * @param requestBody
-     * @returns any Accepted
+     * @returns EstimateVariogramCommandResponse Accepted
      * @throws ApiError
      */
     public static postApiJobsComputeVariogramEstimations(
         requestBody?: EstimateVariogramCommand,
-    ): CancelablePromise<any> {
+    ): CancelablePromise<EstimateVariogramCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/jobs/compute/variogram-estimations',
@@ -142,6 +151,7 @@ export class JobsService {
             mediaType: 'application/json-patch+json',
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
             },
         });
     }

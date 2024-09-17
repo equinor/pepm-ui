@@ -3,13 +3,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { ParameterDetail } from './ParameterDetail';
+import type { OutcropDto } from './OutcropDto';
 
-export type GetParameterDetailQueryResponse = {
+export type AddAnalogueModelOutcropResponse = {
     success?: boolean;
     count?: number | null;
     message?: string | null;
     validationErrors?: Array<string> | null;
-    data: ParameterDetail;
+    data: OutcropDto;
 };
 

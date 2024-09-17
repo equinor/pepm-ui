@@ -19,6 +19,7 @@ export class ModelAreaTypeService {
             method: 'GET',
             url: '/api/modelareatype',
             errors: {
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });

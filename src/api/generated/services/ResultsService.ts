@@ -27,6 +27,7 @@ export class ResultsService {
                 'id': id,
             },
             errors: {
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -48,6 +49,7 @@ export class ResultsService {
                 'id': id,
             },
             errors: {
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });

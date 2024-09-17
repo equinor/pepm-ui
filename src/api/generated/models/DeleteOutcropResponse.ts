@@ -3,13 +3,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { ParameterList } from './ParameterList';
-
-export type GetParameterListQueryResponse = {
+export type DeleteOutcropResponse = {
     success?: boolean;
     count?: number | null;
     message?: string | null;
     validationErrors?: Array<string> | null;
-    data: Array<ParameterList>;
+    data: string;
 };
 
