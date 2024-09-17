@@ -107,7 +107,6 @@ export const ModelNavigationBar = () => {
 
         <Styled.SidebarLink
           disabled
-          isExpanded
           label={objectItems.label}
           icon={objectItems.icon}
           onClick={() => {

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { CoordinatesDialog } from '../../components/AreaCoordinates/CoordinatesDialog/CoordinatesDialog';
 import { ImageView } from '../../components/ImageView/ImageView';
 import { ModelMetadataView } from '../../features/ModelView/ModelMetadataView/ModelMetadataView';
+import { DeleteModel } from './DeleteButton/DeleteModel';
 import { ModelAreaCoordinates } from './ModelAreaCoordinates/ModelAreaCoordinates';
 import { ModelFilesView } from './ModelFilesView/ModelFilesView';
 import * as Styled from './ModelView.styled';
@@ -21,6 +22,7 @@ export const ModelView = () => {
           <ModelMetadataView />
           <ModelAreaCoordinates toggleOpen={toggleOpen}></ModelAreaCoordinates>
           <ModelFilesView />
+          <DeleteModel />
         </Styled.InnerMetadataWrapper>
         <ImageView
           text="Model placeholder image"

@@ -7,10 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import {
   AnalogueModelsService,
-  CountryDto,
-  FieldDto,
   OpenAPI,
-  StratColumnDto,
   StratigraphicGroupDto,
   StratUnitDto,
 } from '../../api/generated';
@@ -40,52 +37,6 @@ export const ModelTable = () => {
   });
 
   if (isLoading || !data?.success) return <p>Loading...</p>;
-
-  const getRowCountries = (stratGroupList: StratigraphicGroupDto[]) => {
-    const countryList: CountryDto[] = [];
-
-    if (stratGroupList.length > 0) {
-      stratGroupList.forEach((i) => {
-        if (
-          countryList.filter((item) => item.countryId === i.country.countryId)
-            .length <= 0
-        )
-          countryList.push(i.country);
-      });
-    }
-    return countryList;
-  };
-
-  const getRowField = (stratGroupList: StratigraphicGroupDto[]) => {
-    const fieldList: FieldDto[] = [];
-
-    if (stratGroupList.length > 0) {
-      stratGroupList.forEach((i) => {
-        if (
-          fieldList.filter((item) => item.fieldId === i.field.fieldId).length <=
-          0
-        )
-          fieldList.push(i.field);
-      });
-    }
-    return fieldList;
-  };
-
-  const getRowStratCol = (stratGroupList: StratigraphicGroupDto[]) => {
-    const stratColList: StratColumnDto[] = [];
-
-    if (stratGroupList.length > 0) {
-      stratGroupList.forEach((i) => {
-        if (
-          stratColList.filter(
-            (item) => item.stratColumnId === i.stratColumn.stratColumnId,
-          ).length <= 0
-        )
-          stratColList.push(i.stratColumn);
-      });
-    }
-    return stratColList;
-  };
 
   const getRowGroup = (stratGroupList: StratigraphicGroupDto[]) => {
     const groupList: StratUnitDto[] = [];
@@ -145,64 +96,60 @@ export const ModelTable = () => {
         columns={[
           { accessorKey: 'name', header: 'Model name', id: 'name' },
           {
-            accessorKey: 'outcrops',
             id: 'outcrops',
             header: 'Outcrop',
             enableColumnFilter: false,
             size: 100,
             cell: ({ row }) => (
               <Styled.List>
-                {row.original.outcrops.length > 0 ??
-                  row.original.outcrops.map((a) => (
-                    <p key={a.outcropId}>{a.name + ', '}</p>
-                  ))}
+                {row.original.outcrops.map((a) => (
+                  <p key={a.outcropId}>{a.name + ', '}</p>
+                ))}
               </Styled.List>
             ),
           },
           {
-            accessorKey: 'country',
             id: 'country',
             header: 'Country',
             enableColumnFilter: false,
             size: 120,
             cell: ({ row }) => (
               <Styled.List>
-                {getRowCountries(row.original.stratigraphicGroups).map((i) => (
-                  <p key={i.countryId}>{i.identifier}, </p>
+                {row.original.stratigraphicGroups.map((i) => (
+                  <p key={i.country.countryId}>{i.country.identifier}, </p>
                 ))}
               </Styled.List>
             ),
           },
           {
-            accessorKey: 'field',
             id: 'field',
             header: 'Field',
             enableColumnFilter: false,
             size: 120,
             cell: ({ row }) => (
               <Styled.List>
-                {getRowField(row.original.stratigraphicGroups).map((i) => (
-                  <p key={i.fieldId}>{i.identifier}, </p>
+                {row.original.stratigraphicGroups.map((i) => (
+                  <p key={i.field.fieldId}>{i.field.identifier}, </p>
                 ))}
               </Styled.List>
             ),
           },
           {
-            accessorKey: 'stratigraphicColumn',
             id: 'stratigraphicColumn',
             header: 'Stratigraphic column',
             enableColumnFilter: false,
             size: 230,
             cell: ({ row }) => (
               <Styled.List>
-                {getRowStratCol(row.original.stratigraphicGroups).map((i) => (
-                  <p key={i.stratColumnId}>{i.identifier}, </p>
+                {row.original.stratigraphicGroups.map((i) => (
+                  <p key={i.stratColumn.stratColumnId}>
+                    {i.stratColumn.identifier},{' '}
+                  </p>
                 ))}
               </Styled.List>
             ),
           },
           {
-            accessorKey: 'group',
             id: 'group',
             header: 'Level 1 (group)',
             enableColumnFilter: false,
@@ -227,7 +174,6 @@ export const ModelTable = () => {
           },
 
           {
-            accessorKey: 'navigate',
             header: 'Actions',
             id: 'navigate',
             enableColumnFilter: false,
