@@ -23,6 +23,15 @@ export const ModelTable = () => {
   if (token) OpenAPI.TOKEN = token;
   const navigate = useNavigate();
 
+  enum ModelStatus {
+    UNKNOWN = 'Unknown',
+
+    TRANSFORMING = 'Transforming ...',
+    SUCCEEDED = 'Succeeded',
+    FAILED_UPLOADING = 'Uploading failed',
+    FAILED_TRANSFORMING = 'Transforming failed',
+  }
+
   const { isLoading, data } = useQuery({
     queryKey: ['analogue-models'],
     queryFn: () => AnalogueModelsService.getApiAnalogueModels(),
@@ -95,6 +104,31 @@ export const ModelTable = () => {
       });
     }
     return groupList;
+  };
+
+  const getModelStatus = (id: string) => {
+    let status = ModelStatus.UNKNOWN;
+
+    const model = data.data.find((m) => m.analogueModelId === id);
+    const transforming =
+      model && model.processingStatus ? model.processingStatus : undefined;
+    const isProcessed = model ? model.isProcessed : undefined;
+
+    if (isProcessed === true) {
+      status = ModelStatus.SUCCEEDED;
+    } else if (
+      transforming === 'Created' ||
+      transforming === 'Waiting' ||
+      transforming === 'Running'
+    ) {
+      status = ModelStatus.TRANSFORMING;
+    } else if (transforming === 'Failed') {
+      status = ModelStatus.FAILED_TRANSFORMING;
+    } else if (isProcessed === false) {
+      status = ModelStatus.FAILED_UPLOADING;
+    }
+
+    return status;
   };
 
   return (
@@ -188,7 +222,7 @@ export const ModelTable = () => {
             enableColumnFilter: false,
             size: 100,
             cell: ({ row }) => (
-              <>{row.original.isProcessed ? 'Success' : 'Failed'}</>
+              <>{getModelStatus(row.original.analogueModelId)}</>
             ),
           },
 

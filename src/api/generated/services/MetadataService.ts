@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateMetadataCommandForm } from '../models/CreateMetadataCommandForm';
+import type { CreateMetadataCommandResponse } from '../models/CreateMetadataCommandResponse';
 import type { ListAllQueryResponse } from '../models/ListAllQueryResponse';
 import type { ListCountriesQueryResponse } from '../models/ListCountriesQueryResponse';
 import type { ListFieldsQueryResponse } from '../models/ListFieldsQueryResponse';
@@ -25,18 +26,21 @@ export class MetadataService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/metadata',
+            errors: {
+                404: `Not Found`,
+            },
         });
     }
 
     /**
      * Creates new metadata of a specific metadata type (ex. field)
      * @param requestBody
-     * @returns void
+     * @returns CreateMetadataCommandResponse Success
      * @throws ApiError
      */
     public static postApiMetadata(
         requestBody?: CreateMetadataCommandForm,
-    ): CancelablePromise<void> {
+    ): CancelablePromise<CreateMetadataCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/metadata',
@@ -44,6 +48,7 @@ export class MetadataService {
             mediaType: 'application/json-patch+json',
             errors: {
                 400: `Bad Request`,
+                404: `Not Found`,
             },
         });
     }
@@ -67,6 +72,9 @@ export class MetadataService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/metadata/smda-metadata/countries',
+            errors: {
+                404: `Not Found`,
+            },
         });
     }
 
@@ -84,6 +92,9 @@ export class MetadataService {
             query: {
                 'countryId': countryId,
             },
+            errors: {
+                404: `Not Found`,
+            },
         });
     }
 
@@ -100,6 +111,9 @@ export class MetadataService {
             url: '/api/metadata/smda-metadata/stratigraphic-columns',
             query: {
                 'countryId': countryId,
+            },
+            errors: {
+                404: `Not Found`,
             },
         });
     }
@@ -121,6 +135,9 @@ export class MetadataService {
                 'stratUnitParentId': stratUnitParentId,
                 'stratColumnId': stratColumnId,
             },
+            errors: {
+                404: `Not Found`,
+            },
         });
     }
 
@@ -137,6 +154,9 @@ export class MetadataService {
             url: '/api/metadata/smda-metadata/geology-standards',
             query: {
                 'parentId': parentId,
+            },
+            errors: {
+                404: `Not Found`,
             },
         });
     }

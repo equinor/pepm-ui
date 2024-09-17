@@ -5,6 +5,7 @@
 
 import type { AnalogueModelSourceType } from './AnalogueModelSourceType';
 import type { GeologicalGroupDto } from './GeologicalGroupDto';
+import type { JobStatus } from './JobStatus';
 import type { MetadataDto } from './MetadataDto';
 import type { ModelAreaDto } from './ModelAreaDto';
 import type { OutcropDto } from './OutcropDto';
@@ -25,5 +26,6 @@ export type AnalogueModelList = {
     description: string;
     isProcessed: boolean;
     sourceType: AnalogueModelSourceType;
+    processingStatus: JobStatus;
 };
 

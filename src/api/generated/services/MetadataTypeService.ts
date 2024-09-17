@@ -18,6 +18,9 @@ export class MetadataTypeService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/metadatatype',
+            errors: {
+                404: `Not Found`,
+            },
         });
     }
 

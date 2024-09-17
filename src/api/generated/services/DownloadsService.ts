@@ -8,21 +8,21 @@ import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
-export class ImagesService {
+export class DownloadsService {
 
     /**
-     * @param imageId
+     * @param id
      * @returns File Success
      * @throws ApiError
      */
-    public static getApiImagesVariogram(
-        imageId: string,
+    public static getApiDownloads(
+        id: string,
     ): CancelablePromise<File> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/images/variogram/{imageId}',
+            url: '/api/downloads/{id}',
             path: {
-                'imageId': imageId,
+                'id': id,
             },
             errors: {
                 404: `Not Found`,

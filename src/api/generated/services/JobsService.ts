@@ -24,6 +24,9 @@ export class JobsService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/jobs',
+            errors: {
+                404: `Not Found`,
+            },
         });
     }
 
@@ -40,6 +43,9 @@ export class JobsService {
             url: '/api/jobs/{id}',
             path: {
                 'id': id,
+            },
+            errors: {
+                404: `Not Found`,
             },
         });
     }
@@ -59,6 +65,9 @@ export class JobsService {
             path: {
                 'id': id,
             },
+            errors: {
+                404: `Not Found`,
+            },
         });
     }
 
@@ -71,6 +80,9 @@ export class JobsService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/jobs/status',
+            errors: {
+                404: `Not Found`,
+            },
         });
     }
 
@@ -88,6 +100,9 @@ export class JobsService {
             url: '/api/jobs/compute/model-conversions',
             body: requestBody,
             mediaType: 'application/json-patch+json',
+            errors: {
+                400: `Bad Request`,
+            },
         });
     }
 
@@ -105,6 +120,9 @@ export class JobsService {
             url: '/api/jobs/compute/object-estimations',
             body: requestBody,
             mediaType: 'application/json-patch+json',
+            errors: {
+                400: `Bad Request`,
+            },
         });
     }
 
@@ -122,6 +140,9 @@ export class JobsService {
             url: '/api/jobs/compute/variogram-estimations',
             body: requestBody,
             mediaType: 'application/json-patch+json',
+            errors: {
+                400: `Bad Request`,
+            },
         });
     }
 

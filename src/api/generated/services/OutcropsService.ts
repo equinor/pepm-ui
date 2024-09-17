@@ -18,6 +18,9 @@ export class OutcropsService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/outcrops',
+            errors: {
+                404: `Not Found`,
+            },
         });
     }
 

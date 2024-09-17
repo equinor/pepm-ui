@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateParameterCommand } from '../models/CreateParameterCommand';
+import type { CreateParameterCommandResponse } from '../models/CreateParameterCommandResponse';
 import type { GetParameterDetailQueryResponse } from '../models/GetParameterDetailQueryResponse';
 import type { GetParameterListQueryResponse } from '../models/GetParameterListQueryResponse';
 import type { Operation } from '../models/Operation';
@@ -25,18 +26,21 @@ export class ParametersService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/parameters',
+            errors: {
+                404: `Not Found`,
+            },
         });
     }
 
     /**
      * Create new Parameter
      * @param requestBody
-     * @returns void
+     * @returns CreateParameterCommandResponse Success
      * @throws ApiError
      */
     public static postApiParameters(
         requestBody?: CreateParameterCommand,
-    ): CancelablePromise<void> {
+    ): CancelablePromise<CreateParameterCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/parameters',

@@ -11,6 +11,7 @@ import {
   AnalogueModelDetail,
   AnalogueModelMetadataService,
   AnalogueModelSourceType,
+  JobStatus,
   MetadataDto,
   UpdateAnalogueModelCommandBody,
 } from '../../../api/generated';
@@ -65,6 +66,7 @@ export const ModelMetadataView = ({
     modelAreas: [],
     stratigraphicGroups: [],
     geologicalGroups: [],
+    processingStatus: JobStatus.UNKNOWN,
   };
   const { modelId } = useParams();
 

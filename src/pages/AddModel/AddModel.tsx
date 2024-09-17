@@ -13,6 +13,7 @@ import {
   ConvertAnalogueModelCommand,
   CreateAnalogueModelCommand,
   JobsService,
+  JobStatus,
   MetadataDto,
   UploadFileType,
   UploadsService,
@@ -70,6 +71,7 @@ export const AddModel = () => {
     modelAreas: [],
     stratigraphicGroups: [],
     geologicalGroups: [],
+    processingStatus: JobStatus.UNKNOWN,
   };
 
   const createModel = useMutation({

@@ -3,9 +3,9 @@ import { MsalProvider } from '@azure/msal-react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { cleanup, render, screen } from '@testing-library/react';
 import { MsalReactTester } from 'msal-react-tester';
-import { AnalogueModelSourceType } from '../../../api/generated';
-import { ModelMetadata } from './ModelMetadata';
+import { AnalogueModelSourceType, JobStatus } from '../../../api/generated';
 import { useFetchOutcrops } from '../../../hooks/useFetchOutcrops';
+import { ModelMetadata } from './ModelMetadata';
 
 let msalTester: MsalReactTester;
 const mockMetadata = {
@@ -21,6 +21,7 @@ const mockMetadata = {
   modelAreas: [],
   stratigraphicGroups: [],
   geologicalGroups: [],
+  processingStatus: JobStatus.SUCCEEDED,
 };
 const errors = {};
 

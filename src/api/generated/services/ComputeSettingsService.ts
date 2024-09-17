@@ -18,6 +18,9 @@ export class ComputeSettingsService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/compute-settings',
+            errors: {
+                404: `Not Found`,
+            },
         });
     }
 

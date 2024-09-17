@@ -24,6 +24,9 @@ export class UploadsService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/uploads',
+            errors: {
+                404: `Not Found`,
+            },
         });
     }
 
@@ -40,6 +43,9 @@ export class UploadsService {
             url: '/api/uploads/{id}',
             path: {
                 'id': id,
+            },
+            errors: {
+                404: `Not Found`,
             },
         });
     }
@@ -62,6 +68,10 @@ export class UploadsService {
             url: '/api/uploads/models',
             formData: formData,
             mediaType: 'multipart/form-data',
+            errors: {
+                400: `Bad Request`,
+                404: `Not Found`,
+            },
         });
     }
 
@@ -84,6 +94,10 @@ export class UploadsService {
             url: '/api/uploads/models/manifest',
             formData: formData,
             mediaType: 'multipart/form-data',
+            errors: {
+                400: `Bad Request`,
+                404: `Not Found`,
+            },
         });
     }
 
@@ -105,6 +119,10 @@ export class UploadsService {
             url: '/api/uploads/models/chunks',
             formData: formData,
             mediaType: 'multipart/form-data',
+            errors: {
+                400: `Bad Request`,
+                404: `Not Found`,
+            },
         });
     }
 
@@ -124,6 +142,10 @@ export class UploadsService {
             url: '/api/uploads/models/complete',
             formData: formData,
             mediaType: 'multipart/form-data',
+            errors: {
+                400: `Bad Request`,
+                404: `Not Found`,
+            },
         });
     }
 
