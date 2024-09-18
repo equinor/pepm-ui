@@ -25,6 +25,7 @@ export class UploadsService {
             method: 'GET',
             url: '/api/uploads',
             errors: {
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -45,6 +46,7 @@ export class UploadsService {
                 'id': id,
             },
             errors: {
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -70,6 +72,7 @@ export class UploadsService {
             mediaType: 'multipart/form-data',
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -96,6 +99,7 @@ export class UploadsService {
             mediaType: 'multipart/form-data',
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -121,6 +125,7 @@ export class UploadsService {
             mediaType: 'multipart/form-data',
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -144,6 +149,7 @@ export class UploadsService {
             mediaType: 'multipart/form-data',
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });

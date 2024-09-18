@@ -25,6 +25,7 @@ export class DownloadsService {
                 'id': id,
             },
             errors: {
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });

@@ -31,6 +31,7 @@ export class AnalogueModelMetadataService {
             mediaType: 'application/json-patch+json',
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
             },
         });
     }

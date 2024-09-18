@@ -5,6 +5,7 @@
 import type { AddAnalogueModelAreaCommandForm } from '../models/AddAnalogueModelAreaCommandForm';
 import type { AddAnalogueModelAreaCommandResponse } from '../models/AddAnalogueModelAreaCommandResponse';
 import type { AddAnalogueModelOutcropForm } from '../models/AddAnalogueModelOutcropForm';
+import type { AddAnalogueModelOutcropResponse } from '../models/AddAnalogueModelOutcropResponse';
 import type { AddGeologicalGroupCommandResponse } from '../models/AddGeologicalGroupCommandResponse';
 import type { AddGeologicalGroupForm } from '../models/AddGeologicalGroupForm';
 import type { AddStatigraphicGroupForm } from '../models/AddStatigraphicGroupForm';
@@ -12,6 +13,7 @@ import type { AddStratigraphicGroupCommandResponse } from '../models/AddStratigr
 import type { CreateAnalogueModelCommand } from '../models/CreateAnalogueModelCommand';
 import type { CreateAnalogueModelCommandResponse } from '../models/CreateAnalogueModelCommandResponse';
 import type { DeleteGeologicalGroupCommandResponse } from '../models/DeleteGeologicalGroupCommandResponse';
+import type { DeleteOutcropResponse } from '../models/DeleteOutcropResponse';
 import type { DeleteStratigraphicGroupCommandResponse } from '../models/DeleteStratigraphicGroupCommandResponse';
 import type { GetAnalogueModelListQueryResponse } from '../models/GetAnalogueModelListQueryResponse';
 import type { GetAnalogueModelQueryResponse } from '../models/GetAnalogueModelQueryResponse';
@@ -37,6 +39,10 @@ export class AnalogueModelsService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/analogue-models',
+            errors: {
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
         });
     }
 
@@ -56,6 +62,7 @@ export class AnalogueModelsService {
             mediaType: 'application/json-patch+json',
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
             },
         });
     }
@@ -76,6 +83,7 @@ export class AnalogueModelsService {
                 'id': id,
             },
             errors: {
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -102,6 +110,7 @@ export class AnalogueModelsService {
             mediaType: 'application/json-patch+json',
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -128,6 +137,7 @@ export class AnalogueModelsService {
             mediaType: 'application/json-patch+json',
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -150,6 +160,7 @@ export class AnalogueModelsService {
             },
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -179,6 +190,7 @@ export class AnalogueModelsService {
             mediaType: 'multipart/form-data',
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
             },
         });
     }
@@ -206,6 +218,7 @@ export class AnalogueModelsService {
             mediaType: 'multipart/form-data',
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
             },
         });
     }
@@ -230,6 +243,7 @@ export class AnalogueModelsService {
             mediaType: 'application/json-patch+json',
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
             },
         });
     }
@@ -257,6 +271,7 @@ export class AnalogueModelsService {
             mediaType: 'application/json-patch+json',
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -265,13 +280,13 @@ export class AnalogueModelsService {
     /**
      * @param id
      * @param requestBody
-     * @returns AddStratigraphicGroupCommandResponse Success
+     * @returns AddAnalogueModelOutcropResponse Success
      * @throws ApiError
      */
     public static postApiAnalogueModelsOutcrops(
         id: string,
         requestBody?: AddAnalogueModelOutcropForm,
-    ): CancelablePromise<AddStratigraphicGroupCommandResponse> {
+    ): CancelablePromise<AddAnalogueModelOutcropResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/analogue-models/{id}/outcrops',
@@ -281,6 +296,7 @@ export class AnalogueModelsService {
             body: requestBody,
             mediaType: 'application/json-patch+json',
             errors: {
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -289,13 +305,13 @@ export class AnalogueModelsService {
     /**
      * @param id
      * @param outcropId
-     * @returns AddStratigraphicGroupCommandResponse Success
+     * @returns DeleteOutcropResponse Success
      * @throws ApiError
      */
     public static deleteApiAnalogueModelsOutcrops(
         id: string,
         outcropId: string,
-    ): CancelablePromise<AddStratigraphicGroupCommandResponse> {
+    ): CancelablePromise<DeleteOutcropResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/api/analogue-models/{id}/outcrops/{outcropId}',
@@ -305,6 +321,7 @@ export class AnalogueModelsService {
             },
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -330,6 +347,7 @@ export class AnalogueModelsService {
             mediaType: 'application/json-patch+json',
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -355,6 +373,7 @@ export class AnalogueModelsService {
             mediaType: 'application/json-patch+json',
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -380,6 +399,7 @@ export class AnalogueModelsService {
             },
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -405,6 +425,7 @@ export class AnalogueModelsService {
             },
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });

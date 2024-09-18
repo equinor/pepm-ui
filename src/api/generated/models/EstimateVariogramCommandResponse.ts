@@ -3,13 +3,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { PatchParameterDto } from './PatchParameterDto';
+import type { EstimateVariogramDto } from './EstimateVariogramDto';
 
-export type PatchParameterCommandResponse = {
+export type EstimateVariogramCommandResponse = {
     success?: boolean;
     count?: number | null;
     message?: string | null;
     validationErrors?: Array<string> | null;
-    data: PatchParameterDto;
+    data: EstimateVariogramDto;
 };
 

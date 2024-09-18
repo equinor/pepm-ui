@@ -33,6 +33,7 @@ export class AnalogueModelComputeCasesService {
             mediaType: 'application/json-patch+json',
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
             },
         });
     }
@@ -53,6 +54,7 @@ export class AnalogueModelComputeCasesService {
             },
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
             },
         });
     }
@@ -80,6 +82,7 @@ export class AnalogueModelComputeCasesService {
             mediaType: 'application/json-patch+json',
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
             },
         });
     }
@@ -103,6 +106,7 @@ export class AnalogueModelComputeCasesService {
             },
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });

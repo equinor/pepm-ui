@@ -3,13 +3,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { UpdateParameterDto } from './UpdateParameterDto';
+import type { EstimateObjectDto } from './EstimateObjectDto';
 
-export type UpdateParameterCommandResponse = {
+export type EstimateObjectCommandResponse = {
     success?: boolean;
     count?: number | null;
     message?: string | null;
     validationErrors?: Array<string> | null;
-    data: UpdateParameterDto;
+    data: EstimateObjectDto;
 };
 

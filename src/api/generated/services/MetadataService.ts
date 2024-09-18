@@ -27,12 +27,14 @@ export class MetadataService {
             method: 'GET',
             url: '/api/metadata',
             errors: {
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
     }
 
     /**
+     * @deprecated
      * Creates new metadata of a specific metadata type (ex. field)
      * @param requestBody
      * @returns CreateMetadataCommandResponse Success
@@ -48,6 +50,7 @@ export class MetadataService {
             mediaType: 'application/json-patch+json',
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -61,6 +64,10 @@ export class MetadataService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/metadata/smda-metadata',
+            errors: {
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
         });
     }
 
@@ -73,6 +80,7 @@ export class MetadataService {
             method: 'GET',
             url: '/api/metadata/smda-metadata/countries',
             errors: {
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -93,6 +101,7 @@ export class MetadataService {
                 'countryId': countryId,
             },
             errors: {
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -113,6 +122,7 @@ export class MetadataService {
                 'countryId': countryId,
             },
             errors: {
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -136,6 +146,7 @@ export class MetadataService {
                 'stratColumnId': stratColumnId,
             },
             errors: {
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });
@@ -156,6 +167,7 @@ export class MetadataService {
                 'parentId': parentId,
             },
             errors: {
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });

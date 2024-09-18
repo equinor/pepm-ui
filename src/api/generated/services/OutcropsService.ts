@@ -19,6 +19,7 @@ export class OutcropsService {
             method: 'GET',
             url: '/api/outcrops',
             errors: {
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });

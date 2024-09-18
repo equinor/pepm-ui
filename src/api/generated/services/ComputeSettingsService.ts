@@ -19,6 +19,7 @@ export class ComputeSettingsService {
             method: 'GET',
             url: '/api/compute-settings',
             errors: {
+                403: `Forbidden`,
                 404: `Not Found`,
             },
         });

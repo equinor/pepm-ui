@@ -3,13 +3,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { CreateParameterDto } from './CreateParameterDto';
+import type { ConvertAnalogueModelDto } from './ConvertAnalogueModelDto';
 
-export type CreateParameterCommandResponse = {
+export type ConvertAnalogueModelCommandResponse = {
     success?: boolean;
     count?: number | null;
     message?: string | null;
     validationErrors?: Array<string> | null;
-    data: CreateParameterDto;
+    data: ConvertAnalogueModelDto;
 };
 

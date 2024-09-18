@@ -12,6 +12,7 @@ import { request as __request } from '../core/request';
 export class AnalogueModelParametersService {
 
     /**
+     * @deprecated
      * @param id
      * @param requestBody
      * @returns AddAnalogueModelParameterCommandResponse Success
@@ -31,6 +32,7 @@ export class AnalogueModelParametersService {
             mediaType: 'application/json-patch+json',
             errors: {
                 400: `Bad Request`,
+                403: `Forbidden`,
             },
         });
     }
