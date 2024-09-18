@@ -15,6 +15,6 @@ export const DeleteDialog = styled(Dialog)`
   .actions {
     display: flex;
     flex-flow: row nowrap;
-    gap: ${spacings.SMALL};
+    column-gap: ${spacings.SMALL};
   }
 `;
