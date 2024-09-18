@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.4.0](https://github.com/equinor/pepm-ui/compare/v1.3.0...v1.4.0) (2024-09-18)
+
+
+### 🧹 Chores
+
+* Update dependencies and fix some breaking code. ([#314](https://github.com/equinor/pepm-ui/issues/314)) ([d32f666](https://github.com/equinor/pepm-ui/commit/d32f66657818aa21c3b6857c3bb3cd8ff8bb79c5))
+* Update generated api models. ([#322](https://github.com/equinor/pepm-ui/issues/322)) ([6f29c6c](https://github.com/equinor/pepm-ui/commit/6f29c6c56a1e90ed692b80bbae5e8df702eb852b))
+
+
+### ✨ Features
+
+* outcrop analogue ([#311](https://github.com/equinor/pepm-ui/issues/311)) ([a3f38eb](https://github.com/equinor/pepm-ui/commit/a3f38eb6fdaa43276ede7f962f0f3afb5d19aeaf))
+* user test improvements ([#316](https://github.com/equinor/pepm-ui/issues/316)) ([71365d5](https://github.com/equinor/pepm-ui/commit/71365d579d9d73268ece5d890516043e3bfa71a6))
+
+
+### 🐛 Bug Fixes
+
+* Model table not scrollable. ([#317](https://github.com/equinor/pepm-ui/issues/317)) ([e0238e5](https://github.com/equinor/pepm-ui/commit/e0238e5eaa28954f0112901642ecb2d895a9808c))
+* package.json & yarn.lock to reduce vulnerabilities ([#309](https://github.com/equinor/pepm-ui/issues/309)) ([8ffbea7](https://github.com/equinor/pepm-ui/commit/8ffbea7ecf7933119c8451d60bc1cd8cb05db4ee))
+* updated standard dev tag ([261d752](https://github.com/equinor/pepm-ui/commit/261d7529295da526fecc20885c60c0beb8ce1a89))
+* upgrade multiple dependencies with Snyk ([#289](https://github.com/equinor/pepm-ui/issues/289)) ([fe91f88](https://github.com/equinor/pepm-ui/commit/fe91f882330e5ee6b1bb75ad3d6503ed10d4392e))
+* upgrade react-router-dom from 6.16.0 to 6.23.1 ([#305](https://github.com/equinor/pepm-ui/issues/305)) ([e248653](https://github.com/equinor/pepm-ui/commit/e248653cb2e03fe4718df1e6f62c101c0922a1c3))
+
 ## [1.3.0](https://github.com/equinor/pepm-ui/compare/v1.2.1...v1.3.0) (2024-07-03)
 
 
