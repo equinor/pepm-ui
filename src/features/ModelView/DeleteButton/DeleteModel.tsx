@@ -36,24 +36,31 @@ export const DeleteModel = () => {
       <Typography variant="body_long">
         This will delete the model along with all related cases and results.
       </Typography>
-      <Button onClick={() => setOpen(!open)} color="danger">
-        Delete
+      <Button variant="outlined" onClick={() => setOpen(!open)} color="danger">
+        Delete…
       </Button>
 
-      <Dialog open={open}>
-        <Dialog.Header>DELETE</Dialog.Header>
+      <Styled.DeleteDialog open={open}>
+        <Dialog.Header>Delete model</Dialog.Header>
         <Dialog.Content>
-          <Typography>Are you sure you want to delete the model?</Typography>
+          <Typography>
+            Are you sure you want to delete this model? This action cannot be
+            undone.
+          </Typography>
         </Dialog.Content>
-        <Dialog.Actions>
-          <Button variant="outlined" onClick={() => setOpen(!open)}>
+        <Dialog.Actions className="actions">
+          <Button
+            variant="outlined"
+            color="danger"
+            onClick={() => setOpen(!open)}
+          >
             Cancel
           </Button>
           <Button color="danger" onClick={HandleModelDelete}>
-            Delete
+            Delete forever
           </Button>
         </Dialog.Actions>
-      </Dialog>
+      </Styled.DeleteDialog>
     </Styled.Wrapper>
   );
 };
