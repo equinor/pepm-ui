@@ -106,7 +106,7 @@ export const GrossDepositionEnviromentGroup = ({
   return (
     <>
       <Styled.Wrapper>
-        <Typography variant="h4">
+        <Typography variant="h4" as="h3">
           Gross Depositional Environment (GDE)
         </Typography>
         <Table>

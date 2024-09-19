@@ -32,7 +32,9 @@ export const DeleteModel = () => {
 
   return (
     <Styled.Wrapper>
-      <Typography variant="h3">Delete model</Typography>
+      <Typography variant="h3" as="h2">
+        Delete model
+      </Typography>
       <Typography variant="body_long">
         This will delete the model along with all related cases and results.
       </Typography>

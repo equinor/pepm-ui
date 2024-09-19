@@ -79,7 +79,9 @@ export const OutcropAnalogueGroup = ({
 
   return (
     <Styled.Wrapper>
-      <Typography variant="h4">Outcrop Analogue</Typography>
+      <Typography variant="h4" as="h3">
+        Outcrop Analogue
+      </Typography>
       <Table>
         <Table.Head>
           <Table.Row>

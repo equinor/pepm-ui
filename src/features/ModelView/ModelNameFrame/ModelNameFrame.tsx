@@ -6,9 +6,13 @@ export const ModelNameFrame = ({ model }: { model?: AnalogueModelDetail }) => {
   return (
     <Styled.NameFrame className="metadata-name-frame">
       {model ? (
-        <Typography variant="h2">{model.name}</Typography>
+        <Typography variant="h2" as="h1">
+          {model.name}
+        </Typography>
       ) : (
-        <Typography variant="h2">Loading ....</Typography>
+        <Typography variant="h2" as="h1">
+          Loading ....
+        </Typography>
       )}
     </Styled.NameFrame>
   );

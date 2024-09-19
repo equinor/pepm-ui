@@ -272,7 +272,6 @@ export const ModelMetadataView = ({
 
   return (
     <Styled.Wrapper>
-      <Typography variant="h3">Model metadata</Typography>
       {!isAddUploading && (
         <Styled.DescriptionMeta>
           <>
@@ -309,6 +308,10 @@ export const ModelMetadataView = ({
           </Typography>
         </>
       )}
+
+      <Typography variant="h3" as="h2">
+        Model metadata
+      </Typography>
 
       <div>
         <OutcropAnalogueGroup

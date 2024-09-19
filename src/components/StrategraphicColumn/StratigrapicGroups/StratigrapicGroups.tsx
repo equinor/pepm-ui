@@ -28,7 +28,9 @@ export const StratigrapicGroups = ({
 
   return (
     <Styled.Wrapper>
-      <Typography variant="h4">Stratigraphic column</Typography>
+      <Typography variant="h4" as="h3">
+        Stratigraphic column
+      </Typography>
 
       <Table>
         <Table.Head>

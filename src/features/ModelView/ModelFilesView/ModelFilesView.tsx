@@ -10,7 +10,9 @@ export const ModelFilesView = () => {
 
   return (
     <Styled.TableWrapper>
-      <Typography variant="h3">Files</Typography>
+      <Typography variant="h3" as="h2">
+        Files
+      </Typography>
       <Styled.FileTable>
         <Table.Head>
           <Table.Row className="table-row">
