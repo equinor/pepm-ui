@@ -36,5 +36,10 @@ export const theme = {
     info: {
       warning: infographic.primary__spruce_wood.hex,
     },
+    danger: {
+      text: interactive.danger__text.hex,
+      highlight: interactive.danger__highlight.hex,
+      resting: interactive.danger__resting.hex,
+    },
   },
 };

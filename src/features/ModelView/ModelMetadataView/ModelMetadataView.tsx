@@ -272,66 +272,66 @@ export const ModelMetadataView = ({
 
   return (
     <Styled.Wrapper>
-      <Styled.Metadata>
-        {!isAddUploading && (
+      <Typography variant="h3">Model metadata</Typography>
+      {!isAddUploading && (
+        <Styled.DescriptionMeta>
           <>
-            <Typography variant="h3">Description and metadata</Typography>
-
-            <>{data.data.description && <div>{data.data.description}</div>}</>
-
-            <EditNameDescription
-              edit={updateModelMetadata}
-              isEdit={isAddModelDialog}
-              defaultMetadata={defaultMetadata}
-              closeDialog={toggleEditMetadata}
-            />
-            <div>
-              {!isAddModelDialog && (
-                <Button
-                  onClick={toggleEditMetadata}
-                  variant="outlined"
-                  className="edit-metadata-button"
-                >
-                  Edit name and description
-                </Button>
-              )}
-            </div>
+            {data.data.description && (
+              <Typography variant="body_long">
+                {data.data.description}
+              </Typography>
+            )}
           </>
-        )}
-        {isAddUploading && (
-          <Styled.MetadataInfo>
-            <Typography variant="h3">Add model metadata</Typography>
-            <Typography variant="body_long">
-              At least one type of metadata (outcrop analogue, stratigraphic
-              column, or deposition environment) is required when adding a new
-              model.
-            </Typography>
-          </Styled.MetadataInfo>
-        )}
 
-        <div>
-          <OutcropAnalogueGroup
-            modelIdParent={modelIdParent}
+          <Button
+            onClick={toggleEditMetadata}
+            variant="outlined"
+            className="edit-metadata-button"
+          >
+            Edit name and description…
+          </Button>
+
+          <EditNameDescription
+            edit={updateModelMetadata}
+            isEdit={isAddModelDialog}
             defaultMetadata={defaultMetadata}
-            outcropGroup={data.data.outcrops}
+            closeDialog={toggleEditMetadata}
           />
-        </div>
-        <div>
-          <StratigrapicGroups
-            stratColumnGroups={data.data.stratigraphicGroups}
-            handleStratColDialog={handleStratColDialog}
-            deleteStratColRow={deleteStratColRow}
-          />
-        </div>
-        <div>
-          <GrossDepositionEnviromentGroup
-            modelIdParent={modelIdParent}
-            defaultMetadata={defaultMetadata}
-            gdeGroups={data.data.geologicalGroups}
-            deleteGdeRow={deleteGdeRow}
-          />
-        </div>
-      </Styled.Metadata>
+        </Styled.DescriptionMeta>
+      )}
+      {isAddUploading && (
+        <>
+          <Typography variant="h3">Add model metadata</Typography>
+          <Typography variant="body_long">
+            At least one type of metadata (outcrop analogue, stratigraphic
+            column, or deposition environment) is required when adding a new
+            model.
+          </Typography>
+        </>
+      )}
+
+      <div>
+        <OutcropAnalogueGroup
+          modelIdParent={modelIdParent}
+          defaultMetadata={defaultMetadata}
+          outcropGroup={data.data.outcrops}
+        />
+      </div>
+      <div>
+        <StratigrapicGroups
+          stratColumnGroups={data.data.stratigraphicGroups}
+          handleStratColDialog={handleStratColDialog}
+          deleteStratColRow={deleteStratColRow}
+        />
+      </div>
+      <div>
+        <GrossDepositionEnviromentGroup
+          modelIdParent={modelIdParent}
+          defaultMetadata={defaultMetadata}
+          gdeGroups={data.data.geologicalGroups}
+          deleteGdeRow={deleteGdeRow}
+        />
+      </div>
 
       <StyledDialog.DialogWindow open={showStratColDialog}>
         <Dialog.Header>Add stratigraphic column</Dialog.Header>

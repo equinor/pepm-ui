@@ -1,17 +1,38 @@
+import { Typography } from '@equinor/eds-core-react';
 import { CoordinateErrorType } from '../AreaCoordinates/hooks/AreaCoordinates.hooks';
 
 export const ErrorMessage = ({ errors }: { errors: CoordinateErrorType }) => {
   return (
     <>
-      {errors && (
-        <div>
-          {' '}
-          <p>{errors.area}</p>
-          <p>{errors.x0}</p>
-          <p>{errors.y0}</p>
-          <p>{errors.x1}</p>
-          <p>{errors.y1}</p>
-        </div>
+      {/* Only render the <ul> wrapper if there are one or more errors */}
+      {Object.values(errors).some((error) => !!error) && (
+        <ul className="coordinate-errors">
+          <li>
+            <Typography group="input" variant="helper">
+              {errors.area}
+            </Typography>
+          </li>
+          <li>
+            <Typography group="input" variant="helper">
+              {errors.x0}
+            </Typography>
+          </li>
+          <li>
+            <Typography group="input" variant="helper">
+              {errors.y0}
+            </Typography>
+          </li>
+          <li>
+            <Typography group="input" variant="helper">
+              {errors.x1}
+            </Typography>
+          </li>
+          <li>
+            <Typography group="input" variant="helper">
+              {errors.y1}
+            </Typography>
+          </li>
+        </ul>
       )}
     </>
   );

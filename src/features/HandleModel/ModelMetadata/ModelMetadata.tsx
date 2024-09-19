@@ -22,19 +22,19 @@ export const ModelMetadata = ({
           <Styled.TextInput
             variant={errors.name ? 'error' : undefined}
             id="model-name"
-            label="Model Name"
+            label="Model name (required)"
             value={metadata?.name}
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
               setMetadata({ ...metadata, name: e.currentTarget.value })
             }
           />
-          {errors.name && <Label label="This field is required"></Label>}
+          {errors.name && <Label label="You must name your model"></Label>}
         </Styled.InputfieldRequired>
         <Styled.InputfieldRequired>
           <Styled.TextInput
             variant={errors.description ? 'error' : undefined}
             id="model-description"
-            label="Model description"
+            label="Model description (required)"
             value={metadata?.description}
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
               setMetadata({ ...metadata, description: e.currentTarget.value })
@@ -43,7 +43,9 @@ export const ModelMetadata = ({
             rows={4}
             rowsMax={8}
           />
-          {errors.description && <Label label="This field is required"></Label>}
+          {errors.description && (
+            <Label label="You must add a description"></Label>
+          )}
         </Styled.InputfieldRequired>
       </Styled.Form>
     </Styled.ModelMetadata>

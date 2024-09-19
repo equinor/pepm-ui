@@ -1,7 +1,6 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
 import { Button, LinearProgress, Typography } from '@equinor/eds-core-react';
-import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { generatePath, useNavigate } from 'react-router-dom';
 import {
@@ -11,7 +10,6 @@ import {
   StratColumnDto,
   StratUnitDto,
 } from '../../../api/generated';
-import { ErrorBanner } from '../../../components/ErrorBanner/ErrorBanner';
 import { ModelInputFilesTable } from '../ModelInputFilesTable/ModelInputFilesTable';
 import { ModelMetadata } from '../ModelMetadata/ModelMetadata';
 import {
@@ -130,23 +128,6 @@ export const HandleModelComponent = ({
   }
   const INIFileContent = () => <p>Not implemented yet...</p>;
 
-  const getErroMessageList = () => {
-    if (_.isEmpty(errors)) return;
-
-    const errorList: string[] = [];
-
-    Object.keys(errors).forEach(function (key) {
-      // TODO: Fix the TS error for errors[key]
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const message = errors[key];
-      errorList.push(message);
-    });
-    return errorList;
-  };
-
-  const ErrorList = getErroMessageList();
-
   return (
     <Styled.Wrapper>
       {progress !== undefined && progress <= 0 && (
@@ -173,15 +154,6 @@ export const HandleModelComponent = ({
               metadata={metadata}
               setMetadata={setMetadata}
             />
-            {!_.isEmpty(errors) &&
-              ErrorList !== undefined &&
-              ErrorList.map((e, i) => {
-                return (
-                  <Styled.ErrorDiv key={i}>
-                    <ErrorBanner text={e} />
-                  </Styled.ErrorDiv>
-                );
-              })}
           </>
         )}
       </Styled.CustomContent>

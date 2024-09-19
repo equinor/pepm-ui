@@ -106,15 +106,17 @@ export const GrossDepositionEnviromentGroup = ({
   return (
     <>
       <Styled.Wrapper>
-        <Typography variant="h3">Gross Depositional Environment</Typography>
+        <Typography variant="h4">
+          Gross Depositional Environment (GDE)
+        </Typography>
         <Table>
           <Table.Head>
             <Table.Row>
               <Table.Cell></Table.Cell>
-              <Table.Cell>Gross Depositional Environment (GDE)</Table.Cell>
-              <Table.Cell>Depositional Environment</Table.Cell>
+              <Table.Cell>GDE</Table.Cell>
+              <Table.Cell>Depositional environment</Table.Cell>
               <Table.Cell>Subenvironment</Table.Cell>
-              <Table.Cell>Architectural Element</Table.Cell>
+              <Table.Cell>Architectural element</Table.Cell>
             </Table.Row>
           </Table.Head>
 
@@ -132,23 +134,17 @@ export const GrossDepositionEnviromentGroup = ({
                     />
                   </Button>
                 </Table.Cell>
+                <Table.Cell>{row.grossDepEnv.identifier}</Table.Cell>
+                <Table.Cell>{row.depEnv.identifier}</Table.Cell>
+                <Table.Cell>{row.subenv.identifier}</Table.Cell>
                 <Table.Cell>
-                  <Styled.ArcElCell>
-                    {row.grossDepEnv.identifier}
-                  </Styled.ArcElCell>
-                </Table.Cell>
-                <Table.Cell>
-                  <Styled.ArcElCell>{row.depEnv.identifier}</Styled.ArcElCell>
-                </Table.Cell>
-                <Table.Cell>
-                  <Styled.ArcElCell>{row.subenv.identifier}</Styled.ArcElCell>
-                </Table.Cell>
-                <Table.Cell>
-                  <Styled.ArcElCell>
-                    {row.architecturalElements.map((a) => (
-                      <p key={a.geologicalStandardId}>{a.identifier},</p>
-                    ))}
-                  </Styled.ArcElCell>
+                  {row.architecturalElements.length > 0 && (
+                    <ul>
+                      {row.architecturalElements.map((a) => (
+                        <li key={a.geologicalStandardId}>{a.identifier}</li>
+                      ))}
+                    </ul>
+                  )}
                 </Table.Cell>
               </Table.Row>
             ))}
@@ -156,7 +152,7 @@ export const GrossDepositionEnviromentGroup = ({
         </Table>
         <div>
           <Button variant="outlined" onClick={handleGdeDialog}>
-            Add Row
+            Add GDE…
           </Button>
         </div>
       </Styled.Wrapper>

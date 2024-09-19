@@ -4,6 +4,7 @@ import { theme } from '../../tokens/theme';
 
 const StyledFooter = styled.footer`
   height: ${spacings.XXXX_LARGE};
+  background-color: ${theme.light.ui.background.default};
 
   display: flex;
   justify-content: space-between;

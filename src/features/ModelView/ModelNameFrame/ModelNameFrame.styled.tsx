@@ -3,15 +3,7 @@ import { spacings } from '../../../tokens/spacings';
 import { theme } from '../../../tokens/theme';
 
 export const NameFrame = styled.div`
-  width: 100%;
-  min-height: ${spacings.NAME_FRAME};
-  padding: ${spacings.LARGE} 0;
   background-color: ${theme.light.ui.background.light};
-  border-left: solid ${spacings.XX_SMALL} ${theme.light.ui.background.medium};
-
-  > h1 {
-    margin: 0;
-    padding: 0 ${spacings.X_LARGE};
-    font-weight: normal;
+  padding: ${spacings.LARGE} ${spacings.X_LARGE};
   }
 `;

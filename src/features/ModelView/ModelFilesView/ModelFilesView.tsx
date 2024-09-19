@@ -14,7 +14,7 @@ export const ModelFilesView = () => {
       <Styled.FileTable>
         <Table.Head>
           <Table.Row className="table-row">
-            <Styled.TableCell>Model input files</Styled.TableCell>
+            <Table.Cell>Model input files</Table.Cell>
             <Table.Cell>Size</Table.Cell>
           </Table.Row>
         </Table.Head>
@@ -24,14 +24,14 @@ export const ModelFilesView = () => {
             data.data.fileUploads?.length > 0) ? (
             data.data.fileUploads?.map((file: UploadList) => (
               <Table.Row key={file.uploadId} className="table-row">
-                <Styled.TableCell>{file.originalFileName}</Styled.TableCell>
-                <Table.Cell>**Size**</Table.Cell>
+                <Table.Cell>{file.originalFileName}</Table.Cell>
+                <Table.Cell>-</Table.Cell>
               </Table.Row>
             ))
           ) : (
             <Table.Row>
               <Table.Cell>No files uploaded</Table.Cell>
-              <Table.Cell>--</Table.Cell>
+              <Table.Cell>-</Table.Cell>
             </Table.Row>
           )}
         </Table.Body>

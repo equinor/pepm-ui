@@ -313,7 +313,7 @@ export const AreaCoordinates = ({
                 </Styled.CoordinateInputs>
               </Styled.CoordinateGroup>
               <Styled.CoordinateGroup>
-                <Typography variant="h6">Bottom Right Corner </Typography>
+                <Typography variant="h6">Bottom Right Corner</Typography>
                 <Styled.CoordinateInputs>
                   <CoordinateInput
                     label="X end"
@@ -340,7 +340,7 @@ export const AreaCoordinates = ({
               {activeAreaResultList &&
                 activeAreaResultList?.length > 0 &&
                 edit && (
-                  <Styled.Warning elevation="none">
+                  <Styled.Warning>
                     <Banner.Message>
                       IMPORTANT - this model area has one or more results in
                       object or variogram cases. Changing the coordinates will

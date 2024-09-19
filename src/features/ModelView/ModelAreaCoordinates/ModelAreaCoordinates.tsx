@@ -14,7 +14,7 @@ export const ModelAreaCoordinates = ({
         coordinates.
       </Typography>
       <Button onClick={toggleOpen} variant="outlined">
-        Set model areas
+        Set model areas…
       </Button>
     </Styled.Wrapper>
   );

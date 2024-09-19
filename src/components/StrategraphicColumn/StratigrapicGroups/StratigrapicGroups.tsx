@@ -28,7 +28,7 @@ export const StratigrapicGroups = ({
 
   return (
     <Styled.Wrapper>
-      <Typography variant="h3">Stratigraphic column</Typography>
+      <Typography variant="h4">Stratigraphic column</Typography>
 
       <Table>
         <Table.Head>
@@ -72,7 +72,7 @@ export const StratigrapicGroups = ({
                   </Styled.StratColCell>
                 </Table.Cell>
               ) : (
-                <Table.Cell>---</Table.Cell>
+                <Table.Cell>-</Table.Cell>
               )}
               {filterUnitLevel(row, 2).length > 0 ? (
                 <Table.Cell>
@@ -81,7 +81,7 @@ export const StratigrapicGroups = ({
                   </Styled.StratColCell>
                 </Table.Cell>
               ) : (
-                <Table.Cell>---</Table.Cell>
+                <Table.Cell>-</Table.Cell>
               )}
               {filterUnitLevel(row, 3).length > 0 ? (
                 <Table.Cell>
@@ -90,7 +90,7 @@ export const StratigrapicGroups = ({
                   </Styled.StratColCell>
                 </Table.Cell>
               ) : (
-                <Table.Cell>---</Table.Cell>
+                <Table.Cell>-</Table.Cell>
               )}
             </Table.Row>
           ))}
@@ -98,7 +98,7 @@ export const StratigrapicGroups = ({
       </Table>
       <div>
         <Button variant="outlined" onClick={handleStratColDialog}>
-          Add Row
+          Add stratigraphic column…
         </Button>
       </div>
     </Styled.Wrapper>
