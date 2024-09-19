@@ -3,12 +3,48 @@ import { ModelNameFrame } from '../../../features/ModelView/ModelNameFrame/Model
 import { ModelNavigationBar } from '../../../features/ModelView/ModelNavigationBar/ModelNavigationBar';
 import { useFetchModel } from '../../../hooks/useFetchModel';
 import * as Styled from './Model.styled';
+import {
+  Banner,
+  CircularProgress,
+  Icon,
+  Typography,
+} from '@equinor/eds-core-react';
+import { mood_sad } from '@equinor/eds-icons';
+
+// eslint-disable-next-line camelcase
+Icon.add({ mood_sad });
 
 export const Model = () => {
   const { data, isLoading, failureReason } = useFetchModel();
 
-  if (failureReason) return <>An error occured</>;
-  if (isLoading) return <>Loading ...</>;
+  if (failureReason)
+    return (
+      <Styled.EmptyPage>
+        <Banner>
+          <Banner.Icon variant="warning">
+            <Icon name="mood_sad" />
+          </Banner.Icon>
+          <Banner.Message>
+            An error occured. Please try refreshing this page.
+          </Banner.Message>
+        </Banner>
+      </Styled.EmptyPage>
+    );
+
+  if (isLoading)
+    return (
+      <Styled.EmptyPage>
+        <div className="loading">
+          <CircularProgress
+            color="primary"
+            size={24}
+            value={100}
+            variant="indeterminate"
+          />{' '}
+          <Typography variant="body_short">Loading, please wait…</Typography>
+        </div>
+      </Styled.EmptyPage>
+    );
 
   return (
     <Styled.Wrapper>
