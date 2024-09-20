@@ -28,17 +28,15 @@ export const ChannelResult = ({
 
   return (
     <Styled.Wrapper>
-      <Styled.InnerWrapper>
-        <ResultArea
-          computeMethod={computeMethod}
-          modelArea={modelArea}
-          data={data}
-        ></ResultArea>
-        <ChannelResultTable
-          data={data}
-          computeMethod={computeMethod}
-        ></ChannelResultTable>
-      </Styled.InnerWrapper>
+      <ResultArea
+        computeMethod={computeMethod}
+        modelArea={modelArea}
+        data={data}
+      ></ResultArea>
+      <ChannelResultTable
+        data={data}
+        computeMethod={computeMethod}
+      ></ChannelResultTable>
     </Styled.Wrapper>
   );
 };
