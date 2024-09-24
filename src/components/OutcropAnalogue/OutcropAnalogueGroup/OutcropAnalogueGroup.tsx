@@ -82,47 +82,51 @@ export const OutcropAnalogueGroup = ({
       <Typography variant="h4" as="h3">
         Outcrop Analogue
       </Typography>
-      <Table>
-        <Table.Head>
-          <Table.Row>
-            <Table.Cell></Table.Cell>
-            <Table.Cell>Analogue</Table.Cell>
-            <Table.Cell>Region</Table.Cell>
-            <Table.Cell>Basin</Table.Cell>
-            <Table.Cell>Category</Table.Cell>
-          </Table.Row>
-        </Table.Head>
-        <Table.Body>
-          {outcropGroup.map((row) => (
-            <Table.Row key={row.outcropId}>
-              <Table.Cell>
-                <Button
-                  variant="ghost_icon"
-                  onClick={() =>
-                    handleDeleteOutcropAnalogue(
-                      row.outcropId ? row.outcropId : 'none',
-                    )
-                  }
-                >
-                  <Icon data={deleteIcon} title={'Delete strat column row'} />
-                </Button>
-              </Table.Cell>
-              <Table.Cell>
-                <Styled.StratColCell>{row.name}</Styled.StratColCell>
-              </Table.Cell>
-              <Table.Cell>{row.region}</Table.Cell>
-              <Table.Cell>
-                <Styled.StratColCell>
-                  {row.basins?.map((item) => item)}
-                </Styled.StratColCell>
-              </Table.Cell>
-              <Table.Cell>
-                <Styled.StratColCell>{row.outcropCategory}</Styled.StratColCell>
-              </Table.Cell>
+      {outcropGroup.length > 0 && (
+        <Table>
+          <Table.Head>
+            <Table.Row>
+              <Table.Cell></Table.Cell>
+              <Table.Cell>Analogue</Table.Cell>
+              <Table.Cell>Region</Table.Cell>
+              <Table.Cell>Basin</Table.Cell>
+              <Table.Cell>Category</Table.Cell>
             </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
+          </Table.Head>
+          <Table.Body>
+            {outcropGroup.map((row) => (
+              <Table.Row key={row.outcropId}>
+                <Table.Cell>
+                  <Button
+                    variant="ghost_icon"
+                    onClick={() =>
+                      handleDeleteOutcropAnalogue(
+                        row.outcropId ? row.outcropId : 'none',
+                      )
+                    }
+                  >
+                    <Icon data={deleteIcon} title={'Delete strat column row'} />
+                  </Button>
+                </Table.Cell>
+                <Table.Cell>
+                  <Styled.StratColCell>{row.name}</Styled.StratColCell>
+                </Table.Cell>
+                <Table.Cell>{row.region}</Table.Cell>
+                <Table.Cell>
+                  <Styled.StratColCell>
+                    {row.basins?.map((item) => item)}
+                  </Styled.StratColCell>
+                </Table.Cell>
+                <Table.Cell>
+                  <Styled.StratColCell>
+                    {row.outcropCategory}
+                  </Styled.StratColCell>
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      )}
       <div>
         <Button variant="outlined" onClick={handleOutcropDialog}>
           Add outcrop analogue…
