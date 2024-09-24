@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
-import { Snackbar } from '@equinor/eds-core-react';
+import { Snackbar, Typography } from '@equinor/eds-core-react';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import {
@@ -26,7 +26,7 @@ import * as Styled from './AddModel.styled';
 
 enum UploadProcess {
   STARTED = 'We are uploading your new model. Please keep this browser tab open.',
-  SUCCESS = 'Model successfully uploaded and is now beeing processed. You may close this browser tab now.',
+  SUCCESS = 'Model successfully uploaded and is now beeing processed.',
   FAILED = 'File upload failed.',
 }
 
@@ -300,26 +300,25 @@ export const AddModel = () => {
       <SidePane uploading={uploading} />
 
       <Styled.Content>
-        <div>
-          <Styled.InnerContent>
-            <HandleModelComponent
-              confirm={uploadModel}
-              uploading={uploading}
-              defaultMetadata={defaultMetadata}
-              progress={progress}
+        <Typography variant="h2" as="h1">
+          New model
+        </Typography>
+        <HandleModelComponent
+          confirm={uploadModel}
+          uploading={uploading}
+          defaultMetadata={defaultMetadata}
+          progress={progress}
+          isAddUploading={progress > 0}
+          modelId={modelId}
+        />
+        {modelId !== '' && (
+          <>
+            <ModelMetadataView
+              modelIdParent={modelId}
               isAddUploading={progress > 0}
-              modelId={modelId}
             />
-            {modelId !== '' && (
-              <>
-                <ModelMetadataView
-                  modelIdParent={modelId}
-                  isAddUploading={progress > 0}
-                />
-              </>
-            )}
-          </Styled.InnerContent>
-        </div>
+          </>
+        )}
       </Styled.Content>
 
       <Snackbar

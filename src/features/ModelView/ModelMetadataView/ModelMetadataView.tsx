@@ -299,14 +299,14 @@ export const ModelMetadataView = ({
         </Styled.DescriptionMeta>
       )}
       {isAddUploading && (
-        <>
-          <Typography variant="h3">Add model metadata</Typography>
+        <Styled.UploadingMeta>
           <Typography variant="body_long">
-            At least one type of metadata (outcrop analogue, stratigraphic
-            column, or deposition environment) is required when adding a new
-            model.
+            While your model is being uploaded, you can add some metadata like
+            outcrop analogue, stratigraphic column, or gross depositional
+            environment. Please note that at least one type of metadata is
+            required for PEPM models before they can be approved later on.
           </Typography>
-        </>
+        </Styled.UploadingMeta>
       )}
 
       <Typography variant="h3" as="h2">

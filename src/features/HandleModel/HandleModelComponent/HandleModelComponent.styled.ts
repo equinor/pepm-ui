@@ -9,12 +9,14 @@ export const Wrapper = styled.div`
 `;
 
 export const CustomContent = styled.div`
+  max-width: 40rem;
   display: flex;
   flex-direction: column;
   row-gap: ${spacings.X_LARGE};
 `;
 
 export const UploadDiv = styled.div`
+  max-width: 40rem;
   display: flex;
   flex-direction: column;
 

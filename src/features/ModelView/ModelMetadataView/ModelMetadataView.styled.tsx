@@ -24,3 +24,7 @@ export const DescriptionMeta = styled.div`
   align-items: flex-start;
   row-gap: ${spacings.MEDIUM};
 `;
+
+export const UploadingMeta = styled.div`
+  max-width: 40rem;
+`;

@@ -169,16 +169,18 @@ export const HandleModelComponent = ({
 
       {uploading && (
         <Styled.UploadDiv>
-          <Typography variant="h3">
+          <Typography variant="h4" as="h2">
             Upload progress: {progress !== undefined && progress.toFixed(0)}%
           </Typography>
-          {<LinearProgress variant="determinate" value={progress} />}
+          {<LinearProgress variant="indeterminate" value={progress} />}
         </Styled.UploadDiv>
       )}
 
       {progress === 100 && modelId && (
         <Styled.InfoNavigation>
-          <Typography variant="h3">Model finish uploaded!</Typography>
+          <Typography variant="h4" as="h2">
+            Upload complete
+          </Typography>
           <div>
             <Button
               onClick={() => {
@@ -188,7 +190,7 @@ export const HandleModelComponent = ({
                 navigate(path);
               }}
             >
-              Go to model view
+              Open model
             </Button>
           </div>
         </Styled.InfoNavigation>
