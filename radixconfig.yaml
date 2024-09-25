@@ -323,6 +323,74 @@ spec:
                 streaming:
                   enabled: false
 
+    - name: pepm-thumbnail-gen
+      image: ghcr.io/equinor/pepm-worker-api/thumbnail-generation:latest
+      schedulerPort: 8090
+      backoffLimit: 1
+      timeLimitSeconds: 43200
+      resources:
+        requests:
+          memory: "8192Mi"
+          cpu: "1000m"
+        limits:
+          cpu: "2000m"
+      payload:
+        path: /app/args
+      variables:
+        MODEL_FOLDER: "/mnt/azure-storage/models"
+        WORKER_FOLDER: "/mnt/azure-storage/worker"
+        ARGS_FOLDER: "/app/args"
+      notifications:
+        webhook: http://api:5003/api/webhooks/thumbnail-gen/status
+      environmentConfig:
+        - environment: dev
+          volumeMounts:
+            - name: pepm-thumbnail-gen-model-storage-dev
+              path: /mnt/azure-storage/models
+              blobfuse2:
+                protocol: fuse2
+                container: models
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+
+            - name: pepm-thumbnail-gen-worker-storage-dev
+              path: /mnt/azure-storage/worker
+              blobfuse2:
+                protocol: fuse2
+                container: worker
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+
+        - environment: test
+          volumeMounts:
+            - name: pepm-thumbnail-gen-model-storage-test
+              path: /mnt/azure-storage/models
+              blobfuse2:
+                protocol: fuse2
+                container: models
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+
+            - name: pepm-thumbnail-gen-worker-storage-test
+              path: /mnt/azure-storage/worker
+              blobfuse2:
+                protocol: fuse2
+                container: worker
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+
   privateImageHubs:
     ghcr.io:
       username: sinrefvol
