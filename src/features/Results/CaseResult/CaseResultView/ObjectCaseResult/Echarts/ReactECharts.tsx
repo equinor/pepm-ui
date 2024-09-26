@@ -26,13 +26,7 @@ export interface ReactEChartsProps {
   loading?: boolean;
   theme?: 'light' | 'dark';
 }
-export interface ReactEChartsProps {
-  option: EChartsOption;
-  style?: CSSProperties;
-  settings?: SetOptionOpts;
-  loading?: boolean;
-  theme?: 'light' | 'dark';
-}
+
 export function ReactECharts({
   option,
   style,
@@ -82,6 +76,6 @@ export function ReactECharts({
   }, [loading, theme]);
 
   return (
-    <div ref={chartRef} style={{ width: '100%', height: '100%', ...style }} />
+    <div ref={chartRef} style={{ width: '100%', height: '350px', ...style }} />
   );
 }

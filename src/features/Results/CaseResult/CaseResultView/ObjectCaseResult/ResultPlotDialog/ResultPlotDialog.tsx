@@ -1,4 +1,4 @@
-import { Button, Dialog } from '@equinor/eds-core-react';
+import { Button, Dialog, Typography } from '@equinor/eds-core-react';
 import { GetObjectResultsDto } from '../../../../../../api/generated';
 import { GraphPlot } from '../GraphPlot/GraphPlot';
 import { ResultCaseMetadata } from '../ResultArea/ResultCaseMetadata/ResultCaseMetadata';
@@ -29,7 +29,8 @@ export const ResultPlotDialog = ({
             modelArea={modelArea}
           />
           <>
-            <GraphPlot />
+            <Typography>Plotted: Channel Height</Typography>
+            <GraphPlot data={data} />
           </>
         </Dialog.Content>
         <Dialog.Actions>
