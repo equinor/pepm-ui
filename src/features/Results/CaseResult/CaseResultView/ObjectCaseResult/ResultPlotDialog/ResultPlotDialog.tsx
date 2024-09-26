@@ -1,6 +1,8 @@
 import { Button, Dialog } from '@equinor/eds-core-react';
 import { GetObjectResultsDto } from '../../../../../../api/generated';
+import { GraphPlot } from '../GraphPlot/GraphPlot';
 import { ResultCaseMetadata } from '../ResultArea/ResultCaseMetadata/ResultCaseMetadata';
+import * as Styled from './ResultPlotDialog.styled';
 
 export const ResultPlotDialog = ({
   open,
@@ -17,7 +19,7 @@ export const ResultPlotDialog = ({
 }) => {
   return (
     <>
-      <Dialog open={open}>
+      <Styled.GraphDialog open={open}>
         <Dialog.Header>
           <Dialog.Title></Dialog.Title>
         </Dialog.Header>
@@ -26,15 +28,16 @@ export const ResultPlotDialog = ({
             computeMethod={computeMethod}
             modelArea={modelArea}
           />
-          {data.type}
+          <>
+            <GraphPlot />
+          </>
         </Dialog.Content>
-
         <Dialog.Actions>
           <Button variant="outlined" onClick={toggleOpen}>
             Close
           </Button>
         </Dialog.Actions>
-      </Dialog>
+      </Styled.GraphDialog>
     </>
   );
 };

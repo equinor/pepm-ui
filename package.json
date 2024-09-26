@@ -22,6 +22,7 @@
     "@types/react": "^18.3.5",
     "@types/react-dom": "18.3.0",
     "axios": "^1.7.4",
+    "echarts": "^5.5.1",
     "env-cmd": "^10.1.0",
     "lodash": "^4.17.21",
     "msal-react-tester": "^0.3.1",
