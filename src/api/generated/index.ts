@@ -111,6 +111,7 @@ export type { OutcropDto } from './models/OutcropDto';
 export type { ParameterList } from './models/ParameterList';
 export type { PatchAnalogueModelCommandResponse } from './models/PatchAnalogueModelCommandResponse';
 export type { PatchAnalogueModelDto } from './models/PatchAnalogueModelDto';
+export type { PercentilesDto } from './models/PercentilesDto';
 export type { PrepareChunkedUploadCommandResponse } from './models/PrepareChunkedUploadCommandResponse';
 export type { PrepareChunkedUploadDto } from './models/PrepareChunkedUploadDto';
 export type { ProblemDetails } from './models/ProblemDetails';

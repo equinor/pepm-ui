@@ -3,10 +3,17 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { PercentilesDto } from './PercentilesDto';
+
 export type ObjectHeightDto = {
     mean: number;
     sd: number;
     count: number;
+    coefficentOfVariation: number;
+    meanEstimateStandardError: number;
+    min: number;
+    max: number;
+    percentiles: PercentilesDto;
     modeSd: number;
     modeMean: number;
 };
