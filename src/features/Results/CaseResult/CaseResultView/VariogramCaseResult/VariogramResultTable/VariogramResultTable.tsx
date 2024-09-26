@@ -8,6 +8,7 @@ import { ImageResult } from '../ImageResult/ImageResult';
 import * as Styled from './VariogramResultTable.styled';
 
 interface ResultObjectType {
+  variogramResultId: string;
   computeCaseId: string;
   method: string;
   parameter: string;
@@ -28,6 +29,7 @@ export const VariogramResultTable = ({
   const [imageId, setImageId] = useState('');
 
   const caseList = useFetchCases();
+
   const roundResultString = (value: number) => {
     if (value) {
       return value.toFixed(NumberOfDecimals);
@@ -52,6 +54,7 @@ export const VariogramResultTable = ({
     )[0].modelArea;
 
     const element: ResultObjectType = {
+      variogramResultId: e.variogramResultId,
       computeCaseId: e.computeCaseId,
       method: method ? method : '',
       parameter: parameter,
@@ -65,11 +68,13 @@ export const VariogramResultTable = ({
     return element;
   });
 
-  const handleImageDialog = (id: string) => {
-    const resultRow = resultList.find((e) => e.computeCaseId === id);
-    const resultFile = resultRow?.variogramResultFiles.find((x) =>
-      x.fileName.includes('variogram_slices_'),
-    );
+  const handleImageDialog = (id: string, variogramResultId: string) => {
+    const computeCaseResults = resultList.filter((e) => e.computeCaseId === id);
+    const resultFile = computeCaseResults
+      .find((r) => r.variogramResultId == variogramResultId)!
+      .variogramResultFiles.find((x) =>
+        x.fileName.includes('variogram_slices_'),
+      );
 
     const imageId = resultFile ? resultFile.variogramResultFileId : '';
     setImageId(imageId);
@@ -116,7 +121,10 @@ export const VariogramResultTable = ({
                 <div>
                   <Typography
                     onClick={() =>
-                      handleImageDialog(row.original.computeCaseId)
+                      handleImageDialog(
+                        row.original.computeCaseId,
+                        row.original.variogramResultId,
+                      )
                     }
                     link
                   >
