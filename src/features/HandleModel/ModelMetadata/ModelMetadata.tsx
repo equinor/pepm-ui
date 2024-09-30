@@ -16,7 +16,6 @@ export const ModelMetadata = ({
 }) => {
   return (
     <Styled.ModelMetadata className="model-metadata">
-      {/* <Typography variant="h4">Description and metadata</Typography> */}
       <Styled.Form>
         <Styled.InputfieldRequired>
           <Styled.TextInput
