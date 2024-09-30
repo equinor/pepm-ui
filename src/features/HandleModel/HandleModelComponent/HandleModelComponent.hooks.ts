@@ -30,19 +30,19 @@ export const validateValues = (
   const errors: ErrorType = {};
 
   if (inputValues?.name === undefined || inputValues?.name === '') {
-    errors.name = 'Name not provided';
+    errors.name = ' ';
   }
 
   if (
     inputValues?.description === undefined ||
     inputValues?.description === ''
   ) {
-    errors.description = 'Description not provided';
+    errors.description = ' ';
   }
 
   if (files && !isEdit) {
     if (!files.NC) {
-      errors.file = 'NC file missing';
+      errors.file = 'You must select an NC file to upload';
     }
   }
 

@@ -1,6 +1,14 @@
+/* eslint-disable camelcase */
 /* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
-import { Button, LinearProgress, Typography } from '@equinor/eds-core-react';
+import {
+  Button,
+  Icon,
+  LinearProgress,
+  Typography,
+} from '@equinor/eds-core-react';
+import { error_outlined } from '@equinor/eds-icons';
+import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { generatePath, useNavigate } from 'react-router-dom';
 import {
@@ -17,6 +25,7 @@ import {
   validateValues,
 } from './HandleModelComponent.hooks';
 import * as Styled from './HandleModelComponent.styled';
+Icon.add({ error_outlined });
 
 interface AddModelDialogProps {
   confirm?: (file: File, metadata: AnalogueModelDetail) => Promise<void>;
@@ -128,6 +137,23 @@ export const HandleModelComponent = ({
   }
   const INIFileContent = () => <p>Not implemented yet...</p>;
 
+  const getErroMessageList = () => {
+    if (_.isEmpty(errors)) return;
+
+    const errorList: string[] = [];
+
+    Object.keys(errors).forEach(function (key) {
+      // TODO: Fix the TS error for errors[key]
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const message = errors[key];
+      errorList.push(message);
+    });
+    return errorList;
+  };
+
+  const ErrorList = getErroMessageList();
+
   return (
     <Styled.Wrapper>
       {progress !== undefined && progress <= 0 && (
@@ -154,6 +180,9 @@ export const HandleModelComponent = ({
               metadata={metadata}
               setMetadata={setMetadata}
             />
+            <Styled.ErrorDiv>
+              {!_.isEmpty(errors) && ErrorList !== undefined && ErrorList}
+            </Styled.ErrorDiv>
           </>
         )}
       </Styled.CustomContent>
@@ -169,6 +198,10 @@ export const HandleModelComponent = ({
 
       {uploading && (
         <Styled.UploadDiv>
+          <p className="warning-message">
+            <Icon data={error_outlined} className="icon" />
+            Remember to keep this browser tab open until the upload has finished
+          </p>
           <Typography variant="h4" as="h2">
             Upload progress: {progress !== undefined && progress.toFixed(0)}%
           </Typography>
