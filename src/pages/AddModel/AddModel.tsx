@@ -25,7 +25,6 @@ import { ModelMetadataView } from '../../features/ModelView/ModelMetadataView/Mo
 import * as Styled from './AddModel.styled';
 
 enum UploadProcess {
-  STARTED = 'We are uploading your new model. Please keep this browser tab open.',
   SUCCESS = 'Model successfully uploaded and is now beeing processed.',
   FAILED = 'File upload failed.',
 }
@@ -174,7 +173,6 @@ export const AddModel = () => {
   }
 
   async function uploadModel(file: File, metadata: AnalogueModelDetail) {
-    setUploadStatus(UploadProcess.STARTED);
     setUploading(true);
     const ModelBody: CreateAnalogueModelCommand = {
       name: metadata.name ? metadata.name : '',
@@ -321,11 +319,7 @@ export const AddModel = () => {
         )}
       </Styled.Content>
 
-      <Snackbar
-        open={!!uploadStatus}
-        autoHideDuration={15000}
-        onClose={clearStatus}
-      >
+      <Snackbar open={!!uploadStatus} onClose={clearStatus}>
         {uploadStatus}
       </Snackbar>
     </Styled.PageLayout>
