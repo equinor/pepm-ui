@@ -8,7 +8,6 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { error_outlined } from '@equinor/eds-icons';
-import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { generatePath, useNavigate } from 'react-router-dom';
 import {
@@ -88,7 +87,7 @@ export const HandleModelComponent = ({
   const [fileSize, setFileSize] = useState(0);
   const [rawFile, setrawFile] = useState<File>();
 
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<ErrorType>({});
   const navigate = useNavigate();
 
   useHandleModelComponent(
@@ -137,23 +136,6 @@ export const HandleModelComponent = ({
   }
   const INIFileContent = () => <p>Not implemented yet...</p>;
 
-  const getErroMessageList = () => {
-    if (_.isEmpty(errors)) return;
-
-    const errorList: string[] = [];
-
-    Object.keys(errors).forEach(function (key) {
-      // TODO: Fix the TS error for errors[key]
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const message = errors[key];
-      errorList.push(message);
-    });
-    return errorList;
-  };
-
-  const ErrorList = getErroMessageList();
-
   return (
     <Styled.Wrapper>
       {progress !== undefined && progress <= 0 && (
@@ -180,9 +162,7 @@ export const HandleModelComponent = ({
               metadata={metadata}
               setMetadata={setMetadata}
             />
-            <Styled.ErrorDiv>
-              {!_.isEmpty(errors) && ErrorList !== undefined && ErrorList}
-            </Styled.ErrorDiv>
+            <Styled.ErrorDiv>{errors.file && errors.file}</Styled.ErrorDiv>
           </>
         )}
       </Styled.CustomContent>

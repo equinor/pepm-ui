@@ -30,14 +30,14 @@ export const validateValues = (
   const errors: ErrorType = {};
 
   if (inputValues?.name === undefined || inputValues?.name === '') {
-    errors.name = ' ';
+    errors.name = 'You must name your model';
   }
 
   if (
     inputValues?.description === undefined ||
     inputValues?.description === ''
   ) {
-    errors.description = ' ';
+    errors.description = 'You must add a description';
   }
 
   if (files && !isEdit) {

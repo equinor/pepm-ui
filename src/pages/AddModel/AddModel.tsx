@@ -1,3 +1,4 @@
+/* eslint-disable sort-imports */
 /* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
 import { Snackbar, Typography } from '@equinor/eds-core-react';
@@ -12,8 +13,8 @@ import {
   AnalogueModelsService,
   ConvertAnalogueModelCommand,
   CreateAnalogueModelCommand,
-  JobsService,
   JobStatus,
+  JobsService,
   MetadataDto,
   UploadFileType,
   UploadsService,
@@ -313,7 +314,7 @@ export const AddModel = () => {
           <>
             <ModelMetadataView
               modelIdParent={modelId}
-              isAddUploading={progress > 0}
+              uploadingProgress={progress}
             />
           </>
         )}

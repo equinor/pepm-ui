@@ -37,10 +37,10 @@ export const defaultStratColumnData: StratColumnType = {
 
 export const ModelMetadataView = ({
   modelIdParent,
-  isAddUploading,
+  uploadingProgress,
 }: {
   modelIdParent?: string;
-  isAddUploading?: boolean;
+  uploadingProgress?: number;
 }) => {
   const { isLoading, data } = useFetchModel(
     modelIdParent ? modelIdParent : undefined,
@@ -272,7 +272,7 @@ export const ModelMetadataView = ({
 
   return (
     <Styled.Wrapper>
-      {!isAddUploading && (
+      {uploadingProgress === undefined && (
         <Styled.DescriptionMeta>
           <>
             {data.data.description && (
@@ -298,16 +298,18 @@ export const ModelMetadataView = ({
           />
         </Styled.DescriptionMeta>
       )}
-      {isAddUploading && (
-        <Styled.UploadingMeta>
-          <Typography variant="body_long">
-            While your model is being uploaded, you can add some metadata like
-            outcrop analogue, stratigraphic column, or gross depositional
-            environment. Please note that at least one type of metadata is
-            required for PEPM models before they can be approved later on.
-          </Typography>
-        </Styled.UploadingMeta>
-      )}
+      {uploadingProgress !== undefined &&
+        uploadingProgress >= 0 &&
+        uploadingProgress < 100 && (
+          <Styled.UploadingMeta>
+            <Typography variant="body_long">
+              While your model is being uploaded, you can add some metadata like
+              outcrop analogue, stratigraphic column, or gross depositional
+              environment. Please note that at least one type of metadata is
+              required for PEPM models before they can be approved later on.
+            </Typography>
+          </Styled.UploadingMeta>
+        )}
 
       <Typography variant="h3" as="h2">
         Model metadata

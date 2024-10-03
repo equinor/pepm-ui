@@ -27,7 +27,7 @@ export const ModelMetadata = ({
               setMetadata({ ...metadata, name: e.currentTarget.value })
             }
           />
-          {errors.name && <Label label="You must name your model"></Label>}
+          {errors.name && <Label label={errors.name}></Label>}
         </Styled.InputfieldRequired>
         <Styled.InputfieldRequired>
           <Styled.TextInput
@@ -42,9 +42,7 @@ export const ModelMetadata = ({
             rows={4}
             rowsMax={8}
           />
-          {errors.description && (
-            <Label label="You must add a description"></Label>
-          )}
+          {errors.description && <Label label={errors.description}></Label>}
         </Styled.InputfieldRequired>
       </Styled.Form>
     </Styled.ModelMetadata>
