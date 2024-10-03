@@ -6,9 +6,6 @@ import { theme } from '../../../tokens/theme';
 export const SidebarWrapper = styled.div`
   heigth: 100%;
   max-width: 256px;
-  > div {
-    border-color: ${theme.light.ui.background.medium};
-  }
 `;
 
 export const StyledSidebarContent = styled(SideBar.Content)`

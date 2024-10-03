@@ -8,13 +8,15 @@ export const ModelAreaCoordinates = ({
 }) => {
   return (
     <Styled.Wrapper>
-      <Typography variant="h3">Model areas</Typography>
+      <Typography variant="h3" as="h2">
+        Model areas
+      </Typography>
       <Typography variant="body_long">
         You can define multiple areas for calculation in your model by entering
         coordinates.
       </Typography>
       <Button onClick={toggleOpen} variant="outlined">
-        Set model areas
+        Set model areas…
       </Button>
     </Styled.Wrapper>
   );

@@ -19,29 +19,29 @@ export const validateCoordinates = async (
 ) => {
   const errors: CoordinateErrorType = {};
   if (!activeArea || activeArea.modelAreaTypeId === '') {
-    errors.area = 'Model area needs to be selected';
+    errors.area = 'You must select a model area';
   }
 
   if (area && area.coordinates[0].x === area.coordinates[1].x) {
-    errors.x0 = 'X coordinates can´t be equal.';
+    errors.x0 = "X start/end coordinates can't be equal.";
   }
   if (area && area.coordinates[0].y === area.coordinates[1].y) {
-    errors.y0 = 'Y coordinates can´t be equal.';
+    errors.y0 = "Y start/end coordinates can't be equal.";
   }
   if (area && NotANumber(area.coordinates[0].x)) {
-    errors.x0 = 'Coordinates can´t be string, just numbers are allowed.';
+    errors.x0 = 'Coordinates must be a number';
   }
   if (area && NotANumber(area.coordinates[0].y)) {
-    errors.y0 = 'Coordinates can´t be string, just numbers are allowed.';
+    errors.y0 = 'Coordinates must be a number';
   }
   if (area && NotANumber(area.coordinates[1].x)) {
-    errors.x1 = 'Coordinates can´t be string, just numbers are allowed.';
+    errors.x1 = 'Coordinates must be a number';
   }
   if (area && NotANumber(area.coordinates[1].y)) {
-    errors.y1 = 'Coordinates can´t be string, just numbers are allowed.';
+    errors.y1 = 'Coordinates must be a number';
   }
   if (area && area.coordinates[1].x === 0) {
-    errors.x1 = 'Bottom right corner can not be 0.';
+    errors.x1 = 'Bottom right corner must be greater than 0';
   }
 
   if (
@@ -51,7 +51,7 @@ export const validateCoordinates = async (
       // @ts-expect-error Autocomplete
       area.coordinates[0].x === '')
   ) {
-    errors.x0 = 'All fields must be filled in';
+    errors.x0 = 'You must enter all four coordinates';
   }
 
   if (
@@ -61,7 +61,7 @@ export const validateCoordinates = async (
       // @ts-expect-error Autocomplete
       area.coordinates[0].y === '')
   ) {
-    errors.y0 = 'All fields must be filled in';
+    errors.y0 = 'You must enter all four coordinates';
   }
 
   if (
@@ -71,7 +71,7 @@ export const validateCoordinates = async (
       // @ts-expect-error Autocomplete
       area.coordinates[1].x === '')
   ) {
-    errors.x1 = 'All fields must be filled in';
+    errors.x1 = 'You must enter all four coordinates';
   }
 
   if (
@@ -81,7 +81,7 @@ export const validateCoordinates = async (
       // @ts-expect-error Autocomplete
       area.coordinates[1].y === '')
   ) {
-    errors.y1 = 'All fields must be filled in';
+    errors.y1 = 'You must enter all four coordinates';
   }
 
   return errors;

@@ -5,13 +5,7 @@ import { theme } from '../../tokens/theme';
 
 export const StyledDialog = styled(Dialog)`
   width: fit-content;
-  max-width: 90vw;
   max-height: 90vh;
-
-  @media (min-width: 700px) {
-    max-height: 90vh;
-    overflow-x: scroll;
-  }
 `;
 
 export const ContentSplitter = styled.div`
@@ -23,18 +17,13 @@ export const ContentSplitter = styled.div`
 export const Selects = styled.div`
   display: flex;
   flex-direction: column;
-
   row-gap: ${spacings.XXX_LARGE};
-
-  @media (min-width: 750px) {
-    min-width: 450px;
-  }
+  width: 28rem;
 `;
 
 export const CoordinateFields = styled.div`
   display: flex;
   flex-direction: column;
-
   row-gap: ${spacings.LARGE};
 `;
 
@@ -42,13 +31,27 @@ export const Content = styled(Dialog.CustomContent)`
   display: flex;
   flex-direction: column;
   justify-content: start;
-
   row-gap: ${spacings.SMALL};
+
+  .coordinate-errors {
+    padding: 0;
+    margin: 0 0 0 ${spacings.LARGE};
+
+    p,
+    li {
+      color: ${theme.light.danger.text};
+    }
+
+    li:has(p:empty) {
+      display: none;
+    }
+  }
 `;
 
 export const CoordinateGroup = styled.div`
   display: flex;
   flex-direction: column;
+  row-gap: 1rem;
 `;
 
 export const CoordinateInputs = styled.div`
@@ -60,14 +63,13 @@ export const CoordinateInputs = styled.div`
 export const Warning = styled(Banner)`
   div {
     background-color: ${theme.light.info.warning};
-    max-width: 450px;
   }
 `;
 
 export const Buttons = styled.div`
   display: flex;
   flex-direction: row;
-  column-gap: ${spacings.MEDIUM};
+  column-gap: ${spacings.SMALL};
 `;
 
 export { StyledDialog as Dialog };

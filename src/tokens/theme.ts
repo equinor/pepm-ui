@@ -21,6 +21,7 @@ export const theme = {
       highlight: interactive.secondary__highlight.hex,
     },
     text: {
+      staticIconsDefault: text.static_icons__default.hex,
       staticIconsTertiary: text.static_icons__tertiary.hex,
     },
     ui: {
@@ -35,6 +36,16 @@ export const theme = {
     },
     info: {
       warning: infographic.primary__spruce_wood.hex,
+    },
+    danger: {
+      text: interactive.danger__text.hex,
+      highlight: interactive.danger__highlight.hex,
+      resting: interactive.danger__resting.hex,
+    },
+    warning: {
+      text: interactive.warning__text.hex,
+      highlight: interactive.warning__highlight.hex,
+      resting: interactive.warning__resting.hex,
     },
   },
 };

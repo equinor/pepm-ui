@@ -37,10 +37,10 @@ export const defaultStratColumnData: StratColumnType = {
 
 export const ModelMetadataView = ({
   modelIdParent,
-  isAddUploading,
+  uploadingProgress,
 }: {
   modelIdParent?: string;
-  isAddUploading?: boolean;
+  uploadingProgress?: number;
 }) => {
   const { isLoading, data } = useFetchModel(
     modelIdParent ? modelIdParent : undefined,
@@ -272,66 +272,71 @@ export const ModelMetadataView = ({
 
   return (
     <Styled.Wrapper>
-      <Styled.Metadata>
-        {!isAddUploading && (
+      {uploadingProgress === undefined && (
+        <Styled.DescriptionMeta>
           <>
-            <Typography variant="h3">Description and metadata</Typography>
-
-            <>{data.data.description && <div>{data.data.description}</div>}</>
-
-            <EditNameDescription
-              edit={updateModelMetadata}
-              isEdit={isAddModelDialog}
-              defaultMetadata={defaultMetadata}
-              closeDialog={toggleEditMetadata}
-            />
-            <div>
-              {!isAddModelDialog && (
-                <Button
-                  onClick={toggleEditMetadata}
-                  variant="outlined"
-                  className="edit-metadata-button"
-                >
-                  Edit name and description
-                </Button>
-              )}
-            </div>
+            {data.data.description && (
+              <Typography variant="body_long">
+                {data.data.description}
+              </Typography>
+            )}
           </>
-        )}
-        {isAddUploading && (
-          <Styled.MetadataInfo>
-            <Typography variant="h3">Add model metadata</Typography>
+
+          <Button
+            onClick={toggleEditMetadata}
+            variant="outlined"
+            className="edit-metadata-button"
+          >
+            Edit name and description…
+          </Button>
+
+          <EditNameDescription
+            edit={updateModelMetadata}
+            isEdit={isAddModelDialog}
+            defaultMetadata={defaultMetadata}
+            closeDialog={toggleEditMetadata}
+          />
+        </Styled.DescriptionMeta>
+      )}
+      {uploadingProgress !== undefined &&
+        uploadingProgress >= 0 &&
+        uploadingProgress < 100 && (
+          <Styled.UploadingMeta>
             <Typography variant="body_long">
-              At least one type of metadata (outcrop analogue, stratigraphic
-              column, or deposition environment) is required when adding a new
-              model.
+              While your model is being uploaded, you can add some metadata like
+              outcrop analogue, stratigraphic column, or gross depositional
+              environment. Please note that at least one type of metadata is
+              required for PEPM models before they can be approved later on.
             </Typography>
-          </Styled.MetadataInfo>
+          </Styled.UploadingMeta>
         )}
 
-        <div>
-          <OutcropAnalogueGroup
-            modelIdParent={modelIdParent}
-            defaultMetadata={defaultMetadata}
-            outcropGroup={data.data.outcrops}
-          />
-        </div>
-        <div>
-          <StratigrapicGroups
-            stratColumnGroups={data.data.stratigraphicGroups}
-            handleStratColDialog={handleStratColDialog}
-            deleteStratColRow={deleteStratColRow}
-          />
-        </div>
-        <div>
-          <GrossDepositionEnviromentGroup
-            modelIdParent={modelIdParent}
-            defaultMetadata={defaultMetadata}
-            gdeGroups={data.data.geologicalGroups}
-            deleteGdeRow={deleteGdeRow}
-          />
-        </div>
-      </Styled.Metadata>
+      <Typography variant="h3" as="h2">
+        Model metadata
+      </Typography>
+
+      <div>
+        <OutcropAnalogueGroup
+          modelIdParent={modelIdParent}
+          defaultMetadata={defaultMetadata}
+          outcropGroup={data.data.outcrops}
+        />
+      </div>
+      <div>
+        <StratigrapicGroups
+          stratColumnGroups={data.data.stratigraphicGroups}
+          handleStratColDialog={handleStratColDialog}
+          deleteStratColRow={deleteStratColRow}
+        />
+      </div>
+      <div>
+        <GrossDepositionEnviromentGroup
+          modelIdParent={modelIdParent}
+          defaultMetadata={defaultMetadata}
+          gdeGroups={data.data.geologicalGroups}
+          deleteGdeRow={deleteGdeRow}
+        />
+      </div>
 
       <StyledDialog.DialogWindow open={showStratColDialog}>
         <Dialog.Header>Add stratigraphic column</Dialog.Header>

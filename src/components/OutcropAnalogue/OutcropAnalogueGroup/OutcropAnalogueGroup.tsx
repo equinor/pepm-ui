@@ -78,9 +78,11 @@ export const OutcropAnalogueGroup = ({
   };
 
   return (
-    <>
-      <Styled.Wrapper>
-        <Typography variant="h3">Outcrop Analogue</Typography>
+    <Styled.Wrapper>
+      <Typography variant="h4" as="h3">
+        Outcrop Analogue
+      </Typography>
+      {outcropGroup.length > 0 && (
         <Table>
           <Table.Head>
             <Table.Row>
@@ -124,12 +126,12 @@ export const OutcropAnalogueGroup = ({
             ))}
           </Table.Body>
         </Table>
-        <div>
-          <Button variant="outlined" onClick={handleOutcropDialog}>
-            Add Row
-          </Button>
-        </div>
-      </Styled.Wrapper>
+      )}
+      <div>
+        <Button variant="outlined" onClick={handleOutcropDialog}>
+          Add outcrop analogue…
+        </Button>
+      </div>
       <StyledDialog.DialogWindow open={showOutcropDialog}>
         <Dialog.Header>Add Outcrop Analogue</Dialog.Header>
         <Dialog.CustomContent>
@@ -146,6 +148,6 @@ export const OutcropAnalogueGroup = ({
           </Button>
         </StyledDialog.Actions>
       </StyledDialog.DialogWindow>
-    </>
+    </Styled.Wrapper>
   );
 };

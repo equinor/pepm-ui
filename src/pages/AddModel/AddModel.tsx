@@ -1,6 +1,7 @@
+/* eslint-disable sort-imports */
 /* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
-import { Snackbar } from '@equinor/eds-core-react';
+import { Snackbar, Typography } from '@equinor/eds-core-react';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import {
@@ -12,8 +13,8 @@ import {
   AnalogueModelsService,
   ConvertAnalogueModelCommand,
   CreateAnalogueModelCommand,
-  JobsService,
   JobStatus,
+  JobsService,
   MetadataDto,
   UploadFileType,
   UploadsService,
@@ -25,8 +26,7 @@ import { ModelMetadataView } from '../../features/ModelView/ModelMetadataView/Mo
 import * as Styled from './AddModel.styled';
 
 enum UploadProcess {
-  STARTED = 'We are uploading your new model. Please keep this browser tab open.',
-  SUCCESS = 'Model successfully uploaded and is now beeing processed. You may close this browser tab now.',
+  SUCCESS = 'Model successfully uploaded and is now beeing processed.',
   FAILED = 'File upload failed.',
 }
 
@@ -174,7 +174,6 @@ export const AddModel = () => {
   }
 
   async function uploadModel(file: File, metadata: AnalogueModelDetail) {
-    setUploadStatus(UploadProcess.STARTED);
     setUploading(true);
     const ModelBody: CreateAnalogueModelCommand = {
       name: metadata.name ? metadata.name : '',
@@ -300,33 +299,28 @@ export const AddModel = () => {
       <SidePane uploading={uploading} />
 
       <Styled.Content>
-        <div>
-          <Styled.InnerContent>
-            <HandleModelComponent
-              confirm={uploadModel}
-              uploading={uploading}
-              defaultMetadata={defaultMetadata}
-              progress={progress}
-              isAddUploading={progress > 0}
-              modelId={modelId}
+        <Typography variant="h2" as="h1">
+          New model
+        </Typography>
+        <HandleModelComponent
+          confirm={uploadModel}
+          uploading={uploading}
+          defaultMetadata={defaultMetadata}
+          progress={progress}
+          isAddUploading={progress > 0}
+          modelId={modelId}
+        />
+        {modelId !== '' && (
+          <>
+            <ModelMetadataView
+              modelIdParent={modelId}
+              uploadingProgress={progress}
             />
-            {modelId !== '' && (
-              <>
-                <ModelMetadataView
-                  modelIdParent={modelId}
-                  isAddUploading={progress > 0}
-                />
-              </>
-            )}
-          </Styled.InnerContent>
-        </div>
+          </>
+        )}
       </Styled.Content>
 
-      <Snackbar
-        open={!!uploadStatus}
-        autoHideDuration={15000}
-        onClose={clearStatus}
-      >
+      <Snackbar open={!!uploadStatus} onClose={clearStatus}>
         {uploadStatus}
       </Snackbar>
     </Styled.PageLayout>

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { spacings } from '../../../../tokens/spacings';
+import { theme } from '../../../../tokens/theme';
 
 export const AutocompleteWrapper = styled.div`
   display: flex;
@@ -12,7 +13,7 @@ export const AutocompleteWrapper = styled.div`
 
 export const Required = styled.div`
   > label {
-    color: red;
+    color: ${theme.light.danger.text};
   }
 `;
 

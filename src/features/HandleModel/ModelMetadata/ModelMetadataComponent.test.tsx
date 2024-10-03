@@ -81,7 +81,7 @@ const Render = () => {
 test('renders modelMetadata after loading', () => {
   render(<Render />);
 
-  const nameLable = screen.getByLabelText('Model Name');
+  const nameLable = screen.getByLabelText('Model name (required)');
   expect(nameLable).toBeInTheDocument();
   expect(nameLable).toHaveValue('');
 });
@@ -89,7 +89,7 @@ test('renders modelMetadata after loading', () => {
 test('Name field to be present and empty after render', async () => {
   render(<Render />);
 
-  const nameLable = screen.getByLabelText('Model Name');
+  const nameLable = screen.getByLabelText('Model name (required)');
   expect(nameLable).toBeInTheDocument();
   expect(nameLable).toHaveValue('');
 });
@@ -97,6 +97,8 @@ test('Name field to be present and empty after render', async () => {
 test('Description field to be present after render', async () => {
   render(<Render />);
 
-  const descriptionLable = screen.getByLabelText('Model description');
+  const descriptionLable = screen.getByLabelText(
+    'Model description (required)',
+  );
   expect(descriptionLable).toBeInTheDocument();
 });
