@@ -80,7 +80,7 @@ spec:
                 - name: AzureAdPeacock--ResourceId
                   envVar: AzureAdPeacock__ResourceId   
         - environment: test
-          imageTagName: latest
+          imageTagName: test.latest
           variables:
             ASPNETCORE_ENVIRONMENT: "Test"
           secretRefs:
