@@ -2,7 +2,6 @@
 /* eslint-disable max-lines-per-function */
 import { Button, Dialog, Typography } from '@equinor/eds-core-react';
 import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   AddAnalogueModelMetadataCommandForm,
@@ -11,6 +10,8 @@ import {
   AnalogueModelDetail,
   AnalogueModelMetadataService,
   AnalogueModelSourceType,
+  GenerateThumbnailCommand,
+  JobsService,
   JobStatus,
   MetadataDto,
   UpdateAnalogueModelCommandBody,
@@ -26,6 +27,7 @@ import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled'
 import { StratColumnType } from '../../HandleModel/HandleModelComponent/HandleModelComponent';
 import { EditNameDescription } from '../EditNameDescription/EditNameDescription';
 import * as Styled from './ModelMetadataView.styled';
+import { useState } from 'react';
 export const defaultStratColumnData: StratColumnType = {
   country: undefined,
   field: undefined,
@@ -213,6 +215,25 @@ export const ModelMetadataView = ({
       return res;
     }
   };
+  const generateThumbnail = useMutation({
+    mutationFn: (requestBody: GenerateThumbnailCommand) => {
+      return JobsService.postApiJobsComputeThumbnailGen(requestBody);
+    },
+  });
+
+  const generateThumbnailOnClick = async (modelId: string) => {
+    if (modelId) {
+      const res = await generateThumbnail.mutateAsync({
+        modelId: modelId,
+      });
+      return res;
+    } else if (modelIdParent) {
+      const res = await generateThumbnail.mutateAsync({
+        modelId: modelId,
+      });
+      return res;
+    }
+  };
 
   const deleteGdeRow = async (gdeGroupId: string) => {
     if (modelId) {
@@ -289,6 +310,16 @@ export const ModelMetadataView = ({
           >
             Edit name and description…
           </Button>
+          {modelId && (
+            <Button
+              onClick={() => {
+                generateThumbnailOnClick(modelId);
+              }}
+            >
+              {' '}
+              Generate thumbnail image
+            </Button>
+          )}
 
           <EditNameDescription
             edit={updateModelMetadata}

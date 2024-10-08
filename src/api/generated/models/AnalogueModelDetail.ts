@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { AnalogueModelImageDto } from './AnalogueModelImageDto';
 import type { AnalogueModelSourceType } from './AnalogueModelSourceType';
 import type { GeologicalGroupDto } from './GeologicalGroupDto';
 import type { JobStatus } from './JobStatus';
@@ -31,5 +32,6 @@ export type AnalogueModelDetail = {
     geologicalGroups: Array<GeologicalGroupDto>;
     outcrops: Array<OutcropDto>;
     processingStatus: JobStatus;
+    analogueModelImage?: AnalogueModelImageDto;
 };
 

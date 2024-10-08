@@ -6,6 +6,7 @@ import type { UpdateJobStatusCommand } from '../models/UpdateJobStatusCommand';
 import type { UpdateJobStatusCommandResponse } from '../models/UpdateJobStatusCommandResponse';
 import type { UpdateObjectEstimationStatusCommand } from '../models/UpdateObjectEstimationStatusCommand';
 import type { UpdateObjectEstimationStatusCommandResponse } from '../models/UpdateObjectEstimationStatusCommandResponse';
+import type { UpdateThumbnailGenStatusCommand } from '../models/UpdateThumbnailGenStatusCommand';
 import type { UpdateVariogramEstimationStatusCommand } from '../models/UpdateVariogramEstimationStatusCommand';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -26,6 +27,26 @@ export class WebhooksService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/webhooks/nrresqml/status',
+            body: requestBody,
+            mediaType: 'application/json-patch+json',
+            errors: {
+                400: `Bad Request`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * @param requestBody
+     * @returns UpdateThumbnailGenStatusCommand Success
+     * @throws ApiError
+     */
+    public static postApiWebhooksThumbnailGenStatus(
+        requestBody?: UpdateThumbnailGenStatusCommand,
+    ): CancelablePromise<UpdateThumbnailGenStatusCommand> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/webhooks/thumbnail-gen/status',
             body: requestBody,
             mediaType: 'application/json-patch+json',
             errors: {

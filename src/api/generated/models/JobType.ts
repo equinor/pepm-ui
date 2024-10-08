@@ -7,4 +7,5 @@ export enum JobType {
     NRRESQML = 'Nrresqml',
     NRCHANNEL = 'Nrchannel',
     NRVARIOGRAM = 'Nrvariogram',
+    NRTHUMBNAIL_GEN = 'NrthumbnailGen',
 }

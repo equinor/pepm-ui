@@ -71,7 +71,7 @@ export const VariogramResultTable = ({
   const handleImageDialog = (id: string, variogramResultId: string) => {
     const computeCaseResults = resultList.filter((e) => e.computeCaseId === id);
     const resultFile = computeCaseResults
-      .find((r) => r.variogramResultId == variogramResultId)!
+      .find((r) => r.variogramResultId === variogramResultId)!
       .variogramResultFiles.find((x) =>
         x.fileName.includes('variogram_slices_'),
       );
