@@ -22,6 +22,8 @@ import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled'
 import { GdeSelect } from '../GdeSelect/GdeSelect';
 import * as Styled from './GrossDepositionEnviromentGroup.styled';
 
+import { validateInput } from './GDE.hooks';
+
 export interface GdeType {
   grossDepEnv?: GeologicalStandardDto;
   depEnv?: GeologicalStandardDto;
@@ -33,6 +35,13 @@ const defaultGdeData: GdeType = {
   depEnv: undefined,
   subenv: undefined,
   architecturalElements: [],
+};
+
+export type GDEErrorType = {
+  GDE?: string;
+  DEnv?: string;
+  subEnv?: string;
+  AEl?: string;
 };
 export const GrossDepositionEnviromentGroup = ({
   modelIdParent,
@@ -49,6 +58,8 @@ export const GrossDepositionEnviromentGroup = ({
 }) => {
   const [showGdeDialog, setShowGdeDialog] = useState<boolean>(false);
   const [gdeObject, setGdeObject] = useState<GdeType>(defaultGdeData);
+  const [errors, setErrors] = useState<GDEErrorType>({});
+
   const handleGdeDialog = () => {
     setShowGdeDialog(!showGdeDialog);
   };
@@ -73,13 +84,16 @@ export const GrossDepositionEnviromentGroup = ({
 
   const handleAddGde = async () => {
     const id = modelIdParent ? modelIdParent : defaultMetadata.analogueModelId;
+    const err = await validateInput(gdeObject);
+    setErrors(err);
 
     if (
       id &&
       gdeObject.grossDepEnv &&
       gdeObject.depEnv &&
       gdeObject.subenv &&
-      gdeObject.architecturalElements
+      gdeObject.architecturalElements &&
+      gdeObject.architecturalElements.length > 0
     ) {
       const architecturalElementsList: string[] = [];
       gdeObject.architecturalElements.map((x) =>
@@ -100,6 +114,8 @@ export const GrossDepositionEnviromentGroup = ({
         requestBody: postRequestBody,
       });
       if (rowUpload.success) handleGdeDialog();
+    } else {
+      console.log('ELSE ');
     }
   };
 
@@ -162,7 +178,11 @@ export const GrossDepositionEnviromentGroup = ({
       <StyledDialog.DialogWindow open={showGdeDialog}>
         <Dialog.Header>Add Gross Deposition Enviroment</Dialog.Header>
         <Dialog.CustomContent>
-          <GdeSelect gdeObject={gdeObject} setGdeObject={setGdeObject} />
+          <GdeSelect
+            gdeObject={gdeObject}
+            setGdeObject={setGdeObject}
+            error={errors}
+          />
         </Dialog.CustomContent>
         <StyledDialog.Actions>
           <Button onClick={handleAddGde}>Add</Button>
