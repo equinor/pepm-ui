@@ -38,11 +38,17 @@ export const GdeSelect = ({
     (g) => g.geologyGroup === 'ArchitecturalElement',
   );
 
+  const sortList = (data: any) => {
+    return data.sort((a: any, b: any) =>
+      a.identifier.localeCompare(b.identifier),
+    );
+  };
+
   return (
     <StyledDialog.AutocompleteList>
       <Autocomplete
         label="Gross Depositional Environment (GDE)"
-        options={Gde}
+        options={Gde.sort((a, b) => a.identifier.localeCompare(b.identifier))}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<GeologicalStandardDto>) => {
           setGdeObject({
@@ -56,7 +62,7 @@ export const GdeSelect = ({
       <Autocomplete
         label="Depositional Environment"
         disabled={gdeObject.grossDepEnv?.geologicalStandardId === undefined}
-        options={De}
+        options={sortList(De)}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<GeologicalStandardDto>) => {
           setGdeObject({
@@ -70,7 +76,7 @@ export const GdeSelect = ({
       <Autocomplete
         label="Subenvironment"
         disabled={gdeObject.grossDepEnv?.geologicalStandardId === undefined}
-        options={SubEnvironment}
+        options={sortList(SubEnvironment)}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<GeologicalStandardDto>) => {
           setGdeObject({
@@ -84,7 +90,7 @@ export const GdeSelect = ({
       <Autocomplete
         label="Architectural Element"
         multiple
-        options={ArchitecturalElement}
+        options={sortList(ArchitecturalElement)}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<GeologicalStandardDto>) => {
           setGdeObject({
