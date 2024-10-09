@@ -3,6 +3,7 @@ import { Autocomplete, AutocompleteChanges } from '@equinor/eds-core-react';
 import { OutcropDto } from '../../../api/generated';
 import { useFetchOutcropData } from '../../../hooks/useFetchOutcropData';
 import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
+import { sortList } from '../../../utils/SortList';
 import { OutcropType } from '../OutcropAnalogueGroup/OutcropAnalogueGroup';
 
 export const OutcropSelect = ({
@@ -29,9 +30,7 @@ export const OutcropSelect = ({
     <StyledDialog.AutocompleteList>
       <Autocomplete
         label="Analogue"
-        options={OutcropData.data.data.sort((a, b) =>
-          a.name.localeCompare(b.name),
-        )}
+        options={sortList(OutcropData.data.data)}
         optionLabel={(option) => option.name}
         onOptionsChange={(e: AutocompleteChanges<OutcropDto>) => {
           const copyObject: OutcropType = {

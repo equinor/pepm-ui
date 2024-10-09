@@ -3,6 +3,7 @@ import { Autocomplete, AutocompleteChanges } from '@equinor/eds-core-react';
 import { GeologicalStandardDto } from '../../../api/generated';
 import { useFetchGrossDepData } from '../../../hooks/useFetchGrossDepData';
 import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
+import { sortList } from '../../../utils/SortList';
 import { GdeType } from '../GrossDepositionEnviromentGroup/GrossDepositionEnviromentGroup';
 
 export const GdeSelect = ({
@@ -38,17 +39,11 @@ export const GdeSelect = ({
     (g) => g.geologyGroup === 'ArchitecturalElement',
   );
 
-  const sortList = (data: any) => {
-    return data.sort((a: any, b: any) =>
-      a.identifier.localeCompare(b.identifier),
-    );
-  };
-
   return (
     <StyledDialog.AutocompleteList>
       <Autocomplete
         label="Gross Depositional Environment (GDE)"
-        options={Gde.sort((a, b) => a.identifier.localeCompare(b.identifier))}
+        options={sortList(Gde)}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<GeologicalStandardDto>) => {
           setGdeObject({
