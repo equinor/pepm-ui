@@ -29,7 +29,9 @@ export const OutcropSelect = ({
     <StyledDialog.AutocompleteList>
       <Autocomplete
         label="Analogue"
-        options={OutcropData.data.data}
+        options={OutcropData.data.data.sort((a, b) =>
+          a.name.localeCompare(b.name),
+        )}
         optionLabel={(option) => option.name}
         onOptionsChange={(e: AutocompleteChanges<OutcropDto>) => {
           const copyObject: OutcropType = {
