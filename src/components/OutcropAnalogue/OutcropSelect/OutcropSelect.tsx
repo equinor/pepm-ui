@@ -4,15 +4,20 @@ import { OutcropDto } from '../../../api/generated';
 import { useFetchOutcropData } from '../../../hooks/useFetchOutcropData';
 import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
 import { sortList } from '../../../utils/SortList';
-import { OutcropType } from '../OutcropAnalogueGroup/OutcropAnalogueGroup';
+import {
+  OutcropErrorType,
+  OutcropType,
+} from '../OutcropAnalogueGroup/OutcropAnalogueGroup';
 
 export const OutcropSelect = ({
   outcropObject,
   outcropGroup,
+  error,
   setOutcropObject,
 }: {
   outcropObject: OutcropType;
   outcropGroup: OutcropDto[];
+  error: OutcropErrorType;
   setOutcropObject: React.Dispatch<React.SetStateAction<OutcropType>>;
 }) => {
   const OutcropData = useFetchOutcropData();
@@ -55,6 +60,8 @@ export const OutcropSelect = ({
         }}
         optionDisabled={filterDisabled}
         noOptionsText="No options"
+        variant={error.Analogue ? 'error' : undefined}
+        helperText={error.Analogue ? error.Analogue : undefined}
       />
 
       <Autocomplete

@@ -34,6 +34,10 @@ const defaultOutcropData: OutcropType = {
   basins: [],
 };
 
+export type OutcropErrorType = {
+  Analogue?: string;
+};
+
 export const OutcropAnalogueGroup = ({
   modelIdParent,
   defaultMetadata,
@@ -44,8 +48,10 @@ export const OutcropAnalogueGroup = ({
   outcropGroup: OutcropDto[];
 }) => {
   const [showOutcropDialog, setShowOutcropDialog] = useState<boolean>(false);
+  const [errors, setErrors] = useState<OutcropErrorType>({});
   const [outcropObject, setOutcropObject] =
     useState<OutcropType>(defaultOutcropData);
+
   const useOutcrop = useOutcropAnalouge();
 
   const handleOutcropDialog = () => {
@@ -53,8 +59,20 @@ export const OutcropAnalogueGroup = ({
     setOutcropObject(defaultOutcropData);
   };
 
+  const validateInput = async (outcropObject: OutcropType) => {
+    const errorObject: OutcropErrorType = {};
+
+    if (outcropObject.outcropId === undefined) {
+      errorObject.Analogue = 'Must be set';
+    }
+
+    return errorObject;
+  };
+
   const handleAddOutcropAnalogue = async () => {
     const id = modelIdParent ? modelIdParent : defaultMetadata.analogueModelId;
+    const err = await validateInput(outcropObject);
+    setErrors(err);
 
     if (id && outcropObject.outcropId) {
       const postRequestBody: AddAnalogueModelOutcropForm = {
@@ -139,6 +157,7 @@ export const OutcropAnalogueGroup = ({
             outcropObject={outcropObject}
             outcropGroup={outcropGroup}
             setOutcropObject={setOutcropObject}
+            error={errors}
           />
         </Dialog.CustomContent>
         <StyledDialog.Actions>
