@@ -3,32 +3,52 @@ import { spacings } from '../../../../../../tokens/spacings';
 
 export const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: ${spacings.MEDIUM_SMALL} 0 ${spacings.MEDIUM_SMALL} ${spacings.LARGE};
+  row-gap: ${spacings.MEDIUM_SMALL};
+`;
+
+export const ResultHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+export const MetadataWrapperDiv = styled.div`
+  display: flex;
   flex-direction: row;
   align-items: center;
-  padding-left: ${spacings.LARGE};
-  min-width: 320px;
 `;
 
-export const Info = styled.div`
-  display: flex;
-  flex-direction: column;
-  row-gap: ${spacings.MEDIUM};
-
-  width: 150px;
+export const MetadataDiv = styled.div`
+  align-items: start;
+  padding-right: ${spacings.MEDIUM};
+  > label {
+    margin: 0;
+  }
 `;
 
-export const Coordinates = styled.div`
-  display: flex;
-  flex-direction: column;
-  row-gap: ${spacings.MEDIUM};
-`;
-
-export const CoordinateRow = styled.div`
+export const CoordinateDiv = styled.div`
   display: flex;
   flex-direction: row;
-  column-gap: ${spacings.MEDIUM};
 `;
 
 export const RowElement = styled.div`
   white-space: nowrap;
+  > label {
+    margin: 0;
+  }
+`;
+
+export const Divider = styled.div`
+  width: 100%;
+`;
+
+export const VerticalDivider = styled.div`
+  width: 0px;
+  height: 100%;
+  margin: 0 ${spacings.MEDIUM};
+  border: 0.5px solid #e0e0e0;
 `;

@@ -17,6 +17,9 @@ export type GetVariogramResultsDto = {
     rvertical: number;
     sigma: number;
     quality: number;
+    qualityX: number;
+    qualityY: number;
+    qualityZ: number;
     family: string;
     archelFilter?: string | null;
     indicator?: string | null;
