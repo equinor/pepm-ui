@@ -2,18 +2,19 @@ import { GDEErrorType, GdeType } from './GrossDepositionEnviromentGroup';
 
 export const validateInput = async (gdeObject: GdeType) => {
   const errorObject: GDEErrorType = {};
+  const message = 'Value missing';
 
   if (gdeObject.grossDepEnv === undefined) {
-    errorObject.GDE = 'Must be set';
+    errorObject.GDE = message;
   }
   if (gdeObject.depEnv === undefined) {
-    errorObject.DEnv = 'Must be set';
+    errorObject.DEnv = message;
   }
   if (gdeObject.subenv === undefined) {
-    errorObject.subEnv = 'Must be set';
+    errorObject.subEnv = message;
   }
   if (gdeObject.architecturalElements?.length === 0) {
-    errorObject.AEl = 'Must be set';
+    errorObject.AEl = message;
   }
 
   return errorObject;

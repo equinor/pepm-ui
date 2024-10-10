@@ -114,8 +114,6 @@ export const GrossDepositionEnviromentGroup = ({
         requestBody: postRequestBody,
       });
       if (rowUpload.success) handleGdeDialog();
-    } else {
-      console.log('ELSE ');
     }
   };
 

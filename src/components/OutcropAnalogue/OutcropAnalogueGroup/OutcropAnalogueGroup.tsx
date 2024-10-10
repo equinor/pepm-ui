@@ -63,7 +63,7 @@ export const OutcropAnalogueGroup = ({
     const errorObject: OutcropErrorType = {};
 
     if (outcropObject.outcropId === undefined) {
-      errorObject.Analogue = 'Must be set';
+      errorObject.Analogue = 'Value missing';
     }
 
     return errorObject;
