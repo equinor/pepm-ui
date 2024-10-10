@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.4.1](https://github.com/equinor/pepm-ui/compare/v1.4.0...v1.4.1) (2024-10-10)
+
+
+### 🧹 Chores
+
+* **radix-config:** added new job ([88b532e](https://github.com/equinor/pepm-ui/commit/88b532e6863414e5f77207f15d477077084e0db5))
+* refactor model page styles and micro copy ([#324](https://github.com/equinor/pepm-ui/issues/324)) ([2631e27](https://github.com/equinor/pepm-ui/commit/2631e278b4687e50e4eb55a025b13600f4034079))
+* tune delete button and dialog ([#323](https://github.com/equinor/pepm-ui/issues/323)) ([0d4daf0](https://github.com/equinor/pepm-ui/commit/0d4daf027996fd5c2a9fe39b0c0bdb17c2e9a927))
+
+
+### 🐛 Bug Fixes
+
+* fixed issue where same image was displayed for all results within the same case ([#329](https://github.com/equinor/pepm-ui/issues/329)) ([564fcb5](https://github.com/equinor/pepm-ui/commit/564fcb561dbea825e22b3c5eaf4a4a5533a30245))
+* fixing correct version for test API. NB: will be changed later ([e067b92](https://github.com/equinor/pepm-ui/commit/e067b9265635feed082cf2a1c25e2b511c8e7130))
+
 ## [1.4.0](https://github.com/equinor/pepm-ui/compare/v1.3.0...v1.4.0) (2024-09-18)
 
 
