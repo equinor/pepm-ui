@@ -1,29 +1,148 @@
 /* eslint-disable max-lines-per-function */
-import { Button, Icon, Table, Typography } from '@equinor/eds-core-react';
-import { delete_to_trash as deleteIcon } from '@equinor/eds-icons';
 import {
+  Button,
+  Dialog,
+  Icon,
+  Table,
+  Typography,
+} from '@equinor/eds-core-react';
+import { delete_to_trash as deleteIcon } from '@equinor/eds-icons';
+import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
+import {
+  AddStatigraphicGroupForm,
+  AnalogueModelDetail,
+  AnalogueModelsService,
+  CountryDto,
   DeleteStratigraphicGroupCommandResponse,
+  FieldDto,
+  StratColumnDto,
+  StratUnitDto,
+  // eslint-disable-next-line sort-imports
   StratigraphicGroupDto,
 } from '../../../api/generated';
+import { queryClient } from '../../../auth/queryClient';
+import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
+import { StratigraphicColumnSelect } from '../StratigraphicColumnSelect/StratigraphicColumnSelect';
+import { validateInput } from './StratigrapicGroups.hooks';
 import * as Styled from './StratigrapicGroups.styled';
 
+export interface StratColumnType {
+  country?: CountryDto;
+  field?: FieldDto;
+  stratColumn?: StratColumnDto;
+  level1?: StratUnitDto;
+  level2?: StratUnitDto;
+  level3?: StratUnitDto;
+}
+export const defaultStratColumnData: StratColumnType = {
+  country: undefined,
+  field: undefined,
+  stratColumn: undefined,
+  level1: undefined,
+  level2: undefined,
+  level3: undefined,
+};
+
+export type StratColumnErrorType = {
+  country?: string;
+  field?: string;
+  stratColumn?: string;
+  level1?: string;
+  level2?: string;
+  level3?: string;
+};
+
 export const StratigrapicGroups = ({
+  modelIdParent,
+  defaultMetadata,
   stratColumnGroups,
-  handleStratColDialog,
   deleteStratColRow,
 }: {
+  modelIdParent?: string;
+  defaultMetadata: AnalogueModelDetail;
   stratColumnGroups: StratigraphicGroupDto[];
-  handleStratColDialog: () => void;
   deleteStratColRow: (
     stratigraphicGroupId: string,
   ) => Promise<DeleteStratigraphicGroupCommandResponse | undefined>;
 }) => {
+  const [stratColumnObject, setStratColumnObject] = useState<StratColumnType>(
+    defaultStratColumnData,
+  );
+  const [showStratColDialog, setShowStratColDialog] = useState<boolean>(false);
+  const [errors, setErrors] = useState<StratColumnErrorType>({});
+
   const filterUnitLevel = (row: StratigraphicGroupDto, level: number) => {
     return row.stratUnits.filter((unit) => unit.level === level);
   };
 
   const deleteRow = async (id: string) => {
     await deleteStratColRow(id);
+  };
+
+  const postSmdaMetadataRow = useMutation({
+    mutationFn: ({
+      id,
+      requestBody,
+    }: {
+      id: string;
+      requestBody: AddStatigraphicGroupForm;
+    }) => {
+      return AnalogueModelsService.postApiAnalogueModelsStratigraphicGroups(
+        id,
+        requestBody,
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['analogue-model'] });
+    },
+  });
+
+  const handleAddStratCol = async () => {
+    const id = modelIdParent ? modelIdParent : defaultMetadata.analogueModelId;
+    const err = await validateInput(stratColumnObject);
+    setErrors(err);
+    if (
+      id &&
+      stratColumnObject.country &&
+      stratColumnObject.field &&
+      stratColumnObject.stratColumn &&
+      stratColumnObject.level1 &&
+      stratColumnObject.level2
+    ) {
+      const stratUnitList: string[] = [];
+      if (stratColumnObject.level1 !== undefined)
+        stratUnitList.push(stratColumnObject.level1.stratUnitId);
+      if (
+        stratColumnObject.level1 !== undefined &&
+        stratColumnObject.level2 !== undefined
+      )
+        stratUnitList.push(stratColumnObject.level2.stratUnitId);
+      if (
+        stratColumnObject.level1 !== undefined &&
+        stratColumnObject.level2 !== undefined &&
+        stratColumnObject.level3 !== undefined
+      )
+        stratUnitList.push(stratColumnObject.level3.stratUnitId);
+
+      const postRequestBody: AddStatigraphicGroupForm = {
+        countryId: stratColumnObject.country.countryId,
+        fieldId: stratColumnObject.field.fieldId,
+        stratigraphicColumnId: stratColumnObject.stratColumn.stratColumnId,
+        stratigraphicUnitIds: stratUnitList.length > 0 ? stratUnitList : [],
+      };
+
+      const rowUpload = await postSmdaMetadataRow.mutateAsync({
+        id: id,
+        requestBody: postRequestBody,
+      });
+      if (rowUpload.success) handleStratColDialog();
+    }
+  };
+
+  const handleStratColDialog = () => {
+    setShowStratColDialog(!showStratColDialog);
+    setStratColumnObject(defaultStratColumnData);
   };
 
   return (
@@ -106,6 +225,23 @@ export const StratigrapicGroups = ({
           Add stratigraphic column…
         </Button>
       </div>
+      <StyledDialog.DialogWindow open={showStratColDialog}>
+        <Dialog.Header>Add stratigraphic column</Dialog.Header>
+        <Dialog.CustomContent>
+          <StratigraphicColumnSelect
+            stratColumnObject={stratColumnObject}
+            setStratColumnObject={setStratColumnObject}
+            error={errors}
+            setErrors={setErrors}
+          />
+        </Dialog.CustomContent>
+        <StyledDialog.Actions>
+          <Button onClick={handleAddStratCol}>Add</Button>
+          <Button variant="outlined" onClick={handleStratColDialog}>
+            Close
+          </Button>
+        </StyledDialog.Actions>
+      </StyledDialog.DialogWindow>
     </Styled.Wrapper>
   );
 };
