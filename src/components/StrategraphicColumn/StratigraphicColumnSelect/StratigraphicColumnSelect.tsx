@@ -14,6 +14,7 @@ import {
   useFetchSmdaStratigraphicColumns,
 } from '../../../hooks/useFetchStratColData';
 import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
+import { sortList } from '../../../utils/SortList';
 
 export const StratigraphicColumnSelect = ({
   stratColumnObject,
@@ -61,9 +62,7 @@ export const StratigraphicColumnSelect = ({
     <StyledDialog.AutocompleteList>
       <Autocomplete
         label="Country"
-        options={filterCountries.sort((a, b) =>
-          a.identifier.localeCompare(b.identifier),
-        )}
+        options={sortList(filterCountries)}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<CountryDto>) => {
           setStratColumnObject({
@@ -82,8 +81,10 @@ export const StratigraphicColumnSelect = ({
       <Autocomplete
         disabled={stratColumnObject.country === undefined}
         label="Field"
-        options={fieldData.data.data.filter(
-          (field) => field.countryId === stratColumnObject.country?.countryId,
+        options={sortList(
+          fieldData.data.data.filter(
+            (field) => field.countryId === stratColumnObject.country?.countryId,
+          ),
         )}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<FieldDto>) => {
@@ -101,13 +102,15 @@ export const StratigraphicColumnSelect = ({
       <Autocomplete
         disabled={stratColumnObject.country === undefined}
         label="Stratigraphic column"
-        options={stratColumnData.data.data.filter(
-          (c) =>
-            stratColumnObject.country !== undefined &&
-            c.countries.filter(
-              (country) =>
-                country.countryId === stratColumnObject.country?.countryId,
-            ).length !== 0,
+        options={sortList(
+          stratColumnData.data.data.filter(
+            (c) =>
+              stratColumnObject.country !== undefined &&
+              c.countries.filter(
+                (country) =>
+                  country.countryId === stratColumnObject.country?.countryId,
+              ).length !== 0,
+          ),
         )}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<StratColumnDto>) => {
@@ -128,12 +131,15 @@ export const StratigraphicColumnSelect = ({
       <Autocomplete
         disabled={stratColumnObject.stratColumn === undefined}
         label="Level 1 (group)"
-        options={stratUnitData.data.data
-          .filter((s) => s.level === 1)
-          .filter(
-            (c) =>
-              c.stratColumnId === stratColumnObject.stratColumn?.stratColumnId,
-          )}
+        options={sortList(
+          stratUnitData.data.data
+            .filter((s) => s.level === 1)
+            .filter(
+              (c) =>
+                c.stratColumnId ===
+                stratColumnObject.stratColumn?.stratColumnId,
+            ),
+        )}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<StratUnitDto>) =>
           setStratColumnObject({
@@ -152,16 +158,19 @@ export const StratigraphicColumnSelect = ({
       <Autocomplete
         disabled={stratColumnObject.level1 === undefined}
         label="Level 2 (formation)"
-        options={stratUnitData.data.data
-          .filter((s) => s.level === 2)
-          .filter(
-            (c) =>
-              c.stratColumnId === stratColumnObject.stratColumn?.stratColumnId,
-          )
-          .filter(
-            (x) =>
-              x.stratUnitParentId === stratColumnObject.level1?.stratUnitId,
-          )}
+        options={sortList(
+          stratUnitData.data.data
+            .filter((s) => s.level === 2)
+            .filter(
+              (c) =>
+                c.stratColumnId ===
+                stratColumnObject.stratColumn?.stratColumnId,
+            )
+            .filter(
+              (x) =>
+                x.stratUnitParentId === stratColumnObject.level1?.stratUnitId,
+            ),
+        )}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<StratUnitDto>) =>
           setStratColumnObject({
@@ -179,16 +188,19 @@ export const StratigraphicColumnSelect = ({
       <Autocomplete
         disabled={stratColumnObject.level2 === undefined}
         label="Level 3 (formation/subzone)"
-        options={stratUnitData.data.data
-          .filter((s) => s.level === 3)
-          .filter(
-            (c) =>
-              c.stratColumnId === stratColumnObject.stratColumn?.stratColumnId,
-          )
-          .filter(
-            (x) =>
-              x.stratUnitParentId === stratColumnObject.level2?.stratUnitId,
-          )}
+        options={sortList(
+          stratUnitData.data.data
+            .filter((s) => s.level === 3)
+            .filter(
+              (c) =>
+                c.stratColumnId ===
+                stratColumnObject.stratColumn?.stratColumnId,
+            )
+            .filter(
+              (x) =>
+                x.stratUnitParentId === stratColumnObject.level2?.stratUnitId,
+            ),
+        )}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<StratUnitDto>) =>
           setStratColumnObject({

@@ -3,6 +3,7 @@ import { Autocomplete, AutocompleteChanges } from '@equinor/eds-core-react';
 import { GeologicalStandardDto } from '../../../api/generated';
 import { useFetchGrossDepData } from '../../../hooks/useFetchGrossDepData';
 import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
+import { sortList } from '../../../utils/SortList';
 import { GdeType } from '../GrossDepositionEnviromentGroup/GrossDepositionEnviromentGroup';
 
 export const GdeSelect = ({
@@ -42,7 +43,7 @@ export const GdeSelect = ({
     <StyledDialog.AutocompleteList>
       <Autocomplete
         label="Gross Depositional Environment (GDE)"
-        options={Gde}
+        options={sortList(Gde)}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<GeologicalStandardDto>) => {
           setGdeObject({
@@ -56,7 +57,7 @@ export const GdeSelect = ({
       <Autocomplete
         label="Depositional Environment"
         disabled={gdeObject.grossDepEnv?.geologicalStandardId === undefined}
-        options={De}
+        options={sortList(De)}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<GeologicalStandardDto>) => {
           setGdeObject({
@@ -70,7 +71,7 @@ export const GdeSelect = ({
       <Autocomplete
         label="Subenvironment"
         disabled={gdeObject.grossDepEnv?.geologicalStandardId === undefined}
-        options={SubEnvironment}
+        options={sortList(SubEnvironment)}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<GeologicalStandardDto>) => {
           setGdeObject({
@@ -84,7 +85,7 @@ export const GdeSelect = ({
       <Autocomplete
         label="Architectural Element"
         multiple
-        options={ArchitecturalElement}
+        options={sortList(ArchitecturalElement)}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<GeologicalStandardDto>) => {
           setGdeObject({
