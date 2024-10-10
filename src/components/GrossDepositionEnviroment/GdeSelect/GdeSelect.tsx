@@ -13,10 +13,12 @@ export const GdeSelect = ({
   gdeObject,
   setGdeObject,
   error,
+  setErrors,
 }: {
   gdeObject: GdeType;
   setGdeObject: React.Dispatch<React.SetStateAction<GdeType>>;
   error: GDEErrorType;
+  setErrors: React.Dispatch<React.SetStateAction<GDEErrorType>>;
 }) => {
   const GdeData = useFetchGrossDepData();
 
@@ -55,6 +57,7 @@ export const GdeSelect = ({
             ...gdeObject,
             grossDepEnv: e.selectedItems[0],
           });
+          setErrors({});
         }}
         noOptionsText="No options"
         variant={error.GDE ? 'error' : undefined}
@@ -73,8 +76,16 @@ export const GdeSelect = ({
           });
         }}
         noOptionsText="No options"
-        variant={error.DEnv ? 'error' : undefined}
-        helperText={error.DEnv ? error.DEnv : undefined}
+        variant={
+          error.DEnv && gdeObject.grossDepEnv !== undefined
+            ? 'error'
+            : undefined
+        }
+        helperText={
+          error.DEnv && gdeObject.grossDepEnv !== undefined
+            ? error.DEnv
+            : undefined
+        }
       />
 
       <Autocomplete
@@ -89,8 +100,16 @@ export const GdeSelect = ({
           });
         }}
         noOptionsText="No options"
-        variant={error.subEnv ? 'error' : undefined}
-        helperText={error.subEnv ? error.subEnv : undefined}
+        variant={
+          error.subEnv && gdeObject.grossDepEnv !== undefined
+            ? 'error'
+            : undefined
+        }
+        helperText={
+          error.subEnv && gdeObject.grossDepEnv !== undefined
+            ? error.subEnv
+            : undefined
+        }
       />
 
       <Autocomplete

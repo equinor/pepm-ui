@@ -180,6 +180,7 @@ export const GrossDepositionEnviromentGroup = ({
             gdeObject={gdeObject}
             setGdeObject={setGdeObject}
             error={errors}
+            setErrors={setErrors}
           />
         </Dialog.CustomContent>
         <StyledDialog.Actions>
