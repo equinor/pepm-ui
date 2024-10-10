@@ -116,7 +116,9 @@ export const ModelTable = () => {
             cell: ({ row }) => (
               <Styled.List>
                 {row.original.stratigraphicGroups.map((i) => (
-                  <p key={i.country.countryId}>{i.country.identifier}, </p>
+                  <p key={i.country.countryId + i.stratigraphicGroupId}>
+                    {i.country.identifier},{' '}
+                  </p>
                 ))}
               </Styled.List>
             ),
@@ -129,7 +131,9 @@ export const ModelTable = () => {
             cell: ({ row }) => (
               <Styled.List>
                 {row.original.stratigraphicGroups.map((i) => (
-                  <p key={i.field.fieldId}>{i.field.identifier}, </p>
+                  <p key={i.field.fieldId + i.stratigraphicGroupId}>
+                    {i.field.identifier},{' '}
+                  </p>
                 ))}
               </Styled.List>
             ),
@@ -142,7 +146,7 @@ export const ModelTable = () => {
             cell: ({ row }) => (
               <Styled.List>
                 {row.original.stratigraphicGroups.map((i) => (
-                  <p key={i.stratColumn.stratColumnId}>
+                  <p key={i.stratColumn.stratColumnId + i.stratigraphicGroupId}>
                     {i.stratColumn.identifier},{' '}
                   </p>
                 ))}
@@ -157,7 +161,7 @@ export const ModelTable = () => {
             cell: ({ row }) => (
               <Styled.List>
                 {getRowGroup(row.original.stratigraphicGroups).map((i) => (
-                  <p key={i.stratUnitId}>{i.identifier}, </p>
+                  <p key={i.stratUnitId + i.identifier}>{i.identifier}, </p>
                 ))}
               </Styled.List>
             ),

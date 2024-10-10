@@ -6,7 +6,6 @@ import {
   StratColumnDto,
   StratUnitDto,
 } from '../../../api/generated';
-import { StratColumnType } from '../../../features/HandleModel/HandleModelComponent/HandleModelComponent';
 import {
   useFetchSmdaCountries,
   useFetchSmdaFields,
@@ -15,13 +14,21 @@ import {
 } from '../../../hooks/useFetchStratColData';
 import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
 import { sortList } from '../../../utils/SortList';
+import {
+  StratColumnErrorType,
+  StratColumnType,
+} from '../StratigrapicGroups/StratigrapicGroups';
 
 export const StratigraphicColumnSelect = ({
   stratColumnObject,
   setStratColumnObject,
+  error,
+  setErrors,
 }: {
   stratColumnObject: StratColumnType;
   setStratColumnObject: React.Dispatch<React.SetStateAction<StratColumnType>>;
+  error: StratColumnErrorType;
+  setErrors: React.Dispatch<React.SetStateAction<StratColumnErrorType>>;
 }) => {
   const countryData = useFetchSmdaCountries();
   const fieldData = useFetchSmdaFields();
@@ -74,8 +81,11 @@ export const StratigraphicColumnSelect = ({
             level2: undefined,
             level3: undefined,
           });
+          setErrors({});
         }}
         noOptionsText="No options"
+        variant={error.country ? 'error' : undefined}
+        helperText={error.country ? error.country : undefined}
       />
 
       <Autocomplete
@@ -97,6 +107,16 @@ export const StratigraphicColumnSelect = ({
           stratColumnObject.field ? [stratColumnObject.field] : []
         }
         noOptionsText="No options"
+        variant={
+          error.field && stratColumnObject.country !== undefined
+            ? 'error'
+            : undefined
+        }
+        helperText={
+          error.field && stratColumnObject.country !== undefined
+            ? error.field
+            : undefined
+        }
       />
 
       <Autocomplete
@@ -121,11 +141,22 @@ export const StratigraphicColumnSelect = ({
             level2: undefined,
             level3: undefined,
           });
+          setErrors({});
         }}
         selectedOptions={
           stratColumnObject.stratColumn ? [stratColumnObject.stratColumn] : []
         }
         noOptionsText="No options"
+        variant={
+          error.stratColumn && stratColumnObject.country !== undefined
+            ? 'error'
+            : undefined
+        }
+        helperText={
+          error.stratColumn && stratColumnObject.country !== undefined
+            ? error.stratColumn
+            : undefined
+        }
       />
 
       <Autocomplete
@@ -141,18 +172,29 @@ export const StratigraphicColumnSelect = ({
             ),
         )}
         optionLabel={(option) => option.identifier}
-        onOptionsChange={(e: AutocompleteChanges<StratUnitDto>) =>
+        onOptionsChange={(e: AutocompleteChanges<StratUnitDto>) => {
           setStratColumnObject({
             ...stratColumnObject,
             level1: e.selectedItems[0],
             level2: undefined,
             level3: undefined,
-          })
-        }
+          });
+          setErrors({});
+        }}
         selectedOptions={
           stratColumnObject.level1 ? [stratColumnObject.level1] : []
         }
         noOptionsText="No options"
+        variant={
+          error.level1 && stratColumnObject.stratColumn !== undefined
+            ? 'error'
+            : undefined
+        }
+        helperText={
+          error.level1 && stratColumnObject.stratColumn !== undefined
+            ? error.level1
+            : undefined
+        }
       />
 
       <Autocomplete
@@ -172,17 +214,28 @@ export const StratigraphicColumnSelect = ({
             ),
         )}
         optionLabel={(option) => option.identifier}
-        onOptionsChange={(e: AutocompleteChanges<StratUnitDto>) =>
+        onOptionsChange={(e: AutocompleteChanges<StratUnitDto>) => {
           setStratColumnObject({
             ...stratColumnObject,
             level2: e.selectedItems[0],
             level3: undefined,
-          })
-        }
+          });
+          setErrors({});
+        }}
         selectedOptions={
           stratColumnObject.level2 ? [stratColumnObject.level2] : []
         }
         noOptionsText="No options"
+        variant={
+          error.level2 && stratColumnObject.level1 !== undefined
+            ? 'error'
+            : undefined
+        }
+        helperText={
+          error.level2 && stratColumnObject.level1 !== undefined
+            ? error.level2
+            : undefined
+        }
       />
 
       <Autocomplete

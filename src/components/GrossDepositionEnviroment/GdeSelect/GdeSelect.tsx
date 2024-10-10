@@ -4,14 +4,21 @@ import { GeologicalStandardDto } from '../../../api/generated';
 import { useFetchGrossDepData } from '../../../hooks/useFetchGrossDepData';
 import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
 import { sortList } from '../../../utils/SortList';
-import { GdeType } from '../GrossDepositionEnviromentGroup/GrossDepositionEnviromentGroup';
+import {
+  GDEErrorType,
+  GdeType,
+} from '../GrossDepositionEnviromentGroup/GrossDepositionEnviromentGroup';
 
 export const GdeSelect = ({
   gdeObject,
   setGdeObject,
+  error,
+  setErrors,
 }: {
   gdeObject: GdeType;
   setGdeObject: React.Dispatch<React.SetStateAction<GdeType>>;
+  error: GDEErrorType;
+  setErrors: React.Dispatch<React.SetStateAction<GDEErrorType>>;
 }) => {
   const GdeData = useFetchGrossDepData();
 
@@ -50,8 +57,11 @@ export const GdeSelect = ({
             ...gdeObject,
             grossDepEnv: e.selectedItems[0],
           });
+          setErrors({});
         }}
         noOptionsText="No options"
+        variant={error.GDE ? 'error' : undefined}
+        helperText={error.GDE ? error.GDE : undefined}
       />
 
       <Autocomplete
@@ -66,6 +76,16 @@ export const GdeSelect = ({
           });
         }}
         noOptionsText="No options"
+        variant={
+          error.DEnv && gdeObject.grossDepEnv !== undefined
+            ? 'error'
+            : undefined
+        }
+        helperText={
+          error.DEnv && gdeObject.grossDepEnv !== undefined
+            ? error.DEnv
+            : undefined
+        }
       />
 
       <Autocomplete
@@ -80,6 +100,16 @@ export const GdeSelect = ({
           });
         }}
         noOptionsText="No options"
+        variant={
+          error.subEnv && gdeObject.grossDepEnv !== undefined
+            ? 'error'
+            : undefined
+        }
+        helperText={
+          error.subEnv && gdeObject.grossDepEnv !== undefined
+            ? error.subEnv
+            : undefined
+        }
       />
 
       <Autocomplete
@@ -94,6 +124,8 @@ export const GdeSelect = ({
           });
         }}
         noOptionsText="No options"
+        variant={error.AEl ? 'error' : undefined}
+        helperText={error.subEnv ? error.AEl : undefined}
       />
     </StyledDialog.AutocompleteList>
   );
