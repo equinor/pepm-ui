@@ -39,7 +39,7 @@ export const VariogramResultTable = ({
   const resultElementsList: ResultObjectType[] = resultList.map((e) => {
     const method = caseList.data?.data.filter(
       (c) => c.computeCaseId === e.computeCaseId,
-    )[0].computeMethod.name;
+    )[0]?.computeMethod?.name;
     let parameter = '';
     if (method === 'Indicator') {
       parameter = e.indicator ? e.indicator : '';
@@ -51,7 +51,7 @@ export const VariogramResultTable = ({
 
     const modelArea = caseList.data?.data.filter(
       (c) => c.computeCaseId === e.computeCaseId,
-    )[0].modelArea;
+    )[0]?.modelArea;
 
     const element: ResultObjectType = {
       variogramResultId: e.variogramResultId,
@@ -71,7 +71,7 @@ export const VariogramResultTable = ({
   const handleImageDialog = (id: string, variogramResultId: string) => {
     const computeCaseResults = resultList.filter((e) => e.computeCaseId === id);
     const resultFile = computeCaseResults
-      .find((r) => r.variogramResultId == variogramResultId)!
+      .find((r) => r.variogramResultId === variogramResultId)!
       .variogramResultFiles.find((x) =>
         x.fileName.includes('variogram_slices_'),
       );
