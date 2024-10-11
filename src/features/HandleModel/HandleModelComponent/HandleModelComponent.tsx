@@ -10,13 +10,7 @@ import {
 import { error_outlined } from '@equinor/eds-icons';
 import { useEffect, useState } from 'react';
 import { generatePath, useNavigate } from 'react-router-dom';
-import {
-  AnalogueModelDetail,
-  CountryDto,
-  FieldDto,
-  StratColumnDto,
-  StratUnitDto,
-} from '../../../api/generated';
+import { AnalogueModelDetail } from '../../../api/generated';
 import { ModelInputFilesTable } from '../ModelInputFilesTable/ModelInputFilesTable';
 import { ModelMetadata } from '../ModelMetadata/ModelMetadata';
 import {
@@ -61,14 +55,6 @@ const defaultFiles = {
   NC: undefined,
   INI: undefined,
 };
-export interface StratColumnType {
-  country?: CountryDto;
-  field?: FieldDto;
-  stratColumn?: StratColumnDto;
-  level1?: StratUnitDto;
-  level2?: StratUnitDto;
-  level3?: StratUnitDto;
-}
 
 export const HandleModelComponent = ({
   confirm,
