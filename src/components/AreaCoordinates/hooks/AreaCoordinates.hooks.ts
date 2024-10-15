@@ -22,6 +22,12 @@ export const validateCoordinates = async (
     errors.area = 'You must select a model area';
   }
 
+  if (area && area.coordinates[0].x > area.coordinates[1].x) {
+    errors.x0 = 'X start cannot be greater than X end.';
+  }
+  if (area && area.coordinates[0].y > area.coordinates[1].y) {
+    errors.y0 = 'Y start cannot be greater than Y end.';
+  }
   if (area && area.coordinates[0].x === area.coordinates[1].x) {
     errors.x0 = "X start/end coordinates can't be equal.";
   }
