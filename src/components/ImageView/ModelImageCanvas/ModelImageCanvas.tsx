@@ -45,8 +45,9 @@ export const ModelImageCanvas = ({
     img.onload = () => {
       // Scale image down based on the size of the parent
       const container = canvas.parentElement;
-      const containerWidth = container!.clientWidth;
-      const containerHeight = container!.clientHeight;
+      if (container === null) return;
+      const containerWidth = container.clientWidth;
+      const containerHeight = container.clientHeight;
       const scaleX = containerWidth / img.width;
       const scaleY = containerHeight / img.height;
       const scale = Math.min(scaleX, scaleY); // Use the smaller scale factor

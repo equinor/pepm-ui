@@ -1,8 +1,8 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
-import { Button, Dialog, Typography } from '@equinor/eds-core-react';
+import { Button, Typography } from '@equinor/eds-core-react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useCallback, useEffect, useRef,useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   AddAnalogueModelMetadataCommandForm,
@@ -26,7 +26,6 @@ import { EditNameDescription } from '../EditNameDescription/EditNameDescription'
 import * as Styled from './ModelMetadataView.styled';
 import { getAnalogueModelImage } from '../../../api/custom/getAnalogueModelImageById';
 
-
 export const ModelMetadataView = ({
   modelIdParent,
   uploadingProgress,
@@ -41,13 +40,7 @@ export const ModelMetadataView = ({
 
   const generateImageRequested = useRef(false);
 
-  const [stratColumnObject, setStratColumnObject] = useState<StratColumnType>(
-    defaultStratColumnData,
-  );
-  const [showStratColDialog, setShowStratColDialog] = useState<boolean>(false);
-
   const { modelId } = useParams();
-
 
   const defaultMetadata: AnalogueModelDetail = {
     analogueModelId: data?.data.analogueModelId
