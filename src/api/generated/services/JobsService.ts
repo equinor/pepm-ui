@@ -8,6 +8,8 @@ import type { EstimateObjectCommand } from '../models/EstimateObjectCommand';
 import type { EstimateObjectCommandResponse } from '../models/EstimateObjectCommandResponse';
 import type { EstimateVariogramCommand } from '../models/EstimateVariogramCommand';
 import type { EstimateVariogramCommandResponse } from '../models/EstimateVariogramCommandResponse';
+import type { GenerateThumbnailCommand } from '../models/GenerateThumbnailCommand';
+import type { GenerateThumbnailCommandResponse } from '../models/GenerateThumbnailCommandResponse';
 import type { GetCurrentJobStatusCommandResponse } from '../models/GetCurrentJobStatusCommandResponse';
 import type { GetCurrentJobStatusListCommand } from '../models/GetCurrentJobStatusListCommand';
 import type { GetJobDetailQueryResponse } from '../models/GetJobDetailQueryResponse';
@@ -147,6 +149,27 @@ export class JobsService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/jobs/compute/variogram-estimations',
+            body: requestBody,
+            mediaType: 'application/json-patch+json',
+            errors: {
+                400: `Bad Request`,
+                403: `Forbidden`,
+            },
+        });
+    }
+
+    /**
+     * Generate thumbnail for processed analogue model.
+     * @param requestBody
+     * @returns GenerateThumbnailCommandResponse Accepted
+     * @throws ApiError
+     */
+    public static postApiJobsComputeThumbnailGen(
+        requestBody?: GenerateThumbnailCommand,
+    ): CancelablePromise<GenerateThumbnailCommandResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/jobs/compute/thumbnail-gen',
             body: requestBody,
             mediaType: 'application/json-patch+json',
             errors: {

@@ -16,13 +16,12 @@ import {
   CoordinateDto,
   ModelAreaTypeDto,
 } from '../../api/generated';
-import Img from '../../features/ModelView/image.png';
 import { useFetchCases } from '../../hooks/useFetchCases';
 import { useFetchModel } from '../../hooks/useFetchModel';
 import { useFetchModelAreas } from '../../hooks/useFetchModelAreas';
 import { useMutateAreaCoordinates } from '../../hooks/useMutateAreaCoordinates';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
-import { ImageView } from '../ImageView/ImageView';
+import { AnalogueModelImageView } from '../ImageView/AnalogueModelImageView';
 import * as Styled from './AreaCoordinates.styled';
 import { CoordinateInput } from './CoordinateInput/CoordinateInput';
 import {
@@ -366,12 +365,21 @@ export const AreaCoordinates = ({
             </Styled.CoordinateFields>
           )}
         </Styled.Selects>
-
-        <ImageView
-          text="Model placeholder image"
-          img={Img}
-          altText="Model placeholder image"
-        />
+        {data && data.data.analogueModelImage === null && (
+          <div>
+            <Typography>
+              No image is found for this model. Try refreshing the page
+            </Typography>
+          </div>
+        )}
+        {data?.data.analogueModelId &&
+          data.data.analogueModelImage?.analogueModelImageId && (
+            <AnalogueModelImageView
+              modelId={data?.data.analogueModelId}
+              imageId={data?.data.analogueModelImage?.analogueModelImageId}
+              coordinateBox={areaCoordinate}
+            />
+          )}
       </Styled.ContentSplitter>
     </>
   );

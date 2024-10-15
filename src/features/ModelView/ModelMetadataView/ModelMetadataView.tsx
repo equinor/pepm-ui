@@ -1,8 +1,8 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
 import { Button, Typography } from '@equinor/eds-core-react';
-import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   AddAnalogueModelMetadataCommandForm,
@@ -10,6 +10,8 @@ import {
   AnalogueModelDetail,
   AnalogueModelMetadataService,
   AnalogueModelSourceType,
+  GenerateThumbnailCommand,
+  JobsService,
   JobStatus,
   MetadataDto,
   UpdateAnalogueModelCommandBody,
@@ -22,6 +24,7 @@ import { StratigrapicGroups } from '../../../components/StrategraphicColumn/Stra
 import { useFetchModel } from '../../../hooks/useFetchModel';
 import { EditNameDescription } from '../EditNameDescription/EditNameDescription';
 import * as Styled from './ModelMetadataView.styled';
+import { getAnalogueModelImage } from '../../../api/custom/getAnalogueModelImageById';
 
 export const ModelMetadataView = ({
   modelIdParent,
@@ -34,6 +37,9 @@ export const ModelMetadataView = ({
     modelIdParent ? modelIdParent : undefined,
   );
   const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false);
+
+  const generateImageRequested = useRef(false);
+
   const { modelId } = useParams();
 
   const defaultMetadata: AnalogueModelDetail = {
@@ -53,6 +59,53 @@ export const ModelMetadataView = ({
     geologicalGroups: [],
     processingStatus: JobStatus.UNKNOWN,
   };
+
+  const imageId = data?.data.analogueModelImage?.analogueModelImageId ?? '';
+
+  const imageRequest = useQuery({
+    queryKey: ['analogue-model-image', modelId, imageId],
+    queryFn: () => getAnalogueModelImage(modelId!, imageId),
+    enabled: imageId !== '',
+  });
+
+  const generateThumbnail = useMutation({
+    mutationFn: (requestBody: GenerateThumbnailCommand) => {
+      return JobsService.postApiJobsComputeThumbnailGen(requestBody);
+    },
+  });
+
+  const generateThumbnailOnLoad = useCallback(
+    async (modelId: string) => {
+      if (modelId) {
+        const res = await generateThumbnail.mutateAsync({
+          modelId: modelId,
+        });
+        return res;
+      }
+    },
+    [generateThumbnail],
+  );
+
+  useEffect(() => {
+    if (
+      modelId &&
+      data &&
+      !isLoading &&
+      data?.data?.analogueModelImage === null &&
+      generateImageRequested.current === false &&
+      data.data.isProcessed
+    ) {
+      generateImageRequested.current = true;
+      generateThumbnailOnLoad(modelId);
+    }
+  }, [
+    data,
+    isLoading,
+    data?.data?.analogueModelImage,
+    modelId,
+    generateThumbnailOnLoad,
+    data?.data.isProcessed,
+  ]);
 
   function toggleEditMetadata() {
     setAddModelDialog(!isAddModelDialog);
@@ -174,7 +227,6 @@ export const ModelMetadataView = ({
       return res;
     }
   };
-
   const deleteGdeRow = async (gdeGroupId: string) => {
     if (modelId) {
       const res = await deleteGdeCase.mutateAsync({
@@ -194,32 +246,65 @@ export const ModelMetadataView = ({
   if (isLoading || !data?.success) return <p>Loading ...</p>;
 
   return (
-    <Styled.Wrapper>
+    <Styled.Wrapper className="metadata-row">
       {uploadingProgress === undefined && (
-        <Styled.DescriptionMeta>
-          <>
-            {data.data.description && (
-              <Typography variant="body_long">
-                {data.data.description}
-              </Typography>
+        <Styled.DescriotionImageWrapper>
+          <Styled.DescriptionMeta>
+            <Typography variant="h3">Description</Typography>
+            <>
+              {data.data.description && (
+                <Typography variant="body_long">
+                  {data.data.description}
+                </Typography>
+              )}
+            </>
+
+            <Button
+              onClick={toggleEditMetadata}
+              variant="outlined"
+              className="edit-metadata-button"
+            >
+              Edit name and description…
+            </Button>
+            <EditNameDescription
+              edit={updateModelMetadata}
+              isEdit={isAddModelDialog}
+              defaultMetadata={defaultMetadata}
+              closeDialog={toggleEditMetadata}
+            />
+          </Styled.DescriptionMeta>
+          {imageRequest.data && data.data && (
+            <Styled.ModelImageView>
+              <img src={imageRequest.data} alt=""></img>
+              <Typography>{data.data.name}</Typography>
+            </Styled.ModelImageView>
+          )}
+          <Styled.ImageMessage>
+            {data.data.isProcessed &&
+              !imageRequest.data &&
+              generateImageRequested.current && (
+                <div>
+                  <Typography as="p">
+                    We are generating image for this analogue model
+                  </Typography>
+                  <Typography as="p">
+                    Please come back to this page in a couple of minutes
+                  </Typography>
+                </div>
+              )}
+            {!data.data.isProcessed && (
+              <div>
+                <Typography as="p">
+                  Cannot generate picture for unprocessed model.
+                </Typography>
+                <Typography as="p">
+                  If processing failed, delete this model and reupload again.
+                  Else, wait.
+                </Typography>
+              </div>
             )}
-          </>
-
-          <Button
-            onClick={toggleEditMetadata}
-            variant="outlined"
-            className="edit-metadata-button"
-          >
-            Edit name and description…
-          </Button>
-
-          <EditNameDescription
-            edit={updateModelMetadata}
-            isEdit={isAddModelDialog}
-            defaultMetadata={defaultMetadata}
-            closeDialog={toggleEditMetadata}
-          />
-        </Styled.DescriptionMeta>
+          </Styled.ImageMessage>
+        </Styled.DescriotionImageWrapper>
       )}
       {uploadingProgress !== undefined &&
         uploadingProgress >= 0 &&

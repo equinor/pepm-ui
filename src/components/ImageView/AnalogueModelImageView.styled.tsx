@@ -10,11 +10,11 @@ export const ImageWrapper = styled.div`
   border-style: solid;
   border-width: 1px;
   border-color: ${theme.light.ui.background.medium};
-  width: 100%;
+  width: auto;
 
-  max-width: fit-content;
+  max-width: 70vh;
+  max-height: 70vh;
   height: fit-content;
-
   > h5 {
     font-weight: normal;
     margin: 0;
@@ -22,7 +22,13 @@ export const ImageWrapper = styled.div`
   }
 
   > .image {
-    max-width: 100%;
+    width: 40%;
+    height: auto;
     padding: ${spacings.SMALL};
   }
+`;
+
+export const CanvasWrapper = styled.div`
+  height: 55vh;
+  width: auto;
 `;

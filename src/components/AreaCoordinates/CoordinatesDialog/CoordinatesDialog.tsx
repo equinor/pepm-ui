@@ -29,6 +29,10 @@ export const CoordinatesDialog = ({
   const { data, isLoading } = useFetchModel(modelId);
   const modelAreas = useFetchModelAreas();
 
+  // const [activeModelArea, setActiveModelArea] = useState(null);
+
+  // const {data, isLoading} = useFetch
+
   function clearStatus() {
     setSaveAlert(false);
   }
