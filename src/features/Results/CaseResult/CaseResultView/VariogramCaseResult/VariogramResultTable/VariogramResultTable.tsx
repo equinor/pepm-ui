@@ -39,7 +39,7 @@ export const VariogramResultTable = ({
   const resultElementsList: ResultObjectType[] = resultList.map((e) => {
     const method = caseList.data?.data.filter(
       (c) => c.computeCaseId === e.computeCaseId,
-    )[0].computeMethod.name;
+    )[0]?.computeMethod?.name;
     let parameter = '';
     if (method === 'Indicator') {
       parameter = e.indicator ? e.indicator : '';
@@ -51,7 +51,7 @@ export const VariogramResultTable = ({
 
     const modelArea = caseList.data?.data.filter(
       (c) => c.computeCaseId === e.computeCaseId,
-    )[0].modelArea;
+    )[0]?.modelArea;
 
     const element: ResultObjectType = {
       variogramResultId: e.variogramResultId,

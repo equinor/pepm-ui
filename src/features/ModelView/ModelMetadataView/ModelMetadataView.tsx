@@ -2,11 +2,11 @@
 /* eslint-disable max-lines-per-function */
 import { Button, Dialog, Typography } from '@equinor/eds-core-react';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { useCallback, useEffect, useRef,useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   AddAnalogueModelMetadataCommandForm,
   AddMetadataDto,
-  AddStatigraphicGroupForm,
   AnalogueModelDetail,
   AnalogueModelMetadataService,
   AnalogueModelSourceType,
@@ -20,23 +20,12 @@ import { AnalogueModelsService } from '../../../api/generated/services/AnalogueM
 import { queryClient } from '../../../auth/queryClient';
 import { GrossDepositionEnviromentGroup } from '../../../components/GrossDepositionEnviroment/GrossDepositionEnviromentGroup/GrossDepositionEnviromentGroup';
 import { OutcropAnalogueGroup } from '../../../components/OutcropAnalogue/OutcropAnalogueGroup/OutcropAnalogueGroup';
-import { StratigraphicColumnSelect } from '../../../components/StrategraphicColumn/StratigraphicColumnSelect/StratigraphicColumnSelect';
 import { StratigrapicGroups } from '../../../components/StrategraphicColumn/StratigrapicGroups/StratigrapicGroups';
 import { useFetchModel } from '../../../hooks/useFetchModel';
-import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
-import { StratColumnType } from '../../HandleModel/HandleModelComponent/HandleModelComponent';
 import { EditNameDescription } from '../EditNameDescription/EditNameDescription';
 import * as Styled from './ModelMetadataView.styled';
-import { useCallback, useEffect, useRef, useState } from 'react';
 import { getAnalogueModelImage } from '../../../api/custom/getAnalogueModelImageById';
-export const defaultStratColumnData: StratColumnType = {
-  country: undefined,
-  field: undefined,
-  stratColumn: undefined,
-  level1: undefined,
-  level2: undefined,
-  level3: undefined,
-};
+
 
 export const ModelMetadataView = ({
   modelIdParent,
@@ -49,12 +38,16 @@ export const ModelMetadataView = ({
     modelIdParent ? modelIdParent : undefined,
   );
   const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false);
+
   const generateImageRequested = useRef(false);
 
   const [stratColumnObject, setStratColumnObject] = useState<StratColumnType>(
     defaultStratColumnData,
   );
   const [showStratColDialog, setShowStratColDialog] = useState<boolean>(false);
+
+  const { modelId } = useParams();
+
 
   const defaultMetadata: AnalogueModelDetail = {
     analogueModelId: data?.data.analogueModelId
@@ -73,7 +66,6 @@ export const ModelMetadataView = ({
     geologicalGroups: [],
     processingStatus: JobStatus.UNKNOWN,
   };
-  const { modelId } = useParams();
 
   const imageId = data?.data.analogueModelImage?.analogueModelImageId ?? '';
 
@@ -191,29 +183,6 @@ export const ModelMetadataView = ({
     toggleEditMetadata();
   };
 
-  const handleStratColDialog = () => {
-    setShowStratColDialog(!showStratColDialog);
-    setStratColumnObject(defaultStratColumnData);
-  };
-
-  const postSmdaMetadataRow = useMutation({
-    mutationFn: ({
-      id,
-      requestBody,
-    }: {
-      id: string;
-      requestBody: AddStatigraphicGroupForm;
-    }) => {
-      return AnalogueModelsService.postApiAnalogueModelsStratigraphicGroups(
-        id,
-        requestBody,
-      );
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['analogue-model'] });
-    },
-  });
-
   const deleteStratColCase = useMutation({
     mutationFn: ({
       analogueModelId,
@@ -282,44 +251,6 @@ export const ModelMetadataView = ({
   };
 
   if (isLoading || !data?.success) return <p>Loading ...</p>;
-
-  const handleAddStratCol = async () => {
-    const id = modelIdParent ? modelIdParent : defaultMetadata.analogueModelId;
-    if (
-      id &&
-      stratColumnObject.country &&
-      stratColumnObject.field &&
-      stratColumnObject.stratColumn
-    ) {
-      const stratUnitList: string[] = [];
-      if (stratColumnObject.level1 !== undefined)
-        stratUnitList.push(stratColumnObject.level1.stratUnitId);
-      if (
-        stratColumnObject.level1 !== undefined &&
-        stratColumnObject.level2 !== undefined
-      )
-        stratUnitList.push(stratColumnObject.level2.stratUnitId);
-      if (
-        stratColumnObject.level1 !== undefined &&
-        stratColumnObject.level2 !== undefined &&
-        stratColumnObject.level3 !== undefined
-      )
-        stratUnitList.push(stratColumnObject.level3.stratUnitId);
-
-      const postRequestBody: AddStatigraphicGroupForm = {
-        countryId: stratColumnObject.country.countryId,
-        fieldId: stratColumnObject.field.fieldId,
-        stratigraphicColumnId: stratColumnObject.stratColumn.stratColumnId,
-        stratigraphicUnitIds: stratUnitList.length > 0 ? stratUnitList : [],
-      };
-
-      const rowUpload = await postSmdaMetadataRow.mutateAsync({
-        id: id,
-        requestBody: postRequestBody,
-      });
-      if (rowUpload.success) handleStratColDialog();
-    }
-  };
 
   return (
     <Styled.Wrapper className="metadata-row">
@@ -398,7 +329,6 @@ export const ModelMetadataView = ({
       <Typography variant="h3" as="h2">
         Model metadata
       </Typography>
-
       <div>
         <OutcropAnalogueGroup
           modelIdParent={modelIdParent}
@@ -408,8 +338,9 @@ export const ModelMetadataView = ({
       </div>
       <div>
         <StratigrapicGroups
+          modelIdParent={modelIdParent}
+          defaultMetadata={defaultMetadata}
           stratColumnGroups={data.data.stratigraphicGroups}
-          handleStratColDialog={handleStratColDialog}
           deleteStratColRow={deleteStratColRow}
         />
       </div>
@@ -421,22 +352,6 @@ export const ModelMetadataView = ({
           deleteGdeRow={deleteGdeRow}
         />
       </div>
-
-      <StyledDialog.DialogWindow open={showStratColDialog}>
-        <Dialog.Header>Add stratigraphic column</Dialog.Header>
-        <Dialog.CustomContent>
-          <StratigraphicColumnSelect
-            stratColumnObject={stratColumnObject}
-            setStratColumnObject={setStratColumnObject}
-          />
-        </Dialog.CustomContent>
-        <StyledDialog.Actions>
-          <Button onClick={handleAddStratCol}>Add</Button>
-          <Button variant="outlined" onClick={handleStratColDialog}>
-            Close
-          </Button>
-        </StyledDialog.Actions>
-      </StyledDialog.DialogWindow>
     </Styled.Wrapper>
   );
 };

@@ -6,7 +6,6 @@ import {
   StratColumnDto,
   StratUnitDto,
 } from '../../../api/generated';
-import { StratColumnType } from '../../../features/HandleModel/HandleModelComponent/HandleModelComponent';
 import {
   useFetchSmdaCountries,
   useFetchSmdaFields,
@@ -14,13 +13,22 @@ import {
   useFetchSmdaStratigraphicColumns,
 } from '../../../hooks/useFetchStratColData';
 import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
+import { sortList } from '../../../utils/SortList';
+import {
+  StratColumnErrorType,
+  StratColumnType,
+} from '../StratigrapicGroups/StratigrapicGroups';
 
 export const StratigraphicColumnSelect = ({
   stratColumnObject,
   setStratColumnObject,
+  error,
+  setErrors,
 }: {
   stratColumnObject: StratColumnType;
   setStratColumnObject: React.Dispatch<React.SetStateAction<StratColumnType>>;
+  error: StratColumnErrorType;
+  setErrors: React.Dispatch<React.SetStateAction<StratColumnErrorType>>;
 }) => {
   const countryData = useFetchSmdaCountries();
   const fieldData = useFetchSmdaFields();
@@ -61,9 +69,7 @@ export const StratigraphicColumnSelect = ({
     <StyledDialog.AutocompleteList>
       <Autocomplete
         label="Country"
-        options={filterCountries.sort((a, b) =>
-          a.identifier.localeCompare(b.identifier),
-        )}
+        options={sortList(filterCountries)}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<CountryDto>) => {
           setStratColumnObject({
@@ -75,15 +81,20 @@ export const StratigraphicColumnSelect = ({
             level2: undefined,
             level3: undefined,
           });
+          setErrors({});
         }}
         noOptionsText="No options"
+        variant={error.country ? 'error' : undefined}
+        helperText={error.country ? error.country : undefined}
       />
 
       <Autocomplete
         disabled={stratColumnObject.country === undefined}
         label="Field"
-        options={fieldData.data.data.filter(
-          (field) => field.countryId === stratColumnObject.country?.countryId,
+        options={sortList(
+          fieldData.data.data.filter(
+            (field) => field.countryId === stratColumnObject.country?.countryId,
+          ),
         )}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<FieldDto>) => {
@@ -96,18 +107,30 @@ export const StratigraphicColumnSelect = ({
           stratColumnObject.field ? [stratColumnObject.field] : []
         }
         noOptionsText="No options"
+        variant={
+          error.field && stratColumnObject.country !== undefined
+            ? 'error'
+            : undefined
+        }
+        helperText={
+          error.field && stratColumnObject.country !== undefined
+            ? error.field
+            : undefined
+        }
       />
 
       <Autocomplete
         disabled={stratColumnObject.country === undefined}
         label="Stratigraphic column"
-        options={stratColumnData.data.data.filter(
-          (c) =>
-            stratColumnObject.country !== undefined &&
-            c.countries.filter(
-              (country) =>
-                country.countryId === stratColumnObject.country?.countryId,
-            ).length !== 0,
+        options={sortList(
+          stratColumnData.data.data.filter(
+            (c) =>
+              stratColumnObject.country !== undefined &&
+              c.countries.filter(
+                (country) =>
+                  country.countryId === stratColumnObject.country?.countryId,
+              ).length !== 0,
+          ),
         )}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<StratColumnDto>) => {
@@ -118,77 +141,119 @@ export const StratigraphicColumnSelect = ({
             level2: undefined,
             level3: undefined,
           });
+          setErrors({});
         }}
         selectedOptions={
           stratColumnObject.stratColumn ? [stratColumnObject.stratColumn] : []
         }
         noOptionsText="No options"
+        variant={
+          error.stratColumn && stratColumnObject.country !== undefined
+            ? 'error'
+            : undefined
+        }
+        helperText={
+          error.stratColumn && stratColumnObject.country !== undefined
+            ? error.stratColumn
+            : undefined
+        }
       />
 
       <Autocomplete
         disabled={stratColumnObject.stratColumn === undefined}
         label="Level 1 (group)"
-        options={stratUnitData.data.data
-          .filter((s) => s.level === 1)
-          .filter(
-            (c) =>
-              c.stratColumnId === stratColumnObject.stratColumn?.stratColumnId,
-          )}
+        options={sortList(
+          stratUnitData.data.data
+            .filter((s) => s.level === 1)
+            .filter(
+              (c) =>
+                c.stratColumnId ===
+                stratColumnObject.stratColumn?.stratColumnId,
+            ),
+        )}
         optionLabel={(option) => option.identifier}
-        onOptionsChange={(e: AutocompleteChanges<StratUnitDto>) =>
+        onOptionsChange={(e: AutocompleteChanges<StratUnitDto>) => {
           setStratColumnObject({
             ...stratColumnObject,
             level1: e.selectedItems[0],
             level2: undefined,
             level3: undefined,
-          })
-        }
+          });
+          setErrors({});
+        }}
         selectedOptions={
           stratColumnObject.level1 ? [stratColumnObject.level1] : []
         }
         noOptionsText="No options"
+        variant={
+          error.level1 && stratColumnObject.stratColumn !== undefined
+            ? 'error'
+            : undefined
+        }
+        helperText={
+          error.level1 && stratColumnObject.stratColumn !== undefined
+            ? error.level1
+            : undefined
+        }
       />
 
       <Autocomplete
         disabled={stratColumnObject.level1 === undefined}
         label="Level 2 (formation)"
-        options={stratUnitData.data.data
-          .filter((s) => s.level === 2)
-          .filter(
-            (c) =>
-              c.stratColumnId === stratColumnObject.stratColumn?.stratColumnId,
-          )
-          .filter(
-            (x) =>
-              x.stratUnitParentId === stratColumnObject.level1?.stratUnitId,
-          )}
+        options={sortList(
+          stratUnitData.data.data
+            .filter((s) => s.level === 2)
+            .filter(
+              (c) =>
+                c.stratColumnId ===
+                stratColumnObject.stratColumn?.stratColumnId,
+            )
+            .filter(
+              (x) =>
+                x.stratUnitParentId === stratColumnObject.level1?.stratUnitId,
+            ),
+        )}
         optionLabel={(option) => option.identifier}
-        onOptionsChange={(e: AutocompleteChanges<StratUnitDto>) =>
+        onOptionsChange={(e: AutocompleteChanges<StratUnitDto>) => {
           setStratColumnObject({
             ...stratColumnObject,
             level2: e.selectedItems[0],
             level3: undefined,
-          })
-        }
+          });
+          setErrors({});
+        }}
         selectedOptions={
           stratColumnObject.level2 ? [stratColumnObject.level2] : []
         }
         noOptionsText="No options"
+        variant={
+          error.level2 && stratColumnObject.level1 !== undefined
+            ? 'error'
+            : undefined
+        }
+        helperText={
+          error.level2 && stratColumnObject.level1 !== undefined
+            ? error.level2
+            : undefined
+        }
       />
 
       <Autocomplete
         disabled={stratColumnObject.level2 === undefined}
         label="Level 3 (formation/subzone)"
-        options={stratUnitData.data.data
-          .filter((s) => s.level === 3)
-          .filter(
-            (c) =>
-              c.stratColumnId === stratColumnObject.stratColumn?.stratColumnId,
-          )
-          .filter(
-            (x) =>
-              x.stratUnitParentId === stratColumnObject.level2?.stratUnitId,
-          )}
+        options={sortList(
+          stratUnitData.data.data
+            .filter((s) => s.level === 3)
+            .filter(
+              (c) =>
+                c.stratColumnId ===
+                stratColumnObject.stratColumn?.stratColumnId,
+            )
+            .filter(
+              (x) =>
+                x.stratUnitParentId === stratColumnObject.level2?.stratUnitId,
+            ),
+        )}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<StratUnitDto>) =>
           setStratColumnObject({

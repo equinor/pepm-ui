@@ -1,8 +1,18 @@
 /* eslint-disable max-lines-per-function */
-import { Label, Typography } from '@equinor/eds-core-react';
-import * as Styled from './ResultArea.styled';
-import { GetObjectResultsDto } from '../../../../../../api/generated/models/GetObjectResultsDto';
 
+import {
+  Button,
+  Divider,
+  Icon,
+  Label,
+  Typography,
+} from '@equinor/eds-core-react';
+import { bar_chart as barChart } from '@equinor/eds-icons';
+import { useState } from 'react';
+import { GetObjectResultsDto } from '../../../../../../api/generated/models/GetObjectResultsDto';
+import { ResultPlotDialog } from '../ResultPlotDialog/ResultPlotDialog';
+import * as Styled from './ResultArea.styled';
+import { ResultCaseMetadata } from './ResultCaseMetadata/ResultCaseMetadata';
 export const ResultArea = ({
   computeMethod,
   modelArea,
@@ -12,6 +22,11 @@ export const ResultArea = ({
   modelArea: string;
   data: GetObjectResultsDto;
 }) => {
+  const [open, setOpen] = useState<boolean>(false);
+
+  const toggleOpen = () => {
+    setOpen(!open);
+  };
   const xCoordinate = data.box?.filter((b) => b.m === 0)[0];
   const yCoordinate = data.box?.filter((b) => b.m === 1)[0];
 
@@ -34,47 +49,64 @@ export const ResultArea = ({
   };
 
   return (
-    <Styled.Wrapper>
-      <Styled.Info>
-        <div>
-          <Typography variant="h5"> {computeMethod}</Typography>
-          <Typography variant="body_short"> {modelArea}</Typography>
-        </div>
-        <div>
-          <Label label="Area size"></Label>
-          <Typography variant="body_short">{area() ? area() : '-'}</Typography>
-        </div>
-      </Styled.Info>
-      <Styled.Coordinates>
-        <Styled.CoordinateRow>
+    <>
+      <Styled.Wrapper>
+        <Styled.ResultHeader>
+          <ResultCaseMetadata
+            computeMethod={computeMethod}
+            modelArea={modelArea}
+          />
+          <Button variant="outlined" onClick={toggleOpen}>
+            <Icon data={barChart} title={'Open plot for case results.'} />
+            Show plot
+          </Button>
+        </Styled.ResultHeader>
+
+        <Styled.Divider>
+          <Divider color="medium" variant="medium" size="1" />
+        </Styled.Divider>
+        <Styled.CoordinateDiv>
+          <Styled.RowElement>
+            <Label label="Area size"></Label>
+            <Typography>{area() ? area() : '-'}</Typography>
+          </Styled.RowElement>
+          <Styled.VerticalDivider />
           <Styled.RowElement>
             <Label label="X start"></Label>
-            <Typography variant="body_short">
+            <Typography>
               {modelArea === 'Whole model' ? '-' : xCoordinate?.x + ' m'}
             </Typography>
           </Styled.RowElement>
+          <Styled.VerticalDivider />
           <Styled.RowElement>
             <Label label="X length"></Label>
-            <Typography variant="body_short">
+            <Typography>
               {modelArea === 'Whole model' ? '-' : xLength() + ' m'}
             </Typography>
           </Styled.RowElement>
-        </Styled.CoordinateRow>
-        <Styled.CoordinateRow>
+          <Styled.VerticalDivider />
           <Styled.RowElement>
             <Label label="Y start"></Label>
-            <Typography variant="body_short">
+            <Typography>
               {modelArea === 'Whole model' ? '-' : yCoordinate?.x + ' m'}
             </Typography>
           </Styled.RowElement>
+          <Styled.VerticalDivider />
           <Styled.RowElement>
             <Label label="Y length"></Label>
-            <Typography variant="body_short">
+            <Typography>
               {modelArea === 'Whole model' ? '-' : yLength() + ' m'}
             </Typography>
           </Styled.RowElement>
-        </Styled.CoordinateRow>
-      </Styled.Coordinates>
-    </Styled.Wrapper>
+        </Styled.CoordinateDiv>
+      </Styled.Wrapper>
+      <ResultPlotDialog
+        open={open}
+        toggleOpen={toggleOpen}
+        computeMethod={computeMethod}
+        modelArea={modelArea}
+        data={data}
+      />
+    </>
   );
 };

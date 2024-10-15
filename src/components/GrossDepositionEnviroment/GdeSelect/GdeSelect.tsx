@@ -3,14 +3,22 @@ import { Autocomplete, AutocompleteChanges } from '@equinor/eds-core-react';
 import { GeologicalStandardDto } from '../../../api/generated';
 import { useFetchGrossDepData } from '../../../hooks/useFetchGrossDepData';
 import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
-import { GdeType } from '../GrossDepositionEnviromentGroup/GrossDepositionEnviromentGroup';
+import { sortList } from '../../../utils/SortList';
+import {
+  GDEErrorType,
+  GdeType,
+} from '../GrossDepositionEnviromentGroup/GrossDepositionEnviromentGroup';
 
 export const GdeSelect = ({
   gdeObject,
   setGdeObject,
+  error,
+  setErrors,
 }: {
   gdeObject: GdeType;
   setGdeObject: React.Dispatch<React.SetStateAction<GdeType>>;
+  error: GDEErrorType;
+  setErrors: React.Dispatch<React.SetStateAction<GDEErrorType>>;
 }) => {
   const GdeData = useFetchGrossDepData();
 
@@ -42,21 +50,24 @@ export const GdeSelect = ({
     <StyledDialog.AutocompleteList>
       <Autocomplete
         label="Gross Depositional Environment (GDE)"
-        options={Gde}
+        options={sortList(Gde)}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<GeologicalStandardDto>) => {
           setGdeObject({
             ...gdeObject,
             grossDepEnv: e.selectedItems[0],
           });
+          setErrors({});
         }}
         noOptionsText="No options"
+        variant={error.GDE ? 'error' : undefined}
+        helperText={error.GDE ? error.GDE : undefined}
       />
 
       <Autocomplete
         label="Depositional Environment"
         disabled={gdeObject.grossDepEnv?.geologicalStandardId === undefined}
-        options={De}
+        options={sortList(De)}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<GeologicalStandardDto>) => {
           setGdeObject({
@@ -65,12 +76,22 @@ export const GdeSelect = ({
           });
         }}
         noOptionsText="No options"
+        variant={
+          error.DEnv && gdeObject.grossDepEnv !== undefined
+            ? 'error'
+            : undefined
+        }
+        helperText={
+          error.DEnv && gdeObject.grossDepEnv !== undefined
+            ? error.DEnv
+            : undefined
+        }
       />
 
       <Autocomplete
         label="Subenvironment"
         disabled={gdeObject.grossDepEnv?.geologicalStandardId === undefined}
-        options={SubEnvironment}
+        options={sortList(SubEnvironment)}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<GeologicalStandardDto>) => {
           setGdeObject({
@@ -79,12 +100,22 @@ export const GdeSelect = ({
           });
         }}
         noOptionsText="No options"
+        variant={
+          error.subEnv && gdeObject.grossDepEnv !== undefined
+            ? 'error'
+            : undefined
+        }
+        helperText={
+          error.subEnv && gdeObject.grossDepEnv !== undefined
+            ? error.subEnv
+            : undefined
+        }
       />
 
       <Autocomplete
         label="Architectural Element"
         multiple
-        options={ArchitecturalElement}
+        options={sortList(ArchitecturalElement)}
         optionLabel={(option) => option.identifier}
         onOptionsChange={(e: AutocompleteChanges<GeologicalStandardDto>) => {
           setGdeObject({
@@ -93,6 +124,8 @@ export const GdeSelect = ({
           });
         }}
         noOptionsText="No options"
+        variant={error.AEl ? 'error' : undefined}
+        helperText={error.subEnv ? error.AEl : undefined}
       />
     </StyledDialog.AutocompleteList>
   );
