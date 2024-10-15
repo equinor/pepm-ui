@@ -237,7 +237,6 @@ export const ModelMetadataView = ({
       <Typography variant="h3" as="h2">
         Model metadata
       </Typography>
-
       <div>
         <OutcropAnalogueGroup
           modelIdParent={modelIdParent}
