@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
 import { Button, Dialog, Typography } from '@equinor/eds-core-react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import {
   AddAnalogueModelMetadataCommandForm,
@@ -27,7 +27,8 @@ import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled'
 import { StratColumnType } from '../../HandleModel/HandleModelComponent/HandleModelComponent';
 import { EditNameDescription } from '../EditNameDescription/EditNameDescription';
 import * as Styled from './ModelMetadataView.styled';
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { getAnalogueModelImage } from '../../../api/custom/getAnalogueModelImageById';
 export const defaultStratColumnData: StratColumnType = {
   country: undefined,
   field: undefined,
@@ -48,6 +49,8 @@ export const ModelMetadataView = ({
     modelIdParent ? modelIdParent : undefined,
   );
   const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false);
+  const generateImageRequested = useRef(false);
+
   const [stratColumnObject, setStratColumnObject] = useState<StratColumnType>(
     defaultStratColumnData,
   );
@@ -71,6 +74,53 @@ export const ModelMetadataView = ({
     processingStatus: JobStatus.UNKNOWN,
   };
   const { modelId } = useParams();
+
+  const imageId = data?.data.analogueModelImage?.analogueModelImageId ?? '';
+
+  const imageRequest = useQuery({
+    queryKey: ['analogue-model-image', modelId, imageId],
+    queryFn: () => getAnalogueModelImage(modelId!, imageId),
+    enabled: imageId !== '',
+  });
+
+  const generateThumbnail = useMutation({
+    mutationFn: (requestBody: GenerateThumbnailCommand) => {
+      return JobsService.postApiJobsComputeThumbnailGen(requestBody);
+    },
+  });
+
+  const generateThumbnailOnLoad = useCallback(
+    async (modelId: string) => {
+      if (modelId) {
+        const res = await generateThumbnail.mutateAsync({
+          modelId: modelId,
+        });
+        return res;
+      }
+    },
+    [generateThumbnail],
+  );
+
+  useEffect(() => {
+    if (
+      modelId &&
+      data &&
+      !isLoading &&
+      data?.data?.analogueModelImage === null &&
+      generateImageRequested.current === false &&
+      data.data.isProcessed
+    ) {
+      generateImageRequested.current = true;
+      generateThumbnailOnLoad(modelId);
+    }
+  }, [
+    data,
+    isLoading,
+    data?.data?.analogueModelImage,
+    modelId,
+    generateThumbnailOnLoad,
+    data?.data.isProcessed,
+  ]);
 
   function toggleEditMetadata() {
     setAddModelDialog(!isAddModelDialog);
@@ -215,26 +265,6 @@ export const ModelMetadataView = ({
       return res;
     }
   };
-  const generateThumbnail = useMutation({
-    mutationFn: (requestBody: GenerateThumbnailCommand) => {
-      return JobsService.postApiJobsComputeThumbnailGen(requestBody);
-    },
-  });
-
-  const generateThumbnailOnClick = async (modelId: string) => {
-    if (modelId) {
-      const res = await generateThumbnail.mutateAsync({
-        modelId: modelId,
-      });
-      return res;
-    } else if (modelIdParent) {
-      const res = await generateThumbnail.mutateAsync({
-        modelId: modelId,
-      });
-      return res;
-    }
-  };
-
   const deleteGdeRow = async (gdeGroupId: string) => {
     if (modelId) {
       const res = await deleteGdeCase.mutateAsync({
@@ -292,42 +322,65 @@ export const ModelMetadataView = ({
   };
 
   return (
-    <Styled.Wrapper>
+    <Styled.Wrapper className="metadata-row">
       {uploadingProgress === undefined && (
-        <Styled.DescriptionMeta>
-          <>
-            {data.data.description && (
-              <Typography variant="body_long">
-                {data.data.description}
-              </Typography>
-            )}
-          </>
+        <Styled.DescriotionImageWrapper>
+          <Styled.DescriptionMeta>
+            <Typography variant="h3">Description</Typography>
+            <>
+              {data.data.description && (
+                <Typography variant="body_long">
+                  {data.data.description}
+                </Typography>
+              )}
+            </>
 
-          <Button
-            onClick={toggleEditMetadata}
-            variant="outlined"
-            className="edit-metadata-button"
-          >
-            Edit name and description…
-          </Button>
-          {modelId && (
             <Button
-              onClick={() => {
-                generateThumbnailOnClick(modelId);
-              }}
+              onClick={toggleEditMetadata}
+              variant="outlined"
+              className="edit-metadata-button"
             >
-              {' '}
-              Generate thumbnail image
+              Edit name and description…
             </Button>
+            <EditNameDescription
+              edit={updateModelMetadata}
+              isEdit={isAddModelDialog}
+              defaultMetadata={defaultMetadata}
+              closeDialog={toggleEditMetadata}
+            />
+          </Styled.DescriptionMeta>
+          {imageRequest.data && data.data && (
+            <Styled.ModelImageView>
+              <img src={imageRequest.data} alt=""></img>
+              <Typography>{data.data.name}</Typography>
+            </Styled.ModelImageView>
           )}
-
-          <EditNameDescription
-            edit={updateModelMetadata}
-            isEdit={isAddModelDialog}
-            defaultMetadata={defaultMetadata}
-            closeDialog={toggleEditMetadata}
-          />
-        </Styled.DescriptionMeta>
+          <Styled.ImageMessage>
+            {data.data.isProcessed &&
+              !imageRequest.data &&
+              generateImageRequested.current && (
+                <div>
+                  <Typography as="p">
+                    We are generating image for this analogue model
+                  </Typography>
+                  <Typography as="p">
+                    Please come back to this page in a couple of minutes
+                  </Typography>
+                </div>
+              )}
+            {!data.data.isProcessed && (
+              <div>
+                <Typography as="p">
+                  Cannot generate picture for unprocessed model.
+                </Typography>
+                <Typography as="p">
+                  If processing failed, delete this model and reupload again.
+                  Else, wait.
+                </Typography>
+              </div>
+            )}
+          </Styled.ImageMessage>
+        </Styled.DescriotionImageWrapper>
       )}
       {uploadingProgress !== undefined &&
         uploadingProgress >= 0 &&

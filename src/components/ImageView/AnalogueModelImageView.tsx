@@ -1,9 +1,10 @@
 import { Typography } from '@equinor/eds-core-react';
 import { getAnalogueModelImage } from '../../api/custom/getAnalogueModelImageById';
 import { useQuery } from '@tanstack/react-query';
-import Canvas from './Canvas';
 import { useFetchImageMetadata } from '../../hooks/useFetchImageMetadata';
 import { AreaCoordinateType } from '../AreaCoordinates/AreaCoordinates';
+import { ModelImageCanvas } from './ModelImageCanvas/ModelImageCanvas';
+import { CanvasWrapper } from './AnalogueModelImageView.styled';
 
 export const AnalogueModelImageView = ({
   modelId,
@@ -25,11 +26,15 @@ export const AnalogueModelImageView = ({
     <>
       {isLoading && <Typography>Loading ...</Typography>}
       {data && imageMetadata.data?.data && (
-        <Canvas
-          imageData={data}
-          imageMetadata={imageMetadata.data?.data}
-          coordinateBox={coordinateBox}
-        />
+        <CanvasWrapper>
+          <ModelImageCanvas
+            imageData={data}
+            imageMetadata={imageMetadata.data?.data}
+            coordinateBox={coordinateBox}
+            showLegend={true}
+            showCoordinates={true}
+          />
+        </CanvasWrapper>
       )}
     </>
   );

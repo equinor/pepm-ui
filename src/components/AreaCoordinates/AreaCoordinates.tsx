@@ -365,16 +365,21 @@ export const AreaCoordinates = ({
             </Styled.CoordinateFields>
           )}
         </Styled.Selects>
-        {data?.data.analogueModelId &&
-        data.data.analogueModelImage?.analogueModelImageId ? (
-          <AnalogueModelImageView
-            modelId={data?.data.analogueModelId}
-            imageId={data?.data.analogueModelImage?.analogueModelImageId}
-            coordinateBox={areaCoordinate}
-          />
-        ) : (
-          <Typography>No image available for this model</Typography>
+        {data && data.data.analogueModelImage === null && (
+          <div>
+            <Typography>
+              No image is found for this model. Try refreshing the page
+            </Typography>
+          </div>
         )}
+        {data?.data.analogueModelId &&
+          data.data.analogueModelImage?.analogueModelImageId && (
+            <AnalogueModelImageView
+              modelId={data?.data.analogueModelId}
+              imageId={data?.data.analogueModelImage?.analogueModelImageId}
+              coordinateBox={areaCoordinate}
+            />
+          )}
       </Styled.ContentSplitter>
     </>
   );

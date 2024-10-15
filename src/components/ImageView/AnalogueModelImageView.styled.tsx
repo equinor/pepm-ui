@@ -27,3 +27,8 @@ export const ImageWrapper = styled.div`
     padding: ${spacings.SMALL};
   }
 `;
+
+export const CanvasWrapper = styled.div`
+  height: 55vh;
+  width: auto;
+`;
