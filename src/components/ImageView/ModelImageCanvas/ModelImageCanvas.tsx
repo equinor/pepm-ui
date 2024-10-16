@@ -28,7 +28,7 @@ export const ModelImageCanvas = ({
 
     // Canvas settings
     const tickInterval = 1000;
-    const canvasOffset = 100;
+    const canvasYOffset = 100;
     const canvasXOffset = 300;
     const imageYOffset = 10;
     const imageXOffset = 40;
@@ -46,8 +46,8 @@ export const ModelImageCanvas = ({
       // Scale image down based on the size of the parent
       const container = canvas.parentElement;
       if (container === null) return;
-      const containerWidth = container.clientWidth;
-      const containerHeight = container.clientHeight;
+      const containerWidth = container.clientWidth - canvasXOffset;
+      const containerHeight = container.clientHeight - canvasYOffset;
       const scaleX = containerWidth / img.width;
       const scaleY = containerHeight / img.height;
       const scale = Math.min(scaleX, scaleY); // Use the smaller scale factor
@@ -60,8 +60,8 @@ export const ModelImageCanvas = ({
       const width = scaledWidth;
 
       // Canvas will be bigger than image
-      canvas.width = width + canvasXOffset;
-      canvas.height = height + canvasOffset;
+      canvas.width = container.clientWidth;
+      canvas.height = container.clientHeight;
 
       // Calculate scaling factors from coordinate space to canvas pixels
       const xScale = width / xRange;
@@ -104,22 +104,11 @@ export const ModelImageCanvas = ({
 
           // Draw tick line
           context.beginPath();
-          context.moveTo(
-            tickX + imageXOffset,
-            canvas.height - canvasOffset + imageYOffset,
-          );
-          context.lineTo(
-            tickX + imageXOffset,
-            canvas.height - canvasOffset + imageYOffset + 10,
-          );
+          context.moveTo(tickX + imageXOffset, height + imageYOffset);
+          context.lineTo(tickX + imageXOffset, height + imageYOffset + 10);
           context.stroke();
 
-          context.fillText(
-            tickLabel,
-            tickX + imageXOffset - 10,
-            canvas.height - canvasOffset + 30,
-            24,
-          );
+          context.fillText(tickLabel, tickX + imageXOffset - 10, height + 30);
         }
 
         // Draw y ticks
@@ -186,7 +175,7 @@ export const ModelImageCanvas = ({
         }
       }
       if (showLegend) {
-        const legendX = canvas.width - 250; // Position the legend on the right
+        const legendX = scaledWidth + 60; // Position the legend on the right
         const legendY = 50; // Starting y position for the legend
         const legendBoxSize = 20; // Size of each color box
         const legendSpacing = 30; // Spacing between legend items
