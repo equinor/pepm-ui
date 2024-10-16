@@ -29,6 +29,8 @@ export const ImageWrapper = styled.div`
 `;
 
 export const CanvasWrapper = styled.div`
-  height: 55vh;
-  width: auto;
+  display: flex;
+  flex-direction: column;
+  height: 65vh;
+  width: 45vw;
 `;
