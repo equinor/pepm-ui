@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.5.0](https://github.com/equinor/pepm-ui/compare/v1.4.0...v1.5.0) (2024-10-17)
+
+
+### 🧹 Chores
+
+* **radix-config:** added new job ([88b532e](https://github.com/equinor/pepm-ui/commit/88b532e6863414e5f77207f15d477077084e0db5))
+* refactor model page styles and micro copy ([#324](https://github.com/equinor/pepm-ui/issues/324)) ([2631e27](https://github.com/equinor/pepm-ui/commit/2631e278b4687e50e4eb55a025b13600f4034079))
+* tune delete button and dialog ([#323](https://github.com/equinor/pepm-ui/issues/323)) ([0d4daf0](https://github.com/equinor/pepm-ui/commit/0d4daf027996fd5c2a9fe39b0c0bdb17c2e9a927))
+
+
+### ✨ Features
+
+* Added created by and timestamp to model view ([#336](https://github.com/equinor/pepm-ui/issues/336)) ([36e1357](https://github.com/equinor/pepm-ui/commit/36e1357e927d4964698892f92b523b67a5dbf403))
+* Added validation for area model ([#337](https://github.com/equinor/pepm-ui/issues/337)) ([a494e7f](https://github.com/equinor/pepm-ui/commit/a494e7f7f10799f3cdee8cfb78909c842295e78f))
+* filter gde by equinor code ([#345](https://github.com/equinor/pepm-ui/issues/345)) ([2c8d0cb](https://github.com/equinor/pepm-ui/commit/2c8d0cb5c07b634bd7d0a49375c3a9eada788860))
+* generate and render thumbnail ([#341](https://github.com/equinor/pepm-ui/issues/341)) ([7b2505a](https://github.com/equinor/pepm-ui/commit/7b2505aec0edf8046d324cd37a5d50052c860fd6))
+
+
+### 🐛 Bug Fixes
+
+* Added null checks for failing value ([#335](https://github.com/equinor/pepm-ui/issues/335)) ([1f0e04e](https://github.com/equinor/pepm-ui/commit/1f0e04e28ccb0fe828ba1dc30bb15caacd9529f7))
+* fixed css for image ([#344](https://github.com/equinor/pepm-ui/issues/344)) ([1a97e19](https://github.com/equinor/pepm-ui/commit/1a97e19c663c52cfb33070dc571e45f895144b01))
+* fixed issue where same image was displayed for all results within the same case ([#329](https://github.com/equinor/pepm-ui/issues/329)) ([564fcb5](https://github.com/equinor/pepm-ui/commit/564fcb561dbea825e22b3c5eaf4a4a5533a30245))
+* fixing correct version for test API. NB: will be changed later ([e067b92](https://github.com/equinor/pepm-ui/commit/e067b9265635feed082cf2a1c25e2b511c8e7130))
+* Hide overflow in css ([#340](https://github.com/equinor/pepm-ui/issues/340)) ([fc32e0a](https://github.com/equinor/pepm-ui/commit/fc32e0a3b463e9192697d1d39437f2c94d4364d5))
+
 ## [1.4.0](https://github.com/equinor/pepm-ui/compare/v1.3.0...v1.4.0) (2024-09-18)
 
 
