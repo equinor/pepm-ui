@@ -46,16 +46,42 @@ export const GdeSelect = ({
     (g) => g.geologyGroup === 'ArchitecturalElement',
   );
 
+  const setDisplayName = (option: GeologicalStandardDto) => {
+    return option.equinorCode + ' ' + option.identifier;
+  };
+
+  const intToArray = (number: number) => {
+    return Array.from(number.toString()).map(Number);
+  };
+
+  const filterByCode = (data: GeologicalStandardDto[]) => {
+    if (gdeObject.depEnv === undefined) return [];
+
+    const equinorCodeString = gdeObject.depEnv.equinorCode.toString();
+    const firstTwoNumbersArray = intToArray(
+      parseInt(equinorCodeString.slice(0, 2)),
+    );
+    const filteredList = data.filter(
+      (d) =>
+        intToArray(d.equinorCode)[0] === firstTwoNumbersArray[0] &&
+        intToArray(d.equinorCode)[1] === firstTwoNumbersArray[1],
+    );
+
+    return filteredList;
+  };
+
   return (
     <StyledDialog.AutocompleteList>
       <Autocomplete
         label="Gross Depositional Environment (GDE)"
-        options={sortList(Gde)}
-        optionLabel={(option) => option.identifier}
+        options={sortList(Gde, true)}
+        optionLabel={(option) => setDisplayName(option)}
         onOptionsChange={(e: AutocompleteChanges<GeologicalStandardDto>) => {
           setGdeObject({
             ...gdeObject,
             grossDepEnv: e.selectedItems[0],
+            depEnv: undefined,
+            subenv: undefined,
           });
           setErrors({});
         }}
@@ -67,14 +93,16 @@ export const GdeSelect = ({
       <Autocomplete
         label="Depositional Environment"
         disabled={gdeObject.grossDepEnv?.geologicalStandardId === undefined}
-        options={sortList(De)}
-        optionLabel={(option) => option.identifier}
+        options={sortList(De, true)}
+        optionLabel={(option) => setDisplayName(option)}
         onOptionsChange={(e: AutocompleteChanges<GeologicalStandardDto>) => {
           setGdeObject({
             ...gdeObject,
             depEnv: e.selectedItems[0],
+            subenv: undefined,
           });
         }}
+        selectedOptions={gdeObject.depEnv ? [gdeObject.depEnv] : []}
         noOptionsText="No options"
         variant={
           error.DEnv && gdeObject.grossDepEnv !== undefined
@@ -91,14 +119,15 @@ export const GdeSelect = ({
       <Autocomplete
         label="Subenvironment"
         disabled={gdeObject.grossDepEnv?.geologicalStandardId === undefined}
-        options={sortList(SubEnvironment)}
-        optionLabel={(option) => option.identifier}
+        options={filterByCode(sortList(SubEnvironment, true))}
+        optionLabel={(option) => setDisplayName(option)}
         onOptionsChange={(e: AutocompleteChanges<GeologicalStandardDto>) => {
           setGdeObject({
             ...gdeObject,
             subenv: e.selectedItems[0],
           });
         }}
+        selectedOptions={gdeObject.subenv ? [gdeObject.subenv] : []}
         noOptionsText="No options"
         variant={
           error.subEnv && gdeObject.grossDepEnv !== undefined
@@ -115,8 +144,8 @@ export const GdeSelect = ({
       <Autocomplete
         label="Architectural Element"
         multiple
-        options={sortList(ArchitecturalElement)}
-        optionLabel={(option) => option.identifier}
+        options={sortList(ArchitecturalElement, true)}
+        optionLabel={(option) => setDisplayName(option)}
         onOptionsChange={(e: AutocompleteChanges<GeologicalStandardDto>) => {
           setGdeObject({
             ...gdeObject,
