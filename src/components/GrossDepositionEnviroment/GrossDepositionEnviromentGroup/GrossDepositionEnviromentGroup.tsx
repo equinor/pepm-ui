@@ -113,7 +113,10 @@ export const GrossDepositionEnviromentGroup = ({
         id: id,
         requestBody: postRequestBody,
       });
-      if (rowUpload.success) handleGdeDialog();
+      if (rowUpload.success) {
+        setGdeObject(defaultGdeData);
+        handleGdeDialog();
+      }
     }
   };
 
@@ -149,14 +152,24 @@ export const GrossDepositionEnviromentGroup = ({
                       />
                     </Button>
                   </Table.Cell>
-                  <Table.Cell>{row.grossDepEnv.identifier}</Table.Cell>
-                  <Table.Cell>{row.depEnv.identifier}</Table.Cell>
-                  <Table.Cell>{row.subenv.identifier}</Table.Cell>
+                  <Table.Cell>
+                    {row.grossDepEnv.equinorCode +
+                      ' ' +
+                      row.grossDepEnv.identifier}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {row.grossDepEnv.equinorCode + ' ' + row.depEnv.identifier}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {row.grossDepEnv.equinorCode + ' ' + row.subenv.identifier}
+                  </Table.Cell>
                   <Table.Cell>
                     {row.architecturalElements.length > 0 && (
                       <ul>
                         {row.architecturalElements.map((a) => (
-                          <li key={a.geologicalStandardId}>{a.identifier}</li>
+                          <li key={a.geologicalStandardId}>
+                            {a.equinorCode + ' ' + a.identifier}
+                          </li>
                         ))}
                       </ul>
                     )}
