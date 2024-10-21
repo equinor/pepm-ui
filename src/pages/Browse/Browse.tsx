@@ -20,9 +20,7 @@ export const Browse = () => {
     navigate('/add-model');
   }
 
-  function disableButton() {
-    return isOwnerOrAdmin();
-  }
+  
 
   return (
     <>
