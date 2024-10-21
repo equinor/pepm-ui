@@ -41,6 +41,7 @@ export const VariogramOptionSelect = ({
   saved,
   caseError,
   selectedParamValue,
+  isOwner,
 }: {
   rowCase: ComputeCaseDto;
   modelAreas: ModelAreaDto[];
@@ -81,6 +82,7 @@ export const VariogramOptionSelect = ({
   saved: boolean;
   caseError: string;
   selectedParamValue: (method: string) => ListComputeSettingsInputValueDto[];
+  isOwner: () => boolean;
 }) => {
   const [expandSettings, setExpandSettings] = useState<boolean>(false);
 
@@ -160,6 +162,7 @@ export const VariogramOptionSelect = ({
           existingCases={existingCases}
           caseError={caseError}
           caseType="Variogram"
+          isOwner={isOwner}
         />
       </ViewSelectedVariogramSettings>
 
@@ -175,6 +178,7 @@ export const VariogramOptionSelect = ({
             }
             selectedValue={setIfLoadedValues && setIfLoadedValues('Indicator')}
             setValue={setIndicatorParameters}
+            isOwner={isOwner}
           />
         </ViewSelectedVariogramSettings>
       )}
@@ -196,6 +200,7 @@ export const VariogramOptionSelect = ({
               setIfLoadedValues && setIfLoadedValues('Net-To-Gross')
             }
             setValue={setGrainSize}
+            isOwner={isOwner}
           />
         </ViewSelectedVariogramSettings>
       )}
@@ -216,6 +221,7 @@ export const VariogramOptionSelect = ({
               setIfLoadedValues && setIfLoadedValues('ContiniousParameter')
             }
             setValue={setContiniousParameters}
+            isOwner={isOwner}
           />
         </ViewSelectedVariogramSettings>
       )}
@@ -232,6 +238,7 @@ export const VariogramOptionSelect = ({
           selectedValue={setIfLoadedValues && setIfLoadedValues('Archel')}
           setValue={setArchelFilter}
           caseType={caseType}
+          isOwner={isOwner}
         />
       </ViewSelectedVariogramSettings>
 
@@ -256,6 +263,7 @@ export const VariogramOptionSelect = ({
             setIfLoadedValues && setIfLoadedValues('Variogram Family Filter')
           }
           setValue={setVariogramModels}
+          isOwner={isOwner}
         />
       </ViewSelectedVariogramSettings>
     </Styled.AutocompleteWrapper>

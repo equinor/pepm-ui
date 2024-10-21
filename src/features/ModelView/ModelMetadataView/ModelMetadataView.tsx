@@ -25,6 +25,7 @@ import { useFetchModel } from '../../../hooks/useFetchModel';
 import { EditNameDescription } from '../EditNameDescription/EditNameDescription';
 import * as Styled from './ModelMetadataView.styled';
 import { getAnalogueModelImage } from '../../../api/custom/getAnalogueModelImageById';
+import { isOwnerOrAdmin } from '../../../utils/IsOwnerOrAdmin';
 
 export const ModelMetadataView = ({
   modelIdParent,
@@ -243,6 +244,10 @@ export const ModelMetadataView = ({
     }
   };
 
+  const hideContent = () => {
+    return isOwnerOrAdmin(data?.data.createdBy);
+  };
+
   if (isLoading || !data?.success) return <p>Loading ...</p>;
 
   return (
@@ -259,13 +264,15 @@ export const ModelMetadataView = ({
               )}
             </>
 
-            <Button
-              onClick={toggleEditMetadata}
-              variant="outlined"
-              className="edit-metadata-button"
-            >
-              Edit name and description…
-            </Button>
+            {hideContent() && (
+              <Button
+                onClick={toggleEditMetadata}
+                variant="outlined"
+                className="edit-metadata-button"
+              >
+                Edit name and description…
+              </Button>
+            )}
             <EditNameDescription
               edit={updateModelMetadata}
               isEdit={isAddModelDialog}
@@ -327,6 +334,7 @@ export const ModelMetadataView = ({
           modelIdParent={modelIdParent}
           defaultMetadata={defaultMetadata}
           outcropGroup={data.data.outcrops}
+          hideContent={hideContent}
         />
       </div>
       <div>
@@ -335,6 +343,7 @@ export const ModelMetadataView = ({
           defaultMetadata={defaultMetadata}
           stratColumnGroups={data.data.stratigraphicGroups}
           deleteStratColRow={deleteStratColRow}
+          hideContent={hideContent}
         />
       </div>
       <div>
@@ -343,6 +352,7 @@ export const ModelMetadataView = ({
           defaultMetadata={defaultMetadata}
           gdeGroups={data.data.geologicalGroups}
           deleteGdeRow={deleteGdeRow}
+          hideContent={hideContent}
         />
       </div>
     </Styled.Wrapper>

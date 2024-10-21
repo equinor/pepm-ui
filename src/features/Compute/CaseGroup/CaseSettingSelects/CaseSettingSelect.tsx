@@ -9,6 +9,7 @@ export const CaseSettingSelect = ({
   options,
   selectedValue,
   setValue,
+  isOwner,
 }: {
   label: string;
   settingType?: string;
@@ -18,6 +19,7 @@ export const CaseSettingSelect = ({
   setValue?: React.Dispatch<
     React.SetStateAction<ListComputeSettingsInputValueDto[] | undefined>
   >;
+  isOwner: () => boolean;
 }) => {
   const onSelectChange = (
     changes: AutocompleteChanges<ListComputeSettingsInputValueDto>,
@@ -30,8 +32,9 @@ export const CaseSettingSelect = ({
       <Autocomplete
         label={label}
         disabled={
-          (caseType === 'Net-To-Gross' || caseType === 'Indicator') &&
-          settingType !== 'ContiniousParameter'
+          ((caseType === 'Net-To-Gross' || caseType === 'Indicator') &&
+            settingType !== 'ContiniousParameter') ||
+          !isOwner()
         }
         options={options && options.length > 0 ? options : []}
         optionLabel={(option) => option.name}

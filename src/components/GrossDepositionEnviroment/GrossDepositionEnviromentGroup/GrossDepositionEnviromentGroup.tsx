@@ -48,6 +48,7 @@ export const GrossDepositionEnviromentGroup = ({
   defaultMetadata,
   gdeGroups,
   deleteGdeRow,
+  hideContent,
 }: {
   modelIdParent?: string;
   defaultMetadata: AnalogueModelDetail;
@@ -55,6 +56,7 @@ export const GrossDepositionEnviromentGroup = ({
   deleteGdeRow: (
     geologicalGroupId: string,
   ) => Promise<DeleteGeologicalGroupCommandResponse | undefined>;
+  hideContent: () => boolean;
 }) => {
   const [showGdeDialog, setShowGdeDialog] = useState<boolean>(false);
   const [gdeObject, setGdeObject] = useState<GdeType>(defaultGdeData);
@@ -142,15 +144,17 @@ export const GrossDepositionEnviromentGroup = ({
               {gdeGroups.map((row) => (
                 <Table.Row key={row.geologicalGroupId}>
                   <Table.Cell>
-                    <Button
-                      variant="ghost_icon"
-                      onClick={() => deleteGdeRow(row.geologicalGroupId)}
-                    >
-                      <Icon
-                        data={deleteIcon}
-                        title={'Delete gross deposition enviroment row'}
-                      />
-                    </Button>
+                    {hideContent() && (
+                      <Button
+                        variant="ghost_icon"
+                        onClick={() => deleteGdeRow(row.geologicalGroupId)}
+                      >
+                        <Icon
+                          data={deleteIcon}
+                          title={'Delete gross deposition enviroment row'}
+                        />
+                      </Button>
+                    )}
                   </Table.Cell>
                   <Table.Cell>
                     {row.grossDepEnv.equinorCode +
@@ -180,9 +184,11 @@ export const GrossDepositionEnviromentGroup = ({
           </Table>
         )}
         <div>
-          <Button variant="outlined" onClick={handleGdeDialog}>
-            Add GDE…
-          </Button>
+          {hideContent() && (
+            <Button variant="outlined" onClick={handleGdeDialog}>
+              Add GDE…
+            </Button>
+          )}
         </div>
       </Styled.Wrapper>
 

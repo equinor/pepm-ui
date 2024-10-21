@@ -6,10 +6,12 @@ export const AddCaseButtons = ({
   title,
   localList,
   addCase,
+  isOwner,
 }: {
   title: string;
   localList?: ComputeCaseDto[];
   addCase?: (methodType: string) => void;
+  isOwner: () => boolean;
 }) => {
   const filerLocalList = (methodType: string) => {
     if (!localList) return [];
@@ -24,7 +26,7 @@ export const AddCaseButtons = ({
         <Button
           variant="ghost"
           onClick={() => addCase('Indicator')}
-          disabled={filerLocalList('Indicator').length > 0}
+          disabled={filerLocalList('Indicator').length > 0 || !isOwner()}
         >
           <Icon data={ADD} size={18}></Icon>
           Add case
@@ -34,7 +36,7 @@ export const AddCaseButtons = ({
         <Button
           variant="ghost"
           onClick={() => addCase('Net-To-Gross')}
-          disabled={filerLocalList('Net-To-Gross').length > 0}
+          disabled={filerLocalList('Net-To-Gross').length > 0 || !isOwner()}
         >
           <Icon data={ADD} size={18}></Icon>
           Add case
@@ -44,7 +46,9 @@ export const AddCaseButtons = ({
         <Button
           variant="ghost"
           onClick={() => addCase('ContiniousParameter')}
-          disabled={filerLocalList('ContiniousParameter').length > 0}
+          disabled={
+            filerLocalList('ContiniousParameter').length > 0 || !isOwner()
+          }
         >
           <Icon data={ADD} size={18}></Icon>
           Add case

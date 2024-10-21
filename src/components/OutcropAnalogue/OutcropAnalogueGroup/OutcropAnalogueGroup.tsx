@@ -42,10 +42,12 @@ export const OutcropAnalogueGroup = ({
   modelIdParent,
   defaultMetadata,
   outcropGroup,
+  hideContent,
 }: {
   modelIdParent?: string;
   defaultMetadata: AnalogueModelDetail;
   outcropGroup: OutcropDto[];
+  hideContent: () => boolean;
 }) => {
   const [showOutcropDialog, setShowOutcropDialog] = useState<boolean>(false);
   const [errors, setErrors] = useState<OutcropErrorType>({});
@@ -115,16 +117,21 @@ export const OutcropAnalogueGroup = ({
             {outcropGroup.map((row) => (
               <Table.Row key={row.outcropId}>
                 <Table.Cell>
-                  <Button
-                    variant="ghost_icon"
-                    onClick={() =>
-                      handleDeleteOutcropAnalogue(
-                        row.outcropId ? row.outcropId : 'none',
-                      )
-                    }
-                  >
-                    <Icon data={deleteIcon} title={'Delete strat column row'} />
-                  </Button>
+                  {hideContent() && (
+                    <Button
+                      variant="ghost_icon"
+                      onClick={() =>
+                        handleDeleteOutcropAnalogue(
+                          row.outcropId ? row.outcropId : 'none',
+                        )
+                      }
+                    >
+                      <Icon
+                        data={deleteIcon}
+                        title={'Delete strat column row'}
+                      />
+                    </Button>
+                  )}
                 </Table.Cell>
                 <Table.Cell>
                   <Styled.StratColCell>{row.name}</Styled.StratColCell>
@@ -146,9 +153,11 @@ export const OutcropAnalogueGroup = ({
         </Table>
       )}
       <div>
-        <Button variant="outlined" onClick={handleOutcropDialog}>
-          Add outcrop analogue…
-        </Button>
+        {hideContent() && (
+          <Button variant="outlined" onClick={handleOutcropDialog}>
+            Add outcrop analogue…
+          </Button>
+        )}
       </div>
       <StyledDialog.DialogWindow open={showOutcropDialog}>
         <Dialog.Header>Add Outcrop Analogue</Dialog.Header>

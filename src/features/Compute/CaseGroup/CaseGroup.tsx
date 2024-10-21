@@ -30,6 +30,7 @@ export const CaseGroup = ({
   setAlertMessage,
   updateLocalCaseList,
   runCase,
+  isOwner,
 }: {
   caseList: ComputeCaseDto[];
   methodName: string;
@@ -37,6 +38,7 @@ export const CaseGroup = ({
   setAlertMessage: (message: string) => void;
   updateLocalCaseList?: (type: string, add: boolean) => void;
   runCase: (computeCaseId: string) => void;
+  isOwner: () => boolean;
 }) => {
   const [localList, setLocalList] = useState<ComputeCaseDto[]>([]);
   const { data, isLoading } = useFetchCases();
@@ -339,7 +341,7 @@ export const CaseGroup = ({
               <Button
                 variant="outlined"
                 onClick={() => addCase(methodName)}
-                disabled={localList.length >= 1}
+                disabled={localList.length >= 1 || !isOwner()}
               >
                 <Icon data={ADD} size={18}></Icon>
                 {methodName}
@@ -354,6 +356,7 @@ export const CaseGroup = ({
         key={caseList.length > 0 ? caseList[0].computeCaseId : null}
         addCase={addCase}
         localList={localList}
+        isOwner={isOwner}
       >
         <Styled.CaseList>
           {methodName === 'Channel' || methodName === 'Mouthbar' ? (
@@ -376,6 +379,7 @@ export const CaseGroup = ({
                   runCase={runCase}
                   removeLocalCase={removeLocalCase}
                   settingsFilter={settingsFilter}
+                  isOwner={isOwner}
                 />
               ))}
             </>
@@ -397,6 +401,7 @@ export const CaseGroup = ({
                   removeLocalCase={removeLocalCase}
                   settingsFilter={settingsFilter}
                   duplicateCase={duplicateCase}
+                  isOwner={isOwner}
                 />
               ))}
             </>

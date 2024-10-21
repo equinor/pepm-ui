@@ -15,6 +15,7 @@ export const ModelAreaSelect = ({
   caseError,
   caseType,
   setModelArea,
+  isOwner,
 }: {
   modelAreas: ModelAreaDto[];
   selectedModelArea: ModelAreaDto[] | undefined;
@@ -25,6 +26,7 @@ export const ModelAreaSelect = ({
   setModelArea?: React.Dispatch<
     React.SetStateAction<ModelAreaDto[] | undefined>
   >;
+  isOwner: () => boolean;
 }) => {
   const filterDisabled = (option: ModelAreaDto) => {
     if (existingCases.length === 0) {
@@ -79,6 +81,7 @@ export const ModelAreaSelect = ({
           }
           optionDisabled={!caseType ? filterDisabled : undefined}
           variant={caseError.length > 0 ? 'error' : undefined}
+          disabled={!isOwner()}
         />
         {caseError.length > 0 && <Label label={caseError}></Label>}
       </Styled.Required>

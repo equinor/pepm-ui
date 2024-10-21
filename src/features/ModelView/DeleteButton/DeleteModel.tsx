@@ -6,7 +6,12 @@ import { AnalogueModelsService } from '../../../api/generated';
 import { queryClient } from '../../../auth/queryClient';
 import * as Styled from './DeleteModel.styled';
 
-export const DeleteModel = () => {
+// eslint-disable-next-line max-lines-per-function
+export const DeleteModel = ({
+  hideContent,
+}: {
+  hideContent: () => boolean;
+}) => {
   const [open, setOpen] = useState<boolean>(false);
   const { modelId } = useParams();
   const navigate = useNavigate();
@@ -29,6 +34,8 @@ export const DeleteModel = () => {
       return res;
     }
   };
+
+  if (!hideContent()) return <></>;
 
   return (
     <Styled.Wrapper>

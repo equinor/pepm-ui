@@ -58,6 +58,7 @@ export const StratigrapicGroups = ({
   defaultMetadata,
   stratColumnGroups,
   deleteStratColRow,
+  hideContent,
 }: {
   modelIdParent?: string;
   defaultMetadata: AnalogueModelDetail;
@@ -65,6 +66,7 @@ export const StratigrapicGroups = ({
   deleteStratColRow: (
     stratigraphicGroupId: string,
   ) => Promise<DeleteStratigraphicGroupCommandResponse | undefined>;
+  hideContent: () => boolean;
 }) => {
   const [stratColumnObject, setStratColumnObject] = useState<StratColumnType>(
     defaultStratColumnData,
@@ -169,12 +171,17 @@ export const StratigrapicGroups = ({
             {stratColumnGroups.map((row) => (
               <Table.Row key={row.stratigraphicGroupId}>
                 <Table.Cell>
-                  <Button
-                    variant="ghost_icon"
-                    onClick={() => deleteRow(row.stratigraphicGroupId)}
-                  >
-                    <Icon data={deleteIcon} title={'Delete strat column row'} />
-                  </Button>
+                  {hideContent() && (
+                    <Button
+                      variant="ghost_icon"
+                      onClick={() => deleteRow(row.stratigraphicGroupId)}
+                    >
+                      <Icon
+                        data={deleteIcon}
+                        title={'Delete strat column row'}
+                      />
+                    </Button>
+                  )}
                 </Table.Cell>
                 <Table.Cell>{row.country.identifier}</Table.Cell>
                 <Table.Cell>
@@ -221,9 +228,11 @@ export const StratigrapicGroups = ({
       )}
 
       <div>
-        <Button variant="outlined" onClick={handleStratColDialog}>
-          Add stratigraphic column…
-        </Button>
+        {hideContent() && (
+          <Button variant="outlined" onClick={handleStratColDialog}>
+            Add stratigraphic column…
+          </Button>
+        )}
       </div>
       <StyledDialog.DialogWindow open={showStratColDialog}>
         <Dialog.Header>Add stratigraphic column</Dialog.Header>
