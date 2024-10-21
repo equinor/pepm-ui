@@ -26,9 +26,9 @@ export const Browse = () => {
     <>
       <Styled.BrowseWrapper>
         <Typography variant="h1">Browse all models</Typography>
-        {disableButton() ? (
+        {isOwnerOrAdmin() ? (
           <div className="btn-div">
-            <Button disabled={!disableButton()} onClick={navigateAddModel}>
+            <Button disabled={!isOwnerOrAdmin()} onClick={navigateAddModel}>
               Add new model
             </Button>
           </div>
