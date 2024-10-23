@@ -60,10 +60,21 @@ export const CaseButtons = ({
     setDeleteConfirm(false);
   };
 
+  const deleteTooltip = () => {
+    if (!isOwner()) return 'Can not delete because you are not owner or admin.';
+    return 'Can not delete unsaved case.';
+  };
+
+  const duplicateTooltip = () => {
+    if (!isOwner())
+      return 'Can not duplicate because you are not owner or admin.';
+    return 'Can not duplicate unsaved case.';
+  };
+
   return (
     <Styled.ButtonDiv>
       {id.length < 3 || !isOwner() ? (
-        <Tooltip title={'Can not delete unsaved case.'}>
+        <Tooltip title={deleteTooltip()}>
           <Button disabled variant="ghost_icon" aria-label="remove">
             <Icon data={DELETE} size={24}></Icon>
           </Button>
@@ -81,7 +92,7 @@ export const CaseButtons = ({
       {caseType === 'Variogram' && (
         <>
           {id.length < 3 || !isOwner() ? (
-            <Tooltip title={'Can not duplicate unsaved case.'}>
+            <Tooltip title={duplicateTooltip()}>
               <Button disabled variant="ghost_icon" aria-label="duplicate">
                 <Icon data={COPY} size={24}></Icon>
               </Button>
