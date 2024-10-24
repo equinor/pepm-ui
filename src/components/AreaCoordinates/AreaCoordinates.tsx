@@ -259,7 +259,7 @@ export const AreaCoordinates = ({
     setEdit(!edit);
   };
 
-  const handleCancleEdit = () => {
+  const handleCancelEdit = () => {
     fallbackAreaCoordinate &&
       setAreaCoordinate(cloneDeep(fallbackAreaCoordinate));
 
@@ -352,7 +352,7 @@ export const AreaCoordinates = ({
                 {edit ? (
                   <>
                     <Button onClick={handleSubmit}>Save coordinates</Button>
-                    <Button variant="outlined" onClick={handleCancleEdit}>
+                    <Button variant="outlined" onClick={handleCancelEdit}>
                       Cancel
                     </Button>
                   </>

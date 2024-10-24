@@ -25,7 +25,7 @@ export const ConfirmDialog = ({
           color={danger ? 'danger' : undefined}
           onClick={() => setIsOpen(false)}
         >
-          {'Cancle'}
+          {'Cancel'}
         </Button>
         <Button color={danger ? 'danger' : undefined} onClick={confirmAction}>
           {danger ? 'Delete' : 'Ok'}
