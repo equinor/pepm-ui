@@ -12,6 +12,7 @@ export const CaseCardComponent = ({
   subTitle,
   localList,
   addCase,
+  isOwner,
 }: {
   children: React.ReactNode;
   title: string;
@@ -19,6 +20,7 @@ export const CaseCardComponent = ({
   subTitle?: string;
   localList?: ComputeCaseDto[];
   addCase?: (methodType: string) => void;
+  isOwner: () => boolean;
 }) => {
   return (
     <Styled.CaseBorder>
@@ -32,6 +34,7 @@ export const CaseCardComponent = ({
             title={title}
             localList={localList}
             addCase={addCase}
+            isOwner={isOwner}
           ></AddCaseButtons>
         </Styled.ButtonGroup>
 

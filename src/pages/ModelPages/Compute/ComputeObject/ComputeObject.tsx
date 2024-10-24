@@ -10,6 +10,8 @@ import { ComputeHeader } from '../../../../features/Compute/ComputeHeader/Comput
 import { useFetchCases } from '../../../../hooks/useFetchCases';
 import * as Styled from '../Compute.styled';
 import { CaseInfoTyoe } from '../ComputeVariogram/ComputeVariogram';
+import { isOwnerOrAdmin } from '../../../../utils/IsOwnerOrAdmin';
+import { useFetchModel } from '../../../../hooks/useFetchModel';
 
 const ObjectCaseInfo: CaseInfoTyoe = {
   type: 'Channel',
@@ -22,6 +24,7 @@ const ObjectCaseInfo: CaseInfoTyoe = {
 export const ComputeObject = () => {
   const [showAlert, setAlert] = useState<string>();
   const { modelId } = useParams<{ modelId: string }>();
+  const model = useFetchModel();
 
   function clearStatus() {
     setAlert(undefined);
@@ -31,6 +34,10 @@ export const ComputeObject = () => {
   };
 
   const { data } = useFetchCases();
+
+  const isOwner = () => {
+    return isOwnerOrAdmin(model?.data?.data.createdBy);
+  };
 
   const computeObject = useMutation({
     mutationFn: JobsService.postApiJobsComputeObjectEstimations,
@@ -71,6 +78,7 @@ export const ComputeObject = () => {
           methodName="Channel"
           setAlertMessage={setAlertMessage}
           runCase={runComputeObject}
+          isOwner={isOwner}
         />
 
         <CaseGroup
@@ -80,6 +88,7 @@ export const ComputeObject = () => {
           methodName="Mouthbar"
           setAlertMessage={setAlertMessage}
           runCase={runComputeObject}
+          isOwner={isOwner}
         />
       </Styled.Case>
       <Snackbar

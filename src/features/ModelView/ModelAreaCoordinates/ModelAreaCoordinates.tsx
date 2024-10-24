@@ -3,8 +3,10 @@ import * as Styled from './ModelAreaCoordinates.styled';
 
 export const ModelAreaCoordinates = ({
   toggleOpen,
+  hideContent,
 }: {
   toggleOpen: () => void;
+  hideContent: () => boolean;
 }) => {
   return (
     <Styled.Wrapper>
@@ -15,9 +17,11 @@ export const ModelAreaCoordinates = ({
         You can define multiple areas for calculation in your model by entering
         coordinates.
       </Typography>
-      <Button onClick={toggleOpen} variant="outlined">
-        Set model areas…
-      </Button>
+      {hideContent() && (
+        <Button onClick={toggleOpen} variant="outlined">
+          Set model areas…
+        </Button>
+      )}
     </Styled.Wrapper>
   );
 };

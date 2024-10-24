@@ -21,6 +21,7 @@ export const CaseButtons = ({
   saved,
   isProcessed,
   caseStatus,
+  isOwner,
   hasUnsavedCase,
   saveCase,
   runCase,
@@ -33,6 +34,7 @@ export const CaseButtons = ({
   saved: boolean;
   isProcessed?: boolean;
   caseStatus: ComputeJobStatus;
+  isOwner: () => boolean;
   hasUnsavedCase: boolean;
   runCase?: () => void;
   saveCase: () => void;
@@ -58,10 +60,21 @@ export const CaseButtons = ({
     setDeleteConfirm(false);
   };
 
+  const deleteTooltip = () => {
+    if (!isOwner()) return 'Can not delete because you are not owner or admin.';
+    return 'Can not delete unsaved case.';
+  };
+
+  const duplicateTooltip = () => {
+    if (!isOwner())
+      return 'Can not duplicate because you are not owner or admin.';
+    return 'Can not duplicate unsaved case.';
+  };
+
   return (
     <Styled.ButtonDiv>
-      {id.length < 3 ? (
-        <Tooltip title={'Can not delete unsaved case.'}>
+      {id.length < 3 || !isOwner() ? (
+        <Tooltip title={deleteTooltip()}>
           <Button disabled variant="ghost_icon" aria-label="remove">
             <Icon data={DELETE} size={24}></Icon>
           </Button>
@@ -78,8 +91,8 @@ export const CaseButtons = ({
 
       {caseType === 'Variogram' && (
         <>
-          {id.length < 3 ? (
-            <Tooltip title={'Can not duplicate unsaved case.'}>
+          {id.length < 3 || !isOwner() ? (
+            <Tooltip title={duplicateTooltip()}>
               <Button disabled variant="ghost_icon" aria-label="duplicate">
                 <Icon data={COPY} size={24}></Icon>
               </Button>
@@ -140,7 +153,8 @@ export const CaseButtons = ({
                   !isProcessed ||
                   caseStatus === 'Created' ||
                   caseStatus === 'Waiting' ||
-                  caseStatus === 'Running'
+                  caseStatus === 'Running' ||
+                  !isOwner()
                 }
               >
                 <Icon data={PLAY} size={18}></Icon>
@@ -192,7 +206,8 @@ export const CaseButtons = ({
                   id.length < 3 ||
                   caseStatus === 'Created' ||
                   caseStatus === 'Waiting' ||
-                  caseStatus === 'Running'
+                  caseStatus === 'Running' ||
+                  !isOwner()
                 }
               >
                 <Icon data={PLAY} size={18}></Icon>
@@ -207,6 +222,7 @@ export const CaseButtons = ({
             )}
           </Tooltip>
           <Button
+            disabled={!isOwner()}
             variant="outlined"
             onClick={id.length > 3 ? () => setSaveConfirm(true) : saveCase}
           >

@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ModelTable } from '../../features/ModelTable/ModelTable';
 import * as Styled from './Browse.styled';
+import { isOwnerOrAdmin } from '../../utils/IsOwnerOrAdmin';
 
 export const Browse = () => {
   const [uploadStatus, setUploadStatus] = useState<string>();
@@ -19,13 +20,21 @@ export const Browse = () => {
     navigate('/add-model');
   }
 
+  
+
   return (
     <>
       <Styled.BrowseWrapper>
         <Typography variant="h1">Browse all models</Typography>
-        <div className="btn-div">
-          <Button onClick={navigateAddModel}>Add new model</Button>
-        </div>
+        {isOwnerOrAdmin() ? (
+          <div className="btn-div">
+            <Button disabled={!isOwnerOrAdmin()} onClick={navigateAddModel}>
+              Add new model
+            </Button>
+          </div>
+        ) : (
+          <></>
+        )}
         <ModelTable />
       </Styled.BrowseWrapper>
       <Snackbar
