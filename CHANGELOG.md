@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/equinor/pepm-ui/compare/v1.5.0...v1.5.1) (2024-10-24)
+
+
+### 🐛 Bug Fixes
+
+* gde bugs ([#346](https://github.com/equinor/pepm-ui/issues/346)) ([cc3058a](https://github.com/equinor/pepm-ui/commit/cc3058aa6dc83b09b172232c56fdcaa4757a3357))
+
 ## [1.5.0](https://github.com/equinor/pepm-ui/compare/v1.4.0...v1.5.0) (2024-10-17)
 
 
