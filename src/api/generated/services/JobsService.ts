@@ -14,6 +14,8 @@ import type { GetCurrentJobStatusCommandResponse } from '../models/GetCurrentJob
 import type { GetCurrentJobStatusListCommand } from '../models/GetCurrentJobStatusListCommand';
 import type { GetJobDetailQueryResponse } from '../models/GetJobDetailQueryResponse';
 import type { GetJobListQueryResponse } from '../models/GetJobListQueryResponse';
+import type { PostCancelJobCommand } from '../models/PostCancelJobCommand';
+import type { PostCancelJobCommandResponse } from '../models/PostCancelJobCommandResponse';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -88,6 +90,27 @@ export class JobsService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/jobs/status',
+            errors: {
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * Cancel the running job.
+     * @param requestBody
+     * @returns PostCancelJobCommandResponse Accepted
+     * @throws ApiError
+     */
+    public static postApiJobsCancel(
+        requestBody?: PostCancelJobCommand,
+    ): CancelablePromise<PostCancelJobCommandResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/jobs/cancel',
+            body: requestBody,
+            mediaType: 'application/json-patch+json',
             errors: {
                 403: `Forbidden`,
                 404: `Not Found`,

@@ -4,11 +4,14 @@
 import { useState } from 'react';
 import {
   ComputeCaseDto,
+  ComputeJobStatus,
   CreateComputeCaseCommandResponse,
   CreateComputeCaseInputSettingsForm,
+  JobsService,
   ListComputeCasesByAnalogueModelIdQueryResponse,
   ListComputeSettingsInputDto,
   ListComputeSettingsMethodDto,
+  PostCancelJobCommand,
   UpdateComputeCaseInputSettingsForm,
 } from '../../../../api/generated';
 import { CaseButtons } from '../CaseButtons/CaseButtons';
@@ -19,6 +22,9 @@ import { useCaseParameters } from './hooks/useCaseParameters';
 import { useGetParameterList } from './hooks/useGetParameterList';
 import { useModelArea } from './hooks/useModelArea';
 import { useSetSaved } from './hooks/useSetSaved';
+import { useMutation } from '@tanstack/react-query';
+import { queryClient } from '../../../../auth/queryClient';
+import { useParams } from 'react-router-dom';
 
 export const CaseRow = ({
   rowCase,
@@ -62,6 +68,7 @@ export const CaseRow = ({
   isOwner: () => boolean;
 }) => {
   const [caseError, setCaseError] = useState<string>('');
+  const { modelId } = useParams<{ modelId: string }>();
 
   const indicatorSettings = settingsFilter('Indicator');
   const netToGrossSettings = settingsFilter('Net-To-Gross');
@@ -111,8 +118,31 @@ export const CaseRow = ({
     selectedVariogramModels,
   );
 
+  const cancelJob = useMutation({
+    mutationFn: JobsService.postApiJobsCancel,
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ['model-cases'] });
+    },
+  });
+
+  const runCancelJob = async (computeCaseId: string) => {
+    if (!modelId) return;
+    const requestBody: PostCancelJobCommand = {
+      modelId: modelId,
+      computeCaseId: computeCaseId,
+    };
+
+    const res = await cancelJob.mutateAsync(requestBody);
+
+    if (res.success) {
+      setAlertMessage('Canceled computing case');
+    }
+  };
+
   const runRowCase = () => {
-    if (id) runCase(id);
+    if (id && rowCase.jobStatus === ComputeJobStatus.RUNNING)
+      return runCancelJob(id);
+    if (id) return runCase(id);
   };
 
   const handleSaveCase = async (id: string) => {

@@ -146,14 +146,17 @@ export const CaseButtons = ({
               }
             >
               <Button
-                color={caseStatus === 'Failed' ? 'danger' : undefined}
+                color={
+                  caseStatus === 'Failed' || caseStatus === 'Running'
+                    ? 'danger'
+                    : undefined
+                }
                 variant="outlined"
                 onClick={saved ? runCase : saveCase}
                 disabled={
                   !isProcessed ||
                   caseStatus === 'Created' ||
                   caseStatus === 'Waiting' ||
-                  caseStatus === 'Running' ||
                   !isOwner()
                 }
               >
@@ -161,7 +164,7 @@ export const CaseButtons = ({
                 {caseStatus === 'Created' ||
                 caseStatus === 'Waiting' ||
                 caseStatus === 'Running'
-                  ? 'Running ... '
+                  ? 'Cancel'
                   : caseStatus === 'Failed'
                   ? 'Re-run'
                   : 'Run'}
@@ -206,7 +209,6 @@ export const CaseButtons = ({
                   id.length < 3 ||
                   caseStatus === 'Created' ||
                   caseStatus === 'Waiting' ||
-                  caseStatus === 'Running' ||
                   !isOwner()
                 }
               >
@@ -214,7 +216,7 @@ export const CaseButtons = ({
                 {caseStatus === 'Created' ||
                 caseStatus === 'Waiting' ||
                 caseStatus === 'Running'
-                  ? 'Running ... '
+                  ? 'Cancel'
                   : caseStatus === 'Failed'
                   ? 'Re-run'
                   : 'Run'}
