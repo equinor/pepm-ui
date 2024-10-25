@@ -20,8 +20,6 @@ export const Browse = () => {
     navigate('/add-model');
   }
 
-  
-
   return (
     <>
       <Styled.BrowseWrapper>
