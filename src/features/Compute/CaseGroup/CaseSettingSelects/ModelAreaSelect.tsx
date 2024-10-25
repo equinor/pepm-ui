@@ -6,6 +6,7 @@ import {
 } from '@equinor/eds-core-react';
 import { ComputeCaseDto, ModelAreaDto } from '../../../../api/generated';
 import * as Styled from './SettingSelect.styled';
+import { useIsOwnerOrAdmin } from '../../../../hooks/useIsOwnerOrAdmin';
 
 export const ModelAreaSelect = ({
   modelAreas,
@@ -15,7 +16,6 @@ export const ModelAreaSelect = ({
   caseError,
   caseType,
   setModelArea,
-  isOwner,
 }: {
   modelAreas: ModelAreaDto[];
   selectedModelArea: ModelAreaDto[] | undefined;
@@ -26,8 +26,8 @@ export const ModelAreaSelect = ({
   setModelArea?: React.Dispatch<
     React.SetStateAction<ModelAreaDto[] | undefined>
   >;
-  isOwner: () => boolean;
 }) => {
+  const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const filterDisabled = (option: ModelAreaDto) => {
     if (existingCases.length === 0) {
       return false;
@@ -81,7 +81,7 @@ export const ModelAreaSelect = ({
           }
           optionDisabled={!caseType ? filterDisabled : undefined}
           variant={caseError.length > 0 ? 'error' : undefined}
-          disabled={!isOwner()}
+          disabled={!isOwnerOrAdmin}
         />
         {caseError.length > 0 && <Label label={caseError}></Label>}
       </Styled.Required>

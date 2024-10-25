@@ -6,7 +6,7 @@ import {
   JobStatus,
 } from '../api/generated';
 
-const analogueModelEmpty: AnalogueModelDetail = {
+export const analogueModelEmpty: AnalogueModelDetail = {
   analogueModelId: '',
   name: '',
   description: '',

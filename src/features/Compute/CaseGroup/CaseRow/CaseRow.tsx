@@ -40,7 +40,6 @@ export const CaseRow = ({
   removeLocalCase,
   settingsFilter,
   duplicateCase,
-  isOwner,
 }: {
   rowCase: ComputeCaseDto;
   id: string;
@@ -65,7 +64,6 @@ export const CaseRow = ({
   removeLocalCase: (id: string) => void;
   settingsFilter: (name: string) => ListComputeSettingsMethodDto[] | undefined;
   duplicateCase?: (id: string) => void;
-  isOwner: () => boolean;
 }) => {
   const [caseError, setCaseError] = useState<string>('');
   const { modelId } = useParams<{ modelId: string }>();
@@ -304,7 +302,6 @@ export const CaseRow = ({
             saved={saved}
             caseError={caseError}
             selectedParamValue={selectedValues}
-            isOwner={isOwner}
           />
         )}
 
@@ -325,7 +322,6 @@ export const CaseRow = ({
             saved={saved}
             caseError={caseError}
             selectedParamValue={selectedValues}
-            isOwner={isOwner}
           />
         )}
 
@@ -351,7 +347,6 @@ export const CaseRow = ({
             saved={saved}
             caseError={caseError}
             selectedParamValue={selectedValues}
-            isOwner={isOwner}
           />
         )}
 
@@ -364,7 +359,6 @@ export const CaseRow = ({
               setModelArea={setModelArea}
               existingCases={caseList}
               caseError={caseError}
-              isOwner={isOwner}
             />
           </Styled.AutocompleteWrapper>
         )}
@@ -378,7 +372,6 @@ export const CaseRow = ({
               setModelArea={setModelArea}
               existingCases={caseList}
               caseError={caseError}
-              isOwner={isOwner}
             />
           </Styled.AutocompleteWrapper>
         )}
@@ -397,7 +390,6 @@ export const CaseRow = ({
           duplicateCase={() => {
             duplicateCase && duplicateCase(id);
           }}
-          isOwner={isOwner}
         />
       </Styled.CaseRow>
     </Styled.Case>

@@ -14,6 +14,7 @@ import {
 } from '../../../../api/generated';
 import { ConfirmDialog } from '../../../../components/ConfirmDialog/ConfirmDialog';
 import * as Styled from './CaseButtons.styled';
+import { useIsOwnerOrAdmin } from '../../../../hooks/useIsOwnerOrAdmin';
 
 export const CaseButtons = ({
   id,
@@ -21,7 +22,6 @@ export const CaseButtons = ({
   saved,
   isProcessed,
   caseStatus,
-  isOwner,
   hasUnsavedCase,
   saveCase,
   runCase,
@@ -34,7 +34,6 @@ export const CaseButtons = ({
   saved: boolean;
   isProcessed?: boolean;
   caseStatus: ComputeJobStatus;
-  isOwner: () => boolean;
   hasUnsavedCase: boolean;
   runCase?: () => void;
   saveCase: () => void;
@@ -44,6 +43,7 @@ export const CaseButtons = ({
   setAlertMessage: (message: string) => void;
   duplicateCase: () => void;
 }) => {
+  const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [saveConfirm, setSaveConfirm] = useState(false);
   const navigate = useNavigate();
@@ -61,19 +61,20 @@ export const CaseButtons = ({
   };
 
   const deleteTooltip = () => {
-    if (!isOwner()) return 'Can not delete because you are not owner or admin.';
+    if (!isOwnerOrAdmin)
+      return 'Can not delete because you are not owner or admin.';
     return 'Can not delete unsaved case.';
   };
 
   const duplicateTooltip = () => {
-    if (!isOwner())
+    if (!isOwnerOrAdmin)
       return 'Can not duplicate because you are not owner or admin.';
     return 'Can not duplicate unsaved case.';
   };
 
   return (
     <Styled.ButtonDiv>
-      {id.length < 3 || !isOwner() ? (
+      {id.length < 3 || !isOwnerOrAdmin ? (
         <Tooltip title={deleteTooltip()}>
           <Button disabled variant="ghost_icon" aria-label="remove">
             <Icon data={DELETE} size={24}></Icon>
@@ -91,7 +92,7 @@ export const CaseButtons = ({
 
       {caseType === 'Variogram' && (
         <>
-          {id.length < 3 || !isOwner() ? (
+          {id.length < 3 || !isOwnerOrAdmin ? (
             <Tooltip title={duplicateTooltip()}>
               <Button disabled variant="ghost_icon" aria-label="duplicate">
                 <Icon data={COPY} size={24}></Icon>
@@ -156,7 +157,7 @@ export const CaseButtons = ({
                 variant="outlined"
                 onClick={saved ? runCase : saveCase}
                 disabled={
-                  !isProcessed || caseStatus === 'Created' || !isOwner()
+                  !isProcessed || caseStatus === 'Created' || !isOwnerOrAdmin
                 }
               >
                 <Icon data={PLAY} size={18}></Icon>
@@ -207,7 +208,7 @@ export const CaseButtons = ({
                   !isProcessed ||
                   id.length < 3 ||
                   caseStatus === 'Created' ||
-                  !isOwner()
+                  !isOwnerOrAdmin
                 }
               >
                 <Icon data={PLAY} size={18}></Icon>
@@ -222,7 +223,7 @@ export const CaseButtons = ({
             )}
           </Tooltip>
           <Button
-            disabled={!isOwner()}
+            disabled={!isOwnerOrAdmin}
             variant="outlined"
             onClick={id.length > 3 ? () => setSaveConfirm(true) : saveCase}
           >

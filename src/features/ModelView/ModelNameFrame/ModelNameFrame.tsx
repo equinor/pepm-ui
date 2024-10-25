@@ -1,19 +1,20 @@
 import { Typography } from '@equinor/eds-core-react';
-import { AnalogueModelDetail } from '../../../api/generated';
 import * as Styled from './ModelNameFrame.styled';
+import { usePepmContextStore } from '../../../hooks/GlobalState';
 
-export const ModelNameFrame = ({ model }: { model?: AnalogueModelDetail }) => {
-  const date = model?.createdDate
-    ? new Date(model.createdDate).toDateString().slice(4)
+export const ModelNameFrame = () => {
+  const { analogueModel } = usePepmContextStore();
+  const date = analogueModel?.createdDate
+    ? new Date(analogueModel.createdDate).toDateString().slice(4)
     : '';
 
   return (
     <Styled.NameFrame className="metadata-name-frame">
-      {model ? (
+      {analogueModel ? (
         <Typography variant="h2" as="h1">
-          {model.name}
+          {analogueModel.name}
           <Typography>
-            Added by {model.createdBy} on {date}
+            Added by {analogueModel.createdBy} on {date}
           </Typography>
         </Typography>
       ) : (

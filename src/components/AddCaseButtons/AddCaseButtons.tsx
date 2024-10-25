@@ -1,18 +1,18 @@
 import { Button, Icon } from '@equinor/eds-core-react';
 import { add as ADD } from '@equinor/eds-icons';
 import { ComputeCaseDto } from '../../api/generated';
+import { useIsOwnerOrAdmin } from '../../hooks/useIsOwnerOrAdmin';
 
 export const AddCaseButtons = ({
   title,
   localList,
   addCase,
-  isOwner,
 }: {
   title: string;
   localList?: ComputeCaseDto[];
   addCase?: (methodType: string) => void;
-  isOwner: () => boolean;
 }) => {
+  const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const filerLocalList = (methodType: string) => {
     if (!localList) return [];
     const methodFileter =
@@ -26,7 +26,7 @@ export const AddCaseButtons = ({
         <Button
           variant="ghost"
           onClick={() => addCase('Indicator')}
-          disabled={filerLocalList('Indicator').length > 0 || !isOwner()}
+          disabled={filerLocalList('Indicator').length > 0 || !isOwnerOrAdmin}
         >
           <Icon data={ADD} size={18}></Icon>
           Add case
@@ -36,7 +36,9 @@ export const AddCaseButtons = ({
         <Button
           variant="ghost"
           onClick={() => addCase('Net-To-Gross')}
-          disabled={filerLocalList('Net-To-Gross').length > 0 || !isOwner()}
+          disabled={
+            filerLocalList('Net-To-Gross').length > 0 || !isOwnerOrAdmin
+          }
         >
           <Icon data={ADD} size={18}></Icon>
           Add case
@@ -47,7 +49,7 @@ export const AddCaseButtons = ({
           variant="ghost"
           onClick={() => addCase('ContiniousParameter')}
           disabled={
-            filerLocalList('ContiniousParameter').length > 0 || !isOwner()
+            filerLocalList('ContiniousParameter').length > 0 || !isOwnerOrAdmin
           }
         >
           <Icon data={ADD} size={18}></Icon>

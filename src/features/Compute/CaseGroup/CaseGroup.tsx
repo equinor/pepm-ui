@@ -22,6 +22,7 @@ import { useAccessToken } from '../../../hooks/useAccessToken';
 import { useFetchCases } from '../../../hooks/useFetchCases';
 import * as Styled from './CaseGroup.styled';
 import { CaseRow } from './CaseRow/CaseRow';
+import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
 
 export const CaseGroup = ({
   caseList,
@@ -30,7 +31,6 @@ export const CaseGroup = ({
   setAlertMessage,
   updateLocalCaseList,
   runCase,
-  isOwner,
 }: {
   caseList: ComputeCaseDto[];
   methodName: string;
@@ -38,13 +38,13 @@ export const CaseGroup = ({
   setAlertMessage: (message: string) => void;
   updateLocalCaseList?: (type: string, add: boolean) => void;
   runCase: (computeCaseId: string) => void;
-  isOwner: () => boolean;
 }) => {
   const [localList, setLocalList] = useState<ComputeCaseDto[]>([]);
   const { data, isLoading } = useFetchCases();
   const { modelId } = useParams<{ modelId: string }>();
   const { instance, accounts } = useMsal();
   const token = useAccessToken(instance, accounts[0]);
+  const isOwnerOrAdmin = useIsOwnerOrAdmin();
 
   const saveApiCase = useMutation({
     mutationFn: ({
@@ -326,6 +326,7 @@ export const CaseGroup = ({
       }
     }
   };
+
   if (isLoading || computeSettingsResponse.isLoading) return <p>Loading ...</p>;
 
   return (
@@ -341,7 +342,7 @@ export const CaseGroup = ({
               <Button
                 variant="outlined"
                 onClick={() => addCase(methodName)}
-                disabled={localList.length >= 1 || !isOwner()}
+                disabled={localList.length >= 1 || !isOwnerOrAdmin}
               >
                 <Icon data={ADD} size={18}></Icon>
                 {methodName}
@@ -356,7 +357,6 @@ export const CaseGroup = ({
         key={caseList.length > 0 ? caseList[0].computeCaseId : null}
         addCase={addCase}
         localList={localList}
-        isOwner={isOwner}
       >
         <Styled.CaseList>
           {methodName === 'Channel' || methodName === 'Mouthbar' ? (
@@ -379,7 +379,6 @@ export const CaseGroup = ({
                   runCase={runCase}
                   removeLocalCase={removeLocalCase}
                   settingsFilter={settingsFilter}
-                  isOwner={isOwner}
                 />
               ))}
             </>
@@ -401,7 +400,6 @@ export const CaseGroup = ({
                   removeLocalCase={removeLocalCase}
                   settingsFilter={settingsFilter}
                   duplicateCase={duplicateCase}
-                  isOwner={isOwner}
                 />
               ))}
             </>

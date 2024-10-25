@@ -17,6 +17,7 @@ import { useOutcropAnalouge } from '../../../hooks/useOutcropAnalogue';
 import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
 import { OutcropSelect } from '../OutcropSelect/OutcropSelect';
 import * as Styled from './OutcropAnalogueGroup.styled';
+import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
 
 export interface OutcropType {
   outcropId?: string;
@@ -42,13 +43,12 @@ export const OutcropAnalogueGroup = ({
   modelIdParent,
   defaultMetadata,
   outcropGroup,
-  hideContent,
 }: {
   modelIdParent?: string;
   defaultMetadata: AnalogueModelDetail;
   outcropGroup: OutcropDto[];
-  hideContent: () => boolean;
 }) => {
+  const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const [showOutcropDialog, setShowOutcropDialog] = useState<boolean>(false);
   const [errors, setErrors] = useState<OutcropErrorType>({});
   const [outcropObject, setOutcropObject] =
@@ -117,7 +117,7 @@ export const OutcropAnalogueGroup = ({
             {outcropGroup.map((row) => (
               <Table.Row key={row.outcropId}>
                 <Table.Cell>
-                  {hideContent() && (
+                  {isOwnerOrAdmin && (
                     <Button
                       variant="ghost_icon"
                       onClick={() =>
@@ -153,7 +153,7 @@ export const OutcropAnalogueGroup = ({
         </Table>
       )}
       <div>
-        {hideContent() && (
+        {isOwnerOrAdmin && (
           <Button variant="outlined" onClick={handleOutcropDialog}>
             Add outcrop analogue…
           </Button>

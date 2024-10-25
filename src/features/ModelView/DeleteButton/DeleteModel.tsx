@@ -5,13 +5,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { AnalogueModelsService } from '../../../api/generated';
 import { queryClient } from '../../../auth/queryClient';
 import * as Styled from './DeleteModel.styled';
+import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
 
 // eslint-disable-next-line max-lines-per-function
-export const DeleteModel = ({
-  hideContent,
-}: {
-  hideContent: () => boolean;
-}) => {
+export const DeleteModel = () => {
+  const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const [open, setOpen] = useState<boolean>(false);
   const { modelId } = useParams();
   const navigate = useNavigate();
@@ -35,7 +33,7 @@ export const DeleteModel = ({
     }
   };
 
-  if (!hideContent()) return <></>;
+  if (!isOwnerOrAdmin) return <></>;
 
   return (
     <Styled.Wrapper>
