@@ -31,6 +31,7 @@ type IPepmContext = {
 };
 type IPepmContextActions = {
   setAnalogueModel: (analogueModel: AnalogueModelDetail) => void;
+  setAnalogueModelEmpty: () => void;
 };
 
 export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
@@ -39,6 +40,10 @@ export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
     setAnalogueModel: (am: AnalogueModelDetail) =>
       set((state) => {
         state.analogueModel = am;
+      }),
+    setAnalogueModelEmpty: () =>
+      set((state) => {
+        state.analogueModel = analogueModelEmpty;
       }),
   })),
 );
