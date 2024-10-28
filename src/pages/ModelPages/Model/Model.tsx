@@ -23,7 +23,6 @@ export const Model = () => {
   useEffect(() => {
     if (data) {
       setAnalogueModel(data.data);
-      console.log('setting global state');
     }
   }, [data, setAnalogueModel]);
 
