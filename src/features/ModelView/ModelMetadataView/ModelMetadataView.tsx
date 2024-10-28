@@ -21,11 +21,11 @@ import { queryClient } from '../../../auth/queryClient';
 import { GrossDepositionEnviromentGroup } from '../../../components/GrossDepositionEnviroment/GrossDepositionEnviromentGroup/GrossDepositionEnviromentGroup';
 import { OutcropAnalogueGroup } from '../../../components/OutcropAnalogue/OutcropAnalogueGroup/OutcropAnalogueGroup';
 import { StratigrapicGroups } from '../../../components/StrategraphicColumn/StratigrapicGroups/StratigrapicGroups';
-import { useFetchModel } from '../../../hooks/useFetchModel';
 import { EditNameDescription } from '../EditNameDescription/EditNameDescription';
 import * as Styled from './ModelMetadataView.styled';
 import { getAnalogueModelImage } from '../../../api/custom/getAnalogueModelImageById';
 import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
+import { usePepmContextStore } from '../../../hooks/GlobalState';
 
 export const ModelMetadataView = ({
   modelIdParent,
@@ -35,9 +35,8 @@ export const ModelMetadataView = ({
   uploadingProgress?: number;
 }) => {
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
-  const { isLoading, data } = useFetchModel(
-    modelIdParent ? modelIdParent : undefined,
-  );
+  const { analogueModel } = usePepmContextStore();
+
   const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false);
 
   const generateImageRequested = useRef(false);
@@ -45,24 +44,24 @@ export const ModelMetadataView = ({
   const { modelId } = useParams();
 
   const defaultMetadata: AnalogueModelDetail = {
-    analogueModelId: data?.data.analogueModelId
-      ? data?.data.analogueModelId
+    analogueModelId: analogueModel.analogueModelId
+      ? analogueModel.analogueModelId
       : '',
-    name: data?.data.name ? data?.data.name : '',
-    description: data?.data.description ? data?.data.description : '',
-    isProcessed: data?.data.isProcessed ? data?.data.isProcessed : false,
+    name: analogueModel.name ? analogueModel.name : '',
+    description: analogueModel.description ? analogueModel.description : '',
+    isProcessed: analogueModel.isProcessed ? analogueModel.isProcessed : false,
     sourceType: AnalogueModelSourceType.DELTARES,
-    outcrops: data?.data.outcrops ? data?.data.outcrops : [],
-    fileUploads: data?.data.fileUploads ? data?.data.fileUploads : [],
+    outcrops: analogueModel.outcrops ? analogueModel.outcrops : [],
+    fileUploads: analogueModel.fileUploads ? analogueModel.fileUploads : [],
     parameters: [],
-    metadata: data?.data.metadata ? data?.data.metadata : [],
+    metadata: analogueModel.metadata ? analogueModel.metadata : [],
     modelAreas: [],
     stratigraphicGroups: [],
     geologicalGroups: [],
     processingStatus: JobStatus.UNKNOWN,
   };
 
-  const imageId = data?.data.analogueModelImage?.analogueModelImageId ?? '';
+  const imageId = analogueModel.analogueModelImage?.analogueModelImageId ?? '';
 
   const imageRequest = useQuery({
     queryKey: ['analogue-model-image', modelId, imageId],
@@ -91,22 +90,20 @@ export const ModelMetadataView = ({
   useEffect(() => {
     if (
       modelId &&
-      data &&
-      !isLoading &&
-      data?.data?.analogueModelImage === null &&
+      analogueModel &&
+      analogueModel.analogueModelImage === null &&
       generateImageRequested.current === false &&
-      data.data.isProcessed
+      analogueModel.isProcessed
     ) {
       generateImageRequested.current = true;
       generateThumbnailOnLoad(modelId);
     }
   }, [
-    data,
-    isLoading,
-    data?.data?.analogueModelImage,
+    analogueModel,
+    analogueModel.analogueModelImage,
     modelId,
     generateThumbnailOnLoad,
-    data?.data.isProcessed,
+    analogueModel.isProcessed,
   ]);
 
   function toggleEditMetadata() {
@@ -154,7 +151,9 @@ export const ModelMetadataView = ({
   }
 
   const updateModelMetadata = async (metadata: AnalogueModelDetail) => {
-    const id = data?.data.analogueModelId ? data?.data.analogueModelId : '';
+    const id = analogueModel.analogueModelId
+      ? analogueModel.analogueModelId
+      : '';
     const modelMetadata = {
       name: metadata.name,
       description: metadata.description,
@@ -245,7 +244,7 @@ export const ModelMetadataView = ({
     }
   };
 
-  if (isLoading || !data?.success) return <p>Loading ...</p>;
+  if (!analogueModel) return <p>Loading ...</p>;
 
   return (
     <Styled.Wrapper className="metadata-row">
@@ -254,9 +253,9 @@ export const ModelMetadataView = ({
           <Styled.DescriptionMeta>
             <Typography variant="h3">Description</Typography>
             <>
-              {data.data.description && (
+              {analogueModel.description && (
                 <Typography variant="body_long">
-                  {data.data.description}
+                  {analogueModel.description}
                 </Typography>
               )}
             </>
@@ -277,14 +276,14 @@ export const ModelMetadataView = ({
               closeDialog={toggleEditMetadata}
             />
           </Styled.DescriptionMeta>
-          {imageRequest.data && data.data && (
+          {imageRequest.data && analogueModel && (
             <Styled.ModelImageView>
               <img src={imageRequest.data} alt=""></img>
-              <Typography>{data.data.name}</Typography>
+              <Typography>{analogueModel.name}</Typography>
             </Styled.ModelImageView>
           )}
           <Styled.ImageMessage>
-            {data.data.isProcessed &&
+            {analogueModel.isProcessed &&
               !imageRequest.data &&
               generateImageRequested.current && (
                 <div>
@@ -296,7 +295,7 @@ export const ModelMetadataView = ({
                   </Typography>
                 </div>
               )}
-            {!data.data.isProcessed && (
+            {!analogueModel.isProcessed && (
               <div>
                 <Typography as="p">
                   Cannot generate picture for unprocessed model.
@@ -330,14 +329,14 @@ export const ModelMetadataView = ({
         <OutcropAnalogueGroup
           modelIdParent={modelIdParent}
           defaultMetadata={defaultMetadata}
-          outcropGroup={data.data.outcrops}
+          outcropGroup={analogueModel.outcrops}
         />
       </div>
       <div>
         <StratigrapicGroups
           modelIdParent={modelIdParent}
           defaultMetadata={defaultMetadata}
-          stratColumnGroups={data.data.stratigraphicGroups}
+          stratColumnGroups={analogueModel.stratigraphicGroups}
           deleteStratColRow={deleteStratColRow}
         />
       </div>
@@ -345,7 +344,7 @@ export const ModelMetadataView = ({
         <GrossDepositionEnviromentGroup
           modelIdParent={modelIdParent}
           defaultMetadata={defaultMetadata}
-          gdeGroups={data.data.geologicalGroups}
+          gdeGroups={analogueModel.geologicalGroups}
           deleteGdeRow={deleteGdeRow}
         />
       </div>

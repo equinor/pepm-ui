@@ -25,6 +25,7 @@ import { useSetSaved } from './hooks/useSetSaved';
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '../../../../auth/queryClient';
 import { useParams } from 'react-router-dom';
+import { usePepmContextStore } from '../../../../hooks/GlobalState';
 
 export const CaseRow = ({
   rowCase,
@@ -67,6 +68,7 @@ export const CaseRow = ({
 }) => {
   const [caseError, setCaseError] = useState<string>('');
   const { modelId } = useParams<{ modelId: string }>();
+  const { analogueModel } = usePepmContextStore();
 
   const indicatorSettings = settingsFilter('Indicator');
   const netToGrossSettings = settingsFilter('Net-To-Gross');
@@ -95,14 +97,8 @@ export const CaseRow = ({
     continiousParameterSettings,
   );
 
-  const {
-    isLoading,
-    isProcessed,
-    areaList,
-    selectedModelArea,
-    setModelArea,
-    selectedRowArea,
-  } = useModelArea(allCasesList);
+  const { areaList, selectedModelArea, setModelArea, selectedRowArea } =
+    useModelArea(allCasesList);
 
   const { inputSettingsList } = useGetParameterList(
     settingType,
@@ -278,7 +274,7 @@ export const CaseRow = ({
     'Archel',
   );
 
-  if (isLoading) return <p>Loading ...</p>;
+  if (!analogueModel) return <p>Loading ...</p>;
 
   return (
     <Styled.Case className={id.length <= 3 ? 'local-case' : ''}>
@@ -380,7 +376,6 @@ export const CaseRow = ({
           id={id}
           caseType={caseType === 'Object' ? 'Object' : 'Variogram'}
           saved={saved}
-          isProcessed={isProcessed}
           caseStatus={rowCase.jobStatus}
           hasUnsavedCase={hasUnsavedCase(id)}
           saveCase={() => handleSaveCase(id)}
