@@ -23,6 +23,7 @@ import { GdeSelect } from '../GdeSelect/GdeSelect';
 import * as Styled from './GrossDepositionEnviromentGroup.styled';
 
 import { validateInput } from './GDE.hooks';
+import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
 
 export interface GdeType {
   grossDepEnv?: GeologicalStandardDto;
@@ -48,7 +49,6 @@ export const GrossDepositionEnviromentGroup = ({
   defaultMetadata,
   gdeGroups,
   deleteGdeRow,
-  hideContent,
 }: {
   modelIdParent?: string;
   defaultMetadata: AnalogueModelDetail;
@@ -56,8 +56,8 @@ export const GrossDepositionEnviromentGroup = ({
   deleteGdeRow: (
     geologicalGroupId: string,
   ) => Promise<DeleteGeologicalGroupCommandResponse | undefined>;
-  hideContent: () => boolean;
 }) => {
+  const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const [showGdeDialog, setShowGdeDialog] = useState<boolean>(false);
   const [gdeObject, setGdeObject] = useState<GdeType>(defaultGdeData);
   const [errors, setErrors] = useState<GDEErrorType>({});
@@ -144,7 +144,7 @@ export const GrossDepositionEnviromentGroup = ({
               {gdeGroups.map((row) => (
                 <Table.Row key={row.geologicalGroupId}>
                   <Table.Cell>
-                    {hideContent() && (
+                    {isOwnerOrAdmin && (
                       <Button
                         variant="ghost_icon"
                         onClick={() => deleteGdeRow(row.geologicalGroupId)}
@@ -184,7 +184,7 @@ export const GrossDepositionEnviromentGroup = ({
           </Table>
         )}
         <div>
-          {hideContent() && (
+          {isOwnerOrAdmin && (
             <Button variant="outlined" onClick={handleGdeDialog}>
               Add GDE…
             </Button>

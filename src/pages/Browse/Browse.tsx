@@ -5,9 +5,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ModelTable } from '../../features/ModelTable/ModelTable';
 import * as Styled from './Browse.styled';
-import { isOwnerOrAdmin } from '../../utils/IsOwnerOrAdmin';
+import { useIsOwnerOrAdmin } from '../../hooks/useIsOwnerOrAdmin';
 
 export const Browse = () => {
+  const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const [uploadStatus, setUploadStatus] = useState<string>();
 
   function clearStatus() {
@@ -24,9 +25,9 @@ export const Browse = () => {
     <>
       <Styled.BrowseWrapper>
         <Typography variant="h1">Browse all models</Typography>
-        {isOwnerOrAdmin() ? (
+        {isOwnerOrAdmin ? (
           <div className="btn-div">
-            <Button disabled={!isOwnerOrAdmin()} onClick={navigateAddModel}>
+            <Button disabled={!isOwnerOrAdmin} onClick={navigateAddModel}>
               Add new model
             </Button>
           </div>

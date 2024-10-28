@@ -1,13 +1,13 @@
 import { Button, Typography } from '@equinor/eds-core-react';
 import * as Styled from './ModelAreaCoordinates.styled';
+import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
 
 export const ModelAreaCoordinates = ({
   toggleOpen,
-  hideContent,
 }: {
   toggleOpen: () => void;
-  hideContent: () => boolean;
 }) => {
+  const isOwnerOrAdmin = useIsOwnerOrAdmin();
   return (
     <Styled.Wrapper>
       <Typography variant="h3" as="h2">
@@ -17,7 +17,7 @@ export const ModelAreaCoordinates = ({
         You can define multiple areas for calculation in your model by entering
         coordinates.
       </Typography>
-      {hideContent() && (
+      {isOwnerOrAdmin && (
         <Button onClick={toggleOpen} variant="outlined">
           Set model areas…
         </Button>

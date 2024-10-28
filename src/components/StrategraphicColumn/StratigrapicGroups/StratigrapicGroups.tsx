@@ -26,6 +26,7 @@ import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled'
 import { StratigraphicColumnSelect } from '../StratigraphicColumnSelect/StratigraphicColumnSelect';
 import { validateInput } from './StratigrapicGroups.hooks';
 import * as Styled from './StratigrapicGroups.styled';
+import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
 
 export interface StratColumnType {
   country?: CountryDto;
@@ -58,7 +59,6 @@ export const StratigrapicGroups = ({
   defaultMetadata,
   stratColumnGroups,
   deleteStratColRow,
-  hideContent,
 }: {
   modelIdParent?: string;
   defaultMetadata: AnalogueModelDetail;
@@ -66,8 +66,8 @@ export const StratigrapicGroups = ({
   deleteStratColRow: (
     stratigraphicGroupId: string,
   ) => Promise<DeleteStratigraphicGroupCommandResponse | undefined>;
-  hideContent: () => boolean;
 }) => {
+  const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const [stratColumnObject, setStratColumnObject] = useState<StratColumnType>(
     defaultStratColumnData,
   );
@@ -171,7 +171,7 @@ export const StratigrapicGroups = ({
             {stratColumnGroups.map((row) => (
               <Table.Row key={row.stratigraphicGroupId}>
                 <Table.Cell>
-                  {hideContent() && (
+                  {isOwnerOrAdmin && (
                     <Button
                       variant="ghost_icon"
                       onClick={() => deleteRow(row.stratigraphicGroupId)}
@@ -228,7 +228,7 @@ export const StratigrapicGroups = ({
       )}
 
       <div>
-        {hideContent() && (
+        {isOwnerOrAdmin && (
           <Button variant="outlined" onClick={handleStratColDialog}>
             Add stratigraphic column…
           </Button>

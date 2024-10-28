@@ -1,6 +1,7 @@
 import { Autocomplete, AutocompleteChanges } from '@equinor/eds-core-react';
 import { ListComputeSettingsInputValueDto } from '../../../../api/generated';
 import * as Styled from './SettingSelect.styled';
+import { useIsOwnerOrAdmin } from '../../../../hooks/useIsOwnerOrAdmin';
 
 export const CaseSettingSelect = ({
   label,
@@ -9,7 +10,6 @@ export const CaseSettingSelect = ({
   options,
   selectedValue,
   setValue,
-  isOwner,
 }: {
   label: string;
   settingType?: string;
@@ -19,8 +19,8 @@ export const CaseSettingSelect = ({
   setValue?: React.Dispatch<
     React.SetStateAction<ListComputeSettingsInputValueDto[] | undefined>
   >;
-  isOwner: () => boolean;
 }) => {
+  const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const onSelectChange = (
     changes: AutocompleteChanges<ListComputeSettingsInputValueDto>,
   ) => {
@@ -34,7 +34,7 @@ export const CaseSettingSelect = ({
         disabled={
           ((caseType === 'Net-To-Gross' || caseType === 'Indicator') &&
             settingType !== 'ContiniousParameter') ||
-          !isOwner()
+          !isOwnerOrAdmin
         }
         options={options && options.length > 0 ? options : []}
         optionLabel={(option) => option.name}

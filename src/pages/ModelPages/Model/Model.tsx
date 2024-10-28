@@ -10,12 +10,22 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { mood_sad } from '@equinor/eds-icons';
+import { useEffect } from 'react';
+import { usePepmContextStore } from '../../../hooks/GlobalState';
 
 // eslint-disable-next-line camelcase
 Icon.add({ mood_sad });
 
 export const Model = () => {
   const { data, isLoading, failureReason } = useFetchModel();
+  const { setAnalogueModel } = usePepmContextStore();
+
+  useEffect(() => {
+    if (data) {
+      setAnalogueModel(data.data);
+      console.log('setting global state');
+    }
+  }, [data, setAnalogueModel]);
 
   if (failureReason)
     return (
@@ -52,7 +62,7 @@ export const Model = () => {
         <ModelNavigationBar />
       </Styled.SidebarWrapper>
       <Styled.ContentWrapper>
-        <ModelNameFrame model={data?.data} />
+        <ModelNameFrame />
         <Outlet />
       </Styled.ContentWrapper>
     </Styled.Wrapper>

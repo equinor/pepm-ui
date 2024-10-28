@@ -25,7 +25,7 @@ import { useFetchModel } from '../../../hooks/useFetchModel';
 import { EditNameDescription } from '../EditNameDescription/EditNameDescription';
 import * as Styled from './ModelMetadataView.styled';
 import { getAnalogueModelImage } from '../../../api/custom/getAnalogueModelImageById';
-import { isOwnerOrAdmin } from '../../../utils/IsOwnerOrAdmin';
+import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
 
 export const ModelMetadataView = ({
   modelIdParent,
@@ -34,6 +34,7 @@ export const ModelMetadataView = ({
   modelIdParent?: string;
   uploadingProgress?: number;
 }) => {
+  const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const { isLoading, data } = useFetchModel(
     modelIdParent ? modelIdParent : undefined,
   );
@@ -244,10 +245,6 @@ export const ModelMetadataView = ({
     }
   };
 
-  const hideContent = () => {
-    return isOwnerOrAdmin(data?.data.createdBy);
-  };
-
   if (isLoading || !data?.success) return <p>Loading ...</p>;
 
   return (
@@ -264,7 +261,7 @@ export const ModelMetadataView = ({
               )}
             </>
 
-            {hideContent() && (
+            {isOwnerOrAdmin && (
               <Button
                 onClick={toggleEditMetadata}
                 variant="outlined"
@@ -334,7 +331,6 @@ export const ModelMetadataView = ({
           modelIdParent={modelIdParent}
           defaultMetadata={defaultMetadata}
           outcropGroup={data.data.outcrops}
-          hideContent={hideContent}
         />
       </div>
       <div>
@@ -343,7 +339,6 @@ export const ModelMetadataView = ({
           defaultMetadata={defaultMetadata}
           stratColumnGroups={data.data.stratigraphicGroups}
           deleteStratColRow={deleteStratColRow}
-          hideContent={hideContent}
         />
       </div>
       <div>
@@ -352,7 +347,6 @@ export const ModelMetadataView = ({
           defaultMetadata={defaultMetadata}
           gdeGroups={data.data.geologicalGroups}
           deleteGdeRow={deleteGdeRow}
-          hideContent={hideContent}
         />
       </div>
     </Styled.Wrapper>

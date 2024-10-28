@@ -13,8 +13,7 @@ import { CaseGroup } from '../../../../features/Compute/CaseGroup/CaseGroup';
 import { ComputeHeader } from '../../../../features/Compute/ComputeHeader/ComputeHeader';
 import { useFetchCases } from '../../../../hooks/useFetchCases';
 import * as Styled from '../Compute.styled';
-import { useFetchModel } from '../../../../hooks/useFetchModel';
-import { isOwnerOrAdmin } from '../../../../utils/IsOwnerOrAdmin';
+import { useIsOwnerOrAdmin } from '../../../../hooks/useIsOwnerOrAdmin';
 
 export interface CaseInfoTyoe {
   type: string;
@@ -33,15 +32,11 @@ const variogramCaseInfo: CaseInfoTyoe = {
 };
 
 export const ComputeVariogram = () => {
+  const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const [showAlert, setAlert] = useState<string>();
   const [triggerAddCase, setTriggerAddCase] = useState<string>();
   const [localCaseList, setLocalCaseList] = useState<Array<string>>([]);
   const { modelId } = useParams<{ modelId: string }>();
-  const model = useFetchModel();
-
-  const isOwner = () => {
-    return isOwnerOrAdmin(model?.data?.data.createdBy);
-  };
 
   const updateLocalCaseList = (type: string, add: boolean) => {
     if (add) {
@@ -110,7 +105,7 @@ export const ComputeVariogram = () => {
               disabled={
                 triggerAddCase?.includes('Indicator') ||
                 localCaseList?.includes('Indicator') ||
-                !isOwner()
+                !isOwnerOrAdmin
               }
             >
               <Icon data={ADD} size={18}></Icon>
@@ -122,7 +117,7 @@ export const ComputeVariogram = () => {
               disabled={
                 triggerAddCase?.includes('Net-To-Gross') ||
                 localCaseList?.includes('Net-To-Gross') ||
-                !isOwner()
+                !isOwnerOrAdmin
               }
             >
               <Icon data={ADD} size={18}></Icon>
@@ -134,7 +129,7 @@ export const ComputeVariogram = () => {
               disabled={
                 triggerAddCase?.includes('ContiniousParameter') ||
                 localCaseList?.includes('ContiniousParameter') ||
-                !isOwner()
+                !isOwnerOrAdmin
               }
             >
               <Icon data={ADD} size={18}></Icon>
@@ -165,7 +160,6 @@ export const ComputeVariogram = () => {
           setAlertMessage={setAlertMessage}
           updateLocalCaseList={updateLocalCaseList}
           runCase={runComputeVariogram}
-          isOwner={isOwner}
         />
         <CaseGroup
           caseList={
@@ -176,7 +170,6 @@ export const ComputeVariogram = () => {
           setAlertMessage={setAlertMessage}
           updateLocalCaseList={updateLocalCaseList}
           runCase={runComputeVariogram}
-          isOwner={isOwner}
         />
 
         <CaseGroup
@@ -190,7 +183,6 @@ export const ComputeVariogram = () => {
           setAlertMessage={setAlertMessage}
           updateLocalCaseList={updateLocalCaseList}
           runCase={runComputeVariogram}
-          isOwner={isOwner}
         />
       </Styled.Case>
       <Snackbar
