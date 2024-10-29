@@ -6,7 +6,7 @@ export const Table = styled.div`
   max-width: 1750px;
   > div {
     height: 100%;
-    overflow: hidden;
+    overflow-y: hidden;
     > table {
       min-width: 90% !important;
 
