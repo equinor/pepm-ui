@@ -3,11 +3,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { GetOutcropsRegionDto } from './GetOutcropsRegionDto';
+
 export type GetOutcropsDto = {
     outcropId: string;
     name: string;
     outcropCategory: string;
-    region: string;
     basins: Array<string>;
+    region: GetOutcropsRegionDto;
 };
 

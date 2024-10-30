@@ -80,6 +80,8 @@ export type { GetObjectResultsDto } from './models/GetObjectResultsDto';
 export type { GetObjectResultsFileDto } from './models/GetObjectResultsFileDto';
 export type { GetOutcropsCommandResponse } from './models/GetOutcropsCommandResponse';
 export type { GetOutcropsDto } from './models/GetOutcropsDto';
+export type { GetOutcropsLocationDto } from './models/GetOutcropsLocationDto';
+export type { GetOutcropsRegionDto } from './models/GetOutcropsRegionDto';
 export type { GetUploadDetailQueryResponse } from './models/GetUploadDetailQueryResponse';
 export type { GetUploadListQueryResponse } from './models/GetUploadListQueryResponse';
 export type { GetVariogramResultsByModelIdQueryResponse } from './models/GetVariogramResultsByModelIdQueryResponse';
@@ -105,6 +107,7 @@ export type { ListMetadataTypesQueryResponse } from './models/ListMetadataTypesQ
 export type { ListModelAreaTypesQueryResponse } from './models/ListModelAreaTypesQueryResponse';
 export type { ListStratColumnQueryResponse } from './models/ListStratColumnQueryResponse';
 export type { ListStratUnitsQueryResponse } from './models/ListStratUnitsQueryResponse';
+export type { LocationDto } from './models/LocationDto';
 export type { MergeModelCommandResponse } from './models/MergeModelCommandResponse';
 export type { MergeModelDto } from './models/MergeModelDto';
 export type { MetadataDto } from './models/MetadataDto';
@@ -126,6 +129,7 @@ export type { PrepareChunkedUploadCommandResponse } from './models/PrepareChunke
 export type { PrepareChunkedUploadDto } from './models/PrepareChunkedUploadDto';
 export type { ProblemDetails } from './models/ProblemDetails';
 export type { RadixJobDto } from './models/RadixJobDto';
+export type { RegionDto } from './models/RegionDto';
 export type { StratColumnDto } from './models/StratColumnDto';
 export type { StratigraphicGroupDto } from './models/StratigraphicGroupDto';
 export type { StratUnitDto } from './models/StratUnitDto';
