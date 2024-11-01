@@ -1,7 +1,10 @@
 /* eslint-disable max-lines-per-function */
 import { useCallback, useState } from 'react';
 import { ComputeCaseDto, ModelAreaDto } from '../../../../../api/generated';
-import { usePepmContextStore } from '../../../../../hooks/GlobalState';
+import {
+  analogueModelDefault,
+  usePepmContextStore,
+} from '../../../../../hooks/GlobalState';
 
 export const useModelArea = (allCasesList: ComputeCaseDto[]) => {
   const [selectedModelArea, setModelArea] = useState<ModelAreaDto[]>();
@@ -15,7 +18,7 @@ export const useModelArea = (allCasesList: ComputeCaseDto[]) => {
     },
   ];
   const areaList: ModelAreaDto[] =
-    analogueModel && analogueModel.modelAreas
+    analogueModel !== analogueModelDefault && analogueModel.modelAreas
       ? analogueModel.modelAreas.concat(wholeModelObject)
       : wholeModelObject;
 

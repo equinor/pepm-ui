@@ -25,7 +25,10 @@ import { useSetSaved } from './hooks/useSetSaved';
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '../../../../auth/queryClient';
 import { useParams } from 'react-router-dom';
-import { usePepmContextStore } from '../../../../hooks/GlobalState';
+import {
+  analogueModelDefault,
+  usePepmContextStore,
+} from '../../../../hooks/GlobalState';
 
 export const CaseRow = ({
   rowCase,
@@ -274,7 +277,7 @@ export const CaseRow = ({
     'Archel',
   );
 
-  if (!analogueModel) return <p>Loading ...</p>;
+  if (analogueModel === analogueModelDefault) return <p>Loading ...</p>;
 
   return (
     <Styled.Case className={id.length <= 3 ? 'local-case' : ''}>

@@ -1,12 +1,15 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import { UploadList } from '../../../api/generated';
 import * as Styled from './ModelFilesView.styled';
-import { usePepmContextStore } from '../../../hooks/GlobalState';
+import {
+  analogueModelDefault,
+  usePepmContextStore,
+} from '../../../hooks/GlobalState';
 
 export const ModelFilesView = () => {
   const { analogueModel } = usePepmContextStore();
 
-  if (!analogueModel) return <p>Loading ...</p>;
+  if (analogueModel === analogueModelDefault) return <p>Loading ...</p>;
 
   return (
     <Styled.TableWrapper>
@@ -21,7 +24,7 @@ export const ModelFilesView = () => {
           </Table.Row>
         </Table.Head>
         <Table.Body>
-          {analogueModel &&
+          {analogueModel !== analogueModelDefault &&
           (analogueModel.fileUploads?.length === undefined ||
             analogueModel.fileUploads?.length > 0) ? (
             analogueModel.fileUploads?.map((file: UploadList) => (

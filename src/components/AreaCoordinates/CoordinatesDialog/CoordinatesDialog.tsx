@@ -4,10 +4,12 @@
 import { Button, Dialog, Snackbar } from '@equinor/eds-core-react';
 import { useState } from 'react';
 import { CoordinateDto } from '../../../api/generated';
-import { useFetchModelAreas } from '../../../hooks/useFetchModelAreas';
 import { AreaCoordinates } from '../AreaCoordinates';
 import * as Styled from '../AreaCoordinates.styled';
-import { usePepmContextStore } from '../../../hooks/GlobalState';
+import {
+  analogueModelDefault,
+  usePepmContextStore,
+} from '../../../hooks/GlobalState';
 
 export type AreaCoordinateType = {
   modelAreaId: string;
@@ -22,8 +24,7 @@ export const CoordinatesDialog = ({
   toggleOpen: () => void;
 }) => {
   const [showSaveAlert, setSaveAlert] = useState(false);
-  const { analogueModel } = usePepmContextStore();
-  const modelAreas = useFetchModelAreas();
+  const { analogueModel, modelAreaTypes } = usePepmContextStore();
 
   function clearStatus() {
     setSaveAlert(false);
@@ -33,7 +34,7 @@ export const CoordinatesDialog = ({
     toggleOpen();
   };
 
-  if (modelAreas.isLoading || modelAreas.data === undefined || !analogueModel)
+  if (modelAreaTypes.length === 0 || analogueModel === analogueModelDefault)
     return <p>Loading.....</p>;
 
   return (

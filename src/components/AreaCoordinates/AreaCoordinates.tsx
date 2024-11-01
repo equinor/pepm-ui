@@ -17,7 +17,6 @@ import {
   ModelAreaTypeDto,
 } from '../../api/generated';
 import { useFetchCases } from '../../hooks/useFetchCases';
-import { useFetchModelAreas } from '../../hooks/useFetchModelAreas';
 import { useMutateAreaCoordinates } from '../../hooks/useMutateAreaCoordinates';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { AnalogueModelImageView } from '../ImageView/AnalogueModelImageView';
@@ -28,7 +27,10 @@ import {
   validateCoordinates,
 } from './hooks/AreaCoordinates.hooks';
 import { useModelResults } from './hooks/useModelResults';
-import { usePepmContextStore } from '../../hooks/GlobalState';
+import {
+  analogueModelDefault,
+  usePepmContextStore,
+} from '../../hooks/GlobalState';
 
 export type AreaCoordinateType = {
   modelAreaId: string;
@@ -84,13 +86,12 @@ export const AreaCoordinates = ({
   const [fallbackAreaCoordinate, setfallbackAreaCoordinate] =
     useState<AreaCoordinateType>();
   const { modelId } = useParams();
-  const { analogueModel } = usePepmContextStore();
+  const { analogueModel, modelAreaTypes } = usePepmContextStore();
   const cases = useFetchCases();
   const { activeAreaResultList } = useModelResults(
     activeArea.name,
     cases.data?.data,
   );
-  const modelAreas = useFetchModelAreas();
   const mutateAreaCoordinates = useMutateAreaCoordinates();
 
   const handleSelectChange = async (
@@ -268,7 +269,7 @@ export const AreaCoordinates = ({
     setEdit(!edit);
   };
 
-  if (modelAreas.isLoading || modelAreas.data === undefined || !analogueModel)
+  if (modelAreaTypes.length === 0 || analogueModel === analogueModelDefault)
     return <p>Loading.....</p>;
 
   return (
@@ -279,7 +280,7 @@ export const AreaCoordinates = ({
             <Autocomplete
               className={errors?.area && 'autocomplete-error'}
               label={'Select area'}
-              options={modelAreas.data.data}
+              options={modelAreaTypes}
               optionLabel={(option) => option.name}
               onOptionsChange={handleSelectChange}
               selectedOptions={[activeArea]}
@@ -366,13 +367,14 @@ export const AreaCoordinates = ({
             </Styled.CoordinateFields>
           )}
         </Styled.Selects>
-        {analogueModel && analogueModel.analogueModelImage === null && (
-          <div>
-            <Typography>
-              No image is found for this model. Try refreshing the page
-            </Typography>
-          </div>
-        )}
+        {analogueModel !== analogueModelDefault &&
+          analogueModel.analogueModelImage === null && (
+            <div>
+              <Typography>
+                No image is found for this model. Try refreshing the page
+              </Typography>
+            </div>
+          )}
         {analogueModel.analogueModelId &&
           analogueModel.analogueModelImage?.analogueModelImageId && (
             <AnalogueModelImageView

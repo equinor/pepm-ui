@@ -9,11 +9,9 @@ import {
   AddMetadataDto,
   AnalogueModelDetail,
   AnalogueModelMetadataService,
-  AnalogueModelSourceType,
   AnalogueModelsService,
   ConvertAnalogueModelCommand,
   CreateAnalogueModelCommand,
-  JobStatus,
   JobsService,
   MetadataDto,
   UploadFileType,
@@ -57,22 +55,6 @@ export const AddModel = () => {
 
   const [uploadId, setUploadId] = useState<string>('');
   const [uploadStatus, setUploadStatus] = useState<string>();
-
-  const defaultMetadata: AnalogueModelDetail = {
-    analogueModelId: '',
-    name: '',
-    description: '',
-    isProcessed: false,
-    sourceType: AnalogueModelSourceType.DELTARES,
-    outcrops: [],
-    fileUploads: [],
-    parameters: [],
-    metadata: [],
-    modelAreas: [],
-    stratigraphicGroups: [],
-    geologicalGroups: [],
-    processingStatus: JobStatus.UNKNOWN,
-  };
 
   const createModel = useMutation({
     mutationFn: AnalogueModelsService.postApiAnalogueModels,
@@ -305,7 +287,6 @@ export const AddModel = () => {
         <HandleModelComponent
           confirm={uploadModel}
           uploading={uploading}
-          defaultMetadata={defaultMetadata}
           progress={progress}
           isAddUploading={progress > 0}
           modelId={modelId}

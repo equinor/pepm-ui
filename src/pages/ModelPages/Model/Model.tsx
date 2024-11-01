@@ -12,19 +12,33 @@ import {
 import { mood_sad } from '@equinor/eds-icons';
 import { useEffect } from 'react';
 import { usePepmContextStore } from '../../../hooks/GlobalState';
+import { useFetchModelAreas } from '../../../hooks/useFetchModelAreas';
+import { useFetchOutcropData } from '../../../hooks/useFetchOutcropData';
 
 // eslint-disable-next-line camelcase
 Icon.add({ mood_sad });
 
 export const Model = () => {
   const { data, isLoading, failureReason } = useFetchModel();
-  const { setAnalogueModel } = usePepmContextStore();
+  const modelArea = useFetchModelAreas();
+  const outcropData = useFetchOutcropData();
+
+  const { setAnalogueModel, setModelAreaTypes, setOutcrops } =
+    usePepmContextStore();
 
   useEffect(() => {
-    if (data) {
-      setAnalogueModel(data.data);
-    }
-  }, [data, setAnalogueModel]);
+    if (data) setAnalogueModel(data.data);
+    if (modelArea.data?.data) setModelAreaTypes(modelArea.data.data);
+    if (outcropData.data?.data) setOutcrops(outcropData.data.data);
+  }, [
+    data,
+    modelArea.data?.data,
+
+    outcropData.data?.data,
+    setAnalogueModel,
+    setModelAreaTypes,
+    setOutcrops,
+  ]);
 
   if (failureReason)
     return (

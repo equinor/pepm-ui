@@ -18,13 +18,16 @@ import {
   validateValues,
 } from './HandleModelComponent.hooks';
 import * as Styled from './HandleModelComponent.styled';
+import {
+  analogueModelDefault,
+  usePepmContextStore,
+} from '../../../hooks/GlobalState';
 Icon.add({ error_outlined });
 
 interface AddModelDialogProps {
   confirm?: (file: File, metadata: AnalogueModelDetail) => Promise<void>;
   progress?: number;
   uploading?: boolean;
-  defaultMetadata: AnalogueModelDetail;
   isAddUploading?: boolean;
   existingData?: AnalogueModelDetail;
   modelId?: string;
@@ -60,15 +63,15 @@ export const HandleModelComponent = ({
   confirm,
   progress,
   uploading,
-  defaultMetadata,
   isAddUploading,
   existingData,
   modelId,
 }: AddModelDialogProps) => {
+  const { setAnalogueModel } = usePepmContextStore();
   const [isFileDisplay, setFileDisplay] = useState<boolean>(false);
   const [files, setFiles] = useState<FilesProps>(defaultFiles);
   const [metadata, setMetadata] =
-    useState<AnalogueModelDetail>(defaultMetadata);
+    useState<AnalogueModelDetail>(analogueModelDefault);
   const [submitting, setSubmitting] = useState(false);
   const [fileSize, setFileSize] = useState(0);
   const [rawFile, setrawFile] = useState<File>();
@@ -115,7 +118,7 @@ export const HandleModelComponent = ({
     if (Object.keys(errors).length === 0 && submitting) {
       finishSubmit();
     }
-  }, [confirm, defaultMetadata, errors, files.NC, metadata, submitting]);
+  }, [confirm, errors, files.NC, metadata, submitting]);
 
   function toggleINIFileContent() {
     setFileDisplay(!isFileDisplay);
@@ -186,6 +189,7 @@ export const HandleModelComponent = ({
                 const path = generatePath('../:id/details', {
                   id: modelId,
                 });
+                setAnalogueModel(metadata);
                 navigate(path);
               }}
             >

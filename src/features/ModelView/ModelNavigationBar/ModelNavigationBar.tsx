@@ -22,7 +22,7 @@ type MenuItems = SidebarLinkProps & {
 };
 
 export const ModelNavigationBar = () => {
-  const { setAnalogueModelEmpty } = usePepmContextStore();
+  const { setanalogueModelDefault } = usePepmContextStore();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -94,7 +94,7 @@ export const ModelNavigationBar = () => {
           label={backItems.label}
           icon={backItems.icon}
           onClick={() => {
-            setAnalogueModelEmpty();
+            setanalogueModelDefault();
             navigate('/');
           }}
         ></Styled.Back>

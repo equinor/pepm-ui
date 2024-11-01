@@ -9,10 +9,8 @@ import {
   AddMetadataDto,
   AnalogueModelDetail,
   AnalogueModelMetadataService,
-  AnalogueModelSourceType,
   GenerateThumbnailCommand,
   JobsService,
-  JobStatus,
   MetadataDto,
   UpdateAnalogueModelCommandBody,
 } from '../../../api/generated';
@@ -25,7 +23,10 @@ import { EditNameDescription } from '../EditNameDescription/EditNameDescription'
 import * as Styled from './ModelMetadataView.styled';
 import { getAnalogueModelImage } from '../../../api/custom/getAnalogueModelImageById';
 import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
-import { usePepmContextStore } from '../../../hooks/GlobalState';
+import {
+  analogueModelDefault,
+  usePepmContextStore,
+} from '../../../hooks/GlobalState';
 
 export const ModelMetadataView = ({
   modelIdParent,
@@ -43,23 +44,9 @@ export const ModelMetadataView = ({
 
   const { modelId } = useParams();
 
-  const defaultMetadata: AnalogueModelDetail = {
-    analogueModelId: analogueModel.analogueModelId
-      ? analogueModel.analogueModelId
-      : '',
-    name: analogueModel.name ? analogueModel.name : '',
-    description: analogueModel.description ? analogueModel.description : '',
-    isProcessed: analogueModel.isProcessed ? analogueModel.isProcessed : false,
-    sourceType: AnalogueModelSourceType.DELTARES,
-    outcrops: analogueModel.outcrops ? analogueModel.outcrops : [],
-    fileUploads: analogueModel.fileUploads ? analogueModel.fileUploads : [],
-    parameters: [],
-    metadata: analogueModel.metadata ? analogueModel.metadata : [],
-    modelAreas: [],
-    stratigraphicGroups: [],
-    geologicalGroups: [],
-    processingStatus: JobStatus.UNKNOWN,
-  };
+  const defaultMetadata: AnalogueModelDetail = analogueModel
+    ? analogueModel
+    : analogueModelDefault;
 
   const imageId = analogueModel.analogueModelImage?.analogueModelImageId ?? '';
 
@@ -90,7 +77,7 @@ export const ModelMetadataView = ({
   useEffect(() => {
     if (
       modelId &&
-      analogueModel &&
+      analogueModel !== analogueModelDefault &&
       analogueModel.analogueModelImage === null &&
       generateImageRequested.current === false &&
       analogueModel.isProcessed
@@ -244,7 +231,7 @@ export const ModelMetadataView = ({
     }
   };
 
-  if (!analogueModel) return <p>Loading ...</p>;
+  if (analogueModel === analogueModelDefault) return <p>Loading ...</p>;
 
   return (
     <Styled.Wrapper className="metadata-row">
@@ -276,7 +263,7 @@ export const ModelMetadataView = ({
               closeDialog={toggleEditMetadata}
             />
           </Styled.DescriptionMeta>
-          {imageRequest.data && analogueModel && (
+          {imageRequest.data && analogueModel !== analogueModelDefault && (
             <Styled.ModelImageView>
               <img src={imageRequest.data} alt=""></img>
               <Typography>{analogueModel.name}</Typography>
@@ -326,25 +313,17 @@ export const ModelMetadataView = ({
         Model metadata
       </Typography>
       <div>
-        <OutcropAnalogueGroup
-          modelIdParent={modelIdParent}
-          defaultMetadata={defaultMetadata}
-          outcropGroup={analogueModel.outcrops}
-        />
+        <OutcropAnalogueGroup modelIdParent={modelIdParent} />
       </div>
       <div>
         <StratigrapicGroups
           modelIdParent={modelIdParent}
-          defaultMetadata={defaultMetadata}
-          stratColumnGroups={analogueModel.stratigraphicGroups}
           deleteStratColRow={deleteStratColRow}
         />
       </div>
       <div>
         <GrossDepositionEnviromentGroup
           modelIdParent={modelIdParent}
-          defaultMetadata={defaultMetadata}
-          gdeGroups={analogueModel.geologicalGroups}
           deleteGdeRow={deleteGdeRow}
         />
       </div>
