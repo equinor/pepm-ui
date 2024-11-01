@@ -3,9 +3,14 @@ import { immer } from 'zustand/middleware/immer';
 import {
   AnalogueModelDetail,
   AnalogueModelSourceType,
+  ComputeCaseDto,
+  CountryDto,
+  FieldDto,
   JobStatus,
   ModelAreaTypeDto,
   OutcropDto,
+  StratColumnDto,
+  StratUnitDto,
 } from '../api/generated';
 
 export const analogueModelDefault: AnalogueModelDetail = {
@@ -30,28 +35,52 @@ export const analogueModelDefault: AnalogueModelDetail = {
 
 type IPepmContext = {
   analogueModel: AnalogueModelDetail;
+  computeCases: ComputeCaseDto[];
   modelAreaTypes: ModelAreaTypeDto[];
   outcrops: OutcropDto[];
+  countries: CountryDto[];
+  fields: FieldDto[];
+  stratigraphicColumns: StratColumnDto[];
+  stratigraphicUnits: StratUnitDto[];
 };
 type IPepmContextActions = {
   setAnalogueModel: (analogueModel: AnalogueModelDetail) => void;
-  setanalogueModelDefault: () => void;
+  setAnalogueModelDefault: () => void;
+  setComputeCases: (computeCases: ComputeCaseDto[]) => void;
+  setComputeCasesDefault: () => void;
   setModelAreaTypes: (modelAreaTypes: ModelAreaTypeDto[]) => void;
   setOutcrops: (outcrops: OutcropDto[]) => void;
+  setCountries: (countries: CountryDto[]) => void;
+  setFields: (fields: FieldDto[]) => void;
+  setStratigraphicColumns: (fields: StratColumnDto[]) => void;
+  setStratigraphicUnits: (fields: StratUnitDto[]) => void;
 };
 
 export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
   immer((set, get) => ({
     analogueModel: analogueModelDefault,
+    computeCases: [],
     modelAreaTypes: [],
     outcrops: [],
+    countries: [],
+    fields: [],
+    stratigraphicColumns: [],
+    stratigraphicUnits: [],
     setAnalogueModel: (analogueModel: AnalogueModelDetail) =>
       set((state) => {
         state.analogueModel = analogueModel;
       }),
-    setanalogueModelDefault: () =>
+    setAnalogueModelDefault: () =>
       set((state) => {
         state.analogueModel = analogueModelDefault;
+      }),
+    setComputeCases: (computeCases: ComputeCaseDto[]) =>
+      set((state) => {
+        state.computeCases = computeCases;
+      }),
+    setComputeCasesDefault: () =>
+      set((state) => {
+        state.computeCases = [];
       }),
     setModelAreaTypes: (modelAreaTypes: ModelAreaTypeDto[]) =>
       set((state) => {
@@ -60,6 +89,22 @@ export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
     setOutcrops: (outcrops: OutcropDto[]) =>
       set((state) => {
         state.outcrops = outcrops;
+      }),
+    setCountries: (countries: CountryDto[]) =>
+      set((state) => {
+        state.countries = countries;
+      }),
+    setFields: (fields: FieldDto[]) =>
+      set((state) => {
+        state.fields = fields;
+      }),
+    setStratigraphicColumns: (stratigraphicColumns: StratColumnDto[]) =>
+      set((state) => {
+        state.stratigraphicColumns = stratigraphicColumns;
+      }),
+    setStratigraphicUnits: (stratigraphicUnits: StratUnitDto[]) =>
+      set((state) => {
+        state.stratigraphicUnits = stratigraphicUnits;
       }),
   })),
 );
