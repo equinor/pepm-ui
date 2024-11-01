@@ -6,7 +6,7 @@ import * as Styled from './SidePane.styled';
 import { usePepmContextStore } from '../../../hooks/GlobalState';
 
 export const SidePane = ({ uploading }: { uploading: boolean }) => {
-  const { setanalogueModelDefault } = usePepmContextStore();
+  const { setAnalogueModelDefault } = usePepmContextStore();
   const navigate = useNavigate();
 
   const backItems: SidebarLinkProps = {
@@ -31,7 +31,7 @@ export const SidePane = ({ uploading }: { uploading: boolean }) => {
               label={backItems.label}
               icon={backItems.icon}
               onClick={() => {
-                setanalogueModelDefault();
+                setAnalogueModelDefault();
                 navigate('/');
               }}
             ></Styled.Back>

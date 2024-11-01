@@ -1,13 +1,13 @@
 /* eslint-disable max-lines-per-function */
 import { Autocomplete, AutocompleteChanges } from '@equinor/eds-core-react';
 import { GeologicalStandardDto } from '../../../api/generated';
-import { useFetchGrossDepData } from '../../../hooks/useFetchGrossDepData';
 import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
 import { sortList } from '../../../utils/SortList';
 import {
   GDEErrorType,
   GdeType,
 } from '../GrossDepositionEnviromentGroup/GrossDepositionEnviromentGroup';
+import { usePepmContextStore } from '../../../hooks/GlobalState';
 
 export const GdeSelect = ({
   gdeObject,
@@ -20,29 +20,28 @@ export const GdeSelect = ({
   error: GDEErrorType;
   setErrors: React.Dispatch<React.SetStateAction<GDEErrorType>>;
 }) => {
-  const GdeData = useFetchGrossDepData();
+  const { geologyStandards } = usePepmContextStore();
+  if (geologyStandards.length === 0) return <p>Loading .....</p>;
 
-  if (GdeData.isLoading || !GdeData.data?.success) return <p>Loading .....</p>;
-
-  const Gde = GdeData.data.data.filter(
+  const Gde = geologyStandards.filter(
     (g) => g.geologyGroup === 'GrossDepositionalEnvironment',
   );
 
-  const De = GdeData.data.data.filter(
+  const De = geologyStandards.filter(
     (g) =>
       g.geologyGroup === 'DepositionalEnvironment' &&
       g.geologicalStandardParentId ===
         gdeObject.grossDepEnv?.geologicalStandardId,
   );
 
-  const SubEnvironment = GdeData.data.data.filter(
+  const SubEnvironment = geologyStandards.filter(
     (g) =>
       g.geologyGroup === 'Subenvironment' &&
       g.geologicalStandardParentId ===
         gdeObject.grossDepEnv?.geologicalStandardId,
   );
 
-  const ArchitecturalElement = GdeData.data.data.filter(
+  const ArchitecturalElement = geologyStandards.filter(
     (g) => g.geologyGroup === 'ArchitecturalElement',
   );
 

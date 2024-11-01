@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import { Outlet } from 'react-router-dom';
 import { ModelNameFrame } from '../../../features/ModelView/ModelNameFrame/ModelNameFrame';
 import { ModelNavigationBar } from '../../../features/ModelView/ModelNavigationBar/ModelNavigationBar';
@@ -14,6 +15,13 @@ import { useEffect } from 'react';
 import { usePepmContextStore } from '../../../hooks/GlobalState';
 import { useFetchModelAreas } from '../../../hooks/useFetchModelAreas';
 import { useFetchOutcropData } from '../../../hooks/useFetchOutcropData';
+import {
+  useFetchSmdaCountries,
+  useFetchSmdaFields,
+  useFetchSmdaMetadataStratigraphicUnits,
+  useFetchSmdaStratigraphicColumns,
+} from '../../../hooks/useFetchStratColData';
+import { useFetchGrossDepData } from '../../../hooks/useFetchGrossDepData';
 
 // eslint-disable-next-line camelcase
 Icon.add({ mood_sad });
@@ -22,22 +30,56 @@ export const Model = () => {
   const { data, isLoading, failureReason } = useFetchModel();
   const modelArea = useFetchModelAreas();
   const outcropData = useFetchOutcropData();
+  const countryData = useFetchSmdaCountries();
+  const fieldData = useFetchSmdaFields();
+  const stratColumnData = useFetchSmdaStratigraphicColumns();
+  const stratUnitData = useFetchSmdaMetadataStratigraphicUnits();
+  const geologyStandards = useFetchGrossDepData();
 
-  const { setAnalogueModel, setModelAreaTypes, setOutcrops } =
-    usePepmContextStore();
+  const {
+    setAnalogueModel,
+    setModelAreaTypes,
+    setOutcrops,
+    setCountries,
+    setFields,
+    setStratigraphicColumns,
+    setStratigraphicUnits,
+    setGeologicalStandards,
+  } = usePepmContextStore();
 
   useEffect(() => {
     if (data) setAnalogueModel(data.data);
     if (modelArea.data?.data) setModelAreaTypes(modelArea.data.data);
     if (outcropData.data?.data) setOutcrops(outcropData.data.data);
+    if (geologyStandards.data?.data)
+      setGeologicalStandards(geologyStandards.data.data);
   }, [
     data,
+    geologyStandards.data?.data,
     modelArea.data?.data,
-
     outcropData.data?.data,
     setAnalogueModel,
+    setGeologicalStandards,
     setModelAreaTypes,
     setOutcrops,
+  ]);
+
+  useEffect(() => {
+    if (countryData.data?.data) setCountries(countryData.data.data);
+    if (fieldData.data?.data) setFields(fieldData.data.data);
+    if (stratColumnData.data?.data)
+      setStratigraphicColumns(stratColumnData.data.data);
+    if (stratUnitData.data?.data)
+      setStratigraphicUnits(stratUnitData.data.data);
+  }, [
+    countryData.data?.data,
+    fieldData.data?.data,
+    setCountries,
+    setFields,
+    setStratigraphicColumns,
+    setStratigraphicUnits,
+    stratColumnData.data?.data,
+    stratUnitData.data?.data,
   ]);
 
   if (failureReason)

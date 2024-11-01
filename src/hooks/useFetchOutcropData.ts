@@ -10,7 +10,7 @@ export const useFetchOutcropData = () => {
   const { outcrops } = usePepmContextStore();
 
   const query = useQuery({
-    queryKey: ['smda-GDE'],
+    queryKey: ['outcrop'],
     queryFn: () => OutcropsService.getApiOutcrops(),
     enabled: !!token && outcrops.length === 0,
   });

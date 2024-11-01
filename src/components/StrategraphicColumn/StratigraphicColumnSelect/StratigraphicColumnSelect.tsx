@@ -6,18 +6,13 @@ import {
   StratColumnDto,
   StratUnitDto,
 } from '../../../api/generated';
-import {
-  useFetchSmdaCountries,
-  useFetchSmdaFields,
-  useFetchSmdaMetadataStratigraphicUnits,
-  useFetchSmdaStratigraphicColumns,
-} from '../../../hooks/useFetchStratColData';
 import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
 import { sortList } from '../../../utils/SortList';
 import {
   StratColumnErrorType,
   StratColumnType,
 } from '../StratigrapicGroups/StratigrapicGroups';
+import { usePepmContextStore } from '../../../hooks/GlobalState';
 
 export const StratigraphicColumnSelect = ({
   stratColumnObject,
@@ -30,37 +25,31 @@ export const StratigraphicColumnSelect = ({
   error: StratColumnErrorType;
   setErrors: React.Dispatch<React.SetStateAction<StratColumnErrorType>>;
 }) => {
-  const countryData = useFetchSmdaCountries();
-  const fieldData = useFetchSmdaFields();
-  const stratColumnData = useFetchSmdaStratigraphicColumns();
-  const stratUnitData = useFetchSmdaMetadataStratigraphicUnits();
+  const { fields, countries, stratigraphicColumns, stratigraphicUnits } =
+    usePepmContextStore();
 
   if (
-    countryData.isLoading ||
-    !countryData?.data?.success ||
-    fieldData.isLoading ||
-    !fieldData?.data?.success ||
-    stratColumnData.isLoading ||
-    !stratColumnData?.data?.success ||
-    stratUnitData.isLoading ||
-    !stratUnitData?.data?.success
+    fields.length === 0 ||
+    countries.length === 0 ||
+    stratigraphicColumns.length === 0 ||
+    stratigraphicUnits.length === 0
   )
     return <p>Loading ...</p>;
 
   const hasFields = (id: string) => {
-    const res = fieldData.data.data.filter((f) => f.countryId === id);
+    const res = fields.filter((f) => f.countryId === id);
     return res;
   };
 
   const hasStratCol = (id: string) => {
-    const StratColContryList = stratColumnData.data.data.map((col) =>
+    const StratColContryList = stratigraphicColumns.map((col) =>
       col.countries.filter((c) => c.countryId === id),
     );
     const res = StratColContryList.filter((col) => col.length > 0);
     return res;
   };
 
-  const filterCountries = countryData.data.data.filter(
+  const filterCountries = countries.filter(
     (c) =>
       hasStratCol(c.countryId).length > 0 || hasFields(c.countryId).length > 0,
   );
@@ -92,7 +81,7 @@ export const StratigraphicColumnSelect = ({
         disabled={stratColumnObject.country === undefined}
         label="Field"
         options={sortList(
-          fieldData.data.data.filter(
+          fields.filter(
             (field) => field.countryId === stratColumnObject.country?.countryId,
           ),
         )}
@@ -123,7 +112,7 @@ export const StratigraphicColumnSelect = ({
         disabled={stratColumnObject.country === undefined}
         label="Stratigraphic column"
         options={sortList(
-          stratColumnData.data.data.filter(
+          stratigraphicColumns.filter(
             (c) =>
               stratColumnObject.country !== undefined &&
               c.countries.filter(
@@ -163,7 +152,7 @@ export const StratigraphicColumnSelect = ({
         disabled={stratColumnObject.stratColumn === undefined}
         label="Level 1 (group)"
         options={sortList(
-          stratUnitData.data.data
+          stratigraphicUnits
             .filter((s) => s.level === 1)
             .filter(
               (c) =>
@@ -201,7 +190,7 @@ export const StratigraphicColumnSelect = ({
         disabled={stratColumnObject.level1 === undefined}
         label="Level 2 (formation)"
         options={sortList(
-          stratUnitData.data.data
+          stratigraphicUnits
             .filter((s) => s.level === 2)
             .filter(
               (c) =>
@@ -242,7 +231,7 @@ export const StratigraphicColumnSelect = ({
         disabled={stratColumnObject.level2 === undefined}
         label="Level 3 (formation/subzone)"
         options={sortList(
-          stratUnitData.data.data
+          stratigraphicUnits
             .filter((s) => s.level === 3)
             .filter(
               (c) =>
