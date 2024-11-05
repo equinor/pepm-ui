@@ -8,7 +8,7 @@ import {
 } from '@equinor/eds-core-react';
 import { delete_to_trash as deleteIcon } from '@equinor/eds-icons';
 import { useState } from 'react';
-import { AddAnalogueModelOutcropForm } from '../../../api/generated';
+import { AddAnalogueModelOutcropForm, RegionDto } from '../../../api/generated';
 import { useOutcropAnalouge } from '../../../hooks/useOutcropAnalogue';
 import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
 import { OutcropSelect } from '../OutcropSelect/OutcropSelect';
