@@ -16,7 +16,6 @@ import {
   CoordinateDto,
   ModelAreaTypeDto,
 } from '../../api/generated';
-import { useFetchCases } from '../../hooks/useFetchCases';
 import { useMutateAreaCoordinates } from '../../hooks/useMutateAreaCoordinates';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { AnalogueModelImageView } from '../ImageView/AnalogueModelImageView';
@@ -86,11 +85,10 @@ export const AreaCoordinates = ({
   const [fallbackAreaCoordinate, setfallbackAreaCoordinate] =
     useState<AreaCoordinateType>();
   const { modelId } = useParams();
-  const { analogueModel, modelAreaTypes } = usePepmContextStore();
-  const cases = useFetchCases();
+  const { analogueModel, modelAreaTypes, computeCases } = usePepmContextStore();
   const { activeAreaResultList } = useModelResults(
     activeArea.name,
-    cases.data?.data,
+    computeCases,
   );
   const mutateAreaCoordinates = useMutateAreaCoordinates();
 

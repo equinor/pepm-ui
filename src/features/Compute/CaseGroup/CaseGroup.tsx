@@ -1,16 +1,14 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
-import { useMsal } from '@azure/msal-react';
 import { Button, Icon, Tooltip } from '@equinor/eds-core-react';
 import { add as ADD } from '@equinor/eds-icons';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   AnalogueModelComputeCasesService,
   ComputeCaseDto,
   ComputeJobStatus,
-  ComputeSettingsService,
   CreateComputeCaseCommandForm,
   CreateComputeCaseInputSettingsForm,
   UpdateComputeCaseCommandForm,
@@ -18,11 +16,10 @@ import {
 } from '../../../api/generated';
 import { queryClient } from '../../../auth/queryClient';
 import { CaseCardComponent } from '../../../components/CaseCardComponent/CaseCardComponent';
-import { useAccessToken } from '../../../hooks/useAccessToken';
-import { useFetchCases } from '../../../hooks/useFetchCases';
 import * as Styled from './CaseGroup.styled';
 import { CaseRow } from './CaseRow/CaseRow';
 import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
+import { usePepmContextStore } from '../../../hooks/GlobalState';
 
 export const CaseGroup = ({
   caseList,
@@ -40,10 +37,8 @@ export const CaseGroup = ({
   runCase: (computeCaseId: string) => void;
 }) => {
   const [localList, setLocalList] = useState<ComputeCaseDto[]>([]);
-  const { data, isLoading } = useFetchCases();
+  const { computeCases, computeSettings } = usePepmContextStore();
   const { modelId } = useParams<{ modelId: string }>();
-  const { instance, accounts } = useMsal();
-  const token = useAccessToken(instance, accounts[0]);
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
 
   const saveApiCase = useMutation({
@@ -103,17 +98,9 @@ export const CaseGroup = ({
     },
   });
 
-  const computeSettingsResponse = useQuery({
-    queryKey: ['compute-settings'],
-    queryFn: () => ComputeSettingsService.getApiComputeSettings(),
-    enabled: !!token,
-  });
-
   const settingsFilter = (name: string) => {
-    if (computeSettingsResponse) {
-      return computeSettingsResponse.data?.data.filter(
-        (item) => item.name === name,
-      );
+    if (computeSettings) {
+      return computeSettings.filter((item) => item.name === name);
     }
   };
 
@@ -302,7 +289,7 @@ export const CaseGroup = ({
   }, [addCase, triggerAddCase]);
 
   const duplicateCase = (id: string) => {
-    const caseToDuplicate = data?.data.filter((c) => c.computeCaseId === id);
+    const caseToDuplicate = computeCases.filter((c) => c.computeCaseId === id);
     const randomLocalId = Math.floor(Math.random() * 100).toString();
     if (caseToDuplicate) {
       const newCase: ComputeCaseDto = {
@@ -327,7 +314,7 @@ export const CaseGroup = ({
     }
   };
 
-  if (isLoading || computeSettingsResponse.isLoading) return <p>Loading ...</p>;
+  if (computeSettings.length === 0) return <p>Loading ...</p>;
 
   return (
     <>

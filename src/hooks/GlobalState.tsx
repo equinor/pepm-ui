@@ -8,6 +8,7 @@ import {
   FieldDto,
   GeologicalStandardDto,
   JobStatus,
+  ListComputeSettingsMethodDto,
   ModelAreaTypeDto,
   OutcropDto,
   StratColumnDto,
@@ -44,7 +45,9 @@ type IPepmContext = {
   stratigraphicColumns: StratColumnDto[];
   stratigraphicUnits: StratUnitDto[];
   geologyStandards: GeologicalStandardDto[];
+  computeSettings: ListComputeSettingsMethodDto[];
 };
+
 type IPepmContextActions = {
   setAnalogueModel: (analogueModel: AnalogueModelDetail) => void;
   setAnalogueModelDefault: () => void;
@@ -57,6 +60,7 @@ type IPepmContextActions = {
   setStratigraphicColumns: (fields: StratColumnDto[]) => void;
   setStratigraphicUnits: (fields: StratUnitDto[]) => void;
   setGeologicalStandards: (geologyStandards: GeologicalStandardDto[]) => void;
+  setComputeSettings: (computeSettings: ListComputeSettingsMethodDto[]) => void;
 };
 
 export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
@@ -70,6 +74,7 @@ export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
     stratigraphicColumns: [],
     stratigraphicUnits: [],
     geologyStandards: [],
+    computeSettings: [],
     setAnalogueModel: (analogueModel: AnalogueModelDetail) =>
       set((state) => {
         state.analogueModel = analogueModel;
@@ -113,6 +118,10 @@ export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
     setGeologicalStandards: (geologyStandards: GeologicalStandardDto[]) =>
       set((state) => {
         state.geologyStandards = geologyStandards;
+      }),
+    setComputeSettings: (computeSettings: ListComputeSettingsMethodDto[]) =>
+      set((state) => {
+        state.computeSettings = computeSettings;
       }),
   })),
 );

@@ -1,11 +1,11 @@
 import { CaseResultView } from '../../../../features/Results/CaseResult/CaseResultView/CaseResultView';
 import { NoResults } from '../../../../features/Results/NoResults/NoResults';
-import { useFetchCases } from '../../../../hooks/useFetchCases';
+import { usePepmContextStore } from '../../../../hooks/GlobalState';
 import { useFetchVariogramResults } from '../../../../hooks/useFetchVariogramResults';
 
 export const VariogramResults = () => {
   const { data, isLoading } = useFetchVariogramResults();
-  const cases = useFetchCases();
+  const { computeCases } = usePepmContextStore();
   const variogramResults = data?.data;
 
   if (isLoading) return <>Loading ...</>;
@@ -15,7 +15,7 @@ export const VariogramResults = () => {
       {variogramResults !== undefined && variogramResults?.length > 0 ? (
         <CaseResultView
           variogramResultList={variogramResults}
-          computeCases={cases.data?.data}
+          computeCases={computeCases}
           type="Variogram"
         />
       ) : (

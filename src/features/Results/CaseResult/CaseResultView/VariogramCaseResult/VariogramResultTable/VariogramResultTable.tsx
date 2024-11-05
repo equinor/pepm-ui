@@ -3,9 +3,9 @@ import { Typography } from '@equinor/eds-core-react';
 import { EdsDataGrid } from '@equinor/eds-data-grid-react';
 import { useState } from 'react';
 import { GetVariogramResultsDto } from '../../../../../../api/generated';
-import { useFetchCases } from '../../../../../../hooks/useFetchCases';
 import { ImageResult } from '../ImageResult/ImageResult';
 import * as Styled from './VariogramResultTable.styled';
+import { usePepmContextStore } from '../../../../../../hooks/GlobalState';
 
 interface ResultObjectType {
   variogramResultId: string;
@@ -25,10 +25,9 @@ export const VariogramResultTable = ({
 }: {
   resultList: GetVariogramResultsDto[];
 }) => {
+  const { computeCases } = usePepmContextStore();
   const [open, setOpen] = useState(false);
   const [imageId, setImageId] = useState('');
-
-  const caseList = useFetchCases();
 
   const roundResultString = (value: number) => {
     if (value) {
@@ -37,7 +36,7 @@ export const VariogramResultTable = ({
   };
 
   const resultElementsList: ResultObjectType[] = resultList.map((e) => {
-    const method = caseList.data?.data.filter(
+    const method = computeCases.filter(
       (c) => c.computeCaseId === e.computeCaseId,
     )[0]?.computeMethod?.name;
     let parameter = '';
@@ -49,7 +48,7 @@ export const VariogramResultTable = ({
       parameter = e.attribute ? e.attribute : '';
     }
 
-    const modelArea = caseList.data?.data.filter(
+    const modelArea = computeCases.filter(
       (c) => c.computeCaseId === e.computeCaseId,
     )[0]?.modelArea;
 

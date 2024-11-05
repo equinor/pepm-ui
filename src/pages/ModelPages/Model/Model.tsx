@@ -22,6 +22,8 @@ import {
   useFetchSmdaStratigraphicColumns,
 } from '../../../hooks/useFetchStratColData';
 import { useFetchGrossDepData } from '../../../hooks/useFetchGrossDepData';
+import { useFetchCases } from '../../../hooks/useFetchCases';
+import { useFetchComputeSettings } from '../../../hooks/useFetchComputeSettings';
 
 // eslint-disable-next-line camelcase
 Icon.add({ mood_sad });
@@ -35,9 +37,12 @@ export const Model = () => {
   const stratColumnData = useFetchSmdaStratigraphicColumns();
   const stratUnitData = useFetchSmdaMetadataStratigraphicUnits();
   const geologyStandards = useFetchGrossDepData();
+  const cases = useFetchCases();
+  const computeSettings = useFetchComputeSettings();
 
   const {
     setAnalogueModel,
+    setComputeCases,
     setModelAreaTypes,
     setOutcrops,
     setCountries,
@@ -45,23 +50,31 @@ export const Model = () => {
     setStratigraphicColumns,
     setStratigraphicUnits,
     setGeologicalStandards,
+    setComputeSettings,
   } = usePepmContextStore();
 
   useEffect(() => {
     if (data) setAnalogueModel(data.data);
+    if (cases.data?.data) setComputeCases(cases.data.data);
     if (modelArea.data?.data) setModelAreaTypes(modelArea.data.data);
     if (outcropData.data?.data) setOutcrops(outcropData.data.data);
     if (geologyStandards.data?.data)
       setGeologicalStandards(geologyStandards.data.data);
+    if (computeSettings.data?.data)
+      setComputeSettings(computeSettings.data.data);
   }, [
+    cases.data?.data,
     data,
     geologyStandards.data?.data,
     modelArea.data?.data,
     outcropData.data?.data,
+    computeSettings.data?.data,
     setAnalogueModel,
+    setComputeCases,
     setGeologicalStandards,
     setModelAreaTypes,
     setOutcrops,
+    setComputeSettings,
   ]);
 
   useEffect(() => {
