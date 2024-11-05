@@ -20,7 +20,7 @@ export interface OutcropType {
   outcropId?: string;
   name?: string;
   outcropCategory?: string;
-  region?: string;
+  region?: RegionDto;
   basins?: Array<string>;
 }
 
@@ -102,6 +102,8 @@ export const OutcropAnalogueGroup = ({
             <Table.Row>
               <Table.Cell></Table.Cell>
               <Table.Cell>Analogue</Table.Cell>
+              <Table.Cell>Country</Table.Cell>
+              <Table.Cell>Location</Table.Cell>
               <Table.Cell>Region</Table.Cell>
               <Table.Cell>Basin</Table.Cell>
               <Table.Cell>Category</Table.Cell>
@@ -130,7 +132,20 @@ export const OutcropAnalogueGroup = ({
                 <Table.Cell>
                   <Styled.StratColCell>{row.name}</Styled.StratColCell>
                 </Table.Cell>
-                <Table.Cell>{row.region}</Table.Cell>
+                {row.region.locations.length !== 0 ? (
+                  <>
+                    <Table.Cell>{row.region.locations[0].country}</Table.Cell>
+                    <Table.Cell>
+                      {row.region.locations[0].locationName}
+                    </Table.Cell>
+                  </>
+                ) : (
+                  <>
+                    <Table.Cell></Table.Cell>
+                    <Table.Cell></Table.Cell>
+                  </>
+                )}
+                <Table.Cell>{row.region.name}</Table.Cell>
                 <Table.Cell>
                   <Styled.StratColCell>
                     {row.basins?.map((item) => item)}

@@ -65,14 +65,56 @@ export const OutcropSelect = ({
         helperText={error.Analogue ? error.Analogue : undefined}
       />
 
+      {outcropObject.region?.locations.length !== 0 ? (
+        <>
+          <Autocomplete
+            label="Country"
+            selectedOptions={[outcropObject.region?.locations[0].country]}
+            initialSelectedOptions={
+              outcropObject.region
+                ? [outcropObject.region.locations[0].country]
+                : ['']
+            }
+            options={
+              outcropObject.region !== undefined
+                ? [outcropObject.region.locations[0].country]
+                : ['']
+            }
+            noOptionsText="No options"
+            readOnly
+          />
+
+          <Autocomplete
+            label="Location"
+            selectedOptions={[outcropObject.region?.locations[0].locationName]}
+            initialSelectedOptions={
+              outcropObject.region
+                ? [outcropObject.region.locations[0].locationName]
+                : ['']
+            }
+            options={
+              outcropObject.region !== undefined
+                ? [outcropObject.region.locations[0].locationName]
+                : ['']
+            }
+            noOptionsText="No options"
+            readOnly
+          />
+        </>
+      ) : (
+        <></>
+      )}
+
       <Autocomplete
         label="Region"
-        selectedOptions={[outcropObject.region]}
+        selectedOptions={[outcropObject.region?.name]}
         initialSelectedOptions={
-          outcropObject.region ? [outcropObject.region] : ['']
+          outcropObject.region ? [outcropObject.region.name] : ['']
         }
         options={
-          outcropObject.region !== undefined ? [outcropObject.region] : ['']
+          outcropObject.region !== undefined
+            ? [outcropObject.region.name]
+            : ['']
         }
         noOptionsText="No options"
         readOnly
