@@ -1,13 +1,15 @@
 /* eslint-disable max-lines-per-function */
 import { useCallback, useState } from 'react';
 import { ComputeCaseDto, ModelAreaDto } from '../../../../../api/generated';
-import { useFetchModel } from '../../../../../hooks/useFetchModel';
+import {
+  analogueModelDefault,
+  usePepmContextStore,
+} from '../../../../../hooks/GlobalState';
 
 export const useModelArea = (allCasesList: ComputeCaseDto[]) => {
   const [selectedModelArea, setModelArea] = useState<ModelAreaDto[]>();
-  const { data, isLoading } = useFetchModel();
+  const { analogueModel } = usePepmContextStore();
 
-  const isProcessed = data?.data.isProcessed;
   const wholeModelObject: ModelAreaDto[] = [
     {
       modelAreaId: '',
@@ -16,8 +18,8 @@ export const useModelArea = (allCasesList: ComputeCaseDto[]) => {
     },
   ];
   const areaList: ModelAreaDto[] =
-    data && data.data.modelAreas
-      ? data.data.modelAreas.concat(wholeModelObject)
+    analogueModel !== analogueModelDefault && analogueModel.modelAreas
+      ? analogueModel.modelAreas.concat(wholeModelObject)
       : wholeModelObject;
 
   const selectedRowArea = useCallback(
@@ -70,8 +72,6 @@ export const useModelArea = (allCasesList: ComputeCaseDto[]) => {
   );
 
   return {
-    isLoading,
-    isProcessed,
     areaList,
     selectedModelArea,
     setModelArea,

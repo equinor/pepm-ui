@@ -15,12 +15,12 @@ import {
 import { ConfirmDialog } from '../../../../components/ConfirmDialog/ConfirmDialog';
 import * as Styled from './CaseButtons.styled';
 import { useIsOwnerOrAdmin } from '../../../../hooks/useIsOwnerOrAdmin';
+import { usePepmContextStore } from '../../../../hooks/GlobalState';
 
 export const CaseButtons = ({
   id,
   caseType,
   saved,
-  isProcessed,
   caseStatus,
   hasUnsavedCase,
   saveCase,
@@ -32,7 +32,6 @@ export const CaseButtons = ({
   id: string;
   caseType: string;
   saved: boolean;
-  isProcessed?: boolean;
   caseStatus: ComputeJobStatus;
   hasUnsavedCase: boolean;
   runCase?: () => void;
@@ -43,6 +42,7 @@ export const CaseButtons = ({
   setAlertMessage: (message: string) => void;
   duplicateCase: () => void;
 }) => {
+  const { analogueModel } = usePepmContextStore();
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [saveConfirm, setSaveConfirm] = useState(false);
@@ -137,7 +137,7 @@ export const CaseButtons = ({
           ) : saved ? (
             <Tooltip
               title={
-                !isProcessed
+                !analogueModel.isProcessed
                   ? 'Model not finished processed.'
                   : caseStatus === 'Created' ||
                     caseStatus === 'Waiting' ||
@@ -157,7 +157,9 @@ export const CaseButtons = ({
                 variant="outlined"
                 onClick={saved ? runCase : saveCase}
                 disabled={
-                  !isProcessed || caseStatus === 'Created' || !isOwnerOrAdmin
+                  !analogueModel.isProcessed ||
+                  caseStatus === 'Created' ||
+                  !isOwnerOrAdmin
                 }
               >
                 <Icon data={PLAY} size={18}></Icon>
@@ -181,7 +183,7 @@ export const CaseButtons = ({
         <>
           <Tooltip
             title={
-              !isProcessed
+              !analogueModel.isProcessed
                 ? 'Model not finished processed.'
                 : caseStatus === 'Created' ||
                   caseStatus === 'Waiting' ||
@@ -205,7 +207,7 @@ export const CaseButtons = ({
                 variant="outlined"
                 onClick={runCase}
                 disabled={
-                  !isProcessed ||
+                  !analogueModel.isProcessed ||
                   id.length < 3 ||
                   caseStatus === 'Created' ||
                   !isOwnerOrAdmin

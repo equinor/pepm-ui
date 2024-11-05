@@ -1,10 +1,10 @@
 import { CaseResultView } from '../../../../features/Results/CaseResult/CaseResultView/CaseResultView';
 import { NoResults } from '../../../../features/Results/NoResults/NoResults';
-import { useFetchCases } from '../../../../hooks/useFetchCases';
 import { useFetchObjectResults } from '../../../../hooks/useFetchChannelResults';
+import { usePepmContextStore } from '../../../../hooks/GlobalState';
 
 export const ObjectResult = () => {
-  const cases = useFetchCases();
+  const { computeCases } = usePepmContextStore();
   const { data, isLoading } = useFetchObjectResults();
   const objectResults = data?.data;
 
@@ -15,7 +15,7 @@ export const ObjectResult = () => {
       {objectResults !== undefined && objectResults.length > 0 ? (
         <CaseResultView
           channelResultList={objectResults}
-          computeCases={cases.data?.data}
+          computeCases={computeCases}
           type="Object"
         />
       ) : (

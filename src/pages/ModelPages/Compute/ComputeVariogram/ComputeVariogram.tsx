@@ -11,9 +11,9 @@ import {
 import { queryClient } from '../../../../auth/queryClient';
 import { CaseGroup } from '../../../../features/Compute/CaseGroup/CaseGroup';
 import { ComputeHeader } from '../../../../features/Compute/ComputeHeader/ComputeHeader';
-import { useFetchCases } from '../../../../hooks/useFetchCases';
 import * as Styled from '../Compute.styled';
 import { useIsOwnerOrAdmin } from '../../../../hooks/useIsOwnerOrAdmin';
+import { usePepmContextStore } from '../../../../hooks/GlobalState';
 
 export interface CaseInfoTyoe {
   type: string;
@@ -54,10 +54,10 @@ export const ComputeVariogram = () => {
     setAlert(undefined);
   }
 
-  const { data } = useFetchCases();
+  const { computeCases } = usePepmContextStore();
 
   const methodFilter = (name: string) => {
-    return data?.data.filter((method) => method.computeMethod.name === name);
+    return computeCases.filter((method) => method.computeMethod.name === name);
   };
   const Indicator = methodFilter('Indicator');
   const NetToGross = methodFilter('Net-To-Gross');

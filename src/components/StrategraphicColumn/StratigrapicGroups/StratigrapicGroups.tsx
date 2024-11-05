@@ -11,7 +11,6 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import {
   AddStatigraphicGroupForm,
-  AnalogueModelDetail,
   AnalogueModelsService,
   CountryDto,
   DeleteStratigraphicGroupCommandResponse,
@@ -27,6 +26,7 @@ import { StratigraphicColumnSelect } from '../StratigraphicColumnSelect/Stratigr
 import { validateInput } from './StratigrapicGroups.hooks';
 import * as Styled from './StratigrapicGroups.styled';
 import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
+import { usePepmContextStore } from '../../../hooks/GlobalState';
 
 export interface StratColumnType {
   country?: CountryDto;
@@ -56,18 +56,15 @@ export type StratColumnErrorType = {
 
 export const StratigrapicGroups = ({
   modelIdParent,
-  defaultMetadata,
-  stratColumnGroups,
   deleteStratColRow,
 }: {
   modelIdParent?: string;
-  defaultMetadata: AnalogueModelDetail;
-  stratColumnGroups: StratigraphicGroupDto[];
   deleteStratColRow: (
     stratigraphicGroupId: string,
   ) => Promise<DeleteStratigraphicGroupCommandResponse | undefined>;
 }) => {
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
+  const { analogueModel } = usePepmContextStore();
   const [stratColumnObject, setStratColumnObject] = useState<StratColumnType>(
     defaultStratColumnData,
   );
@@ -101,7 +98,7 @@ export const StratigrapicGroups = ({
   });
 
   const handleAddStratCol = async () => {
-    const id = modelIdParent ? modelIdParent : defaultMetadata.analogueModelId;
+    const id = modelIdParent ? modelIdParent : analogueModel.analogueModelId;
     const err = await validateInput(stratColumnObject);
     setErrors(err);
     if (
@@ -153,7 +150,7 @@ export const StratigrapicGroups = ({
         Stratigraphic column
       </Typography>
 
-      {stratColumnGroups.length > 0 && (
+      {analogueModel.stratigraphicGroups.length > 0 && (
         <Table>
           <Table.Head>
             <Table.Row>
@@ -168,7 +165,7 @@ export const StratigrapicGroups = ({
           </Table.Head>
 
           <Table.Body>
-            {stratColumnGroups.map((row) => (
+            {analogueModel.stratigraphicGroups.map((row) => (
               <Table.Row key={row.stratigraphicGroupId}>
                 <Table.Cell>
                   {isOwnerOrAdmin && (

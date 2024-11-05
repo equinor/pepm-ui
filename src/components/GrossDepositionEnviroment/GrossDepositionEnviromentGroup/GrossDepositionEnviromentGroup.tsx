@@ -11,10 +11,8 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import {
   AddGeologicalGroupForm,
-  AnalogueModelDetail,
   AnalogueModelsService,
   DeleteGeologicalGroupCommandResponse,
-  GeologicalGroupDto,
   GeologicalStandardDto,
 } from '../../../api/generated';
 import { queryClient } from '../../../auth/queryClient';
@@ -24,6 +22,7 @@ import * as Styled from './GrossDepositionEnviromentGroup.styled';
 
 import { validateInput } from './GDE.hooks';
 import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
+import { usePepmContextStore } from '../../../hooks/GlobalState';
 
 export interface GdeType {
   grossDepEnv?: GeologicalStandardDto;
@@ -46,18 +45,15 @@ export type GDEErrorType = {
 };
 export const GrossDepositionEnviromentGroup = ({
   modelIdParent,
-  defaultMetadata,
-  gdeGroups,
   deleteGdeRow,
 }: {
   modelIdParent?: string;
-  defaultMetadata: AnalogueModelDetail;
-  gdeGroups: GeologicalGroupDto[];
   deleteGdeRow: (
     geologicalGroupId: string,
   ) => Promise<DeleteGeologicalGroupCommandResponse | undefined>;
 }) => {
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
+  const { analogueModel } = usePepmContextStore();
   const [showGdeDialog, setShowGdeDialog] = useState<boolean>(false);
   const [gdeObject, setGdeObject] = useState<GdeType>(defaultGdeData);
   const [errors, setErrors] = useState<GDEErrorType>({});
@@ -85,7 +81,7 @@ export const GrossDepositionEnviromentGroup = ({
   });
 
   const handleAddGde = async () => {
-    const id = modelIdParent ? modelIdParent : defaultMetadata.analogueModelId;
+    const id = modelIdParent ? modelIdParent : analogueModel.analogueModelId;
     const err = await validateInput(gdeObject);
     setErrors(err);
 
@@ -128,7 +124,7 @@ export const GrossDepositionEnviromentGroup = ({
         <Typography variant="h4" as="h3">
           Gross Depositional Environment (GDE)
         </Typography>
-        {gdeGroups.length > 0 && (
+        {analogueModel.geologicalGroups.length > 0 && (
           <Table>
             <Table.Head>
               <Table.Row>
@@ -141,7 +137,7 @@ export const GrossDepositionEnviromentGroup = ({
             </Table.Head>
 
             <Table.Body>
-              {gdeGroups.map((row) => (
+              {analogueModel.geologicalGroups.map((row) => (
                 <Table.Row key={row.geologicalGroupId}>
                   <Table.Cell>
                     {isOwnerOrAdmin && (

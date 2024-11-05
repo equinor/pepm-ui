@@ -1,6 +1,9 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as Styled from './ModelNameFrame.styled';
-import { usePepmContextStore } from '../../../hooks/GlobalState';
+import {
+  analogueModelDefault,
+  usePepmContextStore,
+} from '../../../hooks/GlobalState';
 
 export const ModelNameFrame = () => {
   const { analogueModel } = usePepmContextStore();
@@ -10,7 +13,7 @@ export const ModelNameFrame = () => {
 
   return (
     <Styled.NameFrame className="metadata-name-frame">
-      {analogueModel ? (
+      {analogueModel !== analogueModelDefault ? (
         <Typography variant="h2" as="h1">
           {analogueModel.name}
           <Typography>

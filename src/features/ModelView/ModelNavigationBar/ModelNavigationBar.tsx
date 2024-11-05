@@ -9,6 +9,7 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom';
 import { VariogramIcon } from '../../../assets/VaritogramIcon';
 import * as Styled from './ModelNavigationBar.styled';
+import { usePepmContextStore } from '../../../hooks/GlobalState';
 
 type MenuItems = SidebarLinkProps & {
   subItems?: Array<{
@@ -21,6 +22,7 @@ type MenuItems = SidebarLinkProps & {
 };
 
 export const ModelNavigationBar = () => {
+  const { setAnalogueModelDefault } = usePepmContextStore();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -92,6 +94,7 @@ export const ModelNavigationBar = () => {
           label={backItems.label}
           icon={backItems.icon}
           onClick={() => {
+            setAnalogueModelDefault();
             navigate('/');
           }}
         ></Styled.Back>

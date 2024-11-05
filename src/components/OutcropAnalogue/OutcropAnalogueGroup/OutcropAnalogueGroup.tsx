@@ -8,17 +8,13 @@ import {
 } from '@equinor/eds-core-react';
 import { delete_to_trash as deleteIcon } from '@equinor/eds-icons';
 import { useState } from 'react';
-import {
-  AddAnalogueModelOutcropForm,
-  AnalogueModelDetail,
-  OutcropDto,
-  RegionDto,
-} from '../../../api/generated';
+import { AddAnalogueModelOutcropForm } from '../../../api/generated';
 import { useOutcropAnalouge } from '../../../hooks/useOutcropAnalogue';
 import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
 import { OutcropSelect } from '../OutcropSelect/OutcropSelect';
 import * as Styled from './OutcropAnalogueGroup.styled';
 import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
+import { usePepmContextStore } from '../../../hooks/GlobalState';
 
 export interface OutcropType {
   outcropId?: string;
@@ -42,14 +38,11 @@ export type OutcropErrorType = {
 
 export const OutcropAnalogueGroup = ({
   modelIdParent,
-  defaultMetadata,
-  outcropGroup,
 }: {
   modelIdParent?: string;
-  defaultMetadata: AnalogueModelDetail;
-  outcropGroup: OutcropDto[];
 }) => {
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
+  const { analogueModel } = usePepmContextStore();
   const [showOutcropDialog, setShowOutcropDialog] = useState<boolean>(false);
   const [errors, setErrors] = useState<OutcropErrorType>({});
   const [outcropObject, setOutcropObject] =
@@ -73,7 +66,7 @@ export const OutcropAnalogueGroup = ({
   };
 
   const handleAddOutcropAnalogue = async () => {
-    const id = modelIdParent ? modelIdParent : defaultMetadata.analogueModelId;
+    const id = modelIdParent ? modelIdParent : analogueModel.analogueModelId;
     const err = await validateInput(outcropObject);
     setErrors(err);
 
@@ -90,7 +83,7 @@ export const OutcropAnalogueGroup = ({
   };
 
   const handleDeleteOutcropAnalogue = async (stratigraphicGroupId: string) => {
-    const id = modelIdParent ? modelIdParent : defaultMetadata.analogueModelId;
+    const id = modelIdParent ? modelIdParent : analogueModel.analogueModelId;
     const res = await useOutcrop.deleteOutcropAnalogue.mutateAsync({
       id: id,
       outcropId: stratigraphicGroupId,
@@ -103,7 +96,7 @@ export const OutcropAnalogueGroup = ({
       <Typography variant="h4" as="h3">
         Outcrop Analogue
       </Typography>
-      {outcropGroup.length > 0 && (
+      {analogueModel.outcrops.length > 0 && (
         <Table>
           <Table.Head>
             <Table.Row>
@@ -117,7 +110,7 @@ export const OutcropAnalogueGroup = ({
             </Table.Row>
           </Table.Head>
           <Table.Body>
-            {outcropGroup.map((row) => (
+            {analogueModel.outcrops.map((row) => (
               <Table.Row key={row.outcropId}>
                 <Table.Cell>
                   {isOwnerOrAdmin && (
@@ -180,7 +173,7 @@ export const OutcropAnalogueGroup = ({
         <Dialog.CustomContent>
           <OutcropSelect
             outcropObject={outcropObject}
-            outcropGroup={outcropGroup}
+            outcropGroup={analogueModel.outcrops}
             setOutcropObject={setOutcropObject}
             error={errors}
           />

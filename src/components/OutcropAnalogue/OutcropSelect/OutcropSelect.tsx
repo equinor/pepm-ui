@@ -1,13 +1,13 @@
 /* eslint-disable max-lines-per-function */
 import { Autocomplete, AutocompleteChanges } from '@equinor/eds-core-react';
 import { OutcropDto } from '../../../api/generated';
-import { useFetchOutcropData } from '../../../hooks/useFetchOutcropData';
 import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
 import { sortList } from '../../../utils/SortList';
 import {
   OutcropErrorType,
   OutcropType,
 } from '../OutcropAnalogueGroup/OutcropAnalogueGroup';
+import { usePepmContextStore } from '../../../hooks/GlobalState';
 
 export const OutcropSelect = ({
   outcropObject,
@@ -20,9 +20,10 @@ export const OutcropSelect = ({
   error: OutcropErrorType;
   setOutcropObject: React.Dispatch<React.SetStateAction<OutcropType>>;
 }) => {
-  const OutcropData = useFetchOutcropData();
-  if (OutcropData.isLoading || !OutcropData.data?.success)
-    return <p>Loading .....</p>;
+  const { outcrops } = usePepmContextStore();
+  const oc: OutcropDto[] = [...outcrops];
+
+  if (outcrops.length === 0) return <p>Loading .....</p>;
 
   const filterDisabled = (option: OutcropDto) => {
     const caseExists = outcropGroup.filter(
@@ -35,7 +36,7 @@ export const OutcropSelect = ({
     <StyledDialog.AutocompleteList>
       <Autocomplete
         label="Analogue"
-        options={sortList(OutcropData.data.data)}
+        options={sortList(oc)}
         optionLabel={(option) => option.name}
         onOptionsChange={(e: AutocompleteChanges<OutcropDto>) => {
           const copyObject: OutcropType = {

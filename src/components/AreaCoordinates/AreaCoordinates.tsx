@@ -16,9 +16,6 @@ import {
   CoordinateDto,
   ModelAreaTypeDto,
 } from '../../api/generated';
-import { useFetchCases } from '../../hooks/useFetchCases';
-import { useFetchModel } from '../../hooks/useFetchModel';
-import { useFetchModelAreas } from '../../hooks/useFetchModelAreas';
 import { useMutateAreaCoordinates } from '../../hooks/useMutateAreaCoordinates';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { AnalogueModelImageView } from '../ImageView/AnalogueModelImageView';
@@ -29,6 +26,10 @@ import {
   validateCoordinates,
 } from './hooks/AreaCoordinates.hooks';
 import { useModelResults } from './hooks/useModelResults';
+import {
+  analogueModelDefault,
+  usePepmContextStore,
+} from '../../hooks/GlobalState';
 
 export type AreaCoordinateType = {
   modelAreaId: string;
@@ -84,13 +85,11 @@ export const AreaCoordinates = ({
   const [fallbackAreaCoordinate, setfallbackAreaCoordinate] =
     useState<AreaCoordinateType>();
   const { modelId } = useParams();
-  const { data, isLoading } = useFetchModel(modelId);
-  const cases = useFetchCases();
+  const { analogueModel, modelAreaTypes, computeCases } = usePepmContextStore();
   const { activeAreaResultList } = useModelResults(
     activeArea.name,
-    cases.data?.data,
+    computeCases,
   );
-  const modelAreas = useFetchModelAreas();
   const mutateAreaCoordinates = useMutateAreaCoordinates();
 
   const handleSelectChange = async (
@@ -108,7 +107,8 @@ export const AreaCoordinates = ({
       return;
     }
 
-    const selectableAreas = data?.data?.modelAreas && data?.data?.modelAreas;
+    const selectableAreas =
+      analogueModel.modelAreas && analogueModel.modelAreas;
 
     const selectedArea = selectableAreas?.filter(
       (area) => area.modelAreaType === changes.selectedItems[0].name,
@@ -267,7 +267,7 @@ export const AreaCoordinates = ({
     setEdit(!edit);
   };
 
-  if (modelAreas.isLoading || modelAreas.data === undefined || isLoading)
+  if (modelAreaTypes.length === 0 || analogueModel === analogueModelDefault)
     return <p>Loading.....</p>;
 
   return (
@@ -278,7 +278,7 @@ export const AreaCoordinates = ({
             <Autocomplete
               className={errors?.area && 'autocomplete-error'}
               label={'Select area'}
-              options={modelAreas.data.data}
+              options={modelAreaTypes}
               optionLabel={(option) => option.name}
               onOptionsChange={handleSelectChange}
               selectedOptions={[activeArea]}
@@ -365,18 +365,19 @@ export const AreaCoordinates = ({
             </Styled.CoordinateFields>
           )}
         </Styled.Selects>
-        {data && data.data.analogueModelImage === null && (
-          <div>
-            <Typography>
-              No image is found for this model. Try refreshing the page
-            </Typography>
-          </div>
-        )}
-        {data?.data.analogueModelId &&
-          data.data.analogueModelImage?.analogueModelImageId && (
+        {analogueModel !== analogueModelDefault &&
+          analogueModel.analogueModelImage === null && (
+            <div>
+              <Typography>
+                No image is found for this model. Try refreshing the page
+              </Typography>
+            </div>
+          )}
+        {analogueModel.analogueModelId &&
+          analogueModel.analogueModelImage?.analogueModelImageId && (
             <AnalogueModelImageView
-              modelId={data?.data.analogueModelId}
-              imageId={data?.data.analogueModelImage?.analogueModelImageId}
+              modelId={analogueModel.analogueModelId}
+              imageId={analogueModel.analogueModelImage?.analogueModelImageId}
               coordinateBox={areaCoordinate}
             />
           )}

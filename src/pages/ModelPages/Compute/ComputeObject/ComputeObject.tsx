@@ -7,9 +7,9 @@ import { EstimateObjectCommand, JobsService } from '../../../../api/generated';
 import { queryClient } from '../../../../auth/queryClient';
 import { CaseGroup } from '../../../../features/Compute/CaseGroup/CaseGroup';
 import { ComputeHeader } from '../../../../features/Compute/ComputeHeader/ComputeHeader';
-import { useFetchCases } from '../../../../hooks/useFetchCases';
 import * as Styled from '../Compute.styled';
 import { CaseInfoTyoe } from '../ComputeVariogram/ComputeVariogram';
+import { usePepmContextStore } from '../../../../hooks/GlobalState';
 
 const ObjectCaseInfo: CaseInfoTyoe = {
   type: 'Channel',
@@ -30,7 +30,7 @@ export const ComputeObject = () => {
     setAlert(message);
   };
 
-  const { data } = useFetchCases();
+  const { computeCases } = usePepmContextStore();
 
   const computeObject = useMutation({
     mutationFn: JobsService.postApiJobsComputeObjectEstimations,
@@ -54,11 +54,11 @@ export const ComputeObject = () => {
   };
 
   // Returnerer Cases fra DB
-  const channel = data?.data.filter(
+  const channel = computeCases.filter(
     (method) => method.computeMethod.name === 'Channel',
   );
 
-  const mouthbar = data?.data.filter(
+  const mouthbar = computeCases.filter(
     (method) => method.computeMethod.name === 'Mouthbar',
   );
 
