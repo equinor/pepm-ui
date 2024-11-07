@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import {
@@ -6,12 +7,14 @@ import {
   ComputeCaseDto,
   CountryDto,
   FieldDto,
+  GeologicalGroupDto,
   GeologicalStandardDto,
   JobStatus,
   ListComputeSettingsMethodDto,
   ModelAreaTypeDto,
   OutcropDto,
   StratColumnDto,
+  StratigraphicGroupDto,
   StratUnitDto,
 } from '../api/generated';
 
@@ -51,6 +54,12 @@ type IPepmContext = {
 type IPepmContextActions = {
   setAnalogueModel: (analogueModel: AnalogueModelDetail) => void;
   setAnalogueModelDefault: () => void;
+  addAnalogueModelStratGroup: (stratGroup: StratigraphicGroupDto) => void;
+  deleteAnalogueModelStratGroup: (id: string) => void;
+  addAnalogueModelGde: (gde: GeologicalGroupDto) => void;
+  deleteAnalogueModelGde: (id: string) => void;
+  addAnalogueModelOutcrop: (outcrop: OutcropDto) => void;
+  deleteAnalogueModelOutcrop: (id: string) => void;
   setComputeCases: (computeCases: ComputeCaseDto[]) => void;
   setComputeCasesDefault: () => void;
   setModelAreaTypes: (modelAreaTypes: ModelAreaTypeDto[]) => void;
@@ -83,6 +92,49 @@ export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
       set((state) => {
         state.analogueModel = analogueModelDefault;
       }),
+    addAnalogueModelStratGroup: (stratGroup: StratigraphicGroupDto) =>
+      set((state) => {
+        state.analogueModel.stratigraphicGroups.push(stratGroup);
+      }),
+    deleteAnalogueModelStratGroup: (id: string) =>
+      set((state) => {
+        state.analogueModel.stratigraphicGroups =
+          state.analogueModel.stratigraphicGroups.filter(
+            (stratGroup) => stratGroup.stratigraphicGroupId !== id,
+          );
+      }),
+    addAnalogueModelGde: (gde: GeologicalGroupDto) =>
+      set((state) => {
+        state.analogueModel.geologicalGroups.push(gde);
+      }),
+    deleteAnalogueModelGde: (id: string) =>
+      set((state) => {
+        state.analogueModel.geologicalGroups =
+          state.analogueModel.geologicalGroups.filter(
+            (gde) => gde.geologicalGroupId !== id,
+          );
+      }),
+    addAnalogueModelOutcrop: (outcrop: OutcropDto) =>
+      set((state) => {
+        state.analogueModel.outcrops.push(outcrop);
+      }),
+    deleteAnalogueModelOutcrop: (id: string) =>
+      set((state) => {
+        state.analogueModel.outcrops = state.analogueModel.outcrops.filter(
+          (outcrop) => outcrop.outcropId !== id,
+        );
+      }),
+    // addAnalogueModelArea: (modelArea: GeologicalGroupDto) =>
+    //   set((state) => {
+    //     state.analogueModel.geologicalGroups.push(modelArea);
+    //   }),
+    // deleteAnalogueModelArea: (id: string) =>
+    //   set((state) => {
+    //     state.analogueModel.geologicalGroups =
+    //       state.analogueModel.geologicalGroups.filter(
+    //         (gde) => gde.geologicalGroupId !== id,
+    //       );
+    //   }),
     setComputeCases: (computeCases: ComputeCaseDto[]) =>
       set((state) => {
         state.computeCases = computeCases;
