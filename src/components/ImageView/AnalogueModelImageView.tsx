@@ -1,35 +1,25 @@
 import { Typography } from '@equinor/eds-core-react';
-import { getAnalogueModelImage } from '../../api/custom/getAnalogueModelImageById';
-import { useQuery } from '@tanstack/react-query';
-import { useFetchImageMetadata } from '../../hooks/useFetchImageMetadata';
 import { AreaCoordinateType } from '../AreaCoordinates/AreaCoordinates';
 import { ModelImageCanvas } from './ModelImageCanvas/ModelImageCanvas';
 import { CanvasWrapper } from './AnalogueModelImageView.styled';
+import { usePepmContextStore } from '../../hooks/GlobalState';
 
 export const AnalogueModelImageView = ({
-  modelId,
-  imageId,
   coordinateBox,
 }: {
-  modelId: string;
-  imageId: string;
   coordinateBox: AreaCoordinateType;
 }) => {
-  const { data, isLoading } = useQuery({
-    queryKey: ['analogue-model-image', modelId, imageId],
-    queryFn: () => getAnalogueModelImage(modelId, imageId),
-  });
-
-  const imageMetadata = useFetchImageMetadata(imageId);
+  const { analogueModelImageURL, analogueModelImageMetadata } =
+    usePepmContextStore();
 
   return (
     <>
-      {isLoading && <Typography>Loading ...</Typography>}
-      {data && imageMetadata.data?.data && (
+      {!analogueModelImageURL && <Typography>Loading ...</Typography>}
+      {analogueModelImageURL && analogueModelImageMetadata && (
         <CanvasWrapper>
           <ModelImageCanvas
-            imageData={data}
-            imageMetadata={imageMetadata.data?.data}
+            imageData={analogueModelImageURL}
+            imageMetadata={analogueModelImageMetadata}
             coordinateBox={coordinateBox}
             showLegend={true}
             showCoordinates={true}

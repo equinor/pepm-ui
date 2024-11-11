@@ -24,6 +24,8 @@ import {
 import { useFetchGrossDepData } from '../../../hooks/useFetchGrossDepData';
 import { useFetchCases } from '../../../hooks/useFetchCases';
 import { useFetchComputeSettings } from '../../../hooks/useFetchComputeSettings';
+import { useFetchImage } from '../../../hooks/useFetchImage';
+import { useFetchImageMetadata } from '../../../hooks/useFetchImageMetadata';
 
 // eslint-disable-next-line camelcase
 Icon.add({ mood_sad });
@@ -39,9 +41,12 @@ export const Model = () => {
   const geologyStandards = useFetchGrossDepData();
   const cases = useFetchCases();
   const computeSettings = useFetchComputeSettings();
+  const image = useFetchImage();
+  const imageMetadata = useFetchImageMetadata();
 
   const {
     setAnalogueModel,
+    setAnalogueModelImage,
     setComputeCases,
     setModelAreaTypes,
     setOutcrops,
@@ -51,10 +56,14 @@ export const Model = () => {
     setStratigraphicUnits,
     setGeologicalStandards,
     setComputeSettings,
+    setAnalogueModelImageMetadata,
   } = usePepmContextStore();
 
   useEffect(() => {
     if (data) setAnalogueModel(data.data);
+    if (image.data) setAnalogueModelImage(image.data);
+    if (imageMetadata.data?.data)
+      setAnalogueModelImageMetadata(imageMetadata.data.data);
     if (cases.data?.data) setComputeCases(cases.data.data);
     if (modelArea.data?.data) setModelAreaTypes(modelArea.data.data);
     if (outcropData.data?.data) setOutcrops(outcropData.data.data);
@@ -65,11 +74,15 @@ export const Model = () => {
   }, [
     cases.data?.data,
     data,
+    image,
     geologyStandards.data?.data,
     modelArea.data?.data,
     outcropData.data?.data,
     computeSettings.data?.data,
+    imageMetadata.data?.data,
     setAnalogueModel,
+    setAnalogueModelImage,
+    setAnalogueModelImageMetadata,
     setComputeCases,
     setGeologicalStandards,
     setModelAreaTypes,

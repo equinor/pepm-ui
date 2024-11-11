@@ -21,7 +21,6 @@ export const useModelArea = (allCasesList: ComputeCaseDto[]) => {
     analogueModel !== analogueModelDefault && analogueModel.modelAreas
       ? analogueModel.modelAreas.concat(wholeModelObject)
       : wholeModelObject;
-
   const selectedRowArea = useCallback(
     (rowId: string) => {
       const rowCase = allCasesList.filter((c) => c.computeCaseId === rowId);
