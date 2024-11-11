@@ -61,6 +61,9 @@ export const Model = () => {
 
   useEffect(() => {
     if (data) setAnalogueModel(data.data);
+  }, [data, setAnalogueModel]);
+
+  useEffect(() => {
     if (image.data) setAnalogueModelImage(image.data);
     if (imageMetadata.data?.data)
       setAnalogueModelImageMetadata(imageMetadata.data.data);
@@ -73,14 +76,12 @@ export const Model = () => {
       setComputeSettings(computeSettings.data.data);
   }, [
     cases.data?.data,
-    data,
     image,
     geologyStandards.data?.data,
     modelArea.data?.data,
     outcropData.data?.data,
     computeSettings.data?.data,
     imageMetadata.data?.data,
-    setAnalogueModel,
     setAnalogueModelImage,
     setAnalogueModelImageMetadata,
     setComputeCases,

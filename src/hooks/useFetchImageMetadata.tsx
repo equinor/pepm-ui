@@ -22,7 +22,7 @@ export const useFetchImageMetadata = () => {
         modelId,
         imageId,
       ),
-    enabled: !!token && modelId !== '',
+    enabled: !!token && modelId !== '' && imageId !== '',
   });
 
   return query;
