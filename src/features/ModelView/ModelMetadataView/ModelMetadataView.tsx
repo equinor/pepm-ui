@@ -26,6 +26,14 @@ import {
   analogueModelDefault,
   usePepmContextStore,
 } from '../../../hooks/GlobalState';
+import { useFetchOutcropData } from '../../../hooks/useFetchOutcropData';
+import {
+  useFetchSmdaCountries,
+  useFetchSmdaFields,
+  useFetchSmdaMetadataStratigraphicUnits,
+  useFetchSmdaStratigraphicColumns,
+} from '../../../hooks/useFetchStratColData';
+import { useFetchGrossDepData } from '../../../hooks/useFetchGrossDepData';
 
 export const ModelMetadataView = ({
   modelIdParent,
@@ -35,7 +43,22 @@ export const ModelMetadataView = ({
   uploadingProgress?: number;
 }) => {
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
-  const { analogueModel, analogueModelImageURL } = usePepmContextStore();
+  const {
+    analogueModel,
+    analogueModelImageURL,
+    setOutcrops,
+    setCountries,
+    setFields,
+    setStratigraphicColumns,
+    setStratigraphicUnits,
+    setGeologicalStandards,
+  } = usePepmContextStore();
+  const outcropData = useFetchOutcropData();
+  const countryData = useFetchSmdaCountries();
+  const fieldData = useFetchSmdaFields();
+  const stratColumnData = useFetchSmdaStratigraphicColumns();
+  const stratUnitData = useFetchSmdaMetadataStratigraphicUnits();
+  const geologyStandards = useFetchGrossDepData();
 
   const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false);
 
@@ -64,6 +87,31 @@ export const ModelMetadataView = ({
     },
     [generateThumbnail],
   );
+
+  useEffect(() => {
+    if (countryData.data?.data) setCountries(countryData.data.data);
+    if (fieldData.data?.data) setFields(fieldData.data.data);
+    if (stratColumnData.data?.data)
+      setStratigraphicColumns(stratColumnData.data.data);
+    if (stratUnitData.data?.data)
+      setStratigraphicUnits(stratUnitData.data.data);
+    if (outcropData.data?.data) setOutcrops(outcropData.data.data);
+    if (geologyStandards.data?.data)
+      setGeologicalStandards(geologyStandards.data.data);
+  }, [
+    geologyStandards.data?.data,
+    outcropData.data?.data,
+    countryData.data?.data,
+    fieldData.data?.data,
+    setGeologicalStandards,
+    setCountries,
+    setOutcrops,
+    setFields,
+    setStratigraphicColumns,
+    setStratigraphicUnits,
+    stratColumnData.data?.data,
+    stratUnitData.data?.data,
+  ]);
 
   useEffect(() => {
     if (
@@ -222,7 +270,8 @@ export const ModelMetadataView = ({
     }
   };
 
-  if (analogueModel === analogueModelDefault) return <p>Loading ...</p>;
+  if (analogueModel === analogueModelDefault && uploadingProgress === undefined)
+    return <p>Loading ...</p>;
 
   return (
     <Styled.Wrapper className="metadata-row">
