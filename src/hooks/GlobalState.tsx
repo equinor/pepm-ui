@@ -110,6 +110,13 @@ export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
       set((state) => {
         state.analogueModel = analogueModelDefault;
         state.analogueModelImageURL = '';
+        state.analogueModelImageMetadata = undefined;
+        state.stratigraphicColumns = [];
+        state.geologyStandards = [];
+        state.computeCases = [];
+        state.computeSettings = [];
+        state.objectResults = [];
+        state.variogramResults = [];
       }),
     setAnalogueModelImage: (image: string) =>
       set((state) => {
