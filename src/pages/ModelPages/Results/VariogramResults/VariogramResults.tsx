@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { CaseResultView } from '../../../../features/Results/CaseResult/CaseResultView/CaseResultView';
 import { NoResults } from '../../../../features/Results/NoResults/NoResults';
 import { usePepmContextStore } from '../../../../hooks/GlobalState';
@@ -5,8 +6,12 @@ import { useFetchVariogramResults } from '../../../../hooks/useFetchVariogramRes
 
 export const VariogramResults = () => {
   const { data, isLoading } = useFetchVariogramResults();
-  const { computeCases } = usePepmContextStore();
-  const variogramResults = data?.data;
+  const { computeCases, variogramResults, setVariogramResults } =
+    usePepmContextStore();
+
+  useEffect(() => {
+    if (data) setVariogramResults(data.data);
+  }, [data, setVariogramResults]);
 
   if (isLoading) return <>Loading ...</>;
 

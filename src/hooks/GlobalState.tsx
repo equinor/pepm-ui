@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import {
@@ -6,12 +7,18 @@ import {
   ComputeCaseDto,
   CountryDto,
   FieldDto,
+  GeologicalGroupDto,
   GeologicalStandardDto,
+  GetObjectResultsDto,
+  GetVariogramResultsDto,
+  ImageMetadataDto,
   JobStatus,
   ListComputeSettingsMethodDto,
+  ModelAreaDto,
   ModelAreaTypeDto,
   OutcropDto,
   StratColumnDto,
+  StratigraphicGroupDto,
   StratUnitDto,
 } from '../api/generated';
 
@@ -37,6 +44,8 @@ export const analogueModelDefault: AnalogueModelDetail = {
 
 type IPepmContext = {
   analogueModel: AnalogueModelDetail;
+  analogueModelImageURL: string;
+  analogueModelImageMetadata?: ImageMetadataDto;
   computeCases: ComputeCaseDto[];
   modelAreaTypes: ModelAreaTypeDto[];
   outcrops: OutcropDto[];
@@ -46,11 +55,24 @@ type IPepmContext = {
   stratigraphicUnits: StratUnitDto[];
   geologyStandards: GeologicalStandardDto[];
   computeSettings: ListComputeSettingsMethodDto[];
+  objectResults: GetObjectResultsDto[];
+  variogramResults: GetVariogramResultsDto[];
 };
 
 type IPepmContextActions = {
   setAnalogueModel: (analogueModel: AnalogueModelDetail) => void;
   setAnalogueModelDefault: () => void;
+  setAnalogueModelImage: (image: string) => void;
+  setAnalogueModelImageMetadata: (imageMetadata: ImageMetadataDto) => void;
+  addAnalogueModelStratGroup: (stratGroup: StratigraphicGroupDto) => void;
+  deleteAnalogueModelStratGroup: (id: string) => void;
+  addAnalogueModelArea: (modelArea: ModelAreaDto) => void;
+  updateAnalogueModelArea: (modelArea: ModelAreaDto) => void;
+  deleteAnalogueModelArea: (id: string) => void;
+  addAnalogueModelGde: (gde: GeologicalGroupDto) => void;
+  deleteAnalogueModelGde: (id: string) => void;
+  addAnalogueModelOutcrop: (outcrop: OutcropDto) => void;
+  deleteAnalogueModelOutcrop: (id: string) => void;
   setComputeCases: (computeCases: ComputeCaseDto[]) => void;
   setComputeCasesDefault: () => void;
   setModelAreaTypes: (modelAreaTypes: ModelAreaTypeDto[]) => void;
@@ -61,11 +83,14 @@ type IPepmContextActions = {
   setStratigraphicUnits: (fields: StratUnitDto[]) => void;
   setGeologicalStandards: (geologyStandards: GeologicalStandardDto[]) => void;
   setComputeSettings: (computeSettings: ListComputeSettingsMethodDto[]) => void;
+  setObjectEstimationResults: (objectResults: GetObjectResultsDto[]) => void;
+  setVariogramResults: (variogramResults: GetVariogramResultsDto[]) => void;
 };
 
 export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
   immer((set, get) => ({
     analogueModel: analogueModelDefault,
+    analogueModelImageURL: '',
     computeCases: [],
     modelAreaTypes: [],
     outcrops: [],
@@ -75,6 +100,8 @@ export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
     stratigraphicUnits: [],
     geologyStandards: [],
     computeSettings: [],
+    objectResults: [],
+    variogramResults: [],
     setAnalogueModel: (analogueModel: AnalogueModelDetail) =>
       set((state) => {
         state.analogueModel = analogueModel;
@@ -82,6 +109,63 @@ export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
     setAnalogueModelDefault: () =>
       set((state) => {
         state.analogueModel = analogueModelDefault;
+        state.analogueModelImageURL = '';
+      }),
+    setAnalogueModelImage: (image: string) =>
+      set((state) => {
+        state.analogueModelImageURL = image;
+      }),
+    setAnalogueModelImageMetadata: (imageMetadata: ImageMetadataDto) =>
+      set((state) => {
+        state.analogueModelImageMetadata = imageMetadata;
+      }),
+    addAnalogueModelStratGroup: (stratGroup: StratigraphicGroupDto) =>
+      set((state) => {
+        state.analogueModel.stratigraphicGroups.push(stratGroup);
+      }),
+    deleteAnalogueModelStratGroup: (id: string) =>
+      set((state) => {
+        state.analogueModel.stratigraphicGroups =
+          state.analogueModel.stratigraphicGroups.filter(
+            (stratGroup) => stratGroup.stratigraphicGroupId !== id,
+          );
+      }),
+    addAnalogueModelGde: (gde: GeologicalGroupDto) =>
+      set((state) => {
+        state.analogueModel.geologicalGroups.push(gde);
+      }),
+    deleteAnalogueModelGde: (id: string) =>
+      set((state) => {
+        state.analogueModel.geologicalGroups =
+          state.analogueModel.geologicalGroups.filter(
+            (gde) => gde.geologicalGroupId !== id,
+          );
+      }),
+    addAnalogueModelOutcrop: (outcrop: OutcropDto) =>
+      set((state) => {
+        state.analogueModel.outcrops.push(outcrop);
+      }),
+    deleteAnalogueModelOutcrop: (id: string) =>
+      set((state) => {
+        state.analogueModel.outcrops = state.analogueModel.outcrops.filter(
+          (outcrop) => outcrop.outcropId !== id,
+        );
+      }),
+    addAnalogueModelArea: (modelArea: ModelAreaDto) =>
+      set((state) => {
+        state.analogueModel.modelAreas.push(modelArea);
+      }),
+    updateAnalogueModelArea: (modelArea: ModelAreaDto) =>
+      set((state) => {
+        state.analogueModel.modelAreas = state.analogueModel.modelAreas.map(
+          (ma) => (ma.modelAreaId !== modelArea.modelAreaId ? ma : modelArea),
+        );
+      }),
+    deleteAnalogueModelArea: (id: string) =>
+      set((state) => {
+        state.analogueModel.modelAreas = state.analogueModel.modelAreas.filter(
+          (ma) => ma.modelAreaId !== id,
+        );
       }),
     setComputeCases: (computeCases: ComputeCaseDto[]) =>
       set((state) => {
@@ -122,6 +206,14 @@ export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
     setComputeSettings: (computeSettings: ListComputeSettingsMethodDto[]) =>
       set((state) => {
         state.computeSettings = computeSettings;
+      }),
+    setObjectEstimationResults: (objectResults: GetObjectResultsDto[]) =>
+      set((state) => {
+        state.objectResults = objectResults;
+      }),
+    setVariogramResults: (variogramResults: GetVariogramResultsDto[]) =>
+      set((state) => {
+        state.variogramResults = variogramResults;
       }),
   })),
 );

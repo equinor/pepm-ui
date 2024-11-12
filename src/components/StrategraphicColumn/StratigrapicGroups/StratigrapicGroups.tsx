@@ -64,7 +64,11 @@ export const StratigrapicGroups = ({
   ) => Promise<DeleteStratigraphicGroupCommandResponse | undefined>;
 }) => {
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
-  const { analogueModel } = usePepmContextStore();
+  const {
+    analogueModel,
+    addAnalogueModelStratGroup,
+    deleteAnalogueModelStratGroup,
+  } = usePepmContextStore();
   const [stratColumnObject, setStratColumnObject] = useState<StratColumnType>(
     defaultStratColumnData,
   );
@@ -76,7 +80,8 @@ export const StratigrapicGroups = ({
   };
 
   const deleteRow = async (id: string) => {
-    await deleteStratColRow(id);
+    const res = await deleteStratColRow(id);
+    if (res?.success) deleteAnalogueModelStratGroup(id);
   };
 
   const postSmdaMetadataRow = useMutation({
@@ -135,7 +140,10 @@ export const StratigrapicGroups = ({
         id: id,
         requestBody: postRequestBody,
       });
-      if (rowUpload.success) handleStratColDialog();
+      if (rowUpload.success) {
+        handleStratColDialog();
+        addAnalogueModelStratGroup(rowUpload.data);
+      }
     }
   };
 

@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
 import { Button, Typography } from '@equinor/eds-core-react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
@@ -21,7 +21,6 @@ import { OutcropAnalogueGroup } from '../../../components/OutcropAnalogue/Outcro
 import { StratigrapicGroups } from '../../../components/StrategraphicColumn/StratigrapicGroups/StratigrapicGroups';
 import { EditNameDescription } from '../EditNameDescription/EditNameDescription';
 import * as Styled from './ModelMetadataView.styled';
-import { getAnalogueModelImage } from '../../../api/custom/getAnalogueModelImageById';
 import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
 import {
   analogueModelDefault,
@@ -36,7 +35,7 @@ export const ModelMetadataView = ({
   uploadingProgress?: number;
 }) => {
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
-  const { analogueModel } = usePepmContextStore();
+  const { analogueModel, analogueModelImageURL } = usePepmContextStore();
 
   const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false);
 
@@ -47,14 +46,6 @@ export const ModelMetadataView = ({
   const defaultMetadata: AnalogueModelDetail = analogueModel
     ? analogueModel
     : analogueModelDefault;
-
-  const imageId = analogueModel.analogueModelImage?.analogueModelImageId ?? '';
-
-  const imageRequest = useQuery({
-    queryKey: ['analogue-model-image', modelId, imageId],
-    queryFn: () => getAnalogueModelImage(modelId!, imageId),
-    enabled: imageId !== '',
-  });
 
   const generateThumbnail = useMutation({
     mutationFn: (requestBody: GenerateThumbnailCommand) => {
@@ -263,15 +254,15 @@ export const ModelMetadataView = ({
               closeDialog={toggleEditMetadata}
             />
           </Styled.DescriptionMeta>
-          {imageRequest.data && analogueModel !== analogueModelDefault && (
+          {analogueModelImageURL && analogueModel !== analogueModelDefault && (
             <Styled.ModelImageView>
-              <img src={imageRequest.data} alt=""></img>
+              <img src={analogueModelImageURL} alt=""></img>
               <Typography>{analogueModel.name}</Typography>
             </Styled.ModelImageView>
           )}
           <Styled.ImageMessage>
             {analogueModel.isProcessed &&
-              !imageRequest.data &&
+              !analogueModelImageURL &&
               generateImageRequested.current && (
                 <div>
                   <Typography as="p">

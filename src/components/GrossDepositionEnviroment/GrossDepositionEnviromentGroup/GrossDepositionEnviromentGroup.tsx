@@ -53,13 +53,19 @@ export const GrossDepositionEnviromentGroup = ({
   ) => Promise<DeleteGeologicalGroupCommandResponse | undefined>;
 }) => {
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
-  const { analogueModel } = usePepmContextStore();
+  const { analogueModel, addAnalogueModelGde, deleteAnalogueModelGde } =
+    usePepmContextStore();
   const [showGdeDialog, setShowGdeDialog] = useState<boolean>(false);
   const [gdeObject, setGdeObject] = useState<GdeType>(defaultGdeData);
   const [errors, setErrors] = useState<GDEErrorType>({});
 
   const handleGdeDialog = () => {
     setShowGdeDialog(!showGdeDialog);
+  };
+
+  const handleGdeDelete = async (id: string) => {
+    const res = await deleteGdeRow(id);
+    if (res?.success) deleteAnalogueModelGde(id);
   };
 
   const postGdeRow = useMutation({
@@ -112,6 +118,7 @@ export const GrossDepositionEnviromentGroup = ({
         requestBody: postRequestBody,
       });
       if (rowUpload.success) {
+        addAnalogueModelGde(rowUpload.data);
         setGdeObject(defaultGdeData);
         handleGdeDialog();
       }
@@ -143,7 +150,7 @@ export const GrossDepositionEnviromentGroup = ({
                     {isOwnerOrAdmin && (
                       <Button
                         variant="ghost_icon"
-                        onClick={() => deleteGdeRow(row.geologicalGroupId)}
+                        onClick={() => handleGdeDelete(row.geologicalGroupId)}
                       >
                         <Icon
                           data={deleteIcon}

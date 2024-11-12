@@ -10,7 +10,7 @@ export const useFetchCases = () => {
   const { modelId } = useParams();
   const { instance, accounts } = useMsal();
   const token = useAccessToken(instance, accounts[0]);
-  const { setComputeCases } = usePepmContextStore();
+  const { setComputeCases, computeCases } = usePepmContextStore();
 
   const query = useQuery({
     queryKey: ['model-cases', modelId],
@@ -22,7 +22,8 @@ export const useFetchCases = () => {
     refetchInterval: 30000,
   });
 
-  if (query.data?.data) setComputeCases(query.data.data);
+  if (query.data?.data && computeCases.length !== 0)
+    setComputeCases(query.data.data);
 
   return query;
 };

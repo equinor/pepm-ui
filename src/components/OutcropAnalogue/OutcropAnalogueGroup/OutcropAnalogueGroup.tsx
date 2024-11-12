@@ -42,7 +42,8 @@ export const OutcropAnalogueGroup = ({
   modelIdParent?: string;
 }) => {
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
-  const { analogueModel } = usePepmContextStore();
+  const { analogueModel, addAnalogueModelOutcrop, deleteAnalogueModelOutcrop } =
+    usePepmContextStore();
   const [showOutcropDialog, setShowOutcropDialog] = useState<boolean>(false);
   const [errors, setErrors] = useState<OutcropErrorType>({});
   const [outcropObject, setOutcropObject] =
@@ -78,7 +79,10 @@ export const OutcropAnalogueGroup = ({
         id: id,
         requestBody: postRequestBody,
       });
-      if (rowUpload.success) handleOutcropDialog();
+      if (rowUpload.success) {
+        handleOutcropDialog();
+        addAnalogueModelOutcrop(rowUpload.data);
+      }
     }
   };
 
@@ -88,6 +92,7 @@ export const OutcropAnalogueGroup = ({
       id: id,
       outcropId: stratigraphicGroupId,
     });
+    if (res.success) deleteAnalogueModelOutcrop(stratigraphicGroupId);
     return res;
   };
 
@@ -132,7 +137,8 @@ export const OutcropAnalogueGroup = ({
                 <Table.Cell>
                   <Styled.StratColCell>{row.name}</Styled.StratColCell>
                 </Table.Cell>
-                {row.region.locations.length !== 0 ? (
+                {row.region?.locations &&
+                row.region?.locations?.length !== 0 ? (
                   <>
                     <Table.Cell>{row.region.locations[0].country}</Table.Cell>
                     <Table.Cell>
@@ -145,7 +151,7 @@ export const OutcropAnalogueGroup = ({
                     <Table.Cell></Table.Cell>
                   </>
                 )}
-                <Table.Cell>{row.region.name}</Table.Cell>
+                <Table.Cell>{row.region?.name}</Table.Cell>
                 <Table.Cell>
                   <Styled.StratColCell>
                     {row.basins?.map((item) => item)}
@@ -173,7 +179,6 @@ export const OutcropAnalogueGroup = ({
         <Dialog.CustomContent>
           <OutcropSelect
             outcropObject={outcropObject}
-            outcropGroup={analogueModel.outcrops}
             setOutcropObject={setOutcropObject}
             error={errors}
           />

@@ -10,7 +10,6 @@ import {
 } from '@equinor/eds-core-react';
 import { cloneDeep } from 'lodash';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
 import {
   AddAnalogueModelAreaCommandForm,
   CoordinateDto,
@@ -84,8 +83,13 @@ export const AreaCoordinates = ({
   });
   const [fallbackAreaCoordinate, setfallbackAreaCoordinate] =
     useState<AreaCoordinateType>();
-  const { modelId } = useParams();
-  const { analogueModel, modelAreaTypes, computeCases } = usePepmContextStore();
+  const {
+    analogueModel,
+    modelAreaTypes,
+    computeCases,
+    addAnalogueModelArea,
+    updateAnalogueModelArea,
+  } = usePepmContextStore();
   const { activeAreaResultList } = useModelResults(
     activeArea.name,
     computeCases,
@@ -107,13 +111,9 @@ export const AreaCoordinates = ({
       return;
     }
 
-    const selectableAreas =
-      analogueModel.modelAreas && analogueModel.modelAreas;
-
-    const selectedArea = selectableAreas?.filter(
+    const selectedArea = analogueModel.modelAreas?.filter(
       (area) => area.modelAreaType === changes.selectedItems[0].name,
     );
-
     // Area has no previous coordinates set
     //    Initialize
     if (selectedArea?.length === 0) {
@@ -200,7 +200,7 @@ export const AreaCoordinates = ({
   };
 
   const postModelArea = async () => {
-    if (modelId) {
+    if (analogueModel.analogueModelId) {
       if (activeArea && areaCoordinate) {
         const postRequestBody: AddAnalogueModelAreaCommandForm = {
           modelAreaTypeId: activeArea.modelAreaTypeId,
@@ -209,11 +209,12 @@ export const AreaCoordinates = ({
 
         const coordinateRes =
           await mutateAreaCoordinates.postAreaCoordinates.mutateAsync({
-            id: modelId,
+            id: analogueModel.analogueModelId,
             requestBody: postRequestBody,
           });
 
         if (coordinateRes.success) {
+          addAnalogueModelArea(coordinateRes.data);
           const res = await clearAndUpdate();
           if (res === 'success') setSaveAlert(true);
         }
@@ -222,14 +223,15 @@ export const AreaCoordinates = ({
   };
 
   const putModelArea = async () => {
-    if (modelId) {
+    if (analogueModel.analogueModelId) {
       const coordinateRes =
         await mutateAreaCoordinates.putAreaCoordinates.mutateAsync({
-          id: modelId,
+          id: analogueModel.analogueModelId,
           modelAreaId: areaCoordinate.modelAreaId,
           requestBody: { coordinates: areaCoordinate.coordinates },
         });
       if (coordinateRes.success) {
+        updateAnalogueModelArea(coordinateRes.data);
         const res = await clearAndUpdate();
         if (res === 'success') setSaveAlert(true);
       }
@@ -375,11 +377,7 @@ export const AreaCoordinates = ({
           )}
         {analogueModel.analogueModelId &&
           analogueModel.analogueModelImage?.analogueModelImageId && (
-            <AnalogueModelImageView
-              modelId={analogueModel.analogueModelId}
-              imageId={analogueModel.analogueModelImage?.analogueModelImageId}
-              coordinateBox={areaCoordinate}
-            />
+            <AnalogueModelImageView coordinateBox={areaCoordinate} />
           )}
       </Styled.ContentSplitter>
     </>

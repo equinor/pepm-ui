@@ -11,27 +11,24 @@ import { usePepmContextStore } from '../../../hooks/GlobalState';
 
 export const OutcropSelect = ({
   outcropObject,
-  outcropGroup,
   error,
   setOutcropObject,
 }: {
   outcropObject: OutcropType;
-  outcropGroup: OutcropDto[];
   error: OutcropErrorType;
   setOutcropObject: React.Dispatch<React.SetStateAction<OutcropType>>;
 }) => {
-  const { outcrops } = usePepmContextStore();
+  const { outcrops, analogueModel } = usePepmContextStore();
   const oc: OutcropDto[] = [...outcrops];
 
   if (outcrops.length === 0) return <p>Loading .....</p>;
 
   const filterDisabled = (option: OutcropDto) => {
-    const caseExists = outcropGroup.filter(
+    const caseExists = analogueModel.outcrops.filter(
       (outcrop) => outcrop.outcropId === option.outcropId,
     );
     return caseExists.length > 0;
   };
-
   return (
     <StyledDialog.AutocompleteList>
       <Autocomplete
@@ -64,8 +61,8 @@ export const OutcropSelect = ({
         variant={error.Analogue ? 'error' : undefined}
         helperText={error.Analogue ? error.Analogue : undefined}
       />
-
-      {outcropObject.region?.locations.length !== 0 ? (
+      {outcropObject.region?.locations &&
+      outcropObject.region?.locations?.length !== 0 ? (
         <>
           <Autocomplete
             label="Country"
@@ -89,12 +86,12 @@ export const OutcropSelect = ({
             selectedOptions={[outcropObject.region?.locations[0].locationName]}
             initialSelectedOptions={
               outcropObject.region
-                ? [outcropObject.region.locations[0].locationName]
+                ? [outcropObject.region?.locations[0].locationName]
                 : ['']
             }
             options={
               outcropObject.region !== undefined
-                ? [outcropObject.region.locations[0].locationName]
+                ? [outcropObject.region?.locations[0].locationName]
                 : ['']
             }
             noOptionsText="No options"

@@ -1,13 +1,12 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useQuery } from '@tanstack/react-query';
 import { useMsal } from '@azure/msal-react';
-import { useParams } from 'react-router-dom';
 import { useAccessToken } from './useAccessToken';
-import { AnalogueModelImagesService } from '../api/generated';
-import { usePepmContextStore } from './GlobalState';
+import { analogueModelDefault, usePepmContextStore } from './GlobalState';
+import { getAnalogueModelImage } from '../api/custom/getAnalogueModelImageById';
 
-export const useFetchImageMetadata = () => {
+export const useFetchImage = () => {
   const { analogueModel } = usePepmContextStore();
-  const { modelId = '' } = useParams();
   const { instance, accounts } = useMsal();
   const token = useAccessToken(instance, accounts[0]);
 
@@ -16,13 +15,11 @@ export const useFetchImageMetadata = () => {
     : '';
 
   const query = useQuery({
-    queryKey: ['analogue-model-image-metadata', modelId, imageId],
+    queryKey: ['analogue-model-image', analogueModel.analogueModelId, imageId],
     queryFn: () =>
-      AnalogueModelImagesService.getApiAnalogueModelsImagesMetadata(
-        modelId,
-        imageId,
-      ),
-    enabled: !!token && modelId !== '' && imageId !== '',
+      getAnalogueModelImage(analogueModel.analogueModelId, imageId),
+    enabled:
+      !!token && analogueModel !== analogueModelDefault && imageId !== '',
   });
 
   return query;
