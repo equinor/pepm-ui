@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.6.0](https://github.com/equinor/pepm-ui/compare/v1.5.0...v1.6.0) (2024-11-12)
+
+
+### 🧹 Chores
+
+* Fixed missing import ([#366](https://github.com/equinor/pepm-ui/issues/366)) ([5c51405](https://github.com/equinor/pepm-ui/commit/5c51405f38fa74809318fd103a2e97cebd31cdae))
+
+
+### ✨ Features
+
+* added outcrop region and location ([#362](https://github.com/equinor/pepm-ui/issues/362)) ([25e01fa](https://github.com/equinor/pepm-ui/commit/25e01fad271a54016f9721a1ad3ac6dcc960c97e))
+* Global state continued ([#359](https://github.com/equinor/pepm-ui/issues/359)) ([b72e7e9](https://github.com/equinor/pepm-ui/commit/b72e7e9425fa86492de13a52a176090a0c6a0b55))
+
+
+### 🐛 Bug Fixes
+
+* Add back in horizontal scrollbar on model table. ([#360](https://github.com/equinor/pepm-ui/issues/360)) ([6df30fe](https://github.com/equinor/pepm-ui/commit/6df30feb15779a0dd5824f5f225b200f8de195b5))
+* Fixed bugs where global state was not loaded properly ([#371](https://github.com/equinor/pepm-ui/issues/371)) ([7142844](https://github.com/equinor/pepm-ui/commit/7142844d19768c640236cb6c40bafb9e29da1e2d))
+* gde bugs ([#346](https://github.com/equinor/pepm-ui/issues/346)) ([cc3058a](https://github.com/equinor/pepm-ui/commit/cc3058aa6dc83b09b172232c56fdcaa4757a3357))
+
 ## [1.5.0](https://github.com/equinor/pepm-ui/compare/v1.4.0...v1.5.0) (2024-10-17)
 
 
