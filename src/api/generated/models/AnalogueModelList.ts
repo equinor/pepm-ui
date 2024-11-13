@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { AnalogueModelConfigurationDto } from './AnalogueModelConfigurationDto';
 import type { AnalogueModelSourceType } from './AnalogueModelSourceType';
 import type { GeologicalGroupDto } from './GeologicalGroupDto';
 import type { JobStatus } from './JobStatus';
@@ -21,6 +22,7 @@ export type AnalogueModelList = {
     stratigraphicGroups: Array<StratigraphicGroupDto>;
     geologicalGroups: Array<GeologicalGroupDto>;
     outcrops: Array<OutcropDto>;
+    iniParameters: AnalogueModelConfigurationDto;
     analogueModelId: string;
     name: string;
     description: string;

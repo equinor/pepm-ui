@@ -25,7 +25,11 @@ import {
 Icon.add({ error_outlined });
 
 interface AddModelDialogProps {
-  confirm?: (file: File, metadata: AnalogueModelDetail) => Promise<void>;
+  confirm?: (
+    file: File,
+    metadata: AnalogueModelDetail,
+    iniFile?: File,
+  ) => Promise<void>;
   progress?: number;
   uploading?: boolean;
   isAddUploading?: boolean;
@@ -109,16 +113,16 @@ export const HandleModelComponent = ({
     };
 
     const finishSubmit = () => {
-      if (files.NC && confirm) {
-        confirm(files.NC, metadata);
-      }
+      if (files.NC && confirm && files.INI) {
+        confirm(files.NC, metadata, files.INI);
+      } else if (files.NC && confirm) confirm(files.NC, metadata);
       cleanupStates();
     };
 
     if (Object.keys(errors).length === 0 && submitting) {
       finishSubmit();
     }
-  }, [confirm, errors, files.NC, metadata, submitting]);
+  }, [confirm, errors, files, metadata, submitting]);
 
   function toggleINIFileContent() {
     setFileDisplay(!isFileDisplay);

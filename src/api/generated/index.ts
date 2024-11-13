@@ -24,6 +24,7 @@ export type { AddMetadataResponseDto } from './models/AddMetadataResponseDto';
 export type { AddParameterDto } from './models/AddParameterDto';
 export type { AddStatigraphicGroupForm } from './models/AddStatigraphicGroupForm';
 export type { AddStratigraphicGroupCommandResponse } from './models/AddStratigraphicGroupCommandResponse';
+export type { AnalogueModelConfigurationDto } from './models/AnalogueModelConfigurationDto';
 export type { AnalogueModelDetail } from './models/AnalogueModelDetail';
 export type { AnalogueModelImageDto } from './models/AnalogueModelImageDto';
 export type { AnalogueModelList } from './models/AnalogueModelList';
@@ -35,6 +36,7 @@ export type { ComputeCaseInputSettingsDto } from './models/ComputeCaseInputSetti
 export type { ComputeCaseModelAreaDto } from './models/ComputeCaseModelAreaDto';
 export { ComputeJobStatus } from './models/ComputeJobStatus';
 export { ComputeType } from './models/ComputeType';
+export type { ConfigurationParameterDto } from './models/ConfigurationParameterDto';
 export type { ConvertAnalogueModelCommand } from './models/ConvertAnalogueModelCommand';
 export type { ConvertAnalogueModelCommandResponse } from './models/ConvertAnalogueModelCommandResponse';
 export type { ConvertAnalogueModelDto } from './models/ConvertAnalogueModelDto';
@@ -154,6 +156,8 @@ export type { UploadChunkCommandResponse } from './models/UploadChunkCommandResp
 export type { UploadDetail } from './models/UploadDetail';
 export { UploadFileCategory } from './models/UploadFileCategory';
 export { UploadFileType } from './models/UploadFileType';
+export type { UploadIniFileCommandResponse } from './models/UploadIniFileCommandResponse';
+export type { UploadIniFileDto } from './models/UploadIniFileDto';
 export type { UploadList } from './models/UploadList';
 export { UploadStatus } from './models/UploadStatus';
 
