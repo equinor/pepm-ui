@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
 import { Button, Typography } from '@equinor/eds-core-react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
@@ -21,12 +21,19 @@ import { OutcropAnalogueGroup } from '../../../components/OutcropAnalogue/Outcro
 import { StratigrapicGroups } from '../../../components/StrategraphicColumn/StratigrapicGroups/StratigrapicGroups';
 import { EditNameDescription } from '../EditNameDescription/EditNameDescription';
 import * as Styled from './ModelMetadataView.styled';
-import { getAnalogueModelImage } from '../../../api/custom/getAnalogueModelImageById';
 import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
 import {
   analogueModelDefault,
   usePepmContextStore,
 } from '../../../hooks/GlobalState';
+import { useFetchOutcropData } from '../../../hooks/useFetchOutcropData';
+import {
+  useFetchSmdaCountries,
+  useFetchSmdaFields,
+  useFetchSmdaMetadataStratigraphicUnits,
+  useFetchSmdaStratigraphicColumns,
+} from '../../../hooks/useFetchStratColData';
+import { useFetchGrossDepData } from '../../../hooks/useFetchGrossDepData';
 
 export const ModelMetadataView = ({
   modelIdParent,
@@ -36,7 +43,22 @@ export const ModelMetadataView = ({
   uploadingProgress?: number;
 }) => {
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
-  const { analogueModel } = usePepmContextStore();
+  const {
+    analogueModel,
+    analogueModelImageURL,
+    setOutcrops,
+    setCountries,
+    setFields,
+    setStratigraphicColumns,
+    setStratigraphicUnits,
+    setGeologicalStandards,
+  } = usePepmContextStore();
+  const outcropData = useFetchOutcropData();
+  const countryData = useFetchSmdaCountries();
+  const fieldData = useFetchSmdaFields();
+  const stratColumnData = useFetchSmdaStratigraphicColumns();
+  const stratUnitData = useFetchSmdaMetadataStratigraphicUnits();
+  const geologyStandards = useFetchGrossDepData();
 
   const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false);
 
@@ -47,14 +69,6 @@ export const ModelMetadataView = ({
   const defaultMetadata: AnalogueModelDetail = analogueModel
     ? analogueModel
     : analogueModelDefault;
-
-  const imageId = analogueModel.analogueModelImage?.analogueModelImageId ?? '';
-
-  const imageRequest = useQuery({
-    queryKey: ['analogue-model-image', modelId, imageId],
-    queryFn: () => getAnalogueModelImage(modelId!, imageId),
-    enabled: imageId !== '',
-  });
 
   const generateThumbnail = useMutation({
     mutationFn: (requestBody: GenerateThumbnailCommand) => {
@@ -73,6 +87,31 @@ export const ModelMetadataView = ({
     },
     [generateThumbnail],
   );
+
+  useEffect(() => {
+    if (countryData.data?.data) setCountries(countryData.data.data);
+    if (fieldData.data?.data) setFields(fieldData.data.data);
+    if (stratColumnData.data?.data)
+      setStratigraphicColumns(stratColumnData.data.data);
+    if (stratUnitData.data?.data)
+      setStratigraphicUnits(stratUnitData.data.data);
+    if (outcropData.data?.data) setOutcrops(outcropData.data.data);
+    if (geologyStandards.data?.data)
+      setGeologicalStandards(geologyStandards.data.data);
+  }, [
+    geologyStandards.data?.data,
+    outcropData.data?.data,
+    countryData.data?.data,
+    fieldData.data?.data,
+    setGeologicalStandards,
+    setCountries,
+    setOutcrops,
+    setFields,
+    setStratigraphicColumns,
+    setStratigraphicUnits,
+    stratColumnData.data?.data,
+    stratUnitData.data?.data,
+  ]);
 
   useEffect(() => {
     if (
@@ -231,7 +270,8 @@ export const ModelMetadataView = ({
     }
   };
 
-  if (analogueModel === analogueModelDefault) return <p>Loading ...</p>;
+  if (analogueModel === analogueModelDefault && uploadingProgress === undefined)
+    return <p>Loading ...</p>;
 
   return (
     <Styled.Wrapper className="metadata-row">
@@ -263,15 +303,15 @@ export const ModelMetadataView = ({
               closeDialog={toggleEditMetadata}
             />
           </Styled.DescriptionMeta>
-          {imageRequest.data && analogueModel !== analogueModelDefault && (
+          {analogueModelImageURL && analogueModel !== analogueModelDefault && (
             <Styled.ModelImageView>
-              <img src={imageRequest.data} alt=""></img>
+              <img src={analogueModelImageURL} alt=""></img>
               <Typography>{analogueModel.name}</Typography>
             </Styled.ModelImageView>
           )}
           <Styled.ImageMessage>
             {analogueModel.isProcessed &&
-              !imageRequest.data &&
+              !analogueModelImageURL &&
               generateImageRequested.current && (
                 <div>
                   <Typography as="p">

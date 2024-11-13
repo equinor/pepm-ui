@@ -2,11 +2,16 @@ import { CaseResultView } from '../../../../features/Results/CaseResult/CaseResu
 import { NoResults } from '../../../../features/Results/NoResults/NoResults';
 import { useFetchObjectResults } from '../../../../hooks/useFetchChannelResults';
 import { usePepmContextStore } from '../../../../hooks/GlobalState';
+import { useEffect } from 'react';
 
 export const ObjectResult = () => {
-  const { computeCases } = usePepmContextStore();
+  const { computeCases, objectResults, setObjectEstimationResults } =
+    usePepmContextStore();
   const { data, isLoading } = useFetchObjectResults();
-  const objectResults = data?.data;
+
+  useEffect(() => {
+    if (data) setObjectEstimationResults(data.data);
+  }, [data, setObjectEstimationResults]);
 
   if (isLoading) return <>Loading ...</>;
 

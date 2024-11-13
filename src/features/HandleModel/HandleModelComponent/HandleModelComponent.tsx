@@ -71,7 +71,7 @@ export const HandleModelComponent = ({
   existingData,
   modelId,
 }: AddModelDialogProps) => {
-  const { setAnalogueModel } = usePepmContextStore();
+  const { setAnalogueModelDefault } = usePepmContextStore();
   const [isFileDisplay, setFileDisplay] = useState<boolean>(false);
   const [files, setFiles] = useState<FilesProps>(defaultFiles);
   const [metadata, setMetadata] =
@@ -193,7 +193,7 @@ export const HandleModelComponent = ({
                 const path = generatePath('../:id/details', {
                   id: modelId,
                 });
-                setAnalogueModel(metadata);
+                setAnalogueModelDefault();
                 navigate(path);
               }}
             >

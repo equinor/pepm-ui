@@ -41,11 +41,9 @@ export const useGetParameterList = (
 
         case 'ContiniousParameter':
           if (continiousParameterSettings)
-            selectedId =
-              continiousParameterSettings &&
-              continiousParameterSettings[0].inputSettings.filter(
-                (i) => (i.inputSettingTypeId = setting[0].inputSettingValueId),
-              )[0].inputSettingTypeId;
+            selectedId = continiousParameterSettings[0].inputSettings.filter(
+              (i) => i.name === methodType,
+            )[0].inputSettingTypeId;
           return selectedId;
       }
     }
@@ -64,7 +62,6 @@ export const useGetParameterList = (
         settingType,
         methodType,
       );
-
       if (inputSettingTypeId)
         setting.forEach((m) => {
           const temp = {
