@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { spacings } from '../../tokens/spacings';
-import { theme } from '../../tokens/theme';
+import { theme } from '../../../tokens/theme';
+import { spacings } from '../../../tokens/spacings';
 
 export const ImageWrapper = styled.div`
   display: flex;

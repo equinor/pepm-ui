@@ -1,8 +1,8 @@
 import { Typography } from '@equinor/eds-core-react';
-import { AreaCoordinateType } from '../AreaCoordinates/AreaCoordinates';
+import { AreaCoordinateType } from '../../AreaCoordinates/AreaCoordinates';
 import { ModelImageCanvas } from './ModelImageCanvas/ModelImageCanvas';
 import { CanvasWrapper } from './AnalogueModelImageView.styled';
-import { usePepmContextStore } from '../../hooks/GlobalState';
+import { usePepmContextStore } from '../../../hooks/GlobalState';
 
 export const AnalogueModelImageView = ({
   coordinateBox,

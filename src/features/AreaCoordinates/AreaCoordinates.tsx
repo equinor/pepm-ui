@@ -16,8 +16,6 @@ import {
   ModelAreaTypeDto,
 } from '../../api/generated';
 import { useMutateAreaCoordinates } from '../../hooks/useMutateAreaCoordinates';
-import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
-import { AnalogueModelImageView } from '../ImageView/AnalogueModelImageView';
 import * as Styled from './AreaCoordinates.styled';
 import { CoordinateInput } from './CoordinateInput/CoordinateInput';
 import {
@@ -29,6 +27,8 @@ import {
   analogueModelDefault,
   usePepmContextStore,
 } from '../../hooks/GlobalState';
+import { ErrorMessage } from './ErrorMessage/ErrorMessage';
+import { AnalogueModelImageView } from './ImageView/AnalogueModelImageView';
 
 export type AreaCoordinateType = {
   modelAreaId: string;

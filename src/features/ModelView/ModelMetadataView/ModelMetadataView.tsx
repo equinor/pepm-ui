@@ -34,7 +34,7 @@ import {
   useFetchSmdaStratigraphicColumns,
 } from '../../../hooks/useFetchStratColData';
 import { useFetchGrossDepData } from '../../../hooks/useFetchGrossDepData';
-import { IniParametersDialog } from '../../../components/IniParametersDialog/IniParametersDialog';
+import { IniParametersDialog } from '../IniParametersDialog/IniParametersDialog';
 import { IniParametersWrapper } from './ModelMetadataView.styled';
 
 export const ModelMetadataView = ({

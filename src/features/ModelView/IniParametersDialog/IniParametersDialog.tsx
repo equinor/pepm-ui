@@ -1,6 +1,6 @@
 import { Accordion, Button, Dialog, Table } from '@equinor/eds-core-react';
 import { useState } from 'react';
-import { AnalogueModelConfigurationDto } from '../../api/generated';
+import { AnalogueModelConfigurationDto } from '../../../api/generated';
 import {
   IniDialogContent,
   IniParamAccordion,
