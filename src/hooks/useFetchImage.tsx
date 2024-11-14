@@ -2,7 +2,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMsal } from '@azure/msal-react';
 import { useAccessToken } from './useAccessToken';
-import { analogueModelDefault, usePepmContextStore } from './GlobalState';
+import { usePepmContextStore } from './GlobalState';
 import { getAnalogueModelImage } from '../api/custom/getAnalogueModelImageById';
 
 export const useFetchImage = () => {
@@ -18,8 +18,7 @@ export const useFetchImage = () => {
     queryKey: ['analogue-model-image', analogueModel.analogueModelId, imageId],
     queryFn: () =>
       getAnalogueModelImage(analogueModel.analogueModelId, imageId),
-    enabled:
-      !!token && analogueModel !== analogueModelDefault && imageId !== '',
+    enabled: !!token && imageId !== '',
   });
 
   return query;
