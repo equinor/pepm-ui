@@ -18,7 +18,7 @@ export const Layout = () => {
       <Styled.OutletWrapper>
         <Outlet />
       </Styled.OutletWrapper>
-      <Footer text="All information is proprietary of Equinor © 2023 Equinor ASA" />
+      <Footer text="All information is proprietary of Equinor © 2024 Equinor ASA" />
     </>
   );
 };
