@@ -36,6 +36,9 @@ export const AddModel = () => {
   const [modelId, setModelId] = useState<string>('');
   const [uploading, setUploading] = useState<boolean>(false);
   const [counter, setCounter] = useState<number>(defaultCounterValue);
+  const [iniFile, setIniFile] = useState<File>();
+  const [iniFileUploading, setIniFileUploading] = useState<boolean>(false);
+  const [iniFileSucceeded, setIniFileSucceeded] = useState<boolean>(false);
   const [fileToBeUpload, setFileToBeUpload] = useState<File>();
   const [beginingOfTheChunk, setBeginingOfTheChunk] = useState<number>(
     defaultBeginningOfchunk,
@@ -179,10 +182,8 @@ export const AddModel = () => {
         setFileSize(file.size);
       }
 
-      if (iniFile && modelId) {
-        const data = new FormData();
-        data.append('file', iniFile);
-        await uploadIniFile.mutateAsync({ id: modelId, requestBody: data });
+      if (iniFile) {
+        setIniFile(iniFile);
       }
     }
   }
@@ -253,6 +254,31 @@ export const AddModel = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fileToBeUpload, progress]);
+
+  useEffect(() => {
+    const uploadIniFileAsync = async (file: File, id: string) => {
+      const data = new FormData();
+      data.append('file', file!);
+      const response = await uploadIniFile.mutateAsync({
+        id: id,
+        requestBody: data,
+      });
+      return response;
+    };
+
+    if (!iniFileUploading && !iniFileSucceeded && iniFile && modelId) {
+      setIniFileUploading(true);
+      const response = uploadIniFileAsync(iniFile, modelId);
+      response.then(
+        (res) => {
+          setIniFileSucceeded(true);
+        },
+        () => {
+          setIniFileUploading(false);
+        },
+      );
+    }
+  }, [modelId, iniFile, iniFileUploading, iniFileSucceeded, uploadIniFile]);
 
   function clearStatus() {
     setUploadStatus(undefined);

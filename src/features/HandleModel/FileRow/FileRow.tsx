@@ -3,7 +3,7 @@ import { delete_to_trash as deleteIcon } from '@equinor/eds-icons';
 import { ChangeEvent } from 'react';
 import IconButton from '../../../components/IconButton/IconButton';
 import { FileUploader } from '../FileUploader/FileUploader';
-import * as Styled from './FileColumn.styled';
+import * as Styled from './FileRow.styled';
 
 type FileDisplay = { isVisible: boolean; toggle: () => void };
 
@@ -15,7 +15,7 @@ interface FileColumnProps {
   fileDisplay?: FileDisplay;
   fileSize?: number;
 }
-export const FileColumn = ({
+export const FileRow = ({
   onChange,
   onDelete,
   INI,

@@ -27,7 +27,10 @@ export const FileUploader = ({
     <>{file.name}</>
   ) : (
     <form method="post" encType="multipart/form-data">
-      <FileUpload htmlFor="file-upload" className="custom-file-upload">
+      <FileUpload
+        htmlFor={`${acceptType.toLowerCase()}`}
+        className="custom-file-upload"
+      >
         {INI && (
           <Icon fill={theme.light.text.staticIconsTertiary} data={arrowIcon} />
         )}
@@ -36,7 +39,7 @@ export const FileUploader = ({
         </SelectFile>
         {INI && '(optional)'}
         <input
-          id="file-upload"
+          id={`${acceptType.toLowerCase()}`}
           required={!INI}
           type="file"
           accept={`.${acceptType.toLowerCase()}`}

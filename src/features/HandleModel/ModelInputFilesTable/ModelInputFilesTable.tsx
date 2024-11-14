@@ -1,6 +1,6 @@
 /* eslint-disable max-lines-per-function */
 import { Table } from '@equinor/eds-core-react';
-import { FileColumn } from '../FileColumn/FileColumn';
+import { FileRow } from '../FileRow/FileRow';
 
 type FileDisplay = { isVisible: boolean; toggle: () => void };
 
@@ -8,18 +8,16 @@ export const ModelInputFilesTable = ({
   fileDisplay,
   files,
   setFiles,
-  fileSize,
   fileChange,
 }: {
   fileDisplay: FileDisplay;
-  files: { NC?: File; INI?: File };
+  files: { INI?: File; NC?: File };
   setFiles: React.Dispatch<
     React.SetStateAction<{
       NC?: File | undefined;
       INI?: File | undefined;
     }>
   >;
-  fileSize: number;
   fileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
   return (
@@ -33,18 +31,19 @@ export const ModelInputFilesTable = ({
         </Table.Row>
       </Table.Head>
       <Table.Body>
-        <FileColumn
+        <FileRow
           file={files?.NC}
           onChange={fileChange}
           onDelete={() => setFiles({ ...files, NC: undefined })}
-          fileSize={fileSize}
+          fileSize={files.NC?.size}
         />
-        <FileColumn
+        <FileRow
           INI
           file={files?.INI}
           onChange={fileChange}
           onDelete={() => setFiles({ ...files, INI: undefined })}
           fileDisplay={fileDisplay}
+          fileSize={files.INI?.size}
         />
       </Table.Body>
     </Table>
