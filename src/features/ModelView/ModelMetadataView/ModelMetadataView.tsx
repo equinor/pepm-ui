@@ -5,13 +5,9 @@ import { useMutation } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
-  AddAnalogueModelMetadataCommandForm,
-  AddMetadataDto,
   AnalogueModelDetail,
-  AnalogueModelMetadataService,
   GenerateThumbnailCommand,
   JobsService,
-  MetadataDto,
   UpdateAnalogueModelCommandBody,
 } from '../../../api/generated';
 import { AnalogueModelsService } from '../../../api/generated/services/AnalogueModelsService';
@@ -52,6 +48,7 @@ export const ModelMetadataView = ({
     setStratigraphicColumns,
     setStratigraphicUnits,
     setGeologicalStandards,
+    setAnalogueModel,
   } = usePepmContextStore();
   const outcropData = useFetchOutcropData();
   const countryData = useFetchSmdaCountries();
@@ -65,10 +62,6 @@ export const ModelMetadataView = ({
   const generateImageRequested = useRef(false);
 
   const { modelId } = useParams();
-
-  const defaultMetadata: AnalogueModelDetail = analogueModel
-    ? analogueModel
-    : analogueModelDefault;
 
   const generateThumbnail = useMutation({
     mutationFn: (requestBody: GenerateThumbnailCommand) => {
@@ -137,6 +130,7 @@ export const ModelMetadataView = ({
   }
 
   const updateNameDescription = useMutation({
+    mutationKey: ['analogue-model'],
     mutationFn: ({
       id,
       requestBody,
@@ -147,34 +141,6 @@ export const ModelMetadataView = ({
       return AnalogueModelsService.putApiAnalogueModels(id, requestBody);
     },
   });
-
-  const uploadModelMetadata = useMutation({
-    mutationFn: ({
-      id,
-      requestBody,
-    }: {
-      id: string;
-      requestBody: AddAnalogueModelMetadataCommandForm;
-    }) => {
-      return AnalogueModelMetadataService.putApiAnalogueModelsMetadata(
-        id,
-        requestBody,
-      );
-    },
-    onSuccess: () => {
-      queryClient.refetchQueries();
-    },
-  });
-
-  const metadataList: AddMetadataDto[] = [];
-  function addMetadataFields(metadata?: MetadataDto[]) {
-    const filteredMetadata = metadata?.filter(
-      (m) => m.metadataType !== 'NoRelevant',
-    );
-    if (!filteredMetadata) return;
-    const obj = filteredMetadata.map((x) => ({ metadataId: x.metadataId }));
-    metadataList.push(...obj);
-  }
 
   const updateModelMetadata = async (metadata: AnalogueModelDetail) => {
     const id = analogueModel.analogueModelId
@@ -190,16 +156,7 @@ export const ModelMetadataView = ({
       id: id,
       requestBody: modelMetadata,
     });
-
-    addMetadataFields(metadata.metadata);
-    const readyMetadata: AddAnalogueModelMetadataCommandForm = {
-      metadata: metadataList,
-    };
-
-    await uploadModelMetadata.mutateAsync({
-      id: id,
-      requestBody: readyMetadata,
-    });
+    setAnalogueModel(metadata);
     toggleEditMetadata();
   };
 
@@ -299,7 +256,6 @@ export const ModelMetadataView = ({
             <EditNameDescription
               edit={updateModelMetadata}
               isEdit={isAddModelDialog}
-              defaultMetadata={defaultMetadata}
               closeDialog={toggleEditMetadata}
             />
           </Styled.DescriptionMeta>

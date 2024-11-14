@@ -5,25 +5,24 @@ import { AnalogueModelDetail } from '../../../api/generated';
 import { validateValues } from '../../HandleModel/HandleModelComponent/HandleModelComponent.hooks';
 import { ModelMetadata } from '../../HandleModel/ModelMetadata/ModelMetadata';
 import * as Styled from './EditNameDescription.styled';
+import { usePepmContextStore } from '../../../hooks/GlobalState';
 export const EditNameDescription = ({
   edit,
   isEdit,
-  defaultMetadata,
   closeDialog,
 }: {
   edit: (metadata: AnalogueModelDetail) => Promise<void>;
   isEdit: boolean;
-  defaultMetadata: AnalogueModelDetail;
   closeDialog: () => void;
 }) => {
+  const { analogueModel } = usePepmContextStore();
   const [errors, setErrors] = useState({});
-  const [metadata, setMetadata] =
-    useState<AnalogueModelDetail>(defaultMetadata);
+  const [metadata, setMetadata] = useState<AnalogueModelDetail>(analogueModel);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     const cleanupStates = () => {
-      if (!isEdit) setMetadata(defaultMetadata);
+      if (!isEdit) setMetadata(analogueModel);
       setSubmitting(false);
     };
 
@@ -37,7 +36,7 @@ export const EditNameDescription = ({
     if (Object.keys(errors).length === 0 && submitting) {
       finishSubmit();
     }
-  }, [defaultMetadata, edit, errors, isEdit, metadata, submitting]);
+  }, [analogueModel, edit, errors, isEdit, metadata, submitting]);
 
   const handleSubmit = () => {
     setErrors(validateValues(metadata, undefined, isEdit));
@@ -45,7 +44,7 @@ export const EditNameDescription = ({
   };
 
   const handleClose = () => {
-    setMetadata(defaultMetadata);
+    setMetadata(analogueModel);
     if (closeDialog) closeDialog();
   };
 
