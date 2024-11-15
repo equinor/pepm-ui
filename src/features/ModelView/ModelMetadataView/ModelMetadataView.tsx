@@ -30,6 +30,8 @@ import {
   useFetchSmdaStratigraphicColumns,
 } from '../../../hooks/useFetchStratColData';
 import { useFetchGrossDepData } from '../../../hooks/useFetchGrossDepData';
+import { IniParametersDialog } from '../IniParametersDialog/IniParametersDialog';
+import { IniParametersWrapper } from './ModelMetadataView.styled';
 
 export const ModelMetadataView = ({
   modelIdParent,
@@ -308,6 +310,16 @@ export const ModelMetadataView = ({
       <Typography variant="h3" as="h2">
         Model metadata
       </Typography>
+      {analogueModel.iniParameters && uploadingProgress === undefined && (
+        <IniParametersWrapper>
+          <Typography variant="h4" as="h3">
+            Ini Parameters
+          </Typography>
+          <div>
+            <IniParametersDialog iniParameters={analogueModel.iniParameters} />
+          </div>
+        </IniParametersWrapper>
+      )}
       <div>
         <OutcropAnalogueGroup modelIdParent={modelIdParent} />
       </div>

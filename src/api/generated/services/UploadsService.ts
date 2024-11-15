@@ -9,6 +9,7 @@ import type { PrepareChunkedUploadCommandResponse } from '../models/PrepareChunk
 import type { UploadAnalogueModelCommandResponse } from '../models/UploadAnalogueModelCommandResponse';
 import type { UploadChunkCommandResponse } from '../models/UploadChunkCommandResponse';
 import type { UploadFileType } from '../models/UploadFileType';
+import type { UploadIniFileCommandResponse } from '../models/UploadIniFileCommandResponse';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -145,6 +146,39 @@ export class UploadsService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/uploads/models/complete',
+            formData: formData,
+            mediaType: 'multipart/form-data',
+            errors: {
+                400: `Bad Request`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * @param id
+     * @param formData
+     * @returns UploadIniFileCommandResponse Success
+     * @throws ApiError
+     */
+    public static postApiUploadsModelsIniFile(
+        id: string,
+        formData?: {
+            ContentType?: string;
+            ContentDisposition?: string;
+            Headers?: Record<string, Array<string>>;
+            Length?: number;
+            Name?: string;
+            FileName?: string;
+        },
+    ): CancelablePromise<UploadIniFileCommandResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/uploads/models/{id}/ini-file',
+            path: {
+                'id': id,
+            },
             formData: formData,
             mediaType: 'multipart/form-data',
             errors: {

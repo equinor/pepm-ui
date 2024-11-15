@@ -5,7 +5,11 @@ import * as ReactQuery from '@tanstack/react-query';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { cleanup, renderHook, waitFor } from '@testing-library/react';
 import { MsalReactTester } from 'msal-react-tester';
-import { AnalogueModelSourceType, JobStatus } from '../../../api/generated';
+import {
+  AnalogueModelSourceType,
+  FileType,
+  JobStatus,
+} from '../../../api/generated';
 import { useFetchOutcrops } from '../../../hooks/useFetchOutcrops';
 import { ModelMetadata } from './ModelMetadata';
 
@@ -23,6 +27,12 @@ const mockMetadata = {
   modelAreas: [],
   stratigraphicGroups: [],
   geologicalGroups: [],
+  analogueModelImage: {
+    analogueModelImageId: '',
+    fileName: '',
+    type: FileType.JPG,
+  },
+  iniParameters: {},
   processingStatus: JobStatus.SUCCEEDED,
 };
 const errors = {};

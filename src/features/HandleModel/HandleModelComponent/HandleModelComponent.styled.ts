@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { spacings } from '../../../tokens/spacings';
 import { theme } from '../../../tokens/theme';
+import { TextField } from '@equinor/eds-core-react';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -50,5 +51,11 @@ export const InfoNavigation = styled.div`
   display: flex;
   flex-direction: column;
 
+  row-gap: ${spacings.MEDIUM};
+`;
+
+export const IniFileTextField = styled(TextField)`
+  display: flex;
+  flex-direction: column;
   row-gap: ${spacings.MEDIUM};
 `;

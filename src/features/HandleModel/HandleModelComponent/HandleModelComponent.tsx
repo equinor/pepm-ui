@@ -22,10 +22,16 @@ import {
   analogueModelDefault,
   usePepmContextStore,
 } from '../../../hooks/GlobalState';
+import { readFileAsText } from '../../../utils/ReadIniFile';
+import { IniFileTextField } from './HandleModelComponent.styled';
 Icon.add({ error_outlined });
 
 interface AddModelDialogProps {
-  confirm?: (file: File, metadata: AnalogueModelDetail) => Promise<void>;
+  confirm?: (
+    file: File,
+    metadata: AnalogueModelDetail,
+    iniFile?: File,
+  ) => Promise<void>;
   progress?: number;
   uploading?: boolean;
   isAddUploading?: boolean;
@@ -64,28 +70,20 @@ export const HandleModelComponent = ({
   progress,
   uploading,
   isAddUploading,
-  existingData,
   modelId,
 }: AddModelDialogProps) => {
   const { setAnalogueModelDefault } = usePepmContextStore();
   const [isFileDisplay, setFileDisplay] = useState<boolean>(false);
   const [files, setFiles] = useState<FilesProps>(defaultFiles);
+  const [iniFileString, setIniFileString] = useState<string>();
   const [metadata, setMetadata] =
     useState<AnalogueModelDetail>(analogueModelDefault);
   const [submitting, setSubmitting] = useState(false);
-  const [fileSize, setFileSize] = useState(0);
-  const [rawFile, setrawFile] = useState<File>();
 
   const [errors, setErrors] = useState<ErrorType>({});
   const navigate = useNavigate();
 
-  useHandleModelComponent(
-    setFileSize,
-    setMetadata,
-    files,
-    rawFile,
-    existingData,
-  );
+  useHandleModelComponent(setMetadata);
 
   const handleSubmit = () => {
     setErrors(validateValues(metadata, files));
@@ -97,33 +95,37 @@ export const HandleModelComponent = ({
     const file = e.target.files[0];
     const type = e.target.name;
     setFiles({ ...files, [type]: file });
-    setrawFile(e.target.files[0]);
   };
 
   useEffect(() => {
     const cleanupStates = () => {
       setFiles(defaultFiles);
-      setrawFile(undefined);
-      setFileSize(0);
       setSubmitting(false);
     };
 
     const finishSubmit = () => {
-      if (files.NC && confirm) {
-        confirm(files.NC, metadata);
-      }
+      if (files.NC && confirm && files.INI) {
+        confirm(files.NC, metadata, files.INI);
+      } else if (files.NC && confirm) confirm(files.NC, metadata);
       cleanupStates();
     };
 
     if (Object.keys(errors).length === 0 && submitting) {
       finishSubmit();
     }
-  }, [confirm, errors, files.NC, metadata, submitting]);
+  }, [confirm, errors, files, metadata, submitting]);
 
   function toggleINIFileContent() {
     setFileDisplay(!isFileDisplay);
   }
-  const INIFileContent = () => <p>Not implemented yet...</p>;
+
+  useEffect(() => {
+    if (files.INI && iniFileString === undefined) {
+      readFileAsText(files.INI).then((val) => {
+        setIniFileString(val);
+      });
+    }
+  }, [files, iniFileString]);
 
   return (
     <Styled.Wrapper>
@@ -139,11 +141,16 @@ export const HandleModelComponent = ({
               isVisible: isFileDisplay,
               toggle: toggleINIFileContent,
             }}
-            fileSize={fileSize}
             fileChange={fileAdded}
           />
         )}
-        {isFileDisplay && <INIFileContent />}
+        {isFileDisplay && iniFileString && !uploading && (
+          <div>
+            <IniFileTextField id="iniFile" multiline rowsMax={10}>
+              {iniFileString}
+            </IniFileTextField>
+          </div>
+        )}
         {!isAddUploading && (
           <>
             <ModelMetadata

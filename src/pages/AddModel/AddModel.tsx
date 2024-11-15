@@ -22,6 +22,7 @@ import { HandleModelComponent } from '../../features/HandleModel/HandleModelComp
 import { SidePane } from '../../features/HandleModel/SidePane/SidePane';
 import { ModelMetadataView } from '../../features/ModelView/ModelMetadataView/ModelMetadataView';
 import * as Styled from './AddModel.styled';
+import { postIniFile } from '../../api/custom/postIniFile';
 
 enum UploadProcess {
   SUCCESS = 'Model successfully uploaded and is now beeing processed.',
@@ -34,16 +35,10 @@ export const AddModel = () => {
   const [progress, setProgress] = useState(0);
   const [modelId, setModelId] = useState<string>('');
   const [uploading, setUploading] = useState<boolean>(false);
-
-  // Hard coded states for ease of development
-
-  // const [progress, setProgress] = useState(12);
-  // const [modelId, setModelId] = useState<string>(
-  //   'fa725ca1-ca33-4b7c-e742-08dc7b2938d0',
-  // );
-  // const [uploading, setUploading] = useState<boolean>(true);
-
   const [counter, setCounter] = useState<number>(defaultCounterValue);
+  const [iniFile, setIniFile] = useState<File>();
+  const [iniFileUploading, setIniFileUploading] = useState<boolean>(false);
+  const [iniFileSucceeded, setIniFileSucceeded] = useState<boolean>(false);
   const [fileToBeUpload, setFileToBeUpload] = useState<File>();
   const [beginingOfTheChunk, setBeginingOfTheChunk] = useState<number>(
     defaultBeginningOfchunk,
@@ -84,6 +79,18 @@ export const AddModel = () => {
     },
   });
 
+  const uploadIniFile = useMutation({
+    mutationFn: ({
+      id,
+      requestBody,
+    }: {
+      id: string;
+      requestBody: FormData;
+    }) => {
+      return postIniFile(id, requestBody);
+    },
+  });
+
   const uploadModelMetadata = useMutation({
     mutationFn: ({
       id,
@@ -99,23 +106,7 @@ export const AddModel = () => {
     },
   });
 
-  // const uploadModelAnalouges = useMutation({
-  //   mutationFn: ({
-  //     id,
-  //     requestBody,
-  //   }: {
-  //     id: string;
-  //     requestBody: AddAnalogueModelAnalogueCommandForm;
-  //   }) => {
-  //     return AnalogueModelAnaloguesService.putApiAnalogueModelsAnalogues(
-  //       id,
-  //       requestBody,
-  //     );
-  //   },
-  // });
-
   const metadataList: AddMetadataDto[] = [];
-  // const analougueList: AddAnalogueDto[] = [];
 
   function addMetadataFields(metadata?: MetadataDto[]) {
     if (!metadata) return;
@@ -123,39 +114,27 @@ export const AddModel = () => {
     metadataList.push(...obj);
   }
 
-  // function addAnalogueFields(metadata?: AnalogueList[]) {
-  //   if (!metadata) return;
-  //   const obj = metadata.map((x) => ({ analogueId: x.analogueId }));
-  //   analougueList.push(...obj);
-  // }
-
   async function uploadMetadata(
     modelId: string,
     metadata: AnalogueModelDetail,
   ) {
     addMetadataFields(metadata.metadata);
-    // addAnalogueFields(metadata.analogues);
 
     const readyMetadata: AddAnalogueModelMetadataCommandForm = {
       metadata: metadataList,
     };
 
-    // const readyAnalogue: AddAnalogueModelAnalogueCommandForm = {
-    //   analogues: analougueList,
-    // };
-
     await uploadModelMetadata.mutateAsync({
       id: modelId,
       requestBody: readyMetadata,
     });
-
-    // await uploadModelAnalouges.mutateAsync({
-    //   id: modelId,
-    //   requestBody: readyAnalogue,
-    // });
   }
 
-  async function uploadModel(file: File, metadata: AnalogueModelDetail) {
+  async function uploadModel(
+    file: File,
+    metadata: AnalogueModelDetail,
+    iniFile?: File,
+  ) {
     setUploading(true);
     const ModelBody: CreateAnalogueModelCommand = {
       name: metadata.name ? metadata.name : '',
@@ -201,6 +180,10 @@ export const AddModel = () => {
         setChunkCount(numberOfChunks);
         setFileToBeUpload(file);
         setFileSize(file.size);
+      }
+
+      if (iniFile) {
+        setIniFile(iniFile);
       }
     }
   }
@@ -271,6 +254,31 @@ export const AddModel = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fileToBeUpload, progress]);
+
+  useEffect(() => {
+    const uploadIniFileAsync = async (file: File, id: string) => {
+      const data = new FormData();
+      data.append('file', file!);
+      const response = await uploadIniFile.mutateAsync({
+        id: id,
+        requestBody: data,
+      });
+      return response;
+    };
+
+    if (!iniFileUploading && !iniFileSucceeded && iniFile && modelId) {
+      setIniFileUploading(true);
+      const response = uploadIniFileAsync(iniFile, modelId);
+      response.then(
+        (res) => {
+          setIniFileSucceeded(true);
+        },
+        () => {
+          setIniFileUploading(false);
+        },
+      );
+    }
+  }, [modelId, iniFile, iniFileUploading, iniFileSucceeded, uploadIniFile]);
 
   function clearStatus() {
     setUploadStatus(undefined);

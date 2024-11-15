@@ -9,6 +9,20 @@ export const DescriptionMeta = styled.div`
   row-gap: ${spacings.MEDIUM};
 `;
 
+export const IniParameters = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 50%;
+  row-gap: ${spacings.MEDIUM};
+`;
+
+export const IniParametersWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  row-gap: ${spacings.MEDIUM};
+`;
+
 export const ModelImageView = styled.div`
   display: flex;
   flex-direction: column;

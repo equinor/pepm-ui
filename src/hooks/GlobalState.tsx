@@ -7,6 +7,7 @@ import {
   ComputeCaseDto,
   CountryDto,
   FieldDto,
+  FileType,
   GeologicalGroupDto,
   GeologicalStandardDto,
   GetObjectResultsDto,
@@ -39,6 +40,12 @@ export const analogueModelDefault: AnalogueModelDetail = {
   stratigraphicGroups: [],
   geologicalGroups: [],
   outcrops: [],
+  analogueModelImage: {
+    analogueModelImageId: '',
+    fileName: '',
+    type: FileType.JPG,
+  },
+  iniParameters: {},
   processingStatus: JobStatus.UNKNOWN,
 };
 

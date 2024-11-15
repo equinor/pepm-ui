@@ -7,4 +7,5 @@ export enum UploadFileType {
     NET_CDF = 'NetCDF',
     RES_QMLEPC = 'ResQMLEpc',
     RES_QMLDATA = 'ResQMLData',
+    INI_DATA = 'IniData',
 }

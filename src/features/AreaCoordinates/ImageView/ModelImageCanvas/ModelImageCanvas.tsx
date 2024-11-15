@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { ImageMetadataDto } from '../../../api/generated';
-import { AreaCoordinateType } from '../../AreaCoordinates/AreaCoordinates';
+import { AreaCoordinateType } from '../../../AreaCoordinates/AreaCoordinates';
+import { ImageMetadataDto } from '../../../../api/generated';
 
 export const ModelImageCanvas = ({
   imageData,
