@@ -1,11 +1,9 @@
 /* eslint-disable max-lines-per-function */
 import { Typography } from '@equinor/eds-core-react';
 import { EdsDataGrid } from '@equinor/eds-data-grid-react';
-import { useState } from 'react';
 import { GetVariogramResultsDto } from '../../../../../../api/generated';
-import { ImageResult } from '../ImageResult/ImageResult';
-import * as Styled from './VariogramResultTable.styled';
 import { usePepmContextStore } from '../../../../../../hooks/GlobalState';
+import * as Styled from './VariogramResultTable.styled';
 
 interface ResultObjectType {
   variogramResultId: string;
@@ -26,8 +24,8 @@ export const VariogramResultTable = ({
   resultList: GetVariogramResultsDto[];
 }) => {
   const { computeCases } = usePepmContextStore();
-  const [open, setOpen] = useState(false);
-  const [imageId, setImageId] = useState('');
+  // const [open, setOpen] = useState(false);
+  // const [imageId, setImageId] = useState('');
 
   const roundResultString = (value: number) => {
     if (value) {
@@ -67,18 +65,18 @@ export const VariogramResultTable = ({
     return element;
   });
 
-  const handleImageDialog = (id: string, variogramResultId: string) => {
-    const computeCaseResults = resultList.filter((e) => e.computeCaseId === id);
-    const resultFile = computeCaseResults
-      .find((r) => r.variogramResultId === variogramResultId)!
-      .variogramResultFiles.find((x) =>
-        x.fileName.includes('variogram_slices_'),
-      );
+  // const handleImageDialog = (id: string, variogramResultId: string) => {
+  //   const computeCaseResults = resultList.filter((e) => e.computeCaseId === id);
+  //   const resultFile = computeCaseResults
+  //     .find((r) => r.variogramResultId === variogramResultId)!
+  //     .variogramResultFiles.find((x) =>
+  //       x.fileName.includes('variogram_slices_'),
+  //     );
 
-    const imageId = resultFile ? resultFile.variogramResultFileId : '';
-    setImageId(imageId);
-    setOpen(!open);
-  };
+  //   const imageId = resultFile ? resultFile.variogramResultFileId : '';
+  //   setImageId(imageId);
+  //   setOpen(!open);
+  // };
 
   return (
     <>
@@ -119,11 +117,13 @@ export const VariogramResultTable = ({
               cell: ({ row }) => (
                 <div>
                   <Typography
-                    onClick={() =>
-                      handleImageDialog(
-                        row.original.computeCaseId,
-                        row.original.variogramResultId,
-                      )
+                    onClick={
+                      () => console.log('click')
+
+                      // handleImageDialog(
+                      //   row.original.computeCaseId,
+                      //   row.original.variogramResultId,
+                      // )
                     }
                     link
                   >
@@ -144,11 +144,11 @@ export const VariogramResultTable = ({
           ]}
         />
       </Styled.Table>
-      <ImageResult
+      {/* <ImageResult
         imageId={imageId}
         open={open}
         setOpen={setOpen}
-      ></ImageResult>
+      ></ImageResult> */}
     </>
   );
 };

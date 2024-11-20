@@ -1,16 +1,19 @@
 import { Button, Dialog, Typography } from '@equinor/eds-core-react';
 import { useQuery } from '@tanstack/react-query';
 import { getVariogramImage } from '../../../../../../api/custom/getImageById';
+import { GetVariogramResultsVariogramResultFileDto } from '../../../../../../api/generated';
 import * as Styled from './ImageResult.styled';
 
 export const ImageResult = ({
   imageId,
   open,
   setOpen,
+  resultImages,
 }: {
   imageId: string;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  resultImages: GetVariogramResultsVariogramResultFileDto[];
 }) => {
   const { data, isLoading } = useQuery({
     queryKey: ['case-image', imageId],
