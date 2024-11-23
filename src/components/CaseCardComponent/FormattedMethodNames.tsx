@@ -3,5 +3,5 @@ export const titleMapping: Record<string, string> = {
   Mouthbar: 'Mouthbar',
   Indicator: 'Indicator',
   'Net-To-Gross': 'Net-to-gross',
-  ContiniousParameter: 'Continious parameter',
+  ContiniousParameter: 'Continuous parameter',
 };
