@@ -5,11 +5,13 @@
 
 import type { CoordinateDto } from './CoordinateDto';
 import type { GetVariogramResultsVariogramResultFileDto } from './GetVariogramResultsVariogramResultFileDto';
+import type { ResultStatus } from './ResultStatus';
 
 export type GetVariogramResultsDto = {
     computeCaseId: string;
     variogramResultId: string;
     identifier: number;
+    status: ResultStatus;
     variogramResultFiles: Array<GetVariogramResultsVariogramResultFileDto>;
     rmajor: number;
     rminor: number;

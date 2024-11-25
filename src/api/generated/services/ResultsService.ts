@@ -4,6 +4,10 @@
 /* eslint-disable */
 import type { GetObjectResultsByModelIdQueryResponse } from '../models/GetObjectResultsByModelIdQueryResponse';
 import type { GetVariogramResultsByModelIdQueryResponse } from '../models/GetVariogramResultsByModelIdQueryResponse';
+import type { UpdateObjectResultCommandBody } from '../models/UpdateObjectResultCommandBody';
+import type { UpdateObjectResultCommandResponse } from '../models/UpdateObjectResultCommandResponse';
+import type { UpdateVariogramResultCommandBody } from '../models/UpdateVariogramResultCommandBody';
+import type { UpdateVariogramResultCommandResponse } from '../models/UpdateVariogramResultCommandResponse';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -49,6 +53,64 @@ export class ResultsService {
                 'id': id,
             },
             errors: {
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * @param id
+     * @param objectId
+     * @param requestBody
+     * @returns UpdateObjectResultCommandResponse Success
+     * @throws ApiError
+     */
+    public static putApiAnalogueModelsResultsObject(
+        id: string,
+        objectId: string,
+        requestBody?: UpdateObjectResultCommandBody,
+    ): CancelablePromise<UpdateObjectResultCommandResponse> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/api/analogue-models/{id}/results/object/{objectId}',
+            path: {
+                'id': id,
+                'objectId': objectId,
+            },
+            body: requestBody,
+            mediaType: 'application/json-patch+json',
+            errors: {
+                400: `Bad Request`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * @param id
+     * @param variogramId
+     * @param requestBody
+     * @returns UpdateVariogramResultCommandResponse Success
+     * @throws ApiError
+     */
+    public static putApiAnalogueModelsResultsVariogram(
+        id: string,
+        variogramId: string,
+        requestBody?: UpdateVariogramResultCommandBody,
+    ): CancelablePromise<UpdateVariogramResultCommandResponse> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/api/analogue-models/{id}/results/variogram/{variogramId}',
+            path: {
+                'id': id,
+                'variogramId': variogramId,
+            },
+            body: requestBody,
+            mediaType: 'application/json-patch+json',
+            errors: {
+                400: `Bad Request`,
                 403: `Forbidden`,
                 404: `Not Found`,
             },

@@ -92,6 +92,8 @@ type IPepmContextActions = {
   setComputeSettings: (computeSettings: ListComputeSettingsMethodDto[]) => void;
   setObjectEstimationResults: (objectResults: GetObjectResultsDto[]) => void;
   setVariogramResults: (variogramResults: GetVariogramResultsDto[]) => void;
+  updateObjectResult: (objectResult: GetObjectResultsDto) => void;
+  updateVariogramResult: (variogramResult: GetVariogramResultsDto) => void;
 };
 
 export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
@@ -228,6 +230,22 @@ export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
     setVariogramResults: (variogramResults: GetVariogramResultsDto[]) =>
       set((state) => {
         state.variogramResults = variogramResults;
+      }),
+    updateObjectResult: (objectResult: GetObjectResultsDto) =>
+      set((state) => {
+        state.objectResults = state.objectResults.map((res) =>
+          res.objectResultId !== objectResult.objectResultId
+            ? res
+            : objectResult,
+        );
+      }),
+    updateVariogramResult: (variogramResult: GetVariogramResultsDto) =>
+      set((state) => {
+        state.variogramResults = state.variogramResults.map((res) =>
+          res.variogramResultId !== variogramResult.variogramResultId
+            ? res
+            : variogramResult,
+        );
       }),
   })),
 );
