@@ -76,11 +76,8 @@ export const ResultArea = ({
   const updateStatus = (checked: boolean) => {
     if (checked) {
       putUpdateobject(ResultStatus.PUBLISH);
-      // updateObjectResult({ ...data, status: ResultStatus.PUBLISH });
     } else {
       putUpdateobject(ResultStatus.DRAFT);
-
-      // updateObjectResult({ ...data, status: ResultStatus.DRAFT });
     }
   };
 
