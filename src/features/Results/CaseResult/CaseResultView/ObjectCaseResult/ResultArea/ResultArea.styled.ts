@@ -52,3 +52,9 @@ export const VerticalDivider = styled.div`
   margin: 0 ${spacings.MEDIUM};
   border: 0.5px solid #e0e0e0;
 `;
+
+export const CenterElements = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;

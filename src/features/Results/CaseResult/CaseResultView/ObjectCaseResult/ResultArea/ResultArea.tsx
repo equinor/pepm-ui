@@ -5,14 +5,22 @@ import {
   Divider,
   Icon,
   Label,
+  Switch,
   Typography,
 } from '@equinor/eds-core-react';
 import { bar_chart as barChart } from '@equinor/eds-icons';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { GetObjectResultsDto } from '../../../../../../api/generated/models/GetObjectResultsDto';
 import { ResultPlotDialog } from '../ResultPlotDialog/ResultPlotDialog';
 import * as Styled from './ResultArea.styled';
 import { ResultCaseMetadata } from './ResultCaseMetadata/ResultCaseMetadata';
+import {
+  ResultStatus,
+  UpdateObjectResultCommandBody,
+} from '../../../../../../api/generated';
+import { usePepmContextStore } from '../../../../../../hooks/GlobalState';
+import { useIsOwnerOrAdmin } from '../../../../../../hooks/useIsOwnerOrAdmin';
+import { useMutateObjectResult } from '../../../../../../hooks/useMutateResults';
 export const ResultArea = ({
   computeMethod,
   modelArea,
@@ -23,6 +31,23 @@ export const ResultArea = ({
   data: GetObjectResultsDto;
 }) => {
   const [open, setOpen] = useState<boolean>(false);
+  const { analogueModel, updateObjectResult } = usePepmContextStore();
+  const isOwner = useIsOwnerOrAdmin();
+  const mutateObjectResult = useMutateObjectResult();
+
+  const putUpdateobject = async (status: ResultStatus) => {
+    const requestBody: UpdateObjectResultCommandBody = { status: status };
+
+    const objectUpdate = await mutateObjectResult.mutateAsync({
+      id: analogueModel.analogueModelId,
+      objectId: data.objectResultId,
+      requestBody: requestBody,
+    });
+
+    if (objectUpdate.success) {
+      updateObjectResult({ ...data, status: status });
+    }
+  };
 
   const toggleOpen = () => {
     setOpen(!open);
@@ -48,6 +73,19 @@ export const ResultArea = ({
     if (x && y) return x * y + ' m^2';
   };
 
+  const updateStatus = (checked: boolean) => {
+    if (checked) {
+      putUpdateobject(ResultStatus.PUBLISH);
+    } else {
+      putUpdateobject(ResultStatus.DRAFT);
+    }
+  };
+
+  const checkedStatus = () => {
+    if (data.status === ResultStatus.PUBLISH) return true;
+    return false;
+  };
+
   return (
     <>
       <Styled.Wrapper>
@@ -56,10 +94,22 @@ export const ResultArea = ({
             computeMethod={computeMethod}
             modelArea={modelArea}
           />
-          <Button variant="outlined" onClick={toggleOpen}>
-            <Icon data={barChart} title={'Open plot for case results.'} />
-            Show plot
-          </Button>
+          <Styled.CenterElements>
+            <Button variant="outlined" onClick={toggleOpen}>
+              <Icon data={barChart} title={'Open plot for case results.'} />
+              Show plot
+            </Button>
+
+            <Label style={{ paddingTop: '0.5rem' }} label="Status"></Label>
+            <Switch
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                updateStatus(e.target.checked);
+              }}
+              checked={checkedStatus()}
+              label={data.status}
+              disabled={!isOwner}
+            ></Switch>
+          </Styled.CenterElements>
         </Styled.ResultHeader>
 
         <Styled.Divider>
