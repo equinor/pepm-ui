@@ -22,32 +22,19 @@ export const SubRowResult = ({
   const [resultImages, setResultImages] = useState<
     GetVariogramResultsVariogramResultFileDto[]
   >([]);
-  const [imageId, setImageId] = useState('');
 
   const handleImageDialog = () => {
-    const computeCaseResults = resultList.filter(
-      (e) => e.computeCaseId === resultRows[0].computeCaseId,
-    );
-    // const resultFile = computeCaseResults
-    //   .find((r) => r.variogramResultId === resultRows[0].variogramResultId)!
-    //   .variogramResultFiles.find((x) =>
-    //     x.fileName.includes('variogram_slices_'),
-    //   );
+    const resultFiles: Array<GetVariogramResultsVariogramResultFileDto> = [];
+    resultRows.forEach((row) =>
+      row.variogramResultFiles.forEach((file) => {
+        const values = resultFiles.map((a) => a.fileName);
+        const has = values.find((str) => str === file.fileName);
 
-    const resultObject = computeCaseResults.find(
-      (r) => r.variogramResultId === resultRows[0].variogramResultId,
+        if (!has) resultFiles.push(file);
+      }),
     );
-    const resultFiles = resultObject && resultObject.variogramResultFiles;
-    const variogramSlices =
-      resultFiles &&
-      resultFiles.find((x) => x.fileName.includes('variogram_slices_'));
-
     console.log(resultFiles);
 
-    const variogramSlicesImageId = variogramSlices
-      ? variogramSlices.variogramResultFileId
-      : '';
-    setImageId(variogramSlicesImageId);
     if (resultFiles && resultFiles.length > 0) setResultImages(resultFiles);
     setOpen(!open);
   };
@@ -71,7 +58,6 @@ export const SubRowResult = ({
         </Styled.TableList>
       </Styled.SubRowDiv>
       <ImageResult
-        imageId={imageId}
         resultImages={resultImages}
         open={open}
         setOpen={setOpen}

@@ -3,7 +3,7 @@
 /* eslint-disable max-lines-per-function */
 import { Fragment } from 'react';
 
-import { Button, Icon, Typography } from '@equinor/eds-core-react';
+import { Button, Icon } from '@equinor/eds-core-react';
 import {
   chevron_down as DOWN,
   chevron_right as RIGHT,
@@ -16,7 +16,10 @@ import {
   getExpandedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { GetVariogramResultsDto } from '../../../../../../../api/generated';
+import {
+  GetVariogramResultsDto,
+  GetVariogramResultsVariogramResultFileDto,
+} from '../../../../../../../api/generated';
 import { usePepmContextStore } from '../../../../../../../hooks/GlobalState';
 import { SubRowResult } from '../SubRowResult/SubRowResult';
 import * as Styled from './TanStackTable.styled';
@@ -25,6 +28,7 @@ const NumberOfDecimals = 3;
 
 export interface ResultObjectType {
   variogramResultId: string;
+  variogramResultFiles: Array<GetVariogramResultsVariogramResultFileDto>;
   computeCaseId: string;
   rmajor: number;
   rminor: number;
@@ -40,6 +44,7 @@ export interface ResultObjectType {
   archelFilter: string;
   modelArea: string;
   variogramModel: string;
+  identifier: number;
   subRows?: ResultObjectType[];
 }
 
@@ -118,7 +123,6 @@ function Table({
         </tbody>
       </table>
       <div className="h-2" />
-      <div>{table.getRowModel().rows.length} Rows</div>
     </div>
   );
 }
@@ -130,13 +134,24 @@ export const TanStackTable = ({
 }) => {
   const { computeCases } = usePepmContextStore();
 
-  const getSubRows = (computeCaseId: string) => {
+  const roundResultString = (
+    value: number,
+    numberDecimals: number = NumberOfDecimals,
+  ) => {
+    if (value) {
+      const res: string = value.toFixed(numberDecimals);
+      return Number(res);
+    } else return value;
+  };
+
+  const getSubRows = (computeCaseId: string, identifier: number) => {
     const subRowArray: ResultObjectType[] = [];
     if (computeCaseId === undefined || resultList === undefined)
       return subRowArray;
 
     resultList
       .filter((c) => c.computeCaseId === computeCaseId)
+      .filter((c) => c.identifier === identifier)
       .forEach((e) => {
         const method = computeCases.filter(
           (c) => c.computeCaseId === e.computeCaseId,
@@ -157,6 +172,7 @@ export const TanStackTable = ({
 
         const element: ResultObjectType = {
           variogramResultId: e.variogramResultId,
+          variogramResultFiles: e.variogramResultFiles,
           computeCaseId: e.computeCaseId,
           rmajor: roundResultString(e.rmajor),
           rminor: roundResultString(e.rminor),
@@ -172,6 +188,7 @@ export const TanStackTable = ({
           modelArea: modelArea ? modelArea.name : '',
           variogramModel: e.family ? e.family : '',
           quality: roundResultString(e.quality),
+          identifier: e.identifier,
         };
 
         subRowArray.push(element);
@@ -181,7 +198,7 @@ export const TanStackTable = ({
   };
 
   const renderSubComponent = ({ row }: { row: Row<ResultObjectType> }) => {
-    const sub = getSubRows(row.original.computeCaseId);
+    const sub = getSubRows(row.original.computeCaseId, row.original.identifier);
     return (
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         <SubRowResult resultRows={sub} resultList={resultList}></SubRowResult>
@@ -194,19 +211,19 @@ export const TanStackTable = ({
       id: 'expand',
       header: () => null,
       cell: ({ row }) => {
-        return row.getCanExpand() ? (
-          <Button variant="ghost" onClick={row.getToggleExpandedHandler()}>
-            <Icon data={row.getIsExpanded() ? DOWN : RIGHT} size={18} />
-          </Button>
-        ) : (
-          '🔵'
+        return (
+          row.getCanExpand() && (
+            <Button variant="ghost" onClick={row.getToggleExpandedHandler()}>
+              <Icon data={row.getIsExpanded() ? DOWN : RIGHT} size={18} />
+            </Button>
+          )
         );
       },
     },
     {
       accessorKey: 'method',
       header: () => <div>Compute method</div>,
-      cell: ({ row, getValue }) => <div>{getValue<string>()}</div>,
+      cell: ({ getValue }) => <div>{getValue<string>()}</div>,
       id: 'method',
     },
     {
@@ -224,38 +241,30 @@ export const TanStackTable = ({
       header: () => <div>Model Area</div>,
       id: 'modelArea',
     },
+
     {
-      accessorKey: 'variogramModel',
-      header: () => <div>Variogram model</div>,
-      id: 'variogramModel',
+      accessorKey: 'quality',
+      header: () => <div>X/Y/Z quality factor</div>,
+      id: 'quality',
+      enableColumnFilter: false,
       cell: ({ row }) => (
         <div>
-          <Typography>{row.original.variogramModel}</Typography>
+          {roundResultString(row.original.qualityX, 2)} {' / '}
+          {roundResultString(row.original.qualityY, 2)} {' / '}
+          {roundResultString(row.original.qualityZ, 2)}
         </div>
       ),
     },
-    {
-      accessorKey: 'quality',
-      header: () => <div>Quality factor</div>,
-      id: 'quality',
-      enableColumnFilter: false,
-      cell: ({ row }) => <div>{row.original.quality}</div>,
-    },
   ];
-
-  const roundResultString = (value: number) => {
-    if (value) {
-      const res: string = value.toFixed(NumberOfDecimals);
-      return Number(res);
-    } else return value;
-  };
 
   const getRows = () => {
     const rowArray: ResultObjectType[] = [];
 
     resultList.forEach((e) => {
       const res = rowArray.some(
-        (element) => element.computeCaseId === e.computeCaseId,
+        (element) =>
+          element.computeCaseId === e.computeCaseId &&
+          element.identifier === e.identifier,
       );
 
       if (res) return;
@@ -278,6 +287,7 @@ export const TanStackTable = ({
 
       const element: ResultObjectType = {
         variogramResultId: e.variogramResultId,
+        variogramResultFiles: e.variogramResultFiles,
         computeCaseId: e.computeCaseId,
         rmajor: roundResultString(e.rmajor),
         rminor: roundResultString(e.rminor),
@@ -293,6 +303,7 @@ export const TanStackTable = ({
         modelArea: modelArea ? modelArea.name : '',
         variogramModel: e.family ? e.family : '',
         quality: roundResultString(e.quality),
+        identifier: e.identifier,
       };
       rowArray.push(element);
     });
