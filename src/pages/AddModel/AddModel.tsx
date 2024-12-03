@@ -209,7 +209,6 @@ export const AddModel = () => {
     };
     try {
       const uploadChunks = await chunkUpload.mutateAsync(chunkData);
-
       if (chunkUpload.error === null && uploadChunks.success) {
         if (endOfTheChunk === undefined) return;
         setBeginingOfTheChunk(endOfTheChunk);
@@ -221,17 +220,25 @@ export const AddModel = () => {
           };
           const finishedUpload = await uploadFinished.mutateAsync(finishBody);
           if (uploadFinished.error === null && finishedUpload.success) {
-            setProgress(100);
-
-            const convert = await convertModelFile.mutateAsync({
-              modelId: modelId,
-            });
-
             // eslint-disable-next-line max-depth
-            if (convertModelFile.error === null && convert.success) {
-              setUploadStatus(UploadProcess.SUCCESS);
-              setUploading(false);
-            } else {
+            try {
+              const convert = await convertModelFile.mutateAsync({
+                modelId: modelId,
+              });
+
+              // eslint-disable-next-line max-depth
+              if (convertModelFile.error === null && convert.success) {
+                setProgress(100);
+                setUploadStatus(UploadProcess.SUCCESS);
+                setUploading(false);
+              } else {
+                setUploadStatus(UploadProcess.FAILED);
+                setProgress(-99);
+                setUploading(false);
+              }
+            } catch (error) {
+              // eslint-disable-next-line no-console
+              console.error(error);
               setUploadStatus(UploadProcess.FAILED);
               setProgress(-99);
               setUploading(false);
