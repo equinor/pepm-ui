@@ -3,16 +3,16 @@ import { ResultObjectType } from '../TanStackTable/TanStackTable';
 import * as Styled from './SubRowResultItem.styled';
 
 export const SubRowResultItem = ({
-  resultItem,
+  resultList,
 }: {
-  resultItem: ResultObjectType;
+  resultList: ResultObjectType[];
 }) => {
   return (
     <Styled.TableWrapper>
       <Table>
         <Table.Head>
           <Table.Row>
-            <Table.Cell>{resultItem.variogramModel}</Table.Cell>
+            <Table.Cell>{resultList[0].variogramModel}</Table.Cell>
             <Table.Cell></Table.Cell>
             <Table.Cell></Table.Cell>
             <Table.Cell></Table.Cell>
@@ -27,13 +27,15 @@ export const SubRowResultItem = ({
           </Styled.HeaderContent>
         </Table.Head>
         <Table.Body>
-          <Table.Row>
-            <Table.Cell>{resultItem.rmajor}</Table.Cell>
-            <Table.Cell>{resultItem.rminor}</Table.Cell>
-            <Table.Cell>{resultItem.azimuth}</Table.Cell>
-            <Table.Cell>{resultItem.rvertical}</Table.Cell>
-            <Table.Cell>{resultItem.sigma}</Table.Cell>
-          </Table.Row>
+          {resultList.map((resultItem) => (
+            <Table.Row key={resultItem.computeCaseId + resultItem.quality}>
+              <Table.Cell>{resultItem.rmajor}</Table.Cell>
+              <Table.Cell>{resultItem.rminor}</Table.Cell>
+              <Table.Cell>{resultItem.azimuth}</Table.Cell>
+              <Table.Cell>{resultItem.rvertical}</Table.Cell>
+              <Table.Cell>{resultItem.sigma}</Table.Cell>
+            </Table.Row>
+          ))}
         </Table.Body>
       </Table>
     </Styled.TableWrapper>

@@ -33,7 +33,6 @@ export const SubRowResult = ({
         if (!has) resultFiles.push(file);
       }),
     );
-    console.log(resultFiles);
 
     if (resultFiles && resultFiles.length > 0) setResultImages(resultFiles);
     setOpen(!open);
@@ -49,12 +48,7 @@ export const SubRowResult = ({
           </Button>
         </Styled.SubRowInfo>
         <Styled.TableList>
-          {resultRows.map((r) => (
-            <SubRowResultItem
-              key={r.computeCaseId + r.quality}
-              resultItem={r}
-            ></SubRowResultItem>
-          ))}
+          <SubRowResultItem resultList={resultRows}></SubRowResultItem>
         </Styled.TableList>
       </Styled.SubRowDiv>
       <ImageResult
