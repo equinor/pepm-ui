@@ -21,10 +21,9 @@ import {
   GetVariogramResultsVariogramResultFileDto,
 } from '../../../../../../../api/generated';
 import { usePepmContextStore } from '../../../../../../../hooks/GlobalState';
+import { roundResultString } from '../../../../../../../utils/RoundResultString';
 import { SubRowResult } from '../SubRowResult/SubRowResult';
 import * as Styled from './TanStackTable.styled';
-
-const NumberOfDecimals = 3;
 
 export interface ResultObjectType {
   variogramResultId: string;
@@ -134,16 +133,6 @@ export const TanStackTable = ({
 }) => {
   const { computeCases } = usePepmContextStore();
 
-  const roundResultString = (
-    value: number,
-    numberDecimals: number = NumberOfDecimals,
-  ) => {
-    if (value) {
-      const res: string = value.toFixed(numberDecimals);
-      return Number(res);
-    } else return value;
-  };
-
   const getSubRows = (computeCaseId: string, identifier: number) => {
     const subRowArray: ResultObjectType[] = [];
     if (computeCaseId === undefined || resultList === undefined)
@@ -240,20 +229,6 @@ export const TanStackTable = ({
       accessorKey: 'modelArea',
       header: () => <div>Model Area</div>,
       id: 'modelArea',
-    },
-
-    {
-      accessorKey: 'quality',
-      header: () => <div>X/Y/Z quality factor</div>,
-      id: 'quality',
-      enableColumnFilter: false,
-      cell: ({ row }) => (
-        <div>
-          {roundResultString(row.original.qualityX, 2)} {' / '}
-          {roundResultString(row.original.qualityY, 2)} {' / '}
-          {roundResultString(row.original.qualityZ, 2)}
-        </div>
-      ),
     },
   ];
 

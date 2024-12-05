@@ -1,7 +1,7 @@
 import { Table } from '@equinor/eds-core-react';
+import { roundResultString } from '../../../../../../../utils/RoundResultString';
 import { ResultObjectType } from '../TanStackTable/TanStackTable';
 import * as Styled from './SubRowResultItem.styled';
-
 export const SubRowResultItem = ({
   resultList,
 }: {
@@ -18,6 +18,7 @@ export const SubRowResultItem = ({
             <Table.Cell>Azimuth (deg)</Table.Cell>
             <Table.Cell>Range vertical (m)</Table.Cell>
             <Table.Cell>SILL/STD (m)</Table.Cell>
+            <Table.Cell>X/Y/Z quality factor</Table.Cell>
           </Styled.HeaderContent>
         </Table.Head>
         <Table.Body>
@@ -29,6 +30,13 @@ export const SubRowResultItem = ({
               <Table.Cell>{resultItem.azimuth}</Table.Cell>
               <Table.Cell>{resultItem.rvertical}</Table.Cell>
               <Table.Cell>{resultItem.sigma}</Table.Cell>
+              <Table.Cell>
+                <div>
+                  {roundResultString(resultItem.qualityX, 2)} {' / '}
+                  {roundResultString(resultItem.qualityY, 2)} {' / '}
+                  {roundResultString(resultItem.qualityZ, 2)}
+                </div>
+              </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
