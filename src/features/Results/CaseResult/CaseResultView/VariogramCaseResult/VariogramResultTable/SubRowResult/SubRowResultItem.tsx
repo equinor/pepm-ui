@@ -11,24 +11,19 @@ export const SubRowResultItem = ({
     <Styled.TableWrapper>
       <Table>
         <Table.Head>
-          <Table.Row>
-            <Table.Cell>{resultList[0].variogramModel}</Table.Cell>
-            <Table.Cell></Table.Cell>
-            <Table.Cell></Table.Cell>
-            <Table.Cell></Table.Cell>
-            <Table.Cell></Table.Cell>
-          </Table.Row>
           <Styled.HeaderContent>
-            <Table.Cell>Range major</Table.Cell>
-            <Table.Cell>Range minor</Table.Cell>
-            <Table.Cell>Azimuth</Table.Cell>
-            <Table.Cell>Range vertical</Table.Cell>
-            <Table.Cell>SILL/STD</Table.Cell>
+            <Table.Cell>Variogram model</Table.Cell>
+            <Table.Cell>Range major (m)</Table.Cell>
+            <Table.Cell>Range minor (m)</Table.Cell>
+            <Table.Cell>Azimuth (deg)</Table.Cell>
+            <Table.Cell>Range vertical (m)</Table.Cell>
+            <Table.Cell>SILL/STD (m)</Table.Cell>
           </Styled.HeaderContent>
         </Table.Head>
         <Table.Body>
           {resultList.map((resultItem) => (
             <Table.Row key={resultItem.computeCaseId + resultItem.quality}>
+              <Table.Cell>{resultItem.variogramModel}</Table.Cell>
               <Table.Cell>{resultItem.rmajor}</Table.Cell>
               <Table.Cell>{resultItem.rminor}</Table.Cell>
               <Table.Cell>{resultItem.azimuth}</Table.Cell>
