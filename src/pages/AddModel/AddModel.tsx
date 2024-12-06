@@ -22,7 +22,10 @@ import { SidePane } from '../../features/HandleModel/SidePane/SidePane';
 import { ModelMetadataView } from '../../features/ModelView/ModelMetadataView/ModelMetadataView';
 import * as Styled from './AddModel.styled';
 import { postIniFile } from '../../api/custom/postIniFile';
-import { usePepmContextStore } from '../../hooks/GlobalState';
+import {
+  analogueModelDefault,
+  usePepmContextStore,
+} from '../../hooks/GlobalState';
 
 enum UploadProcess {
   SUCCESS = 'Model successfully uploaded and is now beeing processed.',
@@ -123,68 +126,85 @@ export const AddModel = () => {
     });
   }
 
+  const deleteModel = useMutation({
+    mutationFn: ({ id }: { id: string }) => {
+      return AnalogueModelsService.deleteApiAnalogueModels(id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['analogue-model'] });
+    },
+  });
+
   async function uploadModel(file: File, iniFile?: File) {
     if (file === undefined) return;
     setUploading(true);
+    setProgress(1);
 
-    if (analogueModel.analogueModelId === '') {
-      const ModelBody: CreateAnalogueModelCommand = {
-        name: analogueModel.name ? analogueModel.name : '',
-        description: analogueModel.description,
-        sourceType: 'Deltares',
-      };
+    const ModelBody: CreateAnalogueModelCommand = {
+      name: analogueModel.name ? analogueModel.name : '',
+      description: analogueModel.description,
+      sourceType: 'Deltares',
+    };
 
-      const modelUpload = await createModel.mutateAsync(ModelBody);
+    const modelUpload = await createModel.mutateAsync(ModelBody);
 
-      if (createModel.error === null && modelUpload.success) {
-        setAnalogueModel({
-          ...analogueModel,
-          analogueModelId: modelUpload.data.analogueModelId,
-        });
-        setProgress(1);
-        uploadMetadata(modelUpload.data.analogueModelId);
-      }
+    if (createModel.error === null && modelUpload.success) {
+      setAnalogueModel({
+        ...analogueModel,
+        analogueModelId: modelUpload.data.analogueModelId,
+      });
+    }
 
-      if (counter >= chunkCount) {
-        setCounter(1);
-        setBeginingOfTheChunk(0);
-      }
+    uploadMetadata(modelUpload.data.analogueModelId);
 
-      const fileType = UploadFileType.NET_CDF;
-      const filenameExtention = file.name.split('.').pop();
-      const fileExtention = '.' + filenameExtention;
+    if (counter >= chunkCount) {
+      setCounter(1);
+      setBeginingOfTheChunk(0);
+    }
 
-      const data = {
-        ModelId: modelUpload.data.analogueModelId,
-        FileSize: file.size,
-        FileName: file.name,
-        FileExtension: fileExtention,
-        FileType: fileType,
-      };
+    const fileType = UploadFileType.NET_CDF;
+    const filenameExtention = file.name.split('.').pop();
+    const fileExtention = '.' + filenameExtention;
 
-      const createManifest = await modelManifest.mutateAsync(data);
-      if (modelManifest.error === null && createManifest.success) {
-        const uploadId = createManifest.data.uploadId;
-        const recivedChunkSize = createManifest.data.fileSize;
-        const numberOfChunks = createManifest.data.numChunks;
-        setUploadId(uploadId);
-        setChunkSize(recivedChunkSize);
-        setEndOfTheChunk(recivedChunkSize);
-        setChunkCount(numberOfChunks);
-        setFileToBeUpload(file);
-        setFileSize(file.size);
-      }
+    const data = {
+      ModelId: modelUpload.data.analogueModelId,
+      FileSize: file.size,
+      FileName: file.name,
+      FileExtension: fileExtention,
+      FileType: fileType,
+    };
 
-      if (iniFile) {
-        setIniFile(iniFile);
-      }
+    const createManifest = await modelManifest.mutateAsync(data);
+    if (modelManifest.error === null && createManifest.success) {
+      const uploadId = createManifest.data.uploadId;
+      const recivedChunkSize = createManifest.data.fileSize;
+      const numberOfChunks = createManifest.data.numChunks;
+      setUploadId(uploadId);
+      setChunkSize(recivedChunkSize);
+      setEndOfTheChunk(recivedChunkSize);
+      setChunkCount(numberOfChunks);
+      setFileToBeUpload(file);
+      setFileSize(file.size);
+    }
+
+    if (iniFile) {
+      setIniFile(iniFile);
     }
   }
 
-  const resetUpload = () => {
+  const resetUpload = async () => {
     setUploadStatus(UploadProcess.FAILED);
     setProgress(-99);
     setUploading(false);
+
+    if (analogueModel.analogueModelId !== '') {
+      await deleteModel.mutateAsync({ id: analogueModel.analogueModelId });
+      setAnalogueModel({
+        ...analogueModelDefault,
+        name: analogueModel.name,
+        description: analogueModel.description,
+      });
+    }
   };
 
   const fileUpload = (counter: number) => {
