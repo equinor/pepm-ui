@@ -18,20 +18,13 @@ import {
   validateValues,
 } from './HandleModelComponent.hooks';
 import * as Styled from './HandleModelComponent.styled';
-import {
-  analogueModelDefault,
-  usePepmContextStore,
-} from '../../../hooks/GlobalState';
+import { usePepmContextStore } from '../../../hooks/GlobalState';
 import { readFileAsText } from '../../../utils/ReadIniFile';
 import { IniFileTextField } from './HandleModelComponent.styled';
 Icon.add({ error_outlined });
 
 interface AddModelDialogProps {
-  confirm?: (
-    file: File,
-    metadata: AnalogueModelDetail,
-    iniFile?: File,
-  ) => Promise<void>;
+  confirm?: (file: File, iniFile?: File) => Promise<void>;
   progress?: number;
   uploading?: boolean;
   isAddUploading?: boolean;
@@ -72,26 +65,30 @@ export const HandleModelComponent = ({
   isAddUploading,
   modelId,
 }: AddModelDialogProps) => {
-  const { setAnalogueModelDefault } = usePepmContextStore();
+  const { setAnalogueModelDefault, analogueModel, setAnalogueModel } =
+    usePepmContextStore();
   const [isFileDisplay, setFileDisplay] = useState<boolean>(false);
   const [files, setFiles] = useState<FilesProps>(defaultFiles);
   const [iniFileString, setIniFileString] = useState<string>();
-  const [metadata, setMetadata] =
-    useState<AnalogueModelDetail>(analogueModelDefault);
   const [submitting, setSubmitting] = useState(false);
 
   const [errors, setErrors] = useState<ErrorType>({});
   const navigate = useNavigate();
 
-  useHandleModelComponent(setMetadata);
+  useHandleModelComponent(setAnalogueModel);
 
   const handleSubmit = () => {
-    setErrors(validateValues(metadata, files));
+    setErrors(validateValues(analogueModel, files));
     setSubmitting(true);
   };
 
   const fileAdded = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
+    if (
+      !e.target.files[0].name.endsWith('.nc') &&
+      !e.target.files[0].name.endsWith('.ini')
+    )
+      return;
     const file = e.target.files[0];
     const type = e.target.name;
     setFiles({ ...files, [type]: file });
@@ -105,15 +102,15 @@ export const HandleModelComponent = ({
 
     const finishSubmit = () => {
       if (files.NC && confirm && files.INI) {
-        confirm(files.NC, metadata, files.INI);
-      } else if (files.NC && confirm) confirm(files.NC, metadata);
+        confirm(files.NC, files.INI);
+      } else if (files.NC && confirm) confirm(files.NC);
       cleanupStates();
     };
 
     if (Object.keys(errors).length === 0 && submitting) {
       finishSubmit();
     }
-  }, [confirm, errors, files, metadata, submitting]);
+  }, [confirm, errors, files, analogueModel, submitting]);
 
   function toggleINIFileContent() {
     setFileDisplay(!isFileDisplay);
@@ -154,9 +151,9 @@ export const HandleModelComponent = ({
         {!isAddUploading && (
           <>
             <ModelMetadata
+              metadata={analogueModel}
+              setMetadata={setAnalogueModel}
               errors={errors}
-              metadata={metadata}
-              setMetadata={setMetadata}
             />
             <Styled.ErrorDiv>{errors.file && errors.file}</Styled.ErrorDiv>
           </>
@@ -171,7 +168,6 @@ export const HandleModelComponent = ({
           </Button>
         </div>
       )}
-
       {uploading && (
         <Styled.UploadDiv>
           <p className="warning-message">
@@ -184,7 +180,6 @@ export const HandleModelComponent = ({
           {<LinearProgress variant="indeterminate" value={progress} />}
         </Styled.UploadDiv>
       )}
-
       {progress === 100 && modelId && (
         <Styled.InfoNavigation>
           <Typography variant="h4" as="h2">

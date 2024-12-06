@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import {
   AddAnalogueModelMetadataCommandForm,
   AddMetadataDto,
-  AnalogueModelDetail,
   AnalogueModelMetadataService,
   AnalogueModelsService,
   ConvertAnalogueModelCommand,
@@ -23,26 +22,26 @@ import { SidePane } from '../../features/HandleModel/SidePane/SidePane';
 import { ModelMetadataView } from '../../features/ModelView/ModelMetadataView/ModelMetadataView';
 import * as Styled from './AddModel.styled';
 import { postIniFile } from '../../api/custom/postIniFile';
+import {
+  analogueModelDefault,
+  usePepmContextStore,
+} from '../../hooks/GlobalState';
 
 enum UploadProcess {
   SUCCESS = 'Model successfully uploaded and is now beeing processed.',
   FAILED = 'File upload failed.',
 }
 
-const defaultCounterValue = 1;
-const defaultBeginningOfchunk = 0;
 export const AddModel = () => {
+  const { analogueModel, setAnalogueModel } = usePepmContextStore();
   const [progress, setProgress] = useState(0);
-  const [modelId, setModelId] = useState<string>('');
   const [uploading, setUploading] = useState<boolean>(false);
-  const [counter, setCounter] = useState<number>(defaultCounterValue);
+  const [counter, setCounter] = useState<number>(1);
   const [iniFile, setIniFile] = useState<File>();
   const [iniFileUploading, setIniFileUploading] = useState<boolean>(false);
   const [iniFileSucceeded, setIniFileSucceeded] = useState<boolean>(false);
   const [fileToBeUpload, setFileToBeUpload] = useState<File>();
-  const [beginingOfTheChunk, setBeginingOfTheChunk] = useState<number>(
-    defaultBeginningOfchunk,
-  );
+  const [beginingOfTheChunk, setBeginingOfTheChunk] = useState<number>(0);
   const [endOfTheChunk, setEndOfTheChunk] = useState<number>();
   const [fileSize, setFileSize] = useState(0);
   const [chunkSize, setChunkSize] = useState(0);
@@ -114,81 +113,105 @@ export const AddModel = () => {
     metadataList.push(...obj);
   }
 
-  async function uploadMetadata(
-    modelId: string,
-    metadata: AnalogueModelDetail,
-  ) {
-    addMetadataFields(metadata.metadata);
+  async function uploadMetadata(id: string) {
+    addMetadataFields(analogueModel.metadata);
 
     const readyMetadata: AddAnalogueModelMetadataCommandForm = {
       metadata: metadataList,
     };
 
     await uploadModelMetadata.mutateAsync({
-      id: modelId,
+      id: id,
       requestBody: readyMetadata,
     });
   }
 
-  async function uploadModel(
-    file: File,
-    metadata: AnalogueModelDetail,
-    iniFile?: File,
-  ) {
+  const deleteModel = useMutation({
+    mutationFn: ({ id }: { id: string }) => {
+      return AnalogueModelsService.deleteApiAnalogueModels(id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['analogue-model'] });
+    },
+  });
+
+  async function uploadModel(file: File, iniFile?: File) {
+    if (file === undefined) return;
     setUploading(true);
+    setProgress(1);
+
     const ModelBody: CreateAnalogueModelCommand = {
-      name: metadata.name ? metadata.name : '',
-      description: metadata.description,
+      name: analogueModel.name ? analogueModel.name : '',
+      description: analogueModel.description,
       sourceType: 'Deltares',
     };
 
     const modelUpload = await createModel.mutateAsync(ModelBody);
 
     if (createModel.error === null && modelUpload.success) {
-      const id = modelUpload.data.analogueModelId;
-      setModelId(id);
-      setProgress(1);
-      uploadMetadata(id, metadata);
+      setAnalogueModel({
+        ...analogueModel,
+        analogueModelId: modelUpload.data.analogueModelId,
+      });
+    }
 
-      if (counter >= chunkCount) {
-        setCounter(defaultCounterValue);
-        setBeginingOfTheChunk(defaultBeginningOfchunk);
-      }
+    uploadMetadata(modelUpload.data.analogueModelId);
 
-      if (file === undefined) return;
+    if (counter >= chunkCount) {
+      setCounter(1);
+      setBeginingOfTheChunk(0);
+    }
 
-      const fileType = UploadFileType.NET_CDF;
-      const filenameExtention = file.name.split('.').pop();
-      const fileExtention = '.' + filenameExtention;
+    const fileType = UploadFileType.NET_CDF;
+    const filenameExtention = file.name.split('.').pop();
+    const fileExtention = '.' + filenameExtention;
 
-      const data = {
-        ModelId: id,
-        FileSize: file.size,
-        FileName: file.name,
-        FileExtension: fileExtention,
-        FileType: fileType,
-      };
+    const data = {
+      ModelId: modelUpload.data.analogueModelId,
+      FileSize: file.size,
+      FileName: file.name,
+      FileExtension: fileExtention,
+      FileType: fileType,
+    };
 
-      const createManifest = await modelManifest.mutateAsync(data);
-      if (modelManifest.error === null && createManifest.success) {
-        const uploadId = createManifest.data.uploadId;
-        const recivedChunkSize = createManifest.data.fileSize;
-        const numberOfChunks = createManifest.data.numChunks;
-        setUploadId(uploadId);
-        setChunkSize(recivedChunkSize);
-        setEndOfTheChunk(recivedChunkSize);
-        setChunkCount(numberOfChunks);
-        setFileToBeUpload(file);
-        setFileSize(file.size);
-      }
+    const createManifest = await modelManifest.mutateAsync(data);
+    if (modelManifest.error === null && createManifest.success) {
+      const uploadId = createManifest.data.uploadId;
+      const recivedChunkSize = createManifest.data.fileSize;
+      const numberOfChunks = createManifest.data.numChunks;
+      setUploadId(uploadId);
+      setChunkSize(recivedChunkSize);
+      setEndOfTheChunk(recivedChunkSize);
+      setChunkCount(numberOfChunks);
+      setFileToBeUpload(file);
+      setFileSize(file.size);
+    }
 
-      if (iniFile) {
-        setIniFile(iniFile);
-      }
+    if (iniFile) {
+      setIniFile(iniFile);
     }
   }
 
+  const resetUpload = async () => {
+    setUploadStatus(UploadProcess.FAILED);
+    setProgress(-99);
+    setUploading(false);
+
+    if (analogueModel.analogueModelId !== '') {
+      await deleteModel.mutateAsync({ id: analogueModel.analogueModelId });
+      setAnalogueModel({
+        ...analogueModelDefault,
+        name: analogueModel.name,
+        description: analogueModel.description,
+      });
+    }
+  };
+
   const fileUpload = (counter: number) => {
+    if (endOfTheChunk === undefined) return;
+    setBeginingOfTheChunk(endOfTheChunk);
+    setEndOfTheChunk(endOfTheChunk + chunkSize);
+
     setCounter(counter + 1);
     if (counter <= chunkCount) {
       if (fileToBeUpload === undefined) return;
@@ -200,41 +223,41 @@ export const AddModel = () => {
   };
 
   const uploadChunk = async ({ Blob }: { Blob: Blob }) => {
-    if (modelId === '' && uploadId === '') return;
+    if (analogueModel.analogueModelId === '' && uploadId === '') return;
     const chunkData = {
-      ModelId: modelId,
+      ModelId: analogueModel.analogueModelId,
       UploadId: uploadId,
       Blob: Blob,
       ChunkNumber: counter,
     };
     try {
       const uploadChunks = await chunkUpload.mutateAsync(chunkData);
-
       if (chunkUpload.error === null && uploadChunks.success) {
-        if (endOfTheChunk === undefined) return;
-        setBeginingOfTheChunk(endOfTheChunk);
-        setEndOfTheChunk(endOfTheChunk + chunkSize);
         if (counter === chunkCount) {
           const finishBody = {
-            ModelId: modelId,
+            ModelId: analogueModel.analogueModelId,
             UploadId: uploadId,
           };
           const finishedUpload = await uploadFinished.mutateAsync(finishBody);
           if (uploadFinished.error === null && finishedUpload.success) {
-            setProgress(100);
-
-            const convert = await convertModelFile.mutateAsync({
-              modelId: modelId,
-            });
-
             // eslint-disable-next-line max-depth
-            if (convertModelFile.error === null && convert.success) {
-              setUploadStatus(UploadProcess.SUCCESS);
-              setUploading(false);
-            } else {
-              setUploadStatus(UploadProcess.FAILED);
-              setProgress(-99);
-              setUploading(false);
+            try {
+              const convert = await convertModelFile.mutateAsync({
+                modelId: analogueModel.analogueModelId,
+              });
+
+              // eslint-disable-next-line max-depth
+              if (convertModelFile.error === null && convert.success) {
+                setProgress(100);
+                setUploadStatus(UploadProcess.SUCCESS);
+                setUploading(false);
+              } else {
+                resetUpload();
+              }
+            } catch (error) {
+              // eslint-disable-next-line no-console
+              console.error(error);
+              resetUpload();
             }
           }
         } else {
@@ -245,6 +268,7 @@ export const AddModel = () => {
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log('error', error);
+      resetUpload();
     }
   };
 
@@ -266,9 +290,17 @@ export const AddModel = () => {
       return response;
     };
 
-    if (!iniFileUploading && !iniFileSucceeded && iniFile && modelId) {
+    if (
+      !iniFileUploading &&
+      !iniFileSucceeded &&
+      iniFile &&
+      analogueModel.analogueModelId
+    ) {
       setIniFileUploading(true);
-      const response = uploadIniFileAsync(iniFile, modelId);
+      const response = uploadIniFileAsync(
+        iniFile,
+        analogueModel.analogueModelId,
+      );
       response.then(
         (res) => {
           setIniFileSucceeded(true);
@@ -278,7 +310,13 @@ export const AddModel = () => {
         },
       );
     }
-  }, [modelId, iniFile, iniFileUploading, iniFileSucceeded, uploadIniFile]);
+  }, [
+    analogueModel.analogueModelId,
+    iniFile,
+    iniFileUploading,
+    iniFileSucceeded,
+    uploadIniFile,
+  ]);
 
   function clearStatus() {
     setUploadStatus(undefined);
@@ -297,12 +335,12 @@ export const AddModel = () => {
           uploading={uploading}
           progress={progress}
           isAddUploading={progress > 0}
-          modelId={modelId}
+          modelId={analogueModel.analogueModelId}
         />
-        {modelId !== '' && (
+        {analogueModel.analogueModelId !== '' && (
           <>
             <ModelMetadataView
-              modelIdParent={modelId}
+              modelIdParent={analogueModel.analogueModelId}
               uploadingProgress={progress}
             />
           </>
