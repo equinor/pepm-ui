@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { AnalogueModelDetail } from '../../../api/generated';
 import { ErrorType, FilesProps } from './HandleModelComponent';
 export const useHandleModelComponent = (
-  setMetadata: React.Dispatch<React.SetStateAction<AnalogueModelDetail>>,
+  setMetadata: (analogueModel: AnalogueModelDetail) => void,
   existingData?: AnalogueModelDetail,
 ) => {
   useEffect(() => {
