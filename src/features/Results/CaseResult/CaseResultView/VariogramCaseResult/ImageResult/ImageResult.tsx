@@ -80,14 +80,6 @@ export const ImageResult = ({
         <Tabs activeTab={activeTab} onChange={handleChange}>
           <Tabs.List>
             <Tabs.Tab>Variogram slice</Tabs.Tab>
-            {/* {resultRows
-              .map((r) => r.variogramModel)
-              .filter((value, index, self) => self.indexOf(value) === index)
-              .map((uniqe) => {
-                console.log(uniqe);
-
-                return <Tabs.Tab key={uniqe}>{uniqe}</Tabs.Tab>;
-              })} */}
             <Tabs.Tab>Spherical</Tabs.Tab>
             <Tabs.Tab>Gaussian</Tabs.Tab>
             <Tabs.Tab>General Exponential</Tabs.Tab>
