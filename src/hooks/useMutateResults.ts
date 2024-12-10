@@ -35,16 +35,16 @@ export const useMutateVariogramResult = () => {
   const putVariogramResult = useMutation({
     mutationFn: ({
       id,
-      variogramId,
+      computeCaseId,
       requestBody,
     }: {
       id: string;
-      variogramId: string;
+      computeCaseId: string;
       requestBody: UpdateVariogramResultCommandBody;
     }) => {
-      return ResultsService.putApiAnalogueModelsResultsVariogram(
+      return ResultsService.putApiAnalogueModelsComputecasesResults(
         id,
-        variogramId,
+        computeCaseId,
         requestBody,
       );
     },
