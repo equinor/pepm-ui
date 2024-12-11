@@ -5,5 +5,6 @@
 
 export type UpdateVariogramResultCommandBody = {
     status: string;
+    identifier: number;
 };
 

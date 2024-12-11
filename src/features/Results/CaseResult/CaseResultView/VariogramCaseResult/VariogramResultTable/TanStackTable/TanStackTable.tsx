@@ -1,9 +1,9 @@
 /* eslint-disable max-lines */
 /* eslint-disable sort-imports */
 /* eslint-disable max-lines-per-function */
-import { Fragment } from 'react';
+import { ChangeEvent, Fragment } from 'react';
 
-import { Button, Icon } from '@equinor/eds-core-react';
+import { Button, Icon, Switch } from '@equinor/eds-core-react';
 import {
   chevron_down as DOWN,
   chevron_right as RIGHT,
@@ -19,11 +19,17 @@ import {
 import {
   GetVariogramResultsDto,
   GetVariogramResultsVariogramResultFileDto,
+  ResultStatus,
+  UpdateVariogramResultCommandBody,
+  // UpdateVariogramResultCommandBody,
 } from '../../../../../../../api/generated';
 import { usePepmContextStore } from '../../../../../../../hooks/GlobalState';
 import { roundResultString } from '../../../../../../../utils/RoundResultString';
 import { SubRowResult } from '../SubRowResult/SubRowResult';
 import * as Styled from './TanStackTable.styled';
+import { useIsOwnerOrAdmin } from '../../../../../../../hooks/useIsOwnerOrAdmin';
+import { useMutateVariogramResult } from '../../../../../../../hooks/useMutateResults';
+// import { useMutateVariogramResult } from '../../../../../../../hooks/useMutateResults';
 
 export interface ResultObjectType {
   variogramResultId: string;
@@ -44,6 +50,7 @@ export interface ResultObjectType {
   modelArea: string;
   variogramModel: string;
   identifier: number;
+  status: ResultStatus;
   subRows?: ResultObjectType[];
 }
 
@@ -131,7 +138,53 @@ export const TanStackTable = ({
 }: {
   resultList: GetVariogramResultsDto[];
 }) => {
-  const { computeCases } = usePepmContextStore();
+  const {
+    computeCases,
+    analogueModel,
+    variogramResults,
+    updateVariogramResult,
+  } = usePepmContextStore();
+  const isOwner = useIsOwnerOrAdmin();
+  const mutateVariogramResult = useMutateVariogramResult();
+
+  const putUpdateVariogramResult = async (
+    status: ResultStatus,
+    variogram: ResultObjectType,
+  ) => {
+    const requestBody: UpdateVariogramResultCommandBody = {
+      status: status,
+      identifier: variogram.identifier,
+    };
+
+    const variogramUpdate = await mutateVariogramResult.mutateAsync({
+      id: analogueModel.analogueModelId,
+      computeCaseId: variogram.computeCaseId,
+      requestBody: requestBody,
+    });
+
+    if (variogramUpdate.success) {
+      variogramResults.forEach((elem) => {
+        if (
+          elem.computeCaseId === variogram.computeCaseId &&
+          elem.identifier === variogram.identifier
+        )
+          updateVariogramResult({ ...elem, status: status });
+      });
+    }
+  };
+
+  const updateStatus = (checked: boolean, variogram: ResultObjectType) => {
+    if (checked) {
+      putUpdateVariogramResult(ResultStatus.PUBLISH, variogram);
+    } else {
+      putUpdateVariogramResult(ResultStatus.DRAFT, variogram);
+    }
+  };
+
+  const checkedStatus = (variogram: ResultObjectType) => {
+    if (variogram.status === ResultStatus.PUBLISH) return true;
+    return false;
+  };
 
   const getSubRows = (computeCaseId: string, identifier: number) => {
     const subRowArray: ResultObjectType[] = [];
@@ -178,6 +231,7 @@ export const TanStackTable = ({
           variogramModel: e.family ? e.family : '',
           quality: roundResultString(e.quality),
           identifier: e.identifier,
+          status: e.status,
         };
 
         subRowArray.push(element);
@@ -230,6 +284,24 @@ export const TanStackTable = ({
       header: () => <div>Model Area</div>,
       id: 'modelArea',
     },
+    {
+      accessorKey: 'status',
+      header: () => <div>Published</div>,
+      cell: ({ row }) => {
+        return (
+          row.getCanExpand() && (
+            <Switch
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                updateStatus(e.target.checked, row.original);
+              }}
+              checked={checkedStatus(row.original)}
+              disabled={!isOwner}
+            ></Switch>
+          )
+        );
+      },
+      id: 'status',
+    },
   ];
 
   const getRows = () => {
@@ -279,6 +351,7 @@ export const TanStackTable = ({
         variogramModel: e.family ? e.family : '',
         quality: roundResultString(e.quality),
         identifier: e.identifier,
+        status: e.status,
       };
       rowArray.push(element);
     });

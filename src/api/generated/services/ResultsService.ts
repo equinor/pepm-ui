@@ -90,22 +90,22 @@ export class ResultsService {
 
     /**
      * @param id
-     * @param variogramId
+     * @param computeCaseId
      * @param requestBody
      * @returns UpdateVariogramResultCommandResponse Success
      * @throws ApiError
      */
-    public static putApiAnalogueModelsResultsVariogram(
+    public static putApiAnalogueModelsComputecasesResults(
         id: string,
-        variogramId: string,
+        computeCaseId: string,
         requestBody?: UpdateVariogramResultCommandBody,
     ): CancelablePromise<UpdateVariogramResultCommandResponse> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/api/analogue-models/{id}/results/variogram/{variogramId}',
+            url: '/api/analogue-models/{id}/computecases/{computeCaseId}/results',
             path: {
                 'id': id,
-                'variogramId': variogramId,
+                'computeCaseId': computeCaseId,
             },
             body: requestBody,
             mediaType: 'application/json-patch+json',

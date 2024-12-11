@@ -7,7 +7,8 @@ import type { ResultStatus } from './ResultStatus';
 
 export type UpdateVariogramResultDto = {
     analogueModelId: string;
-    variogramResultId: string;
+    computeCaseId: string;
     status: ResultStatus;
+    identifier: number;
 };
 
