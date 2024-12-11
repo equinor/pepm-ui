@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.7.0](https://github.com/equinor/pepm-ui/compare/v1.6.0...v1.7.0) (2024-12-11)
+
+
+### 🧹 Chores
+
+* set copyright year to 2024 ([#372](https://github.com/equinor/pepm-ui/issues/372)) ([cca30f9](https://github.com/equinor/pepm-ui/commit/cca30f9ad2329b2f1e2df52946339423235d86f7))
+
+
+### ✨ Features
+
+* Added switch for approving object result ([#382](https://github.com/equinor/pepm-ui/issues/382)) ([cce5390](https://github.com/equinor/pepm-ui/commit/cce53907df00893d4f67b7f578fd6c9cbcac71e7))
+* ini upload ([#375](https://github.com/equinor/pepm-ui/issues/375)) ([e00b25a](https://github.com/equinor/pepm-ui/commit/e00b25a145a11fca968fb71f55404d1d44de4781))
+* Variogram result status  ([#391](https://github.com/equinor/pepm-ui/issues/391)) ([ca4c3bf](https://github.com/equinor/pepm-ui/commit/ca4c3bf3c9dfe2fffb3c149c6f03a355fc00d856))
+
+
+### 🐛 Bug Fixes
+
+* Added try catch to catch error and set state ([#385](https://github.com/equinor/pepm-ui/issues/385)) ([10bc4c2](https://github.com/equinor/pepm-ui/commit/10bc4c2b49837dff50e493223d5bb44b759a1210))
+* Fixed editing of model name and desc ([#373](https://github.com/equinor/pepm-ui/issues/373)) ([82f8003](https://github.com/equinor/pepm-ui/commit/82f800389fb18df5a2d40ea1d7c39125ea808d1d))
+* Fixed footer overlapping content ([#384](https://github.com/equinor/pepm-ui/issues/384)) ([5679ab5](https://github.com/equinor/pepm-ui/commit/5679ab5fc2cd94a1cdead66e5d05ee0e980ddfb3))
+
 ## [1.6.0](https://github.com/equinor/pepm-ui/compare/v1.5.0...v1.6.0) (2024-11-12)
 
 
