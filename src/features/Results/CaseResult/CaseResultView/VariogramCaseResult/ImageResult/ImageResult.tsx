@@ -1,5 +1,11 @@
 /* eslint-disable max-lines-per-function */
-import { Button, Dialog, Tabs } from '@equinor/eds-core-react';
+import {
+  Button,
+  CircularProgress,
+  Dialog,
+  Tabs,
+  Typography,
+} from '@equinor/eds-core-react';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { getVariogramImage } from '../../../../../../api/custom/getImageById';
@@ -77,7 +83,7 @@ export const ImageResult = ({
   return (
     <Styled.Dialog open={open} isDismissable>
       <Styled.Content>
-        <Tabs activeTab={activeTab} onChange={handleChange}>
+        <Tabs activeTab={activeTab} onChange={handleChange} className="tabs">
           <Tabs.List>
             <Tabs.Tab>Variogram slice</Tabs.Tab>
             <Tabs.Tab>Spherical</Tabs.Tab>
@@ -85,121 +91,205 @@ export const ImageResult = ({
             <Tabs.Tab>General Exponential</Tabs.Tab>
             <Tabs.Tab>Exponential</Tabs.Tab>
           </Tabs.List>
-          <Tabs.Panels>
-            <Tabs.Panel>
-              {loadedVariogramSlicesImage.isLoading && <>Loading ...</>}
+          <Tabs.Panels className="tabs-panels">
+            <Tabs.Panel className="tabs-panel">
+              <>
+                {loadedVariogramSlicesImage.isLoading && (
+                  <>
+                    <CircularProgress
+                      color="primary"
+                      size={24}
+                      value={100}
+                      variant="indeterminate"
+                    />
+                  </>
+                )}
 
-              {loadedVariogramSlicesImage.data && (
-                <Styled.ImageWrapper>
-                  <img
-                    className="image"
-                    alt="Case results"
-                    src={
-                      loadedVariogramSlicesImage.data
-                        ? loadedVariogramSlicesImage.data
-                        : ''
-                    }
-                  />
-                </Styled.ImageWrapper>
-              )}
+                {loadedVariogramSlicesImage.data && (
+                  <Styled.ImageWrapper>
+                    <img
+                      className="image"
+                      alt="Case results"
+                      src={
+                        loadedVariogramSlicesImage.data
+                          ? loadedVariogramSlicesImage.data
+                          : ''
+                      }
+                    />
+                  </Styled.ImageWrapper>
+                )}
+              </>
             </Tabs.Panel>
-            <Tabs.Panel>
-              {loadedSphericalImage && loadedSphericalImage.data ? (
-                <>
-                  {loadedSphericalImage.isLoading && <>Loading ...</>}
-                  {loadedSphericalImage.data && (
-                    <Styled.ImageWrapper>
-                      <img
-                        className="image"
-                        alt="Spherical"
-                        src={
-                          loadedSphericalImage.data
-                            ? loadedSphericalImage.data
-                            : ''
-                        }
-                      />
-                    </Styled.ImageWrapper>
-                  )}
-                </>
-              ) : (
-                <>No Spherical</>
-              )}
+            <Tabs.Panel className="tabs-panel">
+              <>
+                {loadedSphericalImage && loadedSphericalImage.data ? (
+                  <>
+                    {loadedSphericalImage.isLoading && (
+                      <>
+                        <CircularProgress
+                          color="primary"
+                          size={24}
+                          value={100}
+                          variant="indeterminate"
+                        />
+                      </>
+                    )}
+                    {loadedSphericalImage.data && (
+                      <Styled.ImageWrapper>
+                        <img
+                          className="image"
+                          alt="Spherical"
+                          src={
+                            loadedSphericalImage.data
+                              ? loadedSphericalImage.data
+                              : ''
+                          }
+                        />
+                      </Styled.ImageWrapper>
+                    )}
+                  </>
+                ) : (
+                  <Styled.ImageWrapper>
+                    <Typography
+                      variant="body_short"
+                      className="placeholder-text"
+                    >
+                      Spherical variogram model is not included in the result
+                    </Typography>
+                  </Styled.ImageWrapper>
+                )}
+              </>
             </Tabs.Panel>
-            <Tabs.Panel>
-              {loadedGaussianImage && loadedGaussianImage.data ? (
-                <>
-                  {loadedGaussianImage.isLoading && <>Loading ...</>}
-                  {loadedGaussianImage.data && (
-                    <Styled.ImageWrapper>
-                      <img
-                        className="image"
-                        alt="Gaussian"
-                        src={
-                          loadedGaussianImage.data
-                            ? loadedGaussianImage.data
-                            : ''
-                        }
-                      />
-                    </Styled.ImageWrapper>
-                  )}
-                </>
-              ) : (
-                <>No Gaussian</>
-              )}
+            <Tabs.Panel className="tabs-panel">
+              <>
+                {loadedGaussianImage && loadedGaussianImage.data ? (
+                  <>
+                    {loadedGaussianImage.isLoading && (
+                      <>
+                        <CircularProgress
+                          color="primary"
+                          size={24}
+                          value={100}
+                          variant="indeterminate"
+                        />
+                      </>
+                    )}
+                    {loadedGaussianImage.data && (
+                      <Styled.ImageWrapper>
+                        <img
+                          className="image"
+                          alt="Gaussian"
+                          src={
+                            loadedGaussianImage.data
+                              ? loadedGaussianImage.data
+                              : ''
+                          }
+                        />
+                      </Styled.ImageWrapper>
+                    )}
+                  </>
+                ) : (
+                  <Styled.ImageWrapper>
+                    <Typography
+                      variant="body_short"
+                      className="placeholder-text"
+                    >
+                      Gaussian variogram model is not included in the result
+                    </Typography>
+                  </Styled.ImageWrapper>
+                )}
+              </>
             </Tabs.Panel>
 
-            <Tabs.Panel>
-              {loadedGeneralExponentialImage &&
-              loadedGeneralExponentialImage.data ? (
-                <>
-                  {loadedGeneralExponentialImage.isLoading && <>Loading ...</>}
-                  {loadedGeneralExponentialImage.data && (
-                    <Styled.ImageWrapper>
-                      <img
-                        className="image"
-                        alt="General Exponential"
-                        src={
-                          loadedGeneralExponentialImage.data
-                            ? loadedGeneralExponentialImage.data
-                            : ''
-                        }
-                      />
-                    </Styled.ImageWrapper>
-                  )}
-                </>
-              ) : (
-                <>No General Exponential</>
-              )}
+            <Tabs.Panel className="tabs-panel">
+              <>
+                {loadedGeneralExponentialImage &&
+                loadedGeneralExponentialImage.data ? (
+                  <>
+                    {loadedGeneralExponentialImage.isLoading && (
+                      <>
+                        <CircularProgress
+                          color="primary"
+                          size={24}
+                          value={100}
+                          variant="indeterminate"
+                        />
+                      </>
+                    )}
+                    {loadedGeneralExponentialImage.data && (
+                      <Styled.ImageWrapper>
+                        <img
+                          className="image"
+                          alt="General Exponential"
+                          src={
+                            loadedGeneralExponentialImage.data
+                              ? loadedGeneralExponentialImage.data
+                              : ''
+                          }
+                        />
+                      </Styled.ImageWrapper>
+                    )}
+                  </>
+                ) : (
+                  <Styled.ImageWrapper>
+                    <Typography
+                      variant="body_short"
+                      className="placeholder-text"
+                    >
+                      General exponential variogram model is not included in the
+                      result
+                    </Typography>
+                  </Styled.ImageWrapper>
+                )}
+              </>
             </Tabs.Panel>
-            <Tabs.Panel>
-              {loadedExponentialImage && loadedExponentialImage.data ? (
-                <>
-                  {loadedExponentialImage.isLoading && <>Loading ...</>}
-                  {loadedExponentialImage.data && (
-                    <Styled.ImageWrapper>
-                      <img
-                        className="image"
-                        alt="Exponential"
-                        src={
-                          loadedExponentialImage.data
-                            ? loadedExponentialImage.data
-                            : ''
-                        }
-                      />
-                    </Styled.ImageWrapper>
-                  )}
-                </>
-              ) : (
-                <>No General Exponential</>
-              )}
+            <Tabs.Panel className="tabs-panel">
+              <>
+                {loadedExponentialImage && loadedExponentialImage.data ? (
+                  <>
+                    {loadedExponentialImage.isLoading && (
+                      <>
+                        <CircularProgress
+                          color="primary"
+                          size={24}
+                          value={100}
+                          variant="indeterminate"
+                        />
+                      </>
+                    )}
+                    {loadedExponentialImage.data && (
+                      <Styled.ImageWrapper>
+                        <img
+                          className="image"
+                          alt="Exponential"
+                          src={
+                            loadedExponentialImage.data
+                              ? loadedExponentialImage.data
+                              : ''
+                          }
+                        />
+                      </Styled.ImageWrapper>
+                    )}
+                  </>
+                ) : (
+                  <Styled.ImageWrapper>
+                    <Typography
+                      variant="body_short"
+                      className="placeholder-text"
+                    >
+                      Exponential variogram model is not included in the result
+                    </Typography>
+                  </Styled.ImageWrapper>
+                )}
+              </>
             </Tabs.Panel>
           </Tabs.Panels>
         </Tabs>
       </Styled.Content>
 
       <Dialog.Actions>
-        <Button variant="ghost" onClick={() => setOpen(!open)}>
-          Close
+        <Button variant="contained" onClick={() => setOpen(!open)}>
+          Close this window
         </Button>
       </Dialog.Actions>
     </Styled.Dialog>
