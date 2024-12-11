@@ -82,7 +82,7 @@ export const ImageResult = ({
 
   return (
     <Styled.Dialog open={open} isDismissable>
-      <Styled.Content>
+      <Dialog.CustomContent className="dialog-content">
         <Tabs activeTab={activeTab} onChange={handleChange} className="tabs">
           <Tabs.List>
             <Tabs.Tab>Variogram slice</Tabs.Tab>
@@ -106,17 +106,17 @@ export const ImageResult = ({
                 )}
 
                 {loadedVariogramSlicesImage.data && (
-                  <Styled.ImageWrapper>
+                  <figure className="image-wrapper">
                     <img
                       className="image"
-                      alt="Case results"
+                      alt="Variogram x/y/z slice"
                       src={
                         loadedVariogramSlicesImage.data
                           ? loadedVariogramSlicesImage.data
                           : ''
                       }
                     />
-                  </Styled.ImageWrapper>
+                  </figure>
                 )}
               </>
             </Tabs.Panel>
@@ -135,28 +135,28 @@ export const ImageResult = ({
                       </>
                     )}
                     {loadedSphericalImage.data && (
-                      <Styled.ImageWrapper>
+                      <figure className="image-wrapper">
                         <img
                           className="image"
-                          alt="Spherical"
+                          alt="Spherical variogram (empirical and fitted)"
                           src={
                             loadedSphericalImage.data
                               ? loadedSphericalImage.data
                               : ''
                           }
                         />
-                      </Styled.ImageWrapper>
+                      </figure>
                     )}
                   </>
                 ) : (
-                  <Styled.ImageWrapper>
+                  <figure className="image-wrapper">
                     <Typography
                       variant="body_short"
                       className="placeholder-text"
                     >
                       Spherical variogram model is not included in the result
                     </Typography>
-                  </Styled.ImageWrapper>
+                  </figure>
                 )}
               </>
             </Tabs.Panel>
@@ -175,28 +175,28 @@ export const ImageResult = ({
                       </>
                     )}
                     {loadedGaussianImage.data && (
-                      <Styled.ImageWrapper>
+                      <figure className="image-wrapper">
                         <img
                           className="image"
-                          alt="Gaussian"
+                          alt="Gaussian variogram (empirical and fitted)"
                           src={
                             loadedGaussianImage.data
                               ? loadedGaussianImage.data
                               : ''
                           }
                         />
-                      </Styled.ImageWrapper>
+                      </figure>
                     )}
                   </>
                 ) : (
-                  <Styled.ImageWrapper>
+                  <figure className="image-wrapper">
                     <Typography
                       variant="body_short"
                       className="placeholder-text"
                     >
                       Gaussian variogram model is not included in the result
                     </Typography>
-                  </Styled.ImageWrapper>
+                  </figure>
                 )}
               </>
             </Tabs.Panel>
@@ -217,21 +217,21 @@ export const ImageResult = ({
                       </>
                     )}
                     {loadedGeneralExponentialImage.data && (
-                      <Styled.ImageWrapper>
+                      <figure className="image-wrapper">
                         <img
                           className="image"
-                          alt="General Exponential"
+                          alt="General Exponential variogram (empirical and fitted)"
                           src={
                             loadedGeneralExponentialImage.data
                               ? loadedGeneralExponentialImage.data
                               : ''
                           }
                         />
-                      </Styled.ImageWrapper>
+                      </figure>
                     )}
                   </>
                 ) : (
-                  <Styled.ImageWrapper>
+                  <figure className="image-wrapper">
                     <Typography
                       variant="body_short"
                       className="placeholder-text"
@@ -239,7 +239,7 @@ export const ImageResult = ({
                       General exponential variogram model is not included in the
                       result
                     </Typography>
-                  </Styled.ImageWrapper>
+                  </figure>
                 )}
               </>
             </Tabs.Panel>
@@ -258,34 +258,34 @@ export const ImageResult = ({
                       </>
                     )}
                     {loadedExponentialImage.data && (
-                      <Styled.ImageWrapper>
+                      <figure className="image-wrapper">
                         <img
                           className="image"
-                          alt="Exponential"
+                          alt="Exponential variogram (empirical and fitted)"
                           src={
                             loadedExponentialImage.data
                               ? loadedExponentialImage.data
                               : ''
                           }
                         />
-                      </Styled.ImageWrapper>
+                      </figure>
                     )}
                   </>
                 ) : (
-                  <Styled.ImageWrapper>
+                  <figure className="image-wrapper">
                     <Typography
                       variant="body_short"
                       className="placeholder-text"
                     >
                       Exponential variogram model is not included in the result
                     </Typography>
-                  </Styled.ImageWrapper>
+                  </figure>
                 )}
               </>
             </Tabs.Panel>
           </Tabs.Panels>
         </Tabs>
-      </Styled.Content>
+      </Dialog.CustomContent>
 
       <Dialog.Actions>
         <Button variant="contained" onClick={() => setOpen(!open)}>

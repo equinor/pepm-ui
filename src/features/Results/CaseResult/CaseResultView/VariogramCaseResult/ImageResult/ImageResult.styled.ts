@@ -3,47 +3,55 @@ import styled from 'styled-components';
 import { spacings } from '../../../../../../tokens/spacings';
 
 export const StyledDialog = styled(Dialog)`
-  width: min(1500px, 90vw);
-  height: min(1000px, 90vh);
+  --image-width: 1500px;
+  --image-height: 1000px;
+
+  width: min(var(--image-width), 90vw);
+  height: min(var(--image-height), 90vh);
   grid-template-rows: auto 52px;
-`;
 
-export const Content = styled(Dialog.CustomContent)`
-  display: flex;
-  flex-direction: column;
-  row-gap: ${spacings.SMALL};
-
-  .tabs {
+  .dialog-content {
     display: flex;
     flex-direction: column;
-    height: 100%;
-  }
+    row-gap: ${spacings.SMALL};
 
-  .tabs-panels {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
+    .tabs {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
 
-  .tabs-panel {
-    align-self: center;
+    .tabs-panels {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .tabs-panel {
+      align-self: center;
+    }
+
+    .image-wrapper {
+      margin: 0;
+    }
+
+    .image {
+      display: block;
+      width: 100%;
+      object-fit: contain;
+
+      /* Tweak the content height inside the dialog minus tabs, actions, padding, etc. */
+      max-height: calc(
+        min(var(--image-height), 90vh) -
+          (16px + 48px + 16px + 16px + 52px + 16px)
+      );
+    }
+
+    .placeholder-text {
+      text-align: center;
+    }
   }
 `;
 
 export { StyledDialog as Dialog };
-
-export const ImageWrapper = styled.div`
-  .image {
-    display: block;
-    width: 100%;
-    object-fit: contain;
-    max-height: calc(
-      min(1000px, 90vh) - 16px - 48px - 16px - 16px - 52px - 16px
-    ); /* Tweaking the height to match the content area minus patting, tab bars, action bar, etc. */
-  }
-
-  .placeholder-text {
-    text-align: center;
-  }
-`;
