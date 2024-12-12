@@ -2,52 +2,56 @@ import { Dialog } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 import { spacings } from '../../../../../../tokens/spacings';
 
-import { theme } from '../../../../../../tokens/theme';
-
 export const StyledDialog = styled(Dialog)`
-  width: fit-content;
-  max-width: 90vw;
-  max-height: 90vh;
-`;
+  --image-width: 1500px;
+  --image-height: 1000px;
 
-export const Content = styled(Dialog.CustomContent)`
-  display: flex;
-  flex-direction: column;
+  width: min(var(--image-width), 90vw);
+  height: min(var(--image-height), 90vh);
+  grid-template-rows: auto 52px;
 
-  row-gap: ${spacings.SMALL};
+  .dialog-content {
+    display: flex;
+    flex-direction: column;
+    row-gap: ${spacings.SMALL};
+
+    .tabs {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .tabs-panels {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .tabs-panel {
+      align-self: center;
+    }
+
+    .image-wrapper {
+      margin: 0;
+    }
+
+    .image {
+      display: block;
+      width: 100%;
+      object-fit: contain;
+
+      /* Tweak the content height inside the dialog minus tabs, actions, padding, etc. */
+      max-height: calc(
+        min(var(--image-height), 90vh) -
+          (16px + 48px + 16px + 16px + 52px + 16px)
+      );
+    }
+
+    .placeholder-text {
+      text-align: center;
+    }
+  }
 `;
 
 export { StyledDialog as Dialog };
-
-export const ImageWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  border-style: solid;
-  border-width: 1px;
-  border-color: ${theme.light.ui.background.medium};
-
-  > h5 {
-    font-weight: normal;
-    padding: ${spacings.SMALL};
-  }
-
-  > .image {
-    width: fit-content;
-    max-width: 80vw;
-    max-height: 70vh;
-    padding: ${spacings.SMALL};
-
-    @media (max-width: 1200px) {
-      width: fit-content;
-      max-width: 70vw;
-      max-height: 60vh;
-    }
-    @media (max-width: 800px) {
-      width: fit-content;
-      max-width: 60vw;
-      max-height: 50vh;
-    }
-  }
-`;
