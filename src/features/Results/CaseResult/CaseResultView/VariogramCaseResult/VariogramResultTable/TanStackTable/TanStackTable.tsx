@@ -3,9 +3,10 @@
 /* eslint-disable max-lines-per-function */
 import { ChangeEvent, Fragment } from 'react';
 
-import { Button, Icon, Switch } from '@equinor/eds-core-react';
+import { Button, Icon, Switch, Tooltip } from '@equinor/eds-core-react';
 import {
   chevron_down as DOWN,
+  help_outline as HELP,
   chevron_right as RIGHT,
 } from '@equinor/eds-icons';
 import {
@@ -76,60 +77,59 @@ function Table({
   });
 
   return (
-    <div className="p-2">
-      <div className="h-2" />
-      <table>
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <th key={header.id} colSpan={header.colSpan}>
-                    {header.isPlaceholder ? null : (
-                      <div>
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                      </div>
-                    )}
-                  </th>
-                );
-              })}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => {
-            return (
-              <Fragment key={row.id}>
-                <tr>
-                  {/* first row is a normal row */}
-                  {row.getVisibleCells().map((cell) => {
-                    return (
-                      <td key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </td>
-                    );
-                  })}
-                </tr>
-                {row.getIsExpanded() && (
-                  <tr>
-                    <td colSpan={row.getVisibleCells().length}>
-                      {renderSubComponent({ row })}
+    <table className="variogram-results-table">
+      <thead>
+        {table.getHeaderGroups().map((headerGroup) => (
+          <tr key={headerGroup.id}>
+            {headerGroup.headers.map((header) => {
+              return (
+                <th key={header.id} colSpan={header.colSpan}>
+                  {header.isPlaceholder ? null : (
+                    <div>
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
+                    </div>
+                  )}
+                </th>
+              );
+            })}
+          </tr>
+        ))}
+      </thead>
+      <tbody>
+        {table.getRowModel().rows.map((row) => {
+          return (
+            <Fragment key={row.id}>
+              <tr>
+                {/* first row is a normal row */}
+                {row.getVisibleCells().map((cell) => {
+                  return (
+                    <td key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
                     </td>
-                  </tr>
-                )}
-              </Fragment>
-            );
-          })}
-        </tbody>
-      </table>
-      <div className="h-2" />
-    </div>
+                  );
+                })}
+              </tr>
+              {row.getIsExpanded() && (
+                <tr>
+                  <td
+                    colSpan={row.getVisibleCells().length}
+                    className="expanded-cell"
+                  >
+                    {renderSubComponent({ row })}
+                  </td>
+                </tr>
+              )}
+            </Fragment>
+          );
+        })}
+      </tbody>
+    </table>
   );
 }
 
@@ -256,7 +256,10 @@ export const TanStackTable = ({
       cell: ({ row }) => {
         return (
           row.getCanExpand() && (
-            <Button variant="ghost" onClick={row.getToggleExpandedHandler()}>
+            <Button
+              variant="ghost_icon"
+              onClick={row.getToggleExpandedHandler()}
+            >
               <Icon data={row.getIsExpanded() ? DOWN : RIGHT} size={18} />
             </Button>
           )
@@ -270,6 +273,11 @@ export const TanStackTable = ({
       id: 'method',
     },
     {
+      accessorKey: 'modelArea',
+      header: () => <div>Model Area</div>,
+      id: 'modelArea',
+    },
+    {
       accessorKey: 'parameter',
       header: () => <div>Parameter</div>,
       id: 'parameter',
@@ -280,24 +288,33 @@ export const TanStackTable = ({
       id: 'archelFilter',
     },
     {
-      accessorKey: 'modelArea',
-      header: () => <div>Model Area</div>,
-      id: 'modelArea',
-    },
-    {
       accessorKey: 'status',
-      header: () => <div>Published</div>,
+      header: () => (
+        <div className="has-tooltip">
+          Published
+          <Tooltip
+            title="Only published results will be available from the PEPM results API"
+            placement="top"
+          >
+            <Icon data={HELP} className="icon" />
+          </Tooltip>
+        </div>
+      ),
       cell: ({ row }) => {
         return (
-          row.getCanExpand() && (
+          row.getCanExpand() &&
+          (isOwner ? (
             <Switch
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 updateStatus(e.target.checked, row.original);
               }}
               checked={checkedStatus(row.original)}
-              disabled={!isOwner}
-            ></Switch>
-          )
+            />
+          ) : (
+            <Tooltip title="Only model owners can change the publish status">
+              <Switch checked={checkedStatus(row.original)} disabled />
+            </Tooltip>
+          ))
         );
       },
       id: 'status',

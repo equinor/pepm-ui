@@ -5,17 +5,14 @@ export const SubRowDiv = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: ${spacings.LARGE};
-  padding: ${spacings.X_LARGE} ${spacings.XXXX_LARGE};
-
-  width: 100%;
+  padding: ${spacings.MEDIUM} ${spacings.MEDIUM} ${spacings.X_LARGE}
+    calc(${spacings.MEDIUM} + ${spacings.XXXX_LARGE} + ${spacings.MEDIUM});
 `;
 
 export const SubRowInfo = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-
-  width: 100%;
+  align-items: center;
+  gap: 1.5rem;
 `;
 
 export const TableList = styled.div`

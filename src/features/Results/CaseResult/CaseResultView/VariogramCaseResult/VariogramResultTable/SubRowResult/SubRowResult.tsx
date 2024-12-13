@@ -1,6 +1,6 @@
 /* eslint-disable max-lines-per-function */
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
-import { bar_chart as barChart } from '@equinor/eds-icons';
+import { timeline } from '@equinor/eds-icons';
 import { useState } from 'react';
 import {
   GetVariogramResultsDto,
@@ -41,10 +41,16 @@ export const SubRowResult = ({
     <>
       <Styled.SubRowDiv>
         <Styled.SubRowInfo>
-          <Typography>Variogram model details</Typography>
-          <Button variant="outlined" onClick={handleImageDialog}>
-            <Icon data={barChart} title={'Open plot for case results.'} />
-            Show plot
+          <Typography variant="h6" as="h3">
+            Variogram model details
+          </Typography>
+          <Button
+            color="secondary"
+            variant="outlined"
+            onClick={handleImageDialog}
+          >
+            Show variogram slices
+            <Icon data={timeline} />
           </Button>
         </Styled.SubRowInfo>
         <Styled.TableList>
