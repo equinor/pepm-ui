@@ -86,12 +86,10 @@ export const ModelTable = () => {
     <Styled.Table>
       <EdsDataGrid
         enableSorting
-        enablePagination
         enableColumnFiltering
         emptyMessage="Empty :("
         columnResizeMode="onChange"
         rows={data.data}
-        pageSize={10}
         scrollbarHorizontal
         columns={[
           { accessorKey: 'name', header: 'Model name', id: 'name' },
