@@ -3,16 +3,16 @@ import { spacings } from '../../tokens/spacings';
 
 export const BrowseWrapper = styled.div`
   column-gap: ${spacings.X_LARGE};
-  padding: ${spacings.XXX_LARGE} ${spacings.X_LARGE};
+  padding: ${spacings.XXX_LARGE} ${spacings.X_LARGE} ${spacings.X_LARGE};
 
   display: flex;
   flex-direction: column;
-  row-gap: ${spacings.X_LARGE};
+  row-gap: ${spacings.MEDIUM};
 
-  > .btn-div {
-    > button {
-      width: 136px;
-      margin-right: 50px;
-    }
+  .actions {
+    display: flex;
+    column-gap: 16px;
+    align-items: center;
+    margin-block-start: ${spacings.MEDIUM};
   }
 `;

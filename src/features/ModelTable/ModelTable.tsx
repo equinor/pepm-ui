@@ -1,5 +1,6 @@
 /* eslint-disable no-empty-pattern */
 /* eslint-disable max-lines-per-function */
+import { CSSProperties } from 'react';
 import { useMsal } from '@azure/msal-react';
 import { Button } from '@equinor/eds-core-react';
 import { EdsDataGrid } from '@equinor/eds-data-grid-react';
@@ -82,19 +83,26 @@ export const ModelTable = () => {
     return status;
   };
 
+  /* Make sure the header row in EdsDataGrid is vertically middle-aligned when filter icons are shown */
+  const headerStyle = (): CSSProperties => ({ verticalAlign: 'middle' });
+
   return (
     <Styled.Table>
       <EdsDataGrid
         enableSorting
-        enablePagination
         enableColumnFiltering
         emptyMessage="Empty :("
         columnResizeMode="onChange"
         rows={data.data}
-        pageSize={10}
+        columnPinState={{
+          right: ['navigate'],
+        }}
         scrollbarHorizontal
+        stickyHeader
+        headerStyle={headerStyle}
+        width="min(calc(100vw - 64px), 1400px)"
         columns={[
-          { accessorKey: 'name', header: 'Model name', id: 'name' },
+          { accessorKey: 'name', header: 'Model name', id: 'name', size: 200 },
           {
             id: 'outcrops',
             header: 'Outcrop',
@@ -171,7 +179,7 @@ export const ModelTable = () => {
             id: 'isProcessed',
             header: 'Status',
             enableColumnFilter: false,
-            size: 100,
+            size: 160,
             cell: ({ row }) => (
               <>{getModelStatus(row.original.analogueModelId)}</>
             ),
