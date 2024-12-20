@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.1](https://github.com/equinor/pepm-ui/compare/v1.7.0...v1.7.1) (2024-12-20)
+
+
+### 🐛 Bug Fixes
+
+* Variogram result dialog size ([#399](https://github.com/equinor/pepm-ui/issues/399)) ([639cc05](https://github.com/equinor/pepm-ui/commit/639cc05af4e1c26b8cfe7fa322416bf0b4c2418b))
+* Variogram results table size ([#406](https://github.com/equinor/pepm-ui/issues/406)) ([0daea46](https://github.com/equinor/pepm-ui/commit/0daea46e7718fad04ffb05832f31759220fd05c2))
+
 ## [1.7.0](https://github.com/equinor/pepm-ui/compare/v1.6.0...v1.7.0) (2024-12-11)
 
 
