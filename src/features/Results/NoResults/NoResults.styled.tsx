@@ -1,14 +1,16 @@
 import styled from 'styled-components';
 import { spacings } from '../../../tokens/spacings';
+import { theme } from '../../../tokens/theme';
 
-const StyledImg = styled.img`
-  scale: 85%;
-`;
-export const TextDiv = styled.div`
+export const NoResults = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-
   row-gap: ${spacings.MEDIUM};
+  padding: ${spacings.X_LARGE};
+
+  a {
+    color: ${theme.light.primary.resting};
+    display: inline-block;
+    margin-inline: 0.2em;
+  }
 `;
-export { StyledImg as Img };
