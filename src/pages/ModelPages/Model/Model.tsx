@@ -132,7 +132,7 @@ export const Model = () => {
             size={24}
             value={100}
             variant="indeterminate"
-          />{' '}
+          />
           <Typography variant="body_short">Loading, please wait…</Typography>
         </div>
       </Styled.EmptyPage>

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { spacings } from '../../tokens/spacings';
 
-export const BrowseWrapper = styled.div`
+export const BrowseWrapper = styled.main`
   column-gap: ${spacings.X_LARGE};
   padding: ${spacings.XXX_LARGE} ${spacings.X_LARGE};
 

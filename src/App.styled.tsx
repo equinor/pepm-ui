@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const StyledOutletWrapper = styled.section`
+const StyledOutletWrapper = styled.div`
   height: calc(100% - 128px);
   overflow: auto;
 `;
