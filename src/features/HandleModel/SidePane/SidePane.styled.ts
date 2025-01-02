@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { spacings } from '../../../tokens/spacings';
 import { theme } from '../../../tokens/theme';
 
-export const SidebarWrapper = styled.div`
-  heigth: 100%;
+export const SidebarWrapper = styled.aside`
+  height: 100%;
   max-width: 256px;
 `;
 

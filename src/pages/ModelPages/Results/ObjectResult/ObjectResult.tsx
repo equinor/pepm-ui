@@ -3,6 +3,8 @@ import { NoResults } from '../../../../features/Results/NoResults/NoResults';
 import { useFetchObjectResults } from '../../../../hooks/useFetchChannelResults';
 import { usePepmContextStore } from '../../../../hooks/GlobalState';
 import { useEffect } from 'react';
+import { CircularProgress, Typography } from '@equinor/eds-core-react';
+import * as Styled from '../../Model/Model.styled';
 
 export const ObjectResult = () => {
   const { computeCases, objectResults, setObjectEstimationResults } =
@@ -13,7 +15,20 @@ export const ObjectResult = () => {
     if (data) setObjectEstimationResults(data.data);
   }, [data, setObjectEstimationResults]);
 
-  if (isLoading) return <>Loading ...</>;
+  if (isLoading)
+    return (
+      <Styled.EmptyPage>
+        <div className="loading">
+          <CircularProgress
+            color="primary"
+            size={24}
+            value={100}
+            variant="indeterminate"
+          />
+          <Typography variant="body_short">Loading, please wait…</Typography>
+        </div>
+      </Styled.EmptyPage>
+    );
 
   return (
     <>

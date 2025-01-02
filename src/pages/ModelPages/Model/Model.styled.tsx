@@ -20,12 +20,15 @@ export const Wrapper = styled.div`
   display: grid;
   grid-template-areas: 'sidebar content';
   grid-template-columns: 16rem 1fr;
+  height: 100%;
 `;
 
-export const ContentWrapper = styled.div`
+export const ContentWrapper = styled.main`
   grid-area: content;
+  display: flex;
+  flex-flow: column nowrap;
 `;
 
-export const SidebarWrapper = styled.div`
+export const SidebarWrapper = styled.aside`
   grid-area: sidebar;
 `;
