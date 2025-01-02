@@ -33,12 +33,15 @@ export const Browse = () => {
   return (
     <>
       <Styled.BrowseWrapper>
-        <Typography variant="h1">Browse all models</Typography>
+        <Typography variant="h3" as="h1">
+          Browse all models
+        </Typography>
         {isOwnerOrAdmin ? (
-          <div className="btn-div">
+          <div className="actions">
             <Button disabled={!isOwnerOrAdmin} onClick={navigateAddModel}>
               Add new model
             </Button>
+            {/* TODO Add the export button */}
           </div>
         ) : (
           <></>

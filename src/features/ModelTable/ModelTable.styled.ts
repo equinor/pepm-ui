@@ -1,36 +1,17 @@
 import styled from 'styled-components';
 import { spacings } from '../../tokens/spacings';
+import { theme } from '../../tokens/theme';
 
 export const Table = styled.div`
-  padding-bottom: ${spacings.MEDIUM};
-  max-width: 1750px;
-  > div {
-    height: 100%;
-    overflow-y: hidden;
-    > table {
-      min-width: 90% !important;
-
-      > thead {
-        > tr {
-          > th {
-            vertical-align: middle !important;
-          }
-        }
-      }
-    }
-    > div {
-      margin-top: 2rem;
-      min-width: 90% !important;
-    }
-
-    @media (max-width: 1500px) {
-      > table {
-        min-width: 100% !important;
-      }
-      > div {
-        min-width: 100% !important;
-      }
-    }
+  .table-wrapper {
+    border: 1px solid ${theme.light.ui.background.medium};
+    max-height: calc(
+      100vh - 64px - 48px - 30px - 16px - 36px - 16px - 48px - 64px
+    );
+  }
+  table {
+    table-layout: auto !important;
+    width: 100% !important;
   }
 `;
 
