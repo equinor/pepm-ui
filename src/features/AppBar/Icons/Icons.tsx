@@ -1,5 +1,5 @@
 import { useMsal } from '@azure/msal-react';
-import { Button, Menu } from '@equinor/eds-core-react';
+import { Menu } from '@equinor/eds-core-react';
 import { account_circle as accountCircle } from '@equinor/eds-icons';
 import MenuIcon from '../../../components/MenuIcon/MenuIcon';
 import * as Styled from './Icons.styled';
@@ -17,12 +17,13 @@ export const Icons = () => {
   return (
     <Styled.Icons>
       <MenuIcon icon={icons.userInfo}>
-        <Menu.Section title="Logged in">
-          <Menu.Item>{instance.getActiveAccount()?.name}</Menu.Item>
-          <Menu.Item as={'div'}>
-            <Button onClick={() => instance.logoutRedirect()}>Log out</Button>
-          </Menu.Item>
-        </Menu.Section>
+        <Menu.Item as={'div'} className="menu-item">
+          <ul className="user-info">
+            <li className="name">{instance.getActiveAccount()?.name}</li>
+            <li className="role">[Admin|User|Reader] role</li>
+            {/* TODO add proper role name */}
+          </ul>
+        </Menu.Item>
       </MenuIcon>
     </Styled.Icons>
   );
