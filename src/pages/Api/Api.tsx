@@ -5,10 +5,14 @@ import { InfoPageComponent } from '../../components/InfoPageComponent/InfoPageCo
 export const Api = () => {
   return (
     <InfoPageComponent title="Using the PEPM API">
-      <Typography variant="body_long">Api to come her soon!</Typography>
+      <Typography variant="body_long">
+        For API documentation and interactive testing, please visit our Swagger
+        UI interface.
+      </Typography>
+      {/* TODO Add a link to Swagger */}
       <Typography link href="">
-        Read all the API documentation on the Swagger page
-        <Icon data={externalLink} title={'Link to Api'} />
+        PEPM API reference
+        <Icon data={externalLink} title={'Link to Swagger'} size={18} />
       </Typography>
     </InfoPageComponent>
   );
