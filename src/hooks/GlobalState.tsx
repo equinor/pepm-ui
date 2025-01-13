@@ -64,6 +64,7 @@ type IPepmContext = {
   computeSettings: ListComputeSettingsMethodDto[];
   objectResults: GetObjectResultsDto[];
   variogramResults: GetVariogramResultsDto[];
+  exportModels: string[];
 };
 
 type IPepmContextActions = {
@@ -94,6 +95,8 @@ type IPepmContextActions = {
   setVariogramResults: (variogramResults: GetVariogramResultsDto[]) => void;
   updateObjectResult: (objectResult: GetObjectResultsDto) => void;
   updateVariogramResult: (variogramResult: GetVariogramResultsDto) => void;
+  addExportModel: (modelId: string) => void;
+  deleteExportModel: (modelId: string) => void;
 };
 
 export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
@@ -111,6 +114,7 @@ export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
     computeSettings: [],
     objectResults: [],
     variogramResults: [],
+    exportModels: [],
     setAnalogueModel: (analogueModel: AnalogueModelDetail) =>
       set((state) => {
         state.analogueModel = analogueModel;
@@ -246,6 +250,14 @@ export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
             ? res
             : variogramResult,
         );
+      }),
+    addExportModel: (modelId: string) =>
+      set((state) => {
+        state.exportModels.push(modelId);
+      }),
+    deleteExportModel: (modelId: string) =>
+      set((state) => {
+        state.exportModels = state.exportModels.filter((id) => id !== modelId);
       }),
   })),
 );

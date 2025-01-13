@@ -31,4 +31,25 @@ export class DownloadsService {
         });
     }
 
+    /**
+     * @param analogueModelIds
+     * @returns File Success
+     * @throws ApiError
+     */
+    public static getApiDownloadsAnalogueModelsExcel(
+        analogueModelIds?: Array<string>,
+    ): CancelablePromise<File> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/downloads/analogue-models-excel',
+            query: {
+                'AnalogueModelIds': analogueModelIds,
+            },
+            errors: {
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
 }
