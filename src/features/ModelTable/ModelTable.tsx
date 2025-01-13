@@ -1,8 +1,8 @@
 /* eslint-disable no-empty-pattern */
 /* eslint-disable max-lines-per-function */
-import { CSSProperties } from 'react';
+import { ChangeEvent, CSSProperties } from 'react';
 import { useMsal } from '@azure/msal-react';
-import { Button } from '@equinor/eds-core-react';
+import { Button, Checkbox } from '@equinor/eds-core-react';
 import { EdsDataGrid } from '@equinor/eds-data-grid-react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
@@ -14,8 +14,11 @@ import {
 } from '../../api/generated';
 import { useAccessToken } from '../../hooks/useAccessToken';
 import * as Styled from './ModelTable.styled';
+import { usePepmContextStore } from '../../hooks/GlobalState';
 
 export const ModelTable = () => {
+  const { addExportModel, deleteExportModel, exportModels } =
+    usePepmContextStore();
   const { instance, accounts } = useMsal();
   const token = useAccessToken(instance, accounts[0]);
   if (token) OpenAPI.TOKEN = token;
@@ -83,6 +86,11 @@ export const ModelTable = () => {
     return status;
   };
 
+  const addModelToExport = (checked: boolean, modelId: string) => {
+    if (checked) addExportModel(modelId);
+    else deleteExportModel(modelId);
+  };
+
   /* Make sure the header row in EdsDataGrid is vertically middle-aligned when filter icons are shown */
   const headerStyle = (): CSSProperties => ({ verticalAlign: 'middle' });
 
@@ -102,6 +110,31 @@ export const ModelTable = () => {
         headerStyle={headerStyle}
         width="min(calc(100vw - 64px), 1400px)"
         columns={[
+          {
+            accessorKey: 'analogueModelId',
+            enableColumnFilter: false,
+            header: function () {
+              <Styled.List>{<Checkbox></Checkbox>}</Styled.List>;
+            },
+            id: 'expand',
+            cell: ({ row }) => (
+              <Styled.List>
+                {
+                  <Checkbox
+                    checked={
+                      exportModels.indexOf(row.original.analogueModelId) > -1
+                    }
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      addModelToExport(
+                        e.target.checked,
+                        row.original.analogueModelId,
+                      )
+                    }
+                  ></Checkbox>
+                }
+              </Styled.List>
+            ),
+          },
           { accessorKey: 'name', header: 'Model name', id: 'name', size: 200 },
           {
             id: 'outcrops',
