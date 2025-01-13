@@ -14,7 +14,6 @@ export const ResultCaseMetadata = ({
         <Label label="Object type"></Label>
         <Typography variant="h5"> {computeMethod}</Typography>
       </Styled.MetadataDiv>
-      <Styled.VerticalDivider />
       <Styled.MetadataDiv>
         <Label label="Area"></Label>
         <Typography variant="h5"> {modelArea}</Typography>

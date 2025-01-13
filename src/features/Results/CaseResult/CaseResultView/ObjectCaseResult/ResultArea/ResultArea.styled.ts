@@ -1,60 +1,76 @@
 import styled from 'styled-components';
+import { theme } from '../../../../../../tokens/theme';
 import { spacings } from '../../../../../../tokens/spacings';
 
 export const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: ${spacings.MEDIUM_SMALL} 0 ${spacings.MEDIUM_SMALL} ${spacings.LARGE};
-  row-gap: ${spacings.MEDIUM_SMALL};
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-auto-rows: auto;
+  grid-column: 1 / 6;
+  align-items: end;
+  padding: ${spacings.MEDIUM_SMALL} ${spacings.LARGE};
+  border-right: 1px solid ${theme.light.ui.background.medium};
+
+  > * {
+    grid-column: 1 / -1;
+  }
+
+  > hr {
+    grid-row: 2 / 3;
+  }
 `;
 
 export const ResultHeader = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-`;
+  display: grid;
+  grid-row: 1 / 2;
+  grid-template-columns: 1fr auto;
+  grid-column-gap: ${spacings.MEDIUM};
+  white-space: nowrap;
 
-export const MetadataWrapperDiv = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
-
-export const MetadataDiv = styled.div`
-  align-items: start;
-  padding-right: ${spacings.MEDIUM};
-  > label {
-    margin: 0;
+  .actions {
+    display: flex;
+    column-gap: ${spacings.MEDIUM};
+    align-items: center;
   }
 `;
 
 export const CoordinateDiv = styled.div`
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-row: 3 / 4;
 `;
 
 export const RowElement = styled.div`
   white-space: nowrap;
   > label {
-    margin: 0;
+    margin-inline-start: 0;
+  }
+
+  &.area {
+    padding-inline-end: ${spacings.MEDIUM};
+    min-width: 220px;
+    width: fit-content;
+  }
+
+  &:not(.area) {
+    padding-inline: ${spacings.MEDIUM};
+    border-left: 1px solid ${theme.light.ui.background.medium};
+
+    &:last-child {
+      padding-inline-end: 0;
+    }
+  }
+
+  .value {
+    font-size: 0.875rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
   }
 `;
 
-export const Divider = styled.div`
-  width: 100%;
-`;
-
 export const VerticalDivider = styled.div`
-  width: 0px;
-  height: 100%;
-  margin: 0 ${spacings.MEDIUM};
-  border: 0.5px solid #e0e0e0;
-`;
-
-export const CenterElements = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  background-color: ${theme.light.ui.background.medium};
+  margin-left: ${spacings.SMALL};
+  margin-right: calc(${spacings.SMALL} - 1px);
+  width: 1px;
 `;
