@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import { useEffect, useRef } from 'react';
 import { AreaCoordinateType } from '../../../AreaCoordinates/AreaCoordinates';
 import { ImageMetadataDto } from '../../../../api/generated';

@@ -11,7 +11,6 @@ export const sortList = (data: any, byNmber?: boolean) => {
   } else if (data[0]['name'] !== undefined) {
     return data.sort((a: any, b: any) => a.name.localeCompare(b.name));
   } else {
-    console.log('Data has no identifier or name');
     return data;
   }
 };

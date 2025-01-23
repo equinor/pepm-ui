@@ -24,7 +24,7 @@ export const ChannelResult = ({
 
   if (modelArea === '') modelArea = 'Whole model';
   const caseFilter = computeCase && computeCase[0];
-  const computeMethod = caseFilter && caseFilter.computeMethod.name;
+  const computeMethod = caseFilter && caseFilter.computeMethod;
 
   return (
     <Styled.Wrapper>

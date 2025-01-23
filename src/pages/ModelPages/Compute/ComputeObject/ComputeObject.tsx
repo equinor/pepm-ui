@@ -3,10 +3,14 @@ import { Snackbar } from '@equinor/eds-core-react';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { EstimateObjectCommand, JobsService } from '../../../../api/generated';
+import {
+  ComputeMethod,
+  EstimateObjectCommand,
+  JobsService,
+} from '../../../../api/generated';
 import { queryClient } from '../../../../auth/queryClient';
-import { CaseGroup } from '../../../../features/Compute/CaseGroup/CaseGroup';
-import { ComputeHeader } from '../../../../features/Compute/ComputeHeader/ComputeHeader';
+import { CaseGroup } from '../../../../features/Compute/Components/CaseGroup/CaseGroup';
+import { ComputeHeader } from '../../../../features/Compute/Components/ComputeHeader/ComputeHeader';
 import * as Styled from '../Compute.styled';
 import { CaseInfoTyoe } from '../ComputeVariogram/ComputeVariogram';
 import { usePepmContextStore } from '../../../../hooks/GlobalState';
@@ -55,11 +59,11 @@ export const ComputeObject = () => {
 
   // Returnerer Cases fra DB
   const channel = computeCases.filter(
-    (method) => method.computeMethod.name === 'Channel',
+    (method) => method.computeMethod === ComputeMethod.CHANNEL,
   );
 
   const mouthbar = computeCases.filter(
-    (method) => method.computeMethod.name === 'Mouthbar',
+    (method) => method.computeMethod === ComputeMethod.MOUTHBAR,
   );
 
   return (
@@ -68,7 +72,7 @@ export const ComputeObject = () => {
         <ComputeHeader caseInfo={ObjectCaseInfo} />
         <CaseGroup
           caseList={channel !== undefined && channel.length > 0 ? channel : []}
-          methodName="Channel"
+          methodName={ComputeMethod.CHANNEL}
           setAlertMessage={setAlertMessage}
           runCase={runComputeObject}
         />
@@ -77,7 +81,7 @@ export const ComputeObject = () => {
           caseList={
             mouthbar !== undefined && mouthbar.length > 0 ? mouthbar : []
           }
-          methodName="Mouthbar"
+          methodName={ComputeMethod.MOUTHBAR}
           setAlertMessage={setAlertMessage}
           runCase={runComputeObject}
         />

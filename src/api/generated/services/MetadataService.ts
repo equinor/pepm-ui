@@ -2,13 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { CreateMetadataCommandForm } from '../models/CreateMetadataCommandForm';
-import type { CreateMetadataCommandResponse } from '../models/CreateMetadataCommandResponse';
 import type { ListAllQueryResponse } from '../models/ListAllQueryResponse';
 import type { ListCountriesQueryResponse } from '../models/ListCountriesQueryResponse';
 import type { ListFieldsQueryResponse } from '../models/ListFieldsQueryResponse';
 import type { ListGeoStandardsQueryResponse } from '../models/ListGeoStandardsQueryResponse';
-import type { ListMetadataQueryResponse } from '../models/ListMetadataQueryResponse';
 import type { ListStratColumnQueryResponse } from '../models/ListStratColumnQueryResponse';
 import type { ListStratUnitsQueryResponse } from '../models/ListStratUnitsQueryResponse';
 
@@ -17,44 +14,6 @@ import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
 export class MetadataService {
-
-    /**
-     * @returns ListMetadataQueryResponse Success
-     * @throws ApiError
-     */
-    public static getApiMetadata(): CancelablePromise<ListMetadataQueryResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/metadata',
-            errors: {
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * @deprecated
-     * Creates new metadata of a specific metadata type (ex. field)
-     * @param requestBody
-     * @returns CreateMetadataCommandResponse Success
-     * @throws ApiError
-     */
-    public static postApiMetadata(
-        requestBody?: CreateMetadataCommandForm,
-    ): CancelablePromise<CreateMetadataCommandResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/metadata',
-            body: requestBody,
-            mediaType: 'application/json-patch+json',
-            errors: {
-                400: `Bad Request`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
 
     /**
      * @returns ListAllQueryResponse Success

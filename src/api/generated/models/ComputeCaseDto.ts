@@ -3,15 +3,17 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { ComputeCaseComputeMethodDto } from './ComputeCaseComputeMethodDto';
 import type { ComputeCaseInputSettingsDto } from './ComputeCaseInputSettingsDto';
 import type { ComputeCaseModelAreaDto } from './ComputeCaseModelAreaDto';
 import type { ComputeJobStatus } from './ComputeJobStatus';
+import type { ComputeMethod } from './ComputeMethod';
+import type { ComputeType } from './ComputeType';
 
 export type ComputeCaseDto = {
     computeCaseId: string;
-    computeMethod: ComputeCaseComputeMethodDto;
     modelArea: ComputeCaseModelAreaDto;
+    computeMethod: ComputeMethod;
+    computeType: ComputeType;
     inputSettings: Array<ComputeCaseInputSettingsDto>;
     jobStatus: ComputeJobStatus;
 };

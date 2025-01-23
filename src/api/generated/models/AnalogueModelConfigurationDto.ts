@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { ConfigurationArchelDto } from './ConfigurationArchelDto';
 import type { ConfigurationParameterDto } from './ConfigurationParameterDto';
 
 export type AnalogueModelConfigurationDto = {
@@ -23,5 +24,6 @@ export type AnalogueModelConfigurationDto = {
     subsidenceLand?: ConfigurationParameterDto;
     subsidenceSea?: ConfigurationParameterDto;
     composition?: ConfigurationParameterDto;
+    archels: Array<ConfigurationArchelDto>;
 };
 

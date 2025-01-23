@@ -23,6 +23,11 @@ import {
   StratUnitDto,
 } from '../api/generated';
 
+export const computeSettingsDefault: ListComputeSettingsMethodDto = {
+  variogramComputeSettings: [],
+  objectComputeSettings: [],
+};
+
 export const analogueModelDefault: AnalogueModelDetail = {
   analogueModelId: '',
   name: '',
@@ -34,8 +39,6 @@ export const analogueModelDefault: AnalogueModelDetail = {
   isProcessed: false,
   sourceType: AnalogueModelSourceType.DELTARES,
   fileUploads: [],
-  parameters: [],
-  metadata: [],
   modelAreas: [],
   stratigraphicGroups: [],
   geologicalGroups: [],
@@ -45,7 +48,9 @@ export const analogueModelDefault: AnalogueModelDetail = {
     fileName: '',
     type: FileType.JPG,
   },
-  iniParameters: {},
+  iniParameters: {
+    archels: [],
+  },
   processingStatus: JobStatus.UNKNOWN,
 };
 
@@ -61,7 +66,7 @@ type IPepmContext = {
   stratigraphicColumns: StratColumnDto[];
   stratigraphicUnits: StratUnitDto[];
   geologyStandards: GeologicalStandardDto[];
-  computeSettings: ListComputeSettingsMethodDto[];
+  computeSettings: ListComputeSettingsMethodDto;
   objectResults: GetObjectResultsDto[];
   variogramResults: GetVariogramResultsDto[];
   exportModels: string[];
@@ -90,7 +95,7 @@ type IPepmContextActions = {
   setStratigraphicColumns: (fields: StratColumnDto[]) => void;
   setStratigraphicUnits: (fields: StratUnitDto[]) => void;
   setGeologicalStandards: (geologyStandards: GeologicalStandardDto[]) => void;
-  setComputeSettings: (computeSettings: ListComputeSettingsMethodDto[]) => void;
+  setComputeSettings: (computeSettings: ListComputeSettingsMethodDto) => void;
   setObjectEstimationResults: (objectResults: GetObjectResultsDto[]) => void;
   setVariogramResults: (variogramResults: GetVariogramResultsDto[]) => void;
   updateObjectResult: (objectResult: GetObjectResultsDto) => void;
@@ -111,7 +116,7 @@ export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
     stratigraphicColumns: [],
     stratigraphicUnits: [],
     geologyStandards: [],
-    computeSettings: [],
+    computeSettings: computeSettingsDefault,
     objectResults: [],
     variogramResults: [],
     exportModels: [],
@@ -127,7 +132,7 @@ export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
         state.stratigraphicColumns = [];
         state.geologyStandards = [];
         state.computeCases = [];
-        state.computeSettings = [];
+        state.computeSettings = computeSettingsDefault;
         state.objectResults = [];
         state.variogramResults = [];
       }),
@@ -223,7 +228,7 @@ export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
       set((state) => {
         state.geologyStandards = geologyStandards;
       }),
-    setComputeSettings: (computeSettings: ListComputeSettingsMethodDto[]) =>
+    setComputeSettings: (computeSettings: ListComputeSettingsMethodDto) =>
       set((state) => {
         state.computeSettings = computeSettings;
       }),

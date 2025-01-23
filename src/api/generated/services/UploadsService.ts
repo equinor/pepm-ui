@@ -165,12 +165,7 @@ export class UploadsService {
     public static postApiUploadsModelsIniFile(
         id: string,
         formData?: {
-            ContentType?: string;
-            ContentDisposition?: string;
-            Headers?: Record<string, Array<string>>;
-            Length?: number;
-            Name?: string;
-            FileName?: string;
+            File: Blob;
         },
     ): CancelablePromise<UploadIniFileCommandResponse> {
         return __request(OpenAPI, {

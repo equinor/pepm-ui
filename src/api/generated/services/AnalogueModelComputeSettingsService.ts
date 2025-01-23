@@ -8,19 +8,19 @@ import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
-export class ComputeSettingsService {
+export class AnalogueModelComputeSettingsService {
 
     /**
      * @param analogueModelId
      * @returns ListComputeSettingsQueryResponse Success
      * @throws ApiError
      */
-    public static getApiComputeSettings(
+    public static getApiAnalogueModelsComputeSettings(
         analogueModelId: string,
     ): CancelablePromise<ListComputeSettingsQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/{analogueModelId}/compute-settings',
+            url: '/api/analogue-models/{analogueModelId}/compute-settings',
             path: {
                 'analogueModelId': analogueModelId,
             },

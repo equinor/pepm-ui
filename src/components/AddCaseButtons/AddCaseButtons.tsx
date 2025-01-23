@@ -1,6 +1,10 @@
 import { Button, Icon } from '@equinor/eds-core-react';
 import { add as ADD } from '@equinor/eds-icons';
-import { ComputeCaseDto } from '../../api/generated';
+import {
+  ComputeCaseDto,
+  ComputeMethod,
+  ComputeType,
+} from '../../api/generated';
 import { useIsOwnerOrAdmin } from '../../hooks/useIsOwnerOrAdmin';
 
 export const AddCaseButtons = ({
@@ -10,46 +14,57 @@ export const AddCaseButtons = ({
 }: {
   title: string;
   localList?: ComputeCaseDto[];
-  addCase?: (methodType: string) => void;
+  addCase?: (methodType: ComputeMethod, computeType: ComputeType) => void;
 }) => {
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const filerLocalList = (methodType: string) => {
     if (!localList) return [];
     const methodFileter =
-      localList && localList.filter((c) => c.computeMethod.name === methodType);
+      localList && localList.filter((c) => c.computeMethod === methodType);
 
     return methodFileter;
   };
   return (
     <>
-      {title === 'Indicator' && addCase && (
+      {title === ComputeMethod.INDICATOR && addCase && (
         <Button
           variant="ghost"
-          onClick={() => addCase('Indicator')}
-          disabled={filerLocalList('Indicator').length > 0 || !isOwnerOrAdmin}
-        >
-          <Icon data={ADD} size={18}></Icon>
-          Add case
-        </Button>
-      )}
-      {title === 'Net-To-Gross' && addCase && (
-        <Button
-          variant="ghost"
-          onClick={() => addCase('Net-To-Gross')}
+          onClick={() =>
+            addCase(ComputeMethod.INDICATOR, ComputeType.VARIOGRAM)
+          }
           disabled={
-            filerLocalList('Net-To-Gross').length > 0 || !isOwnerOrAdmin
+            filerLocalList(ComputeMethod.INDICATOR).length > 0 ||
+            !isOwnerOrAdmin
           }
         >
           <Icon data={ADD} size={18}></Icon>
           Add case
         </Button>
       )}
-      {title === 'ContiniousParameter' && addCase && (
+      {title === ComputeMethod.NET_TO_GROSS && addCase && (
         <Button
           variant="ghost"
-          onClick={() => addCase('ContiniousParameter')}
+          onClick={() =>
+            addCase(ComputeMethod.NET_TO_GROSS, ComputeType.VARIOGRAM)
+          }
           disabled={
-            filerLocalList('ContiniousParameter').length > 0 || !isOwnerOrAdmin
+            filerLocalList(ComputeMethod.NET_TO_GROSS).length > 0 ||
+            !isOwnerOrAdmin
+          }
+        >
+          <Icon data={ADD} size={18}></Icon>
+          Add case
+        </Button>
+      )}
+      {title === ComputeMethod.CONTINIOUS_PARAMETER && addCase && (
+        <Button
+          variant="ghost"
+          onClick={() =>
+            addCase(ComputeMethod.CONTINIOUS_PARAMETER, ComputeType.VARIOGRAM)
+          }
+          disabled={
+            filerLocalList(ComputeMethod.CONTINIOUS_PARAMETER).length > 0 ||
+            !isOwnerOrAdmin
           }
         >
           <Icon data={ADD} size={18}></Icon>

@@ -3,12 +3,10 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { ListComputeSettingsInputDto } from './ListComputeSettingsInputDto';
+import type { ListComputeSettingsModelDto } from './ListComputeSettingsModelDto';
 
 export type ListComputeSettingsMethodDto = {
-    computeMethodId: string;
-    name: string;
-    computeType: string;
-    inputSettings: Array<ListComputeSettingsInputDto>;
+    objectComputeSettings?: Array<ListComputeSettingsModelDto> | null;
+    variogramComputeSettings?: Array<ListComputeSettingsModelDto> | null;
 };
 

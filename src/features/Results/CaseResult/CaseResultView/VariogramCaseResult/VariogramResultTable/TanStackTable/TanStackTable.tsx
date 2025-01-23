@@ -18,6 +18,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import {
+  ComputeMethod,
   GetVariogramResultsDto,
   GetVariogramResultsVariogramResultFileDto,
   ResultStatus,
@@ -197,14 +198,14 @@ export const TanStackTable = ({
       .forEach((e) => {
         const method = computeCases.filter(
           (c) => c.computeCaseId === e.computeCaseId,
-        )[0]?.computeMethod?.name;
+        )[0]?.computeMethod;
 
         let parameter = '';
-        if (method === 'Indicator') {
+        if (method === ComputeMethod.INDICATOR) {
           parameter = e.indicator ? e.indicator : '';
-        } else if (method === 'Net-To-Gross') {
+        } else if (method === ComputeMethod.NET_TO_GROSS) {
           parameter = e.customIndicator ? e.customIndicator : '';
-        } else if (method === 'ContiniousParameter') {
+        } else if (method === ComputeMethod.CONTINIOUS_PARAMETER) {
           parameter = e.attribute ? e.attribute : '';
         }
 
@@ -335,13 +336,13 @@ export const TanStackTable = ({
 
       const method = computeCases.filter(
         (c) => c.computeCaseId === e.computeCaseId,
-      )[0]?.computeMethod?.name;
+      )[0]?.computeMethod;
       let parameter = '';
-      if (method === 'Indicator') {
+      if (method === ComputeMethod.INDICATOR) {
         parameter = e.indicator ? e.indicator : '';
-      } else if (method === 'Net-To-Gross') {
+      } else if (method === ComputeMethod.NET_TO_GROSS) {
         parameter = e.customIndicator ? e.customIndicator : '';
-      } else if (method === 'ContiniousParameter') {
+      } else if (method === ComputeMethod.CONTINIOUS_PARAMETER) {
         parameter = e.attribute ? e.attribute : '';
       }
 

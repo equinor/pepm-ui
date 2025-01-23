@@ -10,6 +10,6 @@ export type ListComputeSettingsQueryResponse = {
     count?: number | null;
     message?: string | null;
     validationErrors?: Array<string> | null;
-    data: Array<ListComputeSettingsMethodDto>;
+    data: ListComputeSettingsMethodDto;
 };
 
