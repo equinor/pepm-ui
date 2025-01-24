@@ -66,11 +66,30 @@ export const ResultArea = ({
     }
   };
 
+  /* Make numbers nice to read
+   * This code was sponsored by artificial intelligence :P
+   */
+  const formatter = new Intl.NumberFormat('en-US', {
+    useGrouping: true,
+  }).format;
+  const formatNumber = (num: number): string =>
+    formatter(num).replace(/,/g, ' ');
+
+  const formattedXLength = () => {
+    const value = xLength();
+    return value ? formatNumber(value) : undefined;
+  };
+
+  const formattedYLength = () => {
+    const value = yLength();
+    return value ? formatNumber(value) : undefined;
+  };
+
   const area = () => {
     const x = xLength();
     const y = yLength();
 
-    if (x && y) return x * y + ' m^2';
+    if (x && y) return formatNumber(x * y) + ' m²';
   };
 
   const updateStatus = (checked: boolean) => {
@@ -94,58 +113,56 @@ export const ResultArea = ({
             computeMethod={computeMethod}
             modelArea={modelArea}
           />
-          <Styled.CenterElements>
+          <div className="actions">
             <Button variant="outlined" onClick={toggleOpen}>
               <Icon data={barChart} title={'Open plot for case results.'} />
               Show plot
             </Button>
 
-            <Label style={{ paddingTop: '0.5rem' }} label="Status"></Label>
             <Switch
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 updateStatus(e.target.checked);
               }}
               checked={checkedStatus()}
-              label={data.status}
+              label="Published"
               disabled={!isOwner}
             ></Switch>
-          </Styled.CenterElements>
+          </div>
         </Styled.ResultHeader>
 
-        <Styled.Divider>
-          <Divider color="medium" variant="medium" size="1" />
-        </Styled.Divider>
+        <Divider variant="small" style={{ width: '100%' }} />
+
         <Styled.CoordinateDiv>
-          <Styled.RowElement>
+          <Styled.RowElement className="area">
             <Label label="Area size"></Label>
-            <Typography>{area() ? area() : '-'}</Typography>
+            <Typography className="value">{area() ? area() : '-'}</Typography>
           </Styled.RowElement>
-          <Styled.VerticalDivider />
           <Styled.RowElement>
             <Label label="X start"></Label>
-            <Typography>
-              {modelArea === 'Whole model' ? '-' : xCoordinate?.x + ' m'}
+            <Typography className="value">
+              {modelArea === 'Whole model'
+                ? '-'
+                : formatNumber(xCoordinate?.x) + ' m'}
             </Typography>
           </Styled.RowElement>
-          <Styled.VerticalDivider />
           <Styled.RowElement>
             <Label label="X length"></Label>
-            <Typography>
-              {modelArea === 'Whole model' ? '-' : xLength() + ' m'}
+            <Typography className="value">
+              {modelArea === 'Whole model' ? '-' : formattedXLength() + ' m'}
             </Typography>
           </Styled.RowElement>
-          <Styled.VerticalDivider />
           <Styled.RowElement>
             <Label label="Y start"></Label>
-            <Typography>
-              {modelArea === 'Whole model' ? '-' : yCoordinate?.x + ' m'}
+            <Typography className="value">
+              {modelArea === 'Whole model'
+                ? '-'
+                : formatNumber(yCoordinate?.x) + ' m'}
             </Typography>
           </Styled.RowElement>
-          <Styled.VerticalDivider />
           <Styled.RowElement>
             <Label label="Y length"></Label>
-            <Typography>
-              {modelArea === 'Whole model' ? '-' : yLength() + ' m'}
+            <Typography className="value">
+              {modelArea === 'Whole model' ? '-' : formattedYLength() + ' m'}
             </Typography>
           </Styled.RowElement>
         </Styled.CoordinateDiv>
