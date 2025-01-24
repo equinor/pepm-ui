@@ -5,12 +5,13 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
+  ComputeMethod,
   EstimateVariogramCommand,
   JobsService,
 } from '../../../../api/generated';
 import { queryClient } from '../../../../auth/queryClient';
-import { CaseGroup } from '../../../../features/Compute/CaseGroup/CaseGroup';
-import { ComputeHeader } from '../../../../features/Compute/ComputeHeader/ComputeHeader';
+import { CaseGroup } from '../../../../features/Compute/Components/CaseGroup/CaseGroup';
+import { ComputeHeader } from '../../../../features/Compute/Components/ComputeHeader/ComputeHeader';
 import * as Styled from '../Compute.styled';
 import { useIsOwnerOrAdmin } from '../../../../hooks/useIsOwnerOrAdmin';
 import { usePepmContextStore } from '../../../../hooks/GlobalState';
@@ -34,7 +35,7 @@ const variogramCaseInfo: CaseInfoTyoe = {
 export const ComputeVariogram = () => {
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const [showAlert, setAlert] = useState<string>();
-  const [triggerAddCase, setTriggerAddCase] = useState<string>();
+  const [triggerAddCase, setTriggerAddCase] = useState<ComputeMethod>();
   const [localCaseList, setLocalCaseList] = useState<Array<string>>([]);
   const { modelId } = useParams<{ modelId: string }>();
 
@@ -56,18 +57,18 @@ export const ComputeVariogram = () => {
 
   const { computeCases } = usePepmContextStore();
 
-  const methodFilter = (name: string) => {
-    return computeCases.filter((method) => method.computeMethod.name === name);
+  const methodFilter = (name: ComputeMethod) => {
+    return computeCases.filter((method) => method.computeMethod === name);
   };
-  const Indicator = methodFilter('Indicator');
-  const NetToGross = methodFilter('Net-To-Gross');
-  const ContiniousParameter = methodFilter('ContiniousParameter');
+  const indicator = methodFilter(ComputeMethod.INDICATOR);
+  const netToGross = methodFilter(ComputeMethod.NET_TO_GROSS);
+  const continiousParameter = methodFilter(ComputeMethod.CONTINIOUS_PARAMETER);
 
   const setAlertMessage = (message: string) => {
     setAlert(message);
   };
 
-  const addCase = (type: string) => {
+  const addCase = (type: ComputeMethod) => {
     setTriggerAddCase(type);
   };
 
@@ -101,10 +102,10 @@ export const ComputeVariogram = () => {
           <Styled.ButtonGroup>
             <Button
               variant="outlined"
-              onClick={() => addCase('Indicator')}
+              onClick={() => addCase(ComputeMethod.INDICATOR)}
               disabled={
-                triggerAddCase?.includes('Indicator') ||
-                localCaseList?.includes('Indicator') ||
+                triggerAddCase?.includes(ComputeMethod.INDICATOR) ||
+                localCaseList?.includes(ComputeMethod.INDICATOR) ||
                 !isOwnerOrAdmin
               }
             >
@@ -113,10 +114,10 @@ export const ComputeVariogram = () => {
             </Button>
             <Button
               variant="outlined"
-              onClick={() => addCase('Net-To-Gross')}
+              onClick={() => addCase(ComputeMethod.NET_TO_GROSS)}
               disabled={
-                triggerAddCase?.includes('Net-To-Gross') ||
-                localCaseList?.includes('Net-To-Gross') ||
+                triggerAddCase?.includes(ComputeMethod.NET_TO_GROSS) ||
+                localCaseList?.includes(ComputeMethod.NET_TO_GROSS) ||
                 !isOwnerOrAdmin
               }
             >
@@ -125,10 +126,10 @@ export const ComputeVariogram = () => {
             </Button>
             <Button
               variant="outlined"
-              onClick={() => addCase('ContiniousParameter')}
+              onClick={() => addCase(ComputeMethod.CONTINIOUS_PARAMETER)}
               disabled={
-                triggerAddCase?.includes('ContiniousParameter') ||
-                localCaseList?.includes('ContiniousParameter') ||
+                triggerAddCase?.includes(ComputeMethod.CONTINIOUS_PARAMETER) ||
+                localCaseList?.includes(ComputeMethod.CONTINIOUS_PARAMETER) ||
                 !isOwnerOrAdmin
               }
             >
@@ -153,9 +154,9 @@ export const ComputeVariogram = () => {
 
         <CaseGroup
           caseList={
-            Indicator !== undefined && Indicator.length > 0 ? Indicator : []
+            indicator !== undefined && indicator.length > 0 ? indicator : []
           }
-          methodName="Indicator"
+          methodName={ComputeMethod.INDICATOR}
           triggerAddCase={triggerAddCase}
           setAlertMessage={setAlertMessage}
           updateLocalCaseList={updateLocalCaseList}
@@ -163,9 +164,9 @@ export const ComputeVariogram = () => {
         />
         <CaseGroup
           caseList={
-            NetToGross !== undefined && NetToGross.length > 0 ? NetToGross : []
+            netToGross !== undefined && netToGross.length > 0 ? netToGross : []
           }
-          methodName="Net-To-Gross"
+          methodName={ComputeMethod.NET_TO_GROSS}
           triggerAddCase={triggerAddCase}
           setAlertMessage={setAlertMessage}
           updateLocalCaseList={updateLocalCaseList}
@@ -174,11 +175,11 @@ export const ComputeVariogram = () => {
 
         <CaseGroup
           caseList={
-            ContiniousParameter !== undefined && ContiniousParameter.length > 0
-              ? ContiniousParameter
+            continiousParameter !== undefined && continiousParameter.length > 0
+              ? continiousParameter
               : []
           }
-          methodName="ContiniousParameter"
+          methodName={ComputeMethod.CONTINIOUS_PARAMETER}
           triggerAddCase={triggerAddCase}
           setAlertMessage={setAlertMessage}
           updateLocalCaseList={updateLocalCaseList}

@@ -37,10 +37,10 @@ export const FileUploader = ({
         <SelectFile onClick={() => handleClick}>
           {INI ? 'Select parameter INI file' : 'Select model NC file'}
         </SelectFile>
-        {INI && '(optional)'}
+        {INI && '(required)'}
         <input
           id={`${acceptType.toLowerCase()}`}
-          required={!INI}
+          required={true}
           type="file"
           accept={`.${acceptType.toLowerCase()}`}
           onChange={onChange}

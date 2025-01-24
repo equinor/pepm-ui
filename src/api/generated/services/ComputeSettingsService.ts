@@ -11,13 +11,19 @@ import { request as __request } from '../core/request';
 export class ComputeSettingsService {
 
     /**
+     * @param analogueModelId
      * @returns ListComputeSettingsQueryResponse Success
      * @throws ApiError
      */
-    public static getApiComputeSettings(): CancelablePromise<ListComputeSettingsQueryResponse> {
+    public static getApiComputeSettings(
+        analogueModelId: string,
+    ): CancelablePromise<ListComputeSettingsQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/compute-settings',
+            url: '/api/{analogueModelId}/compute-settings',
+            path: {
+                'analogueModelId': analogueModelId,
+            },
             errors: {
                 403: `Forbidden`,
                 404: `Not Found`,

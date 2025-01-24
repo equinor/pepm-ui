@@ -1,6 +1,10 @@
 /* eslint-disable max-lines-per-function */
 import { Typography } from '@equinor/eds-core-react';
-import { ComputeCaseDto } from '../../api/generated';
+import {
+  ComputeCaseDto,
+  ComputeMethod,
+  ComputeType,
+} from '../../api/generated';
 import { AddCaseButtons } from '../AddCaseButtons/AddCaseButtons';
 import * as Styled from './CaseCardComponent.styled';
 import { titleMapping } from './FormattedMethodNames';
@@ -18,7 +22,7 @@ export const CaseCardComponent = ({
   resultCard?: boolean;
   subTitle?: string;
   localList?: ComputeCaseDto[];
-  addCase?: (methodType: string) => void;
+  addCase?: (methodType: ComputeMethod, computeType: ComputeType) => void;
 }) => {
   return (
     <Styled.CaseBorder>

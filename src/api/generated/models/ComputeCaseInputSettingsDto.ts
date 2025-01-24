@@ -4,9 +4,12 @@
 /* eslint-disable */
 
 export type ComputeCaseInputSettingsDto = {
-    inputSettingValueId: string;
-    inputSettingTypeId: string;
-    valueName: string;
-    typeName: string;
+    value: string;
+    name: string;
+    computeType: string;
+    computeMethod: string;
+    inputValueType: string;
+    computeCaseId: string;
+    computeSettingId: string;
 };
 

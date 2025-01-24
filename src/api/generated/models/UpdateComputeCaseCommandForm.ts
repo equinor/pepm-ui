@@ -3,10 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { UpdateComputeCaseInputSettingsForm } from './UpdateComputeCaseInputSettingsForm';
-
 export type UpdateComputeCaseCommandForm = {
     modelAreaId?: string | null;
-    inputSettings: Array<UpdateComputeCaseInputSettingsForm>;
+    inputSettings: Array<string>;
 };
 

@@ -30,7 +30,9 @@ const mockMetadata = {
     fileName: '',
     type: FileType.JPG,
   },
-  iniParameters: {},
+  iniParameters: {
+    archels: [],
+  },
   processingStatus: JobStatus.SUCCEEDED,
 };
 const errors = {};

@@ -1,16 +1,21 @@
-import { Accordion, Button, Dialog, Table } from '@equinor/eds-core-react';
+/* eslint-disable max-lines-per-function */
 import { useState } from 'react';
-import { AnalogueModelConfigurationDto } from '../../../api/generated';
+import {
+  AnalogueModelConfigurationDto,
+  ConfigurationArchelDto,
+  ConfigurationParameterDto,
+} from '../../../api/generated';
 import {
   IniDialogContent,
   IniParamAccordion,
   IniParamDialog,
   IniParamTable,
 } from './IniParametersDialog.style';
+import { Accordion, Button, Dialog, Table } from '@equinor/eds-core-react';
 
-export function IniParametersDialog(props: {
+export const IniParametersDialog = (props: {
   iniParameters: AnalogueModelConfigurationDto;
-}) {
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpen = () => {
@@ -19,6 +24,15 @@ export function IniParametersDialog(props: {
   const handleClose = () => {
     setIsOpen(false);
   };
+
+  const ArchelArray = Array<ConfigurationArchelDto>;
+
+  function isArchelArray(
+    arg: string | Array<ConfigurationArchelDto> | ConfigurationParameterDto,
+  ): boolean {
+    if (arg instanceof ArchelArray) return true;
+    else return false;
+  }
 
   return (
     <>
@@ -56,12 +70,22 @@ export function IniParametersDialog(props: {
                           </Table.Row>
                         </Table.Head>
                         <Table.Body>
-                          {Object.entries(parameter)
-                            .filter(([key, value]) => value !== '')
-                            .map(([key, value]) => (
-                              <Table.Row key={key}>
-                                <Table.Cell>{key}</Table.Cell>
-                                <Table.Cell>{value}</Table.Cell>
+                          {!isArchelArray(parameter) &&
+                            Object.entries(parameter)
+                              .filter(([key, value]) => value !== '')
+                              .map(([key, value]) => (
+                                <Table.Row key={key}>
+                                  <Table.Cell>{key}</Table.Cell>
+                                  <Table.Cell>{value}</Table.Cell>
+                                </Table.Row>
+                              ))}
+                          {Array.isArray(parameter) &&
+                            parameter.map((element) => (
+                              <Table.Row
+                                key={element.analogueModelConfigurationArchelId}
+                              >
+                                <Table.Cell>{element.name}</Table.Cell>
+                                <Table.Cell>{element.value}</Table.Cell>
                               </Table.Row>
                             ))}
                         </Table.Body>
@@ -78,4 +102,4 @@ export function IniParametersDialog(props: {
       </IniParamDialog>
     </>
   );
-}
+};

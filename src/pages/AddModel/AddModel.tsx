@@ -5,14 +5,10 @@ import { Snackbar, Typography } from '@equinor/eds-core-react';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import {
-  AddAnalogueModelMetadataCommandForm,
-  AddMetadataDto,
-  AnalogueModelMetadataService,
   AnalogueModelsService,
   ConvertAnalogueModelCommand,
   CreateAnalogueModelCommand,
   JobsService,
-  MetadataDto,
   UploadFileType,
   UploadsService,
 } from '../../api/generated';
@@ -90,42 +86,6 @@ export const AddModel = () => {
     },
   });
 
-  const uploadModelMetadata = useMutation({
-    mutationFn: ({
-      id,
-      requestBody,
-    }: {
-      id: string;
-      requestBody: AddAnalogueModelMetadataCommandForm;
-    }) => {
-      return AnalogueModelMetadataService.putApiAnalogueModelsMetadata(
-        id,
-        requestBody,
-      );
-    },
-  });
-
-  const metadataList: AddMetadataDto[] = [];
-
-  function addMetadataFields(metadata?: MetadataDto[]) {
-    if (!metadata) return;
-    const obj = metadata.map((x) => ({ metadataId: x.metadataId }));
-    metadataList.push(...obj);
-  }
-
-  async function uploadMetadata(id: string) {
-    addMetadataFields(analogueModel.metadata);
-
-    const readyMetadata: AddAnalogueModelMetadataCommandForm = {
-      metadata: metadataList,
-    };
-
-    await uploadModelMetadata.mutateAsync({
-      id: id,
-      requestBody: readyMetadata,
-    });
-  }
-
   const deleteModel = useMutation({
     mutationFn: ({ id }: { id: string }) => {
       return AnalogueModelsService.deleteApiAnalogueModels(id);
@@ -154,8 +114,6 @@ export const AddModel = () => {
         analogueModelId: modelUpload.data.analogueModelId,
       });
     }
-
-    uploadMetadata(modelUpload.data.analogueModelId);
 
     if (counter >= chunkCount) {
       setCounter(1);

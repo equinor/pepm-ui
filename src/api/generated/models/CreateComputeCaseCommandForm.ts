@@ -3,11 +3,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { CreateComputeCaseInputSettingsForm } from './CreateComputeCaseInputSettingsForm';
+import type { ComputeMethod } from './ComputeMethod';
+import type { ComputeType } from './ComputeType';
 
 export type CreateComputeCaseCommandForm = {
     modelAreaId?: string | null;
-    computeMethodId: string;
-    inputSettings: Array<CreateComputeCaseInputSettingsForm>;
+    computeType: ComputeType;
+    computeMethod: ComputeMethod;
+    inputSettings: Array<string>;
 };
 
