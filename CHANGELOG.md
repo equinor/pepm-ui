@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.7.1](https://github.com/equinor/pepm-ui/compare/v1.7.0...v1.7.1) (2025-01-24)
+
+
+### ✨ Features
+
+* excel export ([#430](https://github.com/equinor/pepm-ui/issues/430)) ([0aa1e73](https://github.com/equinor/pepm-ui/commit/0aa1e73fdbd3fa1313786869365f2acd48614e40))
+
+
+### 🐛 Bug Fixes
+
+* Align tables in object results ([#424](https://github.com/equinor/pepm-ui/issues/424)) ([3dea51a](https://github.com/equinor/pepm-ui/commit/3dea51a38b255e97033f82d8c438d398b255357c))
+* Clean up no-results page ([#420](https://github.com/equinor/pepm-ui/issues/420)) ([0dcea91](https://github.com/equinor/pepm-ui/commit/0dcea91032fef5fa62bd73ecb35979bb44840bd5))
+* Loading indicator on object and variogram result ([#422](https://github.com/equinor/pepm-ui/issues/422)) ([81a81b7](https://github.com/equinor/pepm-ui/commit/81a81b7e31d7702671e712073746c1c697f8b5d3))
+* Remove pagination and fix scrolling on models page ([#417](https://github.com/equinor/pepm-ui/issues/417)) ([a4c552e](https://github.com/equinor/pepm-ui/commit/a4c552e88f412aae9f598f508da4896b55fd85cd))
+* Variogram result dialog size ([#399](https://github.com/equinor/pepm-ui/issues/399)) ([639cc05](https://github.com/equinor/pepm-ui/commit/639cc05af4e1c26b8cfe7fa322416bf0b4c2418b))
+* Variogram results table size ([#406](https://github.com/equinor/pepm-ui/issues/406)) ([0daea46](https://github.com/equinor/pepm-ui/commit/0daea46e7718fad04ffb05832f31759220fd05c2))
+
 ## [1.7.0](https://github.com/equinor/pepm-ui/compare/v1.6.0...v1.7.0) (2024-12-11)
 
 
