@@ -95,8 +95,8 @@ export const AddModel = () => {
     },
   });
 
-  async function uploadModel(file: File, iniFile?: File) {
-    if (file === undefined) return;
+  async function uploadModel(file: File, iniFile: File) {
+    if (file === undefined && iniFile === undefined) return;
     setUploading(true);
     setProgress(1);
 

@@ -29,8 +29,8 @@ export const validateValues = (
   }
 
   if (files && !isEdit) {
-    if (!files.NC) {
-      errors.file = 'You must select an NC file to upload';
+    if (!(files.NC && files.INI)) {
+      errors.file = 'You must select an NC file and an INI file to upload';
     }
   }
 

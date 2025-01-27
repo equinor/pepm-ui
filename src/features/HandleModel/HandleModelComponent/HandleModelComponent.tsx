@@ -24,7 +24,7 @@ import { IniFileTextField } from './HandleModelComponent.styled';
 Icon.add({ error_outlined });
 
 interface AddModelDialogProps {
-  confirm?: (file: File, iniFile?: File) => Promise<void>;
+  confirm?: (file: File, iniFile: File) => Promise<void>;
   progress?: number;
   uploading?: boolean;
   isAddUploading?: boolean;
@@ -103,7 +103,7 @@ export const HandleModelComponent = ({
     const finishSubmit = () => {
       if (files.NC && confirm && files.INI) {
         confirm(files.NC, files.INI);
-      } else if (files.NC && confirm) confirm(files.NC);
+      }
       cleanupStates();
     };
 
