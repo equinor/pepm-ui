@@ -2,6 +2,7 @@
 import { useEffect, useRef } from 'react';
 import { AreaCoordinateType } from '../../../AreaCoordinates/AreaCoordinates';
 import { ImageMetadataDto } from '../../../../api/generated';
+import { archelFilterMaps } from '../../../../utils/ArchelFilterMapping';
 
 export const ModelImageCanvas = ({
   imageData,
@@ -194,7 +195,9 @@ export const ModelImageCanvas = ({
           context.font = '16px Arial';
           context.textBaseline = 'middle';
           context.fillText(
-            `${key}`,
+            `${
+              archelFilterMaps[key] !== undefined ? archelFilterMaps[key] : key
+            }`,
             legendX + legendBoxSize + 10,
             currentY + legendBoxSize / 2,
           );
