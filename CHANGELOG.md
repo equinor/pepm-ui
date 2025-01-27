@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.8.0](https://github.com/equinor/pepm-ui/compare/v1.7.1...v1.8.0) (2025-01-27)
+
+
+### ✨ Features
+
+* rework of compute feature ([#433](https://github.com/equinor/pepm-ui/issues/433)) ([d0dbc1a](https://github.com/equinor/pepm-ui/commit/d0dbc1abdacca460ee0ebbd6f9af42459817c5da))
+
+
+### 🐛 Bug Fixes
+
+* updated name mapping for results, added required for ini-file ([#436](https://github.com/equinor/pepm-ui/issues/436)) ([d84ff24](https://github.com/equinor/pepm-ui/commit/d84ff24a0eddeb98ebaf30859fb2425230d69ea4))
+
 ## [1.7.1](https://github.com/equinor/pepm-ui/compare/v1.7.0...v1.7.1) (2025-01-24)
 
 
