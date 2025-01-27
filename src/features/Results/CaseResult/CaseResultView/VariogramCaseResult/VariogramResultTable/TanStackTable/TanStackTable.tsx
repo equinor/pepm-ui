@@ -31,6 +31,7 @@ import { SubRowResult } from '../SubRowResult/SubRowResult';
 import * as Styled from './TanStackTable.styled';
 import { useIsOwnerOrAdmin } from '../../../../../../../hooks/useIsOwnerOrAdmin';
 import { useMutateVariogramResult } from '../../../../../../../hooks/useMutateResults';
+import { archelFilterMaps } from '../../../../../../../utils/ArchelFilterMapping';
 // import { useMutateVariogramResult } from '../../../../../../../hooks/useMutateResults';
 
 export interface ResultObjectType {
@@ -363,8 +364,15 @@ export const TanStackTable = ({
         qualityY: roundResultString(e.qualityY),
         qualityZ: roundResultString(e.qualityZ),
         method: method ? method : '',
-        parameter: parameter,
-        archelFilter: e.archelFilter ? e.archelFilter : '',
+        parameter:
+          archelFilterMaps[parameter] !== undefined
+            ? archelFilterMaps[parameter]
+            : parameter,
+        archelFilter: e.archelFilter
+          ? archelFilterMaps[e.archelFilter] !== undefined
+            ? archelFilterMaps[e.archelFilter]
+            : e.archelFilter
+          : '',
         modelArea: modelArea ? modelArea.name : '',
         variogramModel: e.family ? e.family : '',
         quality: roundResultString(e.quality),

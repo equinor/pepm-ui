@@ -267,10 +267,23 @@ export const CaseRow = ({
   };
 
   const filterSettings = (
-    setting: ListComputeSettingsModelDto[] | undefined,
-    method: string,
+    settings: ListComputeSettingsModelDto[] | undefined,
+    inputValueType: InputValueType,
   ) => {
-    return setting?.filter((value) => value.inputValueType === method);
+    switch (inputValueType) {
+      case InputValueType.INDICATOR:
+        return settings
+          ?.filter((setting) => setting.inputValueType === inputValueType)
+          .filter((setting) => setting.value !== '0');
+      case InputValueType.ARCHEL:
+        return settings
+          ?.filter((setting) => setting.inputValueType === inputValueType)
+          .filter((setting) => setting.value !== '0');
+      default:
+        return settings?.filter(
+          (setting) => setting.inputValueType === inputValueType,
+        );
+    }
   };
 
   const indicatorFamilySettings = filterSettings(
