@@ -8,7 +8,7 @@ export const getFetchIniFileAxios = async (
   const base = OpenAPI.BASE;
 
   const response = await axios.get(
-    ` /api/downloads/${analogueModel.analogueModelId}/ini`,
+    `/api/downloads/${analogueModel.analogueModelId}/ini`,
     {
       headers: { Authorization: `Bearer ${token}` },
       responseType: 'blob', // response type of blob to handle images
@@ -44,7 +44,7 @@ export const getFetchNcFileAxios = async (
   const base = OpenAPI.BASE;
 
   const response = await axios.get(
-    ` /api/downloads/${analogueModel.analogueModelId}/nc`,
+    `/api/downloads/${analogueModel.analogueModelId}/nc`,
     {
       headers: { Authorization: `Bearer ${token}` },
       responseType: 'blob', // response type of blob to handle images
@@ -80,7 +80,7 @@ export const getFetchResqmlFileAxios = async (
   const base = OpenAPI.BASE;
 
   const response = await axios.get(
-    ` /api/downloads/${analogueModel.analogueModelId}/resqml`,
+    `/api/downloads/${analogueModel.analogueModelId}/resqml`,
     {
       headers: { Authorization: `Bearer ${token}` },
       responseType: 'blob', // response type of blob to handle images
