@@ -17,7 +17,7 @@ export const Icons = () => {
   const displayRoles = () => {
     const roles = accounts[0].idTokenClaims?.roles;
 
-    if (roles === undefined) return 'No roles assinged.';
+    if (roles === undefined) return 'No roles assigned.';
     if (roles.length === 1) return roles[0] + ' role';
 
     const splitRoles = roles.map((role) => role?.split('.')[1]);
