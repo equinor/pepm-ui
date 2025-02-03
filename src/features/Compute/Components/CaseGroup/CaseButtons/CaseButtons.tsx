@@ -69,12 +69,11 @@ export const CaseButtons = ({
   const duplicateTooltip = () => {
     if (!isOwnerOrAdmin)
       return 'Can not duplicate because you are not owner or admin.';
-    return 'Can not duplicate unsaved case.';
   };
 
   return (
     <Styled.ButtonDiv>
-      {id.length < 3 || !isOwnerOrAdmin ? (
+      {!isOwnerOrAdmin ? (
         <Tooltip title={deleteTooltip()}>
           <Button disabled variant="ghost_icon" aria-label="remove">
             <Icon data={DELETE} size={24}></Icon>
@@ -83,7 +82,9 @@ export const CaseButtons = ({
       ) : (
         <Button
           variant="ghost_icon"
-          onClick={() => setDeleteConfirm(true)}
+          onClick={() =>
+            id.length < 3 ? handleConfirmDelete() : setDeleteConfirm(true)
+          }
           aria-label="remove"
         >
           <Icon data={DELETE} size={24}></Icon>
@@ -148,6 +149,7 @@ export const CaseButtons = ({
             >
               <Button
                 color={
+                  caseStatus === 'Created' ||
                   caseStatus === 'Failed' ||
                   caseStatus === 'Waiting' ||
                   caseStatus === 'Running'
@@ -203,7 +205,14 @@ export const CaseButtons = ({
               </Styled.Button>
             ) : (
               <Styled.Button
-                color={caseStatus === 'Failed' ? 'danger' : undefined}
+                color={
+                  caseStatus === 'Created' ||
+                  caseStatus === 'Failed' ||
+                  caseStatus === 'Waiting' ||
+                  caseStatus === 'Running'
+                    ? 'danger'
+                    : undefined
+                }
                 variant="outlined"
                 onClick={runCase}
                 disabled={
@@ -225,7 +234,12 @@ export const CaseButtons = ({
             )}
           </Tooltip>
           <Button
-            disabled={!isOwnerOrAdmin}
+            disabled={
+              !isOwnerOrAdmin ||
+              caseStatus === 'Created' ||
+              caseStatus === 'Waiting' ||
+              caseStatus === 'Running'
+            }
             variant="outlined"
             onClick={id.length > 3 ? () => setSaveConfirm(true) : saveCase}
           >
