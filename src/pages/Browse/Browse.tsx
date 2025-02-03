@@ -55,8 +55,9 @@ export const Browse = () => {
                 ? 'Export all to Excel...'
                 : 'Export to Excel...'}
             </Button>
-            {exportModels.length === 0 ? 'All ' : exportModels.length + ' '}
-            selected
+            {exportModels.length === 0
+              ? ''
+              : exportModels.length + '   selected'}
           </div>
         ) : (
           <></>

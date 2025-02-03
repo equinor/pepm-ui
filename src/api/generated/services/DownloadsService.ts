@@ -15,12 +15,54 @@ export class DownloadsService {
      * @returns File Success
      * @throws ApiError
      */
-    public static getApiDownloads(
+    public static getApiDownloadsResqml(
         id: string,
     ): CancelablePromise<File> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/downloads/{id}',
+            url: '/api/downloads/{id}/resqml',
+            path: {
+                'id': id,
+            },
+            errors: {
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * @param id
+     * @returns File Success
+     * @throws ApiError
+     */
+    public static getApiDownloadsIni(
+        id: string,
+    ): CancelablePromise<File> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/downloads/{id}/ini',
+            path: {
+                'id': id,
+            },
+            errors: {
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * @param id
+     * @returns File Success
+     * @throws ApiError
+     */
+    public static getApiDownloadsNc(
+        id: string,
+    ): CancelablePromise<File> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/downloads/{id}/nc',
             path: {
                 'id': id,
             },

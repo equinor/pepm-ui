@@ -1,15 +1,38 @@
+/* eslint-disable max-lines-per-function */
 import { Table, Typography } from '@equinor/eds-core-react';
-import { UploadList } from '../../../api/generated';
+import { UploadFileType, UploadList } from '../../../api/generated';
 import * as Styled from './ModelFilesView.styled';
 import {
   analogueModelDefault,
   usePepmContextStore,
 } from '../../../hooks/GlobalState';
+import IconButton from '../../../components/IconButton/IconButton';
+import { download } from '@equinor/eds-icons';
+import {
+  getFetchIniFileAxios,
+  getFetchNcFileAxios,
+  getFetchResqmlFileAxios,
+} from '../../../hooks/useFetchFile';
 
 export const ModelFilesView = () => {
   const { analogueModel } = usePepmContextStore();
 
   if (analogueModel === analogueModelDefault) return <p>Loading ...</p>;
+
+  const downloadFile = (fileType: UploadFileType) => {
+    switch (fileType) {
+      case UploadFileType.NET_CDF:
+        getFetchNcFileAxios(analogueModel);
+        break;
+      case UploadFileType.INI_DATA:
+        getFetchIniFileAxios(analogueModel);
+        break;
+      case UploadFileType.RES_QMLDATA:
+        getFetchResqmlFileAxios(analogueModel);
+        break;
+    }
+    return;
+  };
 
   return (
     <Styled.TableWrapper>
@@ -21,6 +44,7 @@ export const ModelFilesView = () => {
           <Table.Row className="table-row">
             <Table.Cell>Model input files</Table.Cell>
             <Table.Cell>Size</Table.Cell>
+            <Table.Cell>Download</Table.Cell>
           </Table.Row>
         </Table.Head>
         <Table.Body>
@@ -31,6 +55,13 @@ export const ModelFilesView = () => {
               <Table.Row key={file.uploadId} className="table-row">
                 <Table.Cell>{file.originalFileName}</Table.Cell>
                 <Table.Cell>-</Table.Cell>
+                <Table.Cell>
+                  <IconButton
+                    icon={download}
+                    title="download"
+                    onClick={() => downloadFile(file.uploadFileType)}
+                  />
+                </Table.Cell>
               </Table.Row>
             ))
           ) : (
@@ -38,6 +69,23 @@ export const ModelFilesView = () => {
               <Table.Cell>No files uploaded</Table.Cell>
               <Table.Cell>-</Table.Cell>
             </Table.Row>
+          )}
+          {analogueModel !== analogueModelDefault &&
+          analogueModel.isProcessed === true ? (
+            <Table.Row>
+              <Table.Cell>Resqml.zip</Table.Cell>
+              <Table.Cell>-</Table.Cell>
+              <Table.Cell>
+                {' '}
+                <IconButton
+                  icon={download}
+                  title="download"
+                  onClick={() => downloadFile(UploadFileType.RES_QMLDATA)}
+                />
+              </Table.Cell>
+            </Table.Row>
+          ) : (
+            <></>
           )}
         </Table.Body>
       </Styled.FileTable>
