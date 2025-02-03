@@ -5,28 +5,38 @@ export const About = () => {
   return (
     <InfoPageComponent title="About PEPM">
       <Typography variant="body_long">
-        It began with the forging of the Great Rings. Three were given to{' '}
-        <Typography link href="https://nr.no/">
-          Norsk Regnesentral
-        </Typography>
-        , immortal, wisest and fairest of all beings. Seven to the Dwarf-Lords,
-        great miners and craftsmen of the mountain halls. And nine, nine rings
-        were gifted to the race of Men, who above all else desire power. For
-        within these rings was bound the strength and the will to govern each
-        race. But they were all of them deceived, for another ring was made.
-        Deep in the land of Mordor, in the Fires of Mount Doom, the Dark Lord
-        Sauron forged a master ring, and into this ring he poured his cruelty,
-        his malice and his will to dominate all life.
+        PEPM is developed in collaboration with Equinor/Bouvet/Norwegian
+        Computing Center.
       </Typography>
-      <Typography variant="h3">One ring to rule them all.</Typography>
       <Typography variant="body_long">
-        One by one, the free lands of Middle-Earth fell to the power of the
-        Ring, but there were some who resisted. A last alliance of men and elves
-        marched against the armies of Mordor, and on the very slopes of Mount
-        Doom, they fought for the freedom of Middle-Earth. Victory was near, but
-        the power of the ring could not be undone. It was in this moment, when
-        all hope had faded, that Isildur, son of the king, took up his father’s
-        sword.
+        The goal of the application is to extract reservoir modelling parameters
+        for object-based and variogram-based methods from digital geological
+        process models. The digital models are representative for various
+        outcrop analogues and subsurface reservoirs. PEPM will provide
+        geomodelling parameters on a scenario basis ready to be used in a FMU
+        (Fast Modelling Update) context.
+      </Typography>
+      <Typography variant="body_short_bold">PEPM allows for</Typography>
+      <Typography>
+        <ul>
+          <li>
+            Import digital conceptual models from Delft3D-GT in .nc (NetCDF)
+            format
+          </li>
+          <li>
+            Assign metadata to the digital conceptual model related to
+            depositional environments, architectural elements and relevant
+            analogues and subsurface reservoir intervals
+          </li>
+          <li>Estimation of object size of architectural elements</li>
+          <li>
+            Estimation of variogram parameters for architectural elements, grain
+            size, porosity and permeability{' '}
+          </li>
+          <li>Make the results available through an API</li>
+          <li>Export results to an Excel spreadsheet</li>
+          <li>Export the model grid file in a RESQML format</li>
+        </ul>
       </Typography>
     </InfoPageComponent>
   );

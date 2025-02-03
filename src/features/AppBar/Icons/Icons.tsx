@@ -1,38 +1,45 @@
 import { useMsal } from '@azure/msal-react';
-import { Button, Menu } from '@equinor/eds-core-react';
-import {
-  account_circle as accountCircle,
-  notifications,
-} from '@equinor/eds-icons';
+import { Menu } from '@equinor/eds-core-react';
+import { account_circle as accountCircle } from '@equinor/eds-icons';
 import MenuIcon from '../../../components/MenuIcon/MenuIcon';
 import * as Styled from './Icons.styled';
 
 export const Icons = () => {
-  const { instance } = useMsal();
+  const { instance, accounts } = useMsal();
 
   const icons = {
-    notifications: {
-      title: 'Notifications',
-      data: notifications,
-    },
     userInfo: {
       title: 'UserInfo',
       data: accountCircle,
     },
   };
 
+  const displayRoles = () => {
+    const roles = accounts[0].idTokenClaims?.roles;
+
+    if (roles === undefined) return 'No roles assigned.';
+    if (roles.length === 1) return roles[0] + ' role';
+
+    const splitRoles = roles.map((role) => role?.split('.')[1]);
+
+    if (splitRoles.length === 2) {
+      return `${splitRoles[0]} and ${splitRoles[1]} roles`;
+    } else {
+      return `${splitRoles.slice(0, -1).join(', ')} and ${
+        splitRoles[splitRoles.length - 1]
+      } roles`;
+    }
+  };
+
   return (
     <Styled.Icons>
-      <MenuIcon icon={icons.notifications}>
-        <Menu.Item>Notifications (Not ready yet)</Menu.Item>
-      </MenuIcon>
       <MenuIcon icon={icons.userInfo}>
-        <Menu.Section title="Logged in">
-          <Menu.Item>{instance.getActiveAccount()?.name}</Menu.Item>
-          <Menu.Item as={'div'}>
-            <Button onClick={() => instance.logoutRedirect()}>Log out</Button>
-          </Menu.Item>
-        </Menu.Section>
+        <Menu.Item as={'div'} className="menu-item">
+          <ul className="user-info">
+            <li className="name">{instance.getActiveAccount()?.name}</li>
+            <li className="role">{displayRoles()}</li>
+          </ul>
+        </Menu.Item>
       </MenuIcon>
     </Styled.Icons>
   );

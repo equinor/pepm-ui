@@ -23,6 +23,7 @@ const InnerWrapper = styled.div`
 
   row-gap: ${spacings.LARGE};
   width: 50%;
+  max-width: 60ch; /* Prevent text content being too wide and hard to read */
 
   > a {
     display: flex;
@@ -31,6 +32,11 @@ const InnerWrapper = styled.div`
     > svg {
       margin-left: ${spacings.SMALL};
     }
+  }
+
+  ul {
+    margin: 0;
+    line-height: 1.5rem;
   }
 `;
 export { InnerWrapper, StyledInforPage as Page };
