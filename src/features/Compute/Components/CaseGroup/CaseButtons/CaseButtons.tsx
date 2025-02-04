@@ -144,6 +144,8 @@ export const CaseButtons = ({
                     caseStatus === 'Waiting' ||
                     caseStatus === 'Running'
                   ? 'Case is running.'
+                  : caseStatus === 'Failed'
+                  ? 'The area selected for the script does not include architectural element that was provided when computing a case.'
                   : ''
               }
             >
@@ -191,6 +193,8 @@ export const CaseButtons = ({
                   caseStatus === 'Waiting' ||
                   caseStatus === 'Running'
                 ? 'Case are running.'
+                : caseStatus === 'Failed'
+                ? 'The area selected for the script does not include architectural element that was provided when computing a case.'
                 : ''
             }
           >
