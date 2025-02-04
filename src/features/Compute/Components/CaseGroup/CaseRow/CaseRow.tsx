@@ -147,7 +147,10 @@ export const CaseRow = ({
   };
 
   const runRowCase = () => {
-    if (id && rowCase.jobStatus === ComputeJobStatus.RUNNING)
+    if (
+      (id && rowCase.jobStatus === ComputeJobStatus.RUNNING) ||
+      rowCase.jobStatus === ComputeJobStatus.WAITING
+    )
       return runCancelJob(id);
     if (id) return runCase(id);
   };
