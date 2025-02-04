@@ -211,11 +211,16 @@ export const CaseGroup = ({
 
   const deleteCase = async (computeCaseId: string) => {
     if (modelId) {
-      const res = await deleteApiCase.mutateAsync({
-        id: modelId,
-        computeCaseId: computeCaseId,
-      });
-      return res;
+      const localCase = caseList.find((c) => c.computeCaseId === computeCaseId);
+      if (!localCase) {
+        removeLocalCase(computeCaseId);
+      } else {
+        const res = await deleteApiCase.mutateAsync({
+          id: modelId,
+          computeCaseId: computeCaseId,
+        });
+        return res;
+      }
     }
   };
 
