@@ -143,6 +143,8 @@ export const CaseButtons = ({
                     caseStatus === 'Waiting' ||
                     caseStatus === 'Running'
                   ? 'Case is running.'
+                  : caseStatus === 'Failed'
+                  ? 'The area selected for the script does not include architectural element that was provided when computing a case.'
                   : ''
               }
             >
@@ -189,6 +191,8 @@ export const CaseButtons = ({
                   caseStatus === 'Waiting' ||
                   caseStatus === 'Running'
                 ? 'Case are running.'
+                : caseStatus === 'Failed'
+                ? 'The area selected for the script does not include architectural element that was provided when computing a case.'
                 : ''
             }
           >
@@ -203,7 +207,13 @@ export const CaseButtons = ({
               </Styled.Button>
             ) : (
               <Styled.Button
-                color={caseStatus === 'Failed' ? 'danger' : undefined}
+                color={
+                  caseStatus === 'Failed' ||
+                  caseStatus === 'Waiting' ||
+                  caseStatus === 'Running'
+                    ? 'danger'
+                    : undefined
+                }
                 variant="outlined"
                 onClick={runCase}
                 disabled={
