@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import { Button, Icon } from '@equinor/eds-core-react';
 import { add as ADD } from '@equinor/eds-icons';
 import {
