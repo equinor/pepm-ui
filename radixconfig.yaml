@@ -117,9 +117,42 @@ spec:
                 - name: AzureAdPeacock--ResourceId
                   envVar: AzureAdPeacock__ResourceId               
         - environment: prod
-          imageTagName: latest
+          imageTagName: prod.latest
           variables:
             ASPNETCORE_ENVIRONMENT: "Production"
+          secretRefs:
+            azureKeyVaults:
+            - name: s542-prod-kv-00-eun-lg
+              path: /mnt/prod
+              items:
+                - name: ApplicationInsights--ConnectionString
+                  envVar: ApplicationInsights__ConnectionString
+                - name: AzureAd--ClientId
+                  envVar: AzureAd__ClientId
+                - name: AzureAd--ClientSecret
+                  envVar: AzureAd__ClientSecret
+                - name: ConnectionStrings--AzureBlobStorage
+                  envVar: ConnectionStrings__AzureBlobStorage
+                - name: ConnectionStrings--PepmConnectionString
+                  envVar: ConnectionStrings__PepmConnectionString
+                - name: AzureAd--TenantId
+                  envVar: AzureAd__TenantId
+                - name: AzureAd--ClientId
+                  envVar: AZURE_CLIENT_ID
+                - name: AzureAd--ClientSecret
+                  envVar: AZURE_CLIENT_SECRET
+                - name: AzureAd--TenantId
+                  envVar: AZURE_TENANT_ID
+                - name: AzureAdSmda--ResourceId
+                  envVar: AzureAdSmda__ResourceId
+                - name: AzureAdSmda--SubscriptionKey
+                  envVar: AzureAdSmda__SubscriptionKey
+                - name: AzureAdSmda--ApiBaseUri
+                  envVar: AzureAdSmda__ApiBaseUri                
+                - name: AzureAdPeacock--ApiBaseUri
+                  envVar: AzureAdPeacock__ApiBaseUri              
+                - name: AzureAdPeacock--ResourceId
+                  envVar: AzureAdPeacock__ResourceId     
   jobs:
     - name: pepm-nrresqml
       image: ghcr.io/equinor/pepm-worker-api/resqml-converter:latest
