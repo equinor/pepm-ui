@@ -1,12 +1,23 @@
+/* eslint-disable max-lines */
 /* eslint-disable no-empty-pattern */
 /* eslint-disable max-lines-per-function */
 import { ChangeEvent, CSSProperties } from 'react';
 import { useMsal } from '@azure/msal-react';
-import { Button, Checkbox } from '@equinor/eds-core-react';
-import { EdsDataGrid } from '@equinor/eds-data-grid-react';
+import {
+  Button,
+  Checkbox,
+  TextField,
+  Typography,
+} from '@equinor/eds-core-react';
+import {
+  EdsDataGrid,
+  FilterWrapper,
+  HeaderContext,
+} from '@equinor/eds-data-grid-react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import {
+  AnalogueModelList,
   AnalogueModelsService,
   OpenAPI,
   StratigraphicGroupDto,
@@ -94,6 +105,62 @@ export const ModelTable = () => {
   /* Make sure the header row in EdsDataGrid is vertically middle-aligned when filter icons are shown */
   const headerStyle = (): CSSProperties => ({ verticalAlign: 'middle' });
 
+  const filterComponent = ({
+    onChange,
+    value,
+  }: {
+    onChange: (value: unknown) => void;
+    value: unknown;
+  }) => (
+    <TextField
+      label={'Custom filter'}
+      id={'my-custom-filter'}
+      value={(value as string) ?? ''}
+      onChange={(e: ChangeEvent<HTMLInputElement>) =>
+        onChange(e.currentTarget.value)
+      }
+    />
+  );
+
+  const headerComponent = (
+    title: HeaderContext<AnalogueModelList, any>,
+    header: string,
+  ) => {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Typography variant={'cell_header'} group={'table'}>
+          {header}
+        </Typography>
+        <FilterWrapper
+          column={title.column}
+          CustomComponent={filterComponent}
+        />
+      </div>
+    );
+  };
+
+  const filterFunction = (filterValue: string, data: string[]) => {
+    if (!filterValue) return true;
+    const value = filterValue.replaceAll(' ', '').split(',');
+
+    let arr: string[] = [];
+    value.forEach((item: string) => {
+      if (item === '') return;
+      arr = arr.concat(
+        data.filter((key: string) => key.toLowerCase().includes(item)),
+      );
+    });
+
+    if (arr && arr.length > 0) return true;
+    return false;
+  };
+
   return (
     <Styled.Table>
       <EdsDataGrid
@@ -138,8 +205,12 @@ export const ModelTable = () => {
           { accessorKey: 'name', header: 'Model name', id: 'name', size: 200 },
           {
             id: 'outcrops',
-            header: 'Outcrop',
-            enableColumnFilter: false,
+            header: (header) => headerComponent(header, 'Outcrop'),
+            filterFn: (row, columnId, filterValue) =>
+              filterFunction(
+                filterValue,
+                row.original.outcrops.map((i) => i.name),
+              ),
             size: 100,
             cell: ({ row }) => (
               <Styled.List>
@@ -151,8 +222,14 @@ export const ModelTable = () => {
           },
           {
             id: 'country',
-            header: 'Country',
-            enableColumnFilter: false,
+            header: (header) => headerComponent(header, 'Country'),
+            filterFn: (row, columnId, filterValue) =>
+              filterFunction(
+                filterValue,
+                row.original.stratigraphicGroups.map(
+                  (i) => i.country.identifier,
+                ),
+              ),
             size: 120,
             cell: ({ row }) => (
               <Styled.List>
@@ -166,8 +243,12 @@ export const ModelTable = () => {
           },
           {
             id: 'field',
-            header: 'Field',
-            enableColumnFilter: false,
+            header: (header) => headerComponent(header, 'Field'),
+            filterFn: (row, columnId, filterValue) =>
+              filterFunction(
+                filterValue,
+                row.original.stratigraphicGroups.map((i) => i.field.identifier),
+              ),
             size: 120,
             cell: ({ row }) => (
               <Styled.List>
@@ -181,8 +262,14 @@ export const ModelTable = () => {
           },
           {
             id: 'stratigraphicColumn',
-            header: 'Stratigraphic column',
-            enableColumnFilter: false,
+            header: (header) => headerComponent(header, 'Stratigraphic column'),
+            filterFn: (row, columnId, filterValue) =>
+              filterFunction(
+                filterValue,
+                row.original.stratigraphicGroups.map(
+                  (i) => i.stratColumn.identifier,
+                ),
+              ),
             size: 230,
             cell: ({ row }) => (
               <Styled.List>
@@ -196,8 +283,14 @@ export const ModelTable = () => {
           },
           {
             id: 'group',
-            header: 'Level 1 (group)',
-            enableColumnFilter: false,
+            header: (header) => headerComponent(header, 'Level 1 (group)'),
+            filterFn: (row, columnId, filterValue) =>
+              filterFunction(
+                filterValue,
+                getRowGroup(row.original.stratigraphicGroups).map(
+                  (i) => i.identifier,
+                ),
+              ),
             size: 150,
             cell: ({ row }) => (
               <Styled.List>
