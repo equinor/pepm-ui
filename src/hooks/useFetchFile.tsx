@@ -75,7 +75,7 @@ export const getFetchNcFileAxios = async (
 
 export const getFetchResqmlFileAxios = async (
   analogueModel: AnalogueModelDetail,
-): Promise<string> => {
+) => {
   const token = OpenAPI.TOKEN; // replace with your bearer token
   const base = OpenAPI.BASE;
 

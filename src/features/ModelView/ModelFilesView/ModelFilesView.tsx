@@ -1,5 +1,5 @@
 /* eslint-disable max-lines-per-function */
-import { Table, Typography } from '@equinor/eds-core-react';
+import { CircularProgress, Table, Typography } from '@equinor/eds-core-react';
 import { UploadFileType, UploadList } from '../../../api/generated';
 import * as Styled from './ModelFilesView.styled';
 import {
@@ -13,25 +13,73 @@ import {
   getFetchNcFileAxios,
   getFetchResqmlFileAxios,
 } from '../../../hooks/useFetchFile';
+import { useState } from 'react';
 
 export const ModelFilesView = () => {
   const { analogueModel } = usePepmContextStore();
+  const [isLoadingNc, setIsLoadingNc] = useState<boolean>(false);
+  const [isLoadingIni, setIsLoadingIni] = useState<boolean>(false);
+  const [isLoadingResqml, setIsLoadingResqml] = useState<boolean>(false);
 
   if (analogueModel === analogueModelDefault) return <p>Loading ...</p>;
 
-  const downloadFile = (fileType: UploadFileType) => {
+  const downloadFile = async (fileType: UploadFileType) => {
     switch (fileType) {
       case UploadFileType.NET_CDF:
-        getFetchNcFileAxios(analogueModel);
+        setIsLoadingNc(true);
+        await getFetchNcFileAxios(analogueModel);
+        setIsLoadingNc(false);
         break;
       case UploadFileType.INI_DATA:
-        getFetchIniFileAxios(analogueModel);
+        setIsLoadingIni(true);
+        await getFetchIniFileAxios(analogueModel);
+        setIsLoadingIni(false);
         break;
       case UploadFileType.RES_QMLDATA:
-        getFetchResqmlFileAxios(analogueModel);
+        setIsLoadingResqml(true);
+        await getFetchResqmlFileAxios(analogueModel);
+        setIsLoadingResqml(false);
         break;
     }
     return;
+  };
+
+  const iconButtons = (fileType: UploadFileType) => {
+    if (isLoadingNc && fileType === UploadFileType.NET_CDF)
+      return (
+        <CircularProgress
+          color="primary"
+          size={24}
+          value={100}
+          variant="indeterminate"
+        />
+      );
+    if (isLoadingIni && fileType === UploadFileType.INI_DATA)
+      return (
+        <CircularProgress
+          color="primary"
+          size={24}
+          value={100}
+          variant="indeterminate"
+        />
+      );
+    if (isLoadingResqml && fileType === UploadFileType.RES_QMLDATA)
+      return (
+        <CircularProgress
+          color="primary"
+          size={24}
+          value={100}
+          variant="indeterminate"
+        />
+      );
+
+    return (
+      <IconButton
+        icon={download}
+        title="download"
+        onClick={() => downloadFile(fileType)}
+      />
+    );
   };
 
   return (
@@ -55,13 +103,7 @@ export const ModelFilesView = () => {
               <Table.Row key={file.uploadId} className="table-row">
                 <Table.Cell>{file.originalFileName}</Table.Cell>
                 <Table.Cell>-</Table.Cell>
-                <Table.Cell>
-                  <IconButton
-                    icon={download}
-                    title="download"
-                    onClick={() => downloadFile(file.uploadFileType)}
-                  />
-                </Table.Cell>
+                <Table.Cell>{iconButtons(file.uploadFileType)}</Table.Cell>
               </Table.Row>
             ))
           ) : (
@@ -75,14 +117,7 @@ export const ModelFilesView = () => {
             <Table.Row>
               <Table.Cell>Resqml.zip</Table.Cell>
               <Table.Cell>-</Table.Cell>
-              <Table.Cell>
-                {' '}
-                <IconButton
-                  icon={download}
-                  title="download"
-                  onClick={() => downloadFile(UploadFileType.RES_QMLDATA)}
-                />
-              </Table.Cell>
+              <Table.Cell>{iconButtons(UploadFileType.RES_QMLDATA)}</Table.Cell>
             </Table.Row>
           ) : (
             <></>
