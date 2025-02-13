@@ -1,12 +1,13 @@
 /* eslint-disable max-lines */
 /* eslint-disable no-empty-pattern */
 /* eslint-disable max-lines-per-function */
-import { ChangeEvent, CSSProperties } from 'react';
+import { ChangeEvent, CSSProperties, useEffect, useState } from 'react';
 import { useMsal } from '@azure/msal-react';
 import {
+  Autocomplete,
+  AutocompleteChanges,
   Button,
   Checkbox,
-  TextField,
   Typography,
 } from '@equinor/eds-core-react';
 import {
@@ -28,8 +29,21 @@ import * as Styled from './ModelTable.styled';
 import { usePepmContextStore } from '../../hooks/GlobalState';
 
 export const ModelTable = () => {
-  const { addExportModel, deleteExportModel, exportModels } =
-    usePepmContextStore();
+  const {
+    addExportModel,
+    deleteExportModel,
+    exportModels,
+    countryFilterList,
+    setCountryFilterList,
+    outcropFilterList,
+    setOutcropFilterList,
+    fieldFilterList,
+    setFieldFilterList,
+    stratColFilterList,
+    setStratColFilterList,
+    groupFilterList,
+    setGroupFilterList,
+  } = usePepmContextStore();
   const { instance, accounts } = useMsal();
   const token = useAccessToken(instance, accounts[0]);
   if (token) OpenAPI.TOKEN = token;
@@ -51,8 +65,6 @@ export const ModelTable = () => {
     refetchInterval: 60000,
   });
 
-  if (isLoading || !data?.success) return <p>Loading...</p>;
-
   const getRowGroup = (stratGroupList: StratigraphicGroupDto[]) => {
     const groupList: StratUnitDto[] = [];
 
@@ -71,6 +83,47 @@ export const ModelTable = () => {
     }
     return groupList;
   };
+
+  useEffect(() => {
+    if (data?.data !== undefined) {
+      setCountryFilterList(
+        data.data
+          .map((i) => i.stratigraphicGroups.map((s) => s.country.identifier))
+          .flat(),
+      );
+      setOutcropFilterList(
+        data.data.map((i) => i.outcrops.map((i) => i.name)).flat(),
+      );
+      setFieldFilterList(
+        data.data
+          .map((i) => i.stratigraphicGroups.map((s) => s.field.identifier))
+          .flat(),
+      );
+      setStratColFilterList(
+        data.data
+          .map((i) =>
+            i.stratigraphicGroups.map((s) => s.stratColumn.identifier),
+          )
+          .flat(),
+      );
+      setGroupFilterList(
+        data.data
+          .map((i) =>
+            getRowGroup(i.stratigraphicGroups).map((s) => s.identifier),
+          )
+          .flat(),
+      );
+    }
+  }, [
+    data,
+    setCountryFilterList,
+    setFieldFilterList,
+    setGroupFilterList,
+    setOutcropFilterList,
+    setStratColFilterList,
+  ]);
+
+  if (isLoading || !data?.success) return <p>Loading...</p>;
 
   const getModelStatus = (id: string) => {
     let status = ModelStatus.UNKNOWN;
@@ -105,26 +158,10 @@ export const ModelTable = () => {
   /* Make sure the header row in EdsDataGrid is vertically middle-aligned when filter icons are shown */
   const headerStyle = (): CSSProperties => ({ verticalAlign: 'middle' });
 
-  const filterComponent = ({
-    onChange,
-    value,
-  }: {
-    onChange: (value: unknown) => void;
-    value: unknown;
-  }) => (
-    <TextField
-      label={'Custom filter'}
-      id={'my-custom-filter'}
-      value={(value as string) ?? ''}
-      onChange={(e: ChangeEvent<HTMLInputElement>) =>
-        onChange(e.currentTarget.value)
-      }
-    />
-  );
-
   const headerComponent = (
-    title: HeaderContext<AnalogueModelList, any>,
-    header: string,
+    header: HeaderContext<AnalogueModelList, any>,
+    title: string,
+    options: string[],
   ) => {
     return (
       <div
@@ -135,25 +172,64 @@ export const ModelTable = () => {
         }}
       >
         <Typography variant={'cell_header'} group={'table'}>
-          {header}
+          {title}
         </Typography>
         <FilterWrapper
-          column={title.column}
-          CustomComponent={filterComponent}
+          column={header.column}
+          CustomComponent={({ onChange, value }) =>
+            SelectFilterComponent({ onChange, value }, options)
+          }
         />
       </div>
     );
   };
 
-  const filterFunction = (filterValue: string, data: string[]) => {
-    if (!filterValue) return true;
-    const value = filterValue.replaceAll(' ', '').split(',');
+  const SelectFilterComponent = (
+    {
+      onChange,
+      value,
+    }: {
+      onChange: (value: unknown) => void;
+      value: unknown;
+    },
+    options: string[],
+  ) => {
+    const values = value as string[];
+    // This is always the correct List, but the properties should usually be different - need a new context?
+    const [selectedValues, setSelectedValues] = useState(
+      (values as string[]) || [],
+    );
+
+    useEffect(() => {
+      setSelectedValues(values || []); // Update selectedValues when value prop changes
+    }, [values]);
+
+    const handleSelections = (e: AutocompleteChanges<string>) => {
+      setSelectedValues(e.selectedItems);
+      onChange(e.selectedItems);
+    };
+
+    return (
+      <Autocomplete
+        label="Select multiple labels"
+        options={options}
+        multiple
+        initialSelectedOptions={selectedValues}
+        onOptionsChange={handleSelections}
+      />
+    );
+  };
+
+  const filterFunction = (filterValue: string[], data: string[]) => {
+    if (!filterValue || filterValue.length === 0) return true;
 
     let arr: string[] = [];
-    value.forEach((item: string) => {
+    filterValue.forEach((item: string) => {
       if (item === '') return;
       arr = arr.concat(
-        data.filter((key: string) => key.toLowerCase().includes(item)),
+        data.filter((key: string) =>
+          key.toLowerCase().includes(item.toLowerCase()),
+        ),
       );
     });
 
@@ -205,7 +281,8 @@ export const ModelTable = () => {
           { accessorKey: 'name', header: 'Model name', id: 'name', size: 200 },
           {
             id: 'outcrops',
-            header: (header) => headerComponent(header, 'Outcrop'),
+            header: (header) =>
+              headerComponent(header, 'Outcrop', outcropFilterList),
             filterFn: (row, columnId, filterValue) =>
               filterFunction(
                 filterValue,
@@ -222,7 +299,9 @@ export const ModelTable = () => {
           },
           {
             id: 'country',
-            header: (header) => headerComponent(header, 'Country'),
+            header: (header) =>
+              headerComponent(header, 'Country', countryFilterList),
+            // filterFn: 'arrIncludes',
             filterFn: (row, columnId, filterValue) =>
               filterFunction(
                 filterValue,
@@ -243,7 +322,8 @@ export const ModelTable = () => {
           },
           {
             id: 'field',
-            header: (header) => headerComponent(header, 'Field'),
+            header: (header) =>
+              headerComponent(header, 'Field', fieldFilterList),
             filterFn: (row, columnId, filterValue) =>
               filterFunction(
                 filterValue,
@@ -262,7 +342,12 @@ export const ModelTable = () => {
           },
           {
             id: 'stratigraphicColumn',
-            header: (header) => headerComponent(header, 'Stratigraphic column'),
+            header: (header) =>
+              headerComponent(
+                header,
+                'Stratigraphic column',
+                stratColFilterList,
+              ),
             filterFn: (row, columnId, filterValue) =>
               filterFunction(
                 filterValue,
@@ -283,7 +368,8 @@ export const ModelTable = () => {
           },
           {
             id: 'group',
-            header: (header) => headerComponent(header, 'Level 1 (group)'),
+            header: (header) =>
+              headerComponent(header, 'Level 1 (group)', groupFilterList),
             filterFn: (row, columnId, filterValue) =>
               filterFunction(
                 filterValue,

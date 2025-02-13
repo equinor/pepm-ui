@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
@@ -70,6 +71,11 @@ type IPepmContext = {
   objectResults: GetObjectResultsDto[];
   variogramResults: GetVariogramResultsDto[];
   exportModels: string[];
+  countryFilterList: string[];
+  outcropFilterList: string[];
+  fieldFilterList: string[];
+  stratColFilterList: string[];
+  groupFilterList: string[];
 };
 
 type IPepmContextActions = {
@@ -102,6 +108,11 @@ type IPepmContextActions = {
   updateVariogramResult: (variogramResult: GetVariogramResultsDto) => void;
   addExportModel: (modelId: string) => void;
   deleteExportModel: (modelId: string) => void;
+  setCountryFilterList: (filters: string[]) => void;
+  setOutcropFilterList: (filters: string[]) => void;
+  setFieldFilterList: (filters: string[]) => void;
+  setStratColFilterList: (filters: string[]) => void;
+  setGroupFilterList: (filters: string[]) => void;
 };
 
 export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
@@ -120,6 +131,11 @@ export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
     objectResults: [],
     variogramResults: [],
     exportModels: [],
+    countryFilterList: [],
+    outcropFilterList: [],
+    fieldFilterList: [],
+    stratColFilterList: [],
+    groupFilterList: [],
     setAnalogueModel: (analogueModel: AnalogueModelDetail) =>
       set((state) => {
         state.analogueModel = analogueModel;
@@ -263,6 +279,26 @@ export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
     deleteExportModel: (modelId: string) =>
       set((state) => {
         state.exportModels = state.exportModels.filter((id) => id !== modelId);
+      }),
+    setCountryFilterList: (filters: string[]) =>
+      set((state) => {
+        state.countryFilterList = filters;
+      }),
+    setOutcropFilterList: (filters: string[]) =>
+      set((state) => {
+        state.outcropFilterList = filters;
+      }),
+    setFieldFilterList: (filters: string[]) =>
+      set((state) => {
+        state.fieldFilterList = filters;
+      }),
+    setStratColFilterList: (filters: string[]) =>
+      set((state) => {
+        state.stratColFilterList = filters;
+      }),
+    setGroupFilterList: (filters: string[]) =>
+      set((state) => {
+        state.groupFilterList = filters;
       }),
   })),
 );
