@@ -32,6 +32,7 @@ import {
 import { useFetchGrossDepData } from '../../../hooks/useFetchGrossDepData';
 import { IniParametersDialog } from '../IniParametersDialog/IniParametersDialog';
 import { IniParametersWrapper } from './ModelMetadataView.styled';
+import { ModelStatus } from '../../ModelTable/ModelTable';
 
 export const ModelMetadataView = ({
   modelIdParent,
@@ -229,6 +230,32 @@ export const ModelMetadataView = ({
     }
   };
 
+  const getModelStatus = () => {
+    let status = ModelStatus.UNKNOWN;
+
+    const transforming =
+      analogueModel && analogueModel.processingStatus
+        ? analogueModel.processingStatus
+        : undefined;
+    const isProcessed = analogueModel ? analogueModel.isProcessed : undefined;
+
+    if (isProcessed === true) {
+      status = ModelStatus.SUCCEEDED;
+    } else if (
+      transforming === 'Created' ||
+      transforming === 'Waiting' ||
+      transforming === 'Running'
+    ) {
+      status = ModelStatus.TRANSFORMING;
+    } else if (transforming === 'Failed') {
+      status = ModelStatus.FAILED_TRANSFORMING;
+    } else if (isProcessed === false) {
+      status = ModelStatus.FAILED_UPLOADING;
+    }
+
+    return status;
+  };
+
   if (analogueModel === analogueModelDefault && uploadingProgress === undefined)
     return <p>Loading ...</p>;
 
@@ -280,6 +307,33 @@ export const ModelMetadataView = ({
                   </Typography>
                 </div>
               )}
+            {getModelStatus() === ModelStatus.TRANSFORMING && (
+              <div>
+                <Typography as="p">
+                  Model picture will be generated after the model is
+                  transformed.
+                </Typography>
+              </div>
+            )}
+            {getModelStatus() === ModelStatus.FAILED_TRANSFORMING && (
+              <div>
+                <Typography as="p">
+                  Model transformation failed. Delete the model and upload
+                  again.
+                </Typography>
+              </div>
+            )}
+            {!analogueModel.processingStatus && (
+              <div>
+                <Typography as="p">
+                  Cannot generate picture for unprocessed model.
+                </Typography>
+                <Typography as="p">
+                  If processing failed, delete this model and reupload again.
+                  Else, wait.
+                </Typography>
+              </div>
+            )}
             {!analogueModel.isProcessed && (
               <div>
                 <Typography as="p">

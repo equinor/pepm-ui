@@ -28,6 +28,15 @@ import { useAccessToken } from '../../hooks/useAccessToken';
 import * as Styled from './ModelTable.styled';
 import { usePepmContextStore } from '../../hooks/GlobalState';
 
+export enum ModelStatus {
+  UNKNOWN = 'Unknown',
+
+  TRANSFORMING = 'Transforming ...',
+  SUCCEEDED = 'Succeeded',
+  FAILED_UPLOADING = 'Uploading failed',
+  FAILED_TRANSFORMING = 'Transforming failed',
+}
+
 export const ModelTable = () => {
   const {
     addExportModel,
@@ -48,15 +57,6 @@ export const ModelTable = () => {
   const token = useAccessToken(instance, accounts[0]);
   if (token) OpenAPI.TOKEN = token;
   const navigate = useNavigate();
-
-  enum ModelStatus {
-    UNKNOWN = 'Unknown',
-
-    TRANSFORMING = 'Transforming ...',
-    SUCCEEDED = 'Succeeded',
-    FAILED_UPLOADING = 'Uploading failed',
-    FAILED_TRANSFORMING = 'Transforming failed',
-  }
 
   const { isLoading, data } = useQuery({
     queryKey: ['analogue-models'],
