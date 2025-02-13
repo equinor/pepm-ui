@@ -32,13 +32,37 @@ import { request as __request } from '../core/request';
 export class AnalogueModelsService {
 
     /**
+     * @param expand
+     * @param isProcessed
+     * @param stratigraphicGroupsCountryIdentifier
+     * @param stratigraphicGroupsFieldIdentifier
+     * @param stratigraphicGroupsStratColumnIdentifier
+     * @param stratigraphicGroupsStratUnitIdentifier
+     * @param outcropsName
      * @returns GetAnalogueModelListQueryResponse Success
      * @throws ApiError
      */
-    public static getApiAnalogueModels(): CancelablePromise<GetAnalogueModelListQueryResponse> {
+    public static getApiAnalogueModels(
+        expand?: string,
+        isProcessed?: boolean,
+        stratigraphicGroupsCountryIdentifier?: string,
+        stratigraphicGroupsFieldIdentifier?: string,
+        stratigraphicGroupsStratColumnIdentifier?: string,
+        stratigraphicGroupsStratUnitIdentifier?: string,
+        outcropsName?: string,
+    ): CancelablePromise<GetAnalogueModelListQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/analogue-models',
+            query: {
+                'expand': expand,
+                'isProcessed': isProcessed,
+                'stratigraphicGroupsCountryIdentifier': stratigraphicGroupsCountryIdentifier,
+                'stratigraphicGroupsFieldIdentifier': stratigraphicGroupsFieldIdentifier,
+                'stratigraphicGroupsStratColumnIdentifier': stratigraphicGroupsStratColumnIdentifier,
+                'stratigraphicGroupsStratUnitIdentifier': stratigraphicGroupsStratUnitIdentifier,
+                'outcropsName': outcropsName,
+            },
             errors: {
                 403: `Forbidden`,
                 404: `Not Found`,
