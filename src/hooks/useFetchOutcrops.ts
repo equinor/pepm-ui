@@ -9,7 +9,7 @@ export const useFetchOutcrops = () => {
 
   const query = useQuery({
     queryKey: ['apiParameters'],
-    queryFn: () => OutcropsService.getApiOutcrops(),
+    queryFn: () => OutcropsService.getApiV1Outcrops(),
     enabled: !!token,
   });
   return query;

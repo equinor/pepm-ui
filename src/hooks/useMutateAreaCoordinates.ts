@@ -15,7 +15,7 @@ export const useMutateAreaCoordinates = () => {
       id: string;
       requestBody: AddAnalogueModelAreaCommandForm;
     }) => {
-      return AnalogueModelsService.postApiAnalogueModelsModelAreas(
+      return AnalogueModelsService.postApiV1AnalogueModelsModelAreas(
         id,
         requestBody,
       );
@@ -35,7 +35,7 @@ export const useMutateAreaCoordinates = () => {
       modelAreaId: string;
       requestBody: UpdateAnalogueModelAreaCommandForm;
     }) => {
-      return AnalogueModelsService.putApiAnalogueModelsModelAreas(
+      return AnalogueModelsService.putApiV1AnalogueModelsModelAreas(
         id,
         modelAreaId,
         requestBody,

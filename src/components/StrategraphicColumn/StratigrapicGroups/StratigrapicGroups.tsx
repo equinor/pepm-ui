@@ -92,7 +92,7 @@ export const StratigrapicGroups = ({
       id: string;
       requestBody: AddStatigraphicGroupForm;
     }) => {
-      return AnalogueModelsService.postApiAnalogueModelsStratigraphicGroups(
+      return AnalogueModelsService.postApiV1AnalogueModelsStratigraphicGroups(
         id,
         requestBody,
       );

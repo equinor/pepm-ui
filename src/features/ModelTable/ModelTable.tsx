@@ -47,7 +47,7 @@ export const ModelTable = () => {
   const { isLoading, data } = useQuery({
     queryKey: ['analogue-models'],
     queryFn: () =>
-      AnalogueModelsService.getApiAnalogueModels(
+      AnalogueModelsService.getApiV1AnalogueModels(
         'outcrops, stratigraphicgroups',
       ),
     enabled: !!token,

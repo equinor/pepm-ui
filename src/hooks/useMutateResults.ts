@@ -17,7 +17,7 @@ export const useMutateObjectResult = () => {
       objectId: string;
       requestBody: UpdateObjectResultCommandBody;
     }) => {
-      return ResultsService.putApiAnalogueModelsResultsObject(
+      return ResultsService.putApiV1AnalogueModelsResultsObject(
         id,
         objectId,
         requestBody,
@@ -42,7 +42,7 @@ export const useMutateVariogramResult = () => {
       computeCaseId: string;
       requestBody: UpdateVariogramResultCommandBody;
     }) => {
-      return ResultsService.putApiAnalogueModelsComputecasesResults(
+      return ResultsService.putApiV1AnalogueModelsComputecasesResults(
         id,
         computeCaseId,
         requestBody,

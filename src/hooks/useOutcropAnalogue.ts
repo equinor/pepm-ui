@@ -14,7 +14,7 @@ export const useOutcropAnalouge = () => {
       id: string;
       requestBody: AddAnalogueModelOutcropForm;
     }) => {
-      return AnalogueModelsService.postApiAnalogueModelsOutcrops(
+      return AnalogueModelsService.postApiV1AnalogueModelsOutcrops(
         id,
         requestBody,
       );
@@ -26,7 +26,7 @@ export const useOutcropAnalouge = () => {
 
   const deleteOutcropAnalogue = useMutation({
     mutationFn: ({ id, outcropId }: { id: string; outcropId: string }) => {
-      return AnalogueModelsService.deleteApiAnalogueModelsOutcrops(
+      return AnalogueModelsService.deleteApiV1AnalogueModelsOutcrops(
         id,
         outcropId,
       );

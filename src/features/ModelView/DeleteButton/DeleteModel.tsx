@@ -16,7 +16,7 @@ export const DeleteModel = () => {
 
   const deleteModel = useMutation({
     mutationFn: ({ id }: { id: string }) => {
-      return AnalogueModelsService.deleteApiAnalogueModels(id);
+      return AnalogueModelsService.deleteApiV1AnalogueModels(id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['analogue-model'] });
