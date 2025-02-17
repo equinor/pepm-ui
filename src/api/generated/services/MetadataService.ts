@@ -19,10 +19,10 @@ export class MetadataService {
      * @returns ListAllQueryResponse Success
      * @throws ApiError
      */
-    public static getApiMetadataSmdaMetadata(): CancelablePromise<ListAllQueryResponse> {
+    public static getApiV1MetadataSmdaMetadata(): CancelablePromise<ListAllQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/metadata/smda-metadata',
+            url: '/api/v1/metadata/smda-metadata',
             errors: {
                 403: `Forbidden`,
                 404: `Not Found`,
@@ -34,10 +34,10 @@ export class MetadataService {
      * @returns ListCountriesQueryResponse Success
      * @throws ApiError
      */
-    public static getApiMetadataSmdaMetadataCountries(): CancelablePromise<ListCountriesQueryResponse> {
+    public static getApiV1MetadataSmdaMetadataCountries(): CancelablePromise<ListCountriesQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/metadata/smda-metadata/countries',
+            url: '/api/v1/metadata/smda-metadata/countries',
             errors: {
                 403: `Forbidden`,
                 404: `Not Found`,
@@ -50,12 +50,12 @@ export class MetadataService {
      * @returns ListFieldsQueryResponse Success
      * @throws ApiError
      */
-    public static getApiMetadataSmdaMetadataFields(
+    public static getApiV1MetadataSmdaMetadataFields(
         countryId?: string,
     ): CancelablePromise<ListFieldsQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/metadata/smda-metadata/fields',
+            url: '/api/v1/metadata/smda-metadata/fields',
             query: {
                 'countryId': countryId,
             },
@@ -71,12 +71,12 @@ export class MetadataService {
      * @returns ListStratColumnQueryResponse Success
      * @throws ApiError
      */
-    public static getApiMetadataSmdaMetadataStratigraphicColumns(
+    public static getApiV1MetadataSmdaMetadataStratigraphicColumns(
         countryId?: string,
     ): CancelablePromise<ListStratColumnQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/metadata/smda-metadata/stratigraphic-columns',
+            url: '/api/v1/metadata/smda-metadata/stratigraphic-columns',
             query: {
                 'countryId': countryId,
             },
@@ -93,13 +93,13 @@ export class MetadataService {
      * @returns ListStratUnitsQueryResponse Success
      * @throws ApiError
      */
-    public static getApiMetadataSmdaMetadataStratigraphicUnits(
+    public static getApiV1MetadataSmdaMetadataStratigraphicUnits(
         stratUnitParentId?: string,
         stratColumnId?: string,
     ): CancelablePromise<ListStratUnitsQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/metadata/smda-metadata/stratigraphic-units',
+            url: '/api/v1/metadata/smda-metadata/stratigraphic-units',
             query: {
                 'stratUnitParentId': stratUnitParentId,
                 'stratColumnId': stratColumnId,
@@ -116,12 +116,12 @@ export class MetadataService {
      * @returns ListGeoStandardsQueryResponse Success
      * @throws ApiError
      */
-    public static getApiMetadataSmdaMetadataGeologyStandards(
+    public static getApiV1MetadataSmdaMetadataGeologyStandards(
         parentId?: string,
     ): CancelablePromise<ListGeoStandardsQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/metadata/smda-metadata/geology-standards',
+            url: '/api/v1/metadata/smda-metadata/geology-standards',
             query: {
                 'parentId': parentId,
             },

@@ -15,12 +15,12 @@ export class DownloadsService {
      * @returns File Success
      * @throws ApiError
      */
-    public static getApiDownloadsResqml(
+    public static getApiV1DownloadsResqml(
         id: string,
     ): CancelablePromise<File> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/downloads/{id}/resqml',
+            url: '/api/v1/downloads/{id}/resqml',
             path: {
                 'id': id,
             },
@@ -36,12 +36,12 @@ export class DownloadsService {
      * @returns File Success
      * @throws ApiError
      */
-    public static getApiDownloadsIni(
+    public static getApiV1DownloadsIni(
         id: string,
     ): CancelablePromise<File> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/downloads/{id}/ini',
+            url: '/api/v1/downloads/{id}/ini',
             path: {
                 'id': id,
             },
@@ -57,12 +57,12 @@ export class DownloadsService {
      * @returns File Success
      * @throws ApiError
      */
-    public static getApiDownloadsNc(
+    public static getApiV1DownloadsNc(
         id: string,
     ): CancelablePromise<File> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/downloads/{id}/nc',
+            url: '/api/v1/downloads/{id}/nc',
             path: {
                 'id': id,
             },
@@ -78,12 +78,12 @@ export class DownloadsService {
      * @returns File Success
      * @throws ApiError
      */
-    public static getApiDownloadsAnalogueModelsExcel(
+    public static getApiV1DownloadsAnalogueModelsExcel(
         analogueModelIds?: Array<string>,
     ): CancelablePromise<File> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/downloads/analogue-models-excel',
+            url: '/api/v1/downloads/analogue-models-excel',
             query: {
                 'AnalogueModelIds': analogueModelIds,
             },

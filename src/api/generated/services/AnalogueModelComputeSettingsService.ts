@@ -15,12 +15,12 @@ export class AnalogueModelComputeSettingsService {
      * @returns ListComputeSettingsQueryResponse Success
      * @throws ApiError
      */
-    public static getApiAnalogueModelsComputeSettings(
+    public static getApiV1AnalogueModelsComputeSettings(
         analogueModelId: string,
     ): CancelablePromise<ListComputeSettingsQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/analogue-models/{analogueModelId}/compute-settings',
+            url: '/api/v1/analogue-models/{analogueModelId}/compute-settings',
             path: {
                 'analogueModelId': analogueModelId,
             },
