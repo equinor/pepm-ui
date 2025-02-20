@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.8.0](https://github.com/equinor/pepm-ui/compare/v1.7.1...v1.8.0) (2025-02-20)
+
+
+### 🧹 Chores
+
+* Disabled max lines for 2 files so that i could commit :) ([#440](https://github.com/equinor/pepm-ui/issues/440)) ([accaa42](https://github.com/equinor/pepm-ui/commit/accaa42f40254c992199118f77c45565f5f48a1e))
+* radixconfonfig update for production ([949007d](https://github.com/equinor/pepm-ui/commit/949007ddd99b7a7351b86fab944e2f0ddb8d98f9))
+
+
+### ✨ Features
+
+* Added image gen message if transforming ([#443](https://github.com/equinor/pepm-ui/issues/443)) ([1228a0f](https://github.com/equinor/pepm-ui/commit/1228a0fc6845469437dc2ee592db03c9b4014eef))
+* Added loading icon while waiting for download response ([#441](https://github.com/equinor/pepm-ui/issues/441)) ([c2f5b5e](https://github.com/equinor/pepm-ui/commit/c2f5b5ea5416b34d5ccd6080029b7d5f12102304))
+* Added multi select filtering on browse page ([#444](https://github.com/equinor/pepm-ui/issues/444)) ([95ac5d8](https://github.com/equinor/pepm-ui/commit/95ac5d8d9c5cbbfb0c6e2b547d7416fe09fad6b6))
+* Added tooltip on failed case. Fixed cancel color for variogram cases ([#439](https://github.com/equinor/pepm-ui/issues/439)) ([7b5fda0](https://github.com/equinor/pepm-ui/commit/7b5fda027d2a7313ebea7815c98ef0bf1a969625))
+* rework of compute feature ([#433](https://github.com/equinor/pepm-ui/issues/433)) ([d0dbc1a](https://github.com/equinor/pepm-ui/commit/d0dbc1abdacca460ee0ebbd6f9af42459817c5da))
+
+
+### 🐛 Bug Fixes
+
+* Clean up the application header ([#429](https://github.com/equinor/pepm-ui/issues/429)) ([f606818](https://github.com/equinor/pepm-ui/commit/f60681819af3d95bb19ed6f1d39e2c8140d6a1ad))
+* compute logic ([#438](https://github.com/equinor/pepm-ui/issues/438)) ([7932750](https://github.com/equinor/pepm-ui/commit/79327508883f46ddb224d8abfbb272c4bc3db271))
+* updated name mapping for results, added required for ini-file ([#436](https://github.com/equinor/pepm-ui/issues/436)) ([d84ff24](https://github.com/equinor/pepm-ui/commit/d84ff24a0eddeb98ebaf30859fb2425230d69ea4))
+
 ## [1.7.1](https://github.com/equinor/pepm-ui/compare/v1.7.0...v1.7.1) (2025-01-24)
 
 
