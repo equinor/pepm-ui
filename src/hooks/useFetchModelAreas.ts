@@ -9,7 +9,7 @@ export const useFetchModelAreas = () => {
 
   const query = useQuery({
     queryKey: ['model-area'],
-    queryFn: () => ModelAreaTypeService.getApiModelareatype(),
+    queryFn: () => ModelAreaTypeService.getApiV1Modelareatype(),
     enabled: !!token,
   });
 

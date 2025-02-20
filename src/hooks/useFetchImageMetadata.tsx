@@ -18,7 +18,7 @@ export const useFetchImageMetadata = () => {
   const query = useQuery({
     queryKey: ['analogue-model-image-metadata', modelId, imageId],
     queryFn: () =>
-      AnalogueModelImagesService.getApiAnalogueModelsImagesMetadata(
+      AnalogueModelImagesService.getApiV1AnalogueModelsImagesMetadata(
         modelId,
         imageId,
       ),

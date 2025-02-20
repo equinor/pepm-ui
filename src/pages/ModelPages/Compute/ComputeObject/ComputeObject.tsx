@@ -37,7 +37,7 @@ export const ComputeObject = () => {
   const { computeCases } = usePepmContextStore();
 
   const computeObject = useMutation({
-    mutationFn: JobsService.postApiJobsComputeObjectEstimations,
+    mutationFn: JobsService.postApiV1JobsComputeObjectEstimations,
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ['model-cases'] });
     },

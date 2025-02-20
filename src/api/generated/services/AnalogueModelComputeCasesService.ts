@@ -19,13 +19,13 @@ export class AnalogueModelComputeCasesService {
      * @returns CreateComputeCaseCommandResponse Success
      * @throws ApiError
      */
-    public static postApiAnalogueModelsComputeCases(
+    public static postApiV1AnalogueModelsComputeCases(
         id: string,
         requestBody?: CreateComputeCaseCommandForm,
     ): CancelablePromise<CreateComputeCaseCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/analogue-models/{id}/compute-cases',
+            url: '/api/v1/analogue-models/{id}/compute-cases',
             path: {
                 'id': id,
             },
@@ -43,12 +43,12 @@ export class AnalogueModelComputeCasesService {
      * @returns ListComputeCasesByAnalogueModelIdQueryResponse Success
      * @throws ApiError
      */
-    public static getApiAnalogueModelsComputeCases(
+    public static getApiV1AnalogueModelsComputeCases(
         id: string,
     ): CancelablePromise<ListComputeCasesByAnalogueModelIdQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/analogue-models/{id}/compute-cases',
+            url: '/api/v1/analogue-models/{id}/compute-cases',
             path: {
                 'id': id,
             },
@@ -66,14 +66,14 @@ export class AnalogueModelComputeCasesService {
      * @returns ListComputeCasesByAnalogueModelIdQueryResponse Success
      * @throws ApiError
      */
-    public static putApiAnalogueModelsComputeCases(
+    public static putApiV1AnalogueModelsComputeCases(
         id: string,
         computeCaseId: string,
         requestBody?: UpdateComputeCaseCommandForm,
     ): CancelablePromise<ListComputeCasesByAnalogueModelIdQueryResponse> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/api/analogue-models/{id}/compute-cases/{computeCaseId}',
+            url: '/api/v1/analogue-models/{id}/compute-cases/{computeCaseId}',
             path: {
                 'id': id,
                 'computeCaseId': computeCaseId,
@@ -93,13 +93,13 @@ export class AnalogueModelComputeCasesService {
      * @returns ListComputeCasesByAnalogueModelIdQueryResponse Success
      * @throws ApiError
      */
-    public static deleteApiAnalogueModelsComputeCases(
+    public static deleteApiV1AnalogueModelsComputeCases(
         id: string,
         computeCaseId: string,
     ): CancelablePromise<ListComputeCasesByAnalogueModelIdQueryResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/api/analogue-models/{id}/compute-cases/{computeCaseId}',
+            url: '/api/v1/analogue-models/{id}/compute-cases/{computeCaseId}',
             path: {
                 'id': id,
                 'computeCaseId': computeCaseId,

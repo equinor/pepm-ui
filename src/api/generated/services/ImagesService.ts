@@ -15,12 +15,12 @@ export class ImagesService {
      * @returns File Success
      * @throws ApiError
      */
-    public static getApiImagesVariogram(
+    public static getApiV1ImagesVariogram(
         imageId: string,
     ): CancelablePromise<File> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/images/variogram/{imageId}',
+            url: '/api/v1/images/variogram/{imageId}',
             path: {
                 'imageId': imageId,
             },

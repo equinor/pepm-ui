@@ -21,10 +21,10 @@ export class UploadsService {
      * @returns GetUploadListQueryResponse Success
      * @throws ApiError
      */
-    public static getApiUploads(): CancelablePromise<GetUploadListQueryResponse> {
+    public static getApiV1Uploads(): CancelablePromise<GetUploadListQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/uploads',
+            url: '/api/v1/uploads',
             errors: {
                 403: `Forbidden`,
                 404: `Not Found`,
@@ -37,12 +37,12 @@ export class UploadsService {
      * @returns GetUploadDetailQueryResponse Success
      * @throws ApiError
      */
-    public static getApiUploads1(
+    public static getApiV1Uploads1(
         id: string,
     ): CancelablePromise<GetUploadDetailQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/uploads/{id}',
+            url: '/api/v1/uploads/{id}',
             path: {
                 'id': id,
             },
@@ -59,7 +59,7 @@ export class UploadsService {
      * @returns UploadAnalogueModelCommandResponse Success
      * @throws ApiError
      */
-    public static postApiUploadsModels(
+    public static postApiV1UploadsModels(
         formData?: {
             ModelId: string;
             File: Blob;
@@ -68,7 +68,7 @@ export class UploadsService {
     ): CancelablePromise<UploadAnalogueModelCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/uploads/models',
+            url: '/api/v1/uploads/models',
             formData: formData,
             mediaType: 'multipart/form-data',
             errors: {
@@ -84,7 +84,7 @@ export class UploadsService {
      * @returns PrepareChunkedUploadCommandResponse Success
      * @throws ApiError
      */
-    public static postApiUploadsModelsManifest(
+    public static postApiV1UploadsModelsManifest(
         formData?: {
             ModelId: string;
             FileSize: number;
@@ -95,7 +95,7 @@ export class UploadsService {
     ): CancelablePromise<PrepareChunkedUploadCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/uploads/models/manifest',
+            url: '/api/v1/uploads/models/manifest',
             formData: formData,
             mediaType: 'multipart/form-data',
             errors: {
@@ -111,7 +111,7 @@ export class UploadsService {
      * @returns UploadChunkCommandResponse Success
      * @throws ApiError
      */
-    public static postApiUploadsModelsChunks(
+    public static postApiV1UploadsModelsChunks(
         formData?: {
             ModelId: string;
             UploadId: string;
@@ -121,7 +121,7 @@ export class UploadsService {
     ): CancelablePromise<UploadChunkCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/uploads/models/chunks',
+            url: '/api/v1/uploads/models/chunks',
             formData: formData,
             mediaType: 'multipart/form-data',
             errors: {
@@ -137,7 +137,7 @@ export class UploadsService {
      * @returns MergeModelCommandResponse Success
      * @throws ApiError
      */
-    public static postApiUploadsModelsComplete(
+    public static postApiV1UploadsModelsComplete(
         formData?: {
             ModelId: string;
             UploadId: string;
@@ -145,7 +145,7 @@ export class UploadsService {
     ): CancelablePromise<MergeModelCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/uploads/models/complete',
+            url: '/api/v1/uploads/models/complete',
             formData: formData,
             mediaType: 'multipart/form-data',
             errors: {
@@ -162,7 +162,7 @@ export class UploadsService {
      * @returns UploadIniFileCommandResponse Success
      * @throws ApiError
      */
-    public static postApiUploadsModelsIniFile(
+    public static postApiV1UploadsModelsIniFile(
         id: string,
         formData?: {
             File: Blob;
@@ -170,7 +170,7 @@ export class UploadsService {
     ): CancelablePromise<UploadIniFileCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/uploads/models/{id}/ini-file',
+            url: '/api/v1/uploads/models/{id}/ini-file',
             path: {
                 'id': id,
             },

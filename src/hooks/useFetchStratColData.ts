@@ -11,7 +11,7 @@ export const useFetchSmdaCountries = () => {
 
   const query = useQuery({
     queryKey: ['smda-countries'],
-    queryFn: () => MetadataService.getApiMetadataSmdaMetadataCountries(),
+    queryFn: () => MetadataService.getApiV1MetadataSmdaMetadataCountries(),
     enabled: !!token && countries.length === 0,
   });
 
@@ -25,7 +25,7 @@ export const useFetchSmdaFields = () => {
 
   const query = useQuery({
     queryKey: ['smda-fields'],
-    queryFn: () => MetadataService.getApiMetadataSmdaMetadataFields(),
+    queryFn: () => MetadataService.getApiV1MetadataSmdaMetadataFields(),
     enabled: !!token && fields.length === 0,
   });
 
@@ -40,7 +40,7 @@ export const useFetchSmdaStratigraphicColumns = () => {
   const query = useQuery({
     queryKey: ['smda-strat-columns'],
     queryFn: () =>
-      MetadataService.getApiMetadataSmdaMetadataStratigraphicColumns(),
+      MetadataService.getApiV1MetadataSmdaMetadataStratigraphicColumns(),
     enabled: !!token && stratigraphicColumns.length === 0,
   });
 
@@ -55,7 +55,7 @@ export const useFetchSmdaMetadataStratigraphicUnits = () => {
   const query = useQuery({
     queryKey: ['smda-strat-units'],
     queryFn: () =>
-      MetadataService.getApiMetadataSmdaMetadataStratigraphicUnits(),
+      MetadataService.getApiV1MetadataSmdaMetadataStratigraphicUnits(),
     enabled: !!token && stratigraphicUnits.length === 0,
   });
 

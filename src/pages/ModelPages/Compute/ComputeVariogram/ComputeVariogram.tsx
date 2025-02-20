@@ -73,7 +73,7 @@ export const ComputeVariogram = () => {
   };
 
   const computeVariogram = useMutation({
-    mutationFn: JobsService.postApiJobsComputeVariogramEstimations,
+    mutationFn: JobsService.postApiV1JobsComputeVariogramEstimations,
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ['model-cases'] });
     },

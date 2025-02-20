@@ -76,7 +76,7 @@ export const GrossDepositionEnviromentGroup = ({
       id: string;
       requestBody: AddGeologicalGroupForm;
     }) => {
-      return AnalogueModelsService.postApiAnalogueModelsGeologicalGroups(
+      return AnalogueModelsService.postApiV1AnalogueModelsGeologicalGroups(
         id,
         requestBody,
       );

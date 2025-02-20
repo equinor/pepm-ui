@@ -21,12 +21,12 @@ export class ResultsService {
      * @returns GetObjectResultsByModelIdQueryResponse Success
      * @throws ApiError
      */
-    public static getApiAnalogueModelsResultsObject(
+    public static getApiV1AnalogueModelsResultsObject(
         id: string,
     ): CancelablePromise<GetObjectResultsByModelIdQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/analogue-models/{id}/results/object',
+            url: '/api/v1/analogue-models/{id}/results/object',
             path: {
                 'id': id,
             },
@@ -43,12 +43,12 @@ export class ResultsService {
      * @returns GetVariogramResultsByModelIdQueryResponse Success
      * @throws ApiError
      */
-    public static getApiAnalogueModelsResultsVariogram(
+    public static getApiV1AnalogueModelsResultsVariogram(
         id: string,
     ): CancelablePromise<GetVariogramResultsByModelIdQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/analogue-models/{id}/results/variogram',
+            url: '/api/v1/analogue-models/{id}/results/variogram',
             path: {
                 'id': id,
             },
@@ -66,14 +66,14 @@ export class ResultsService {
      * @returns UpdateObjectResultCommandResponse Success
      * @throws ApiError
      */
-    public static putApiAnalogueModelsResultsObject(
+    public static putApiV1AnalogueModelsResultsObject(
         id: string,
         objectId: string,
         requestBody?: UpdateObjectResultCommandBody,
     ): CancelablePromise<UpdateObjectResultCommandResponse> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/api/analogue-models/{id}/results/object/{objectId}',
+            url: '/api/v1/analogue-models/{id}/results/object/{objectId}',
             path: {
                 'id': id,
                 'objectId': objectId,
@@ -95,14 +95,14 @@ export class ResultsService {
      * @returns UpdateVariogramResultCommandResponse Success
      * @throws ApiError
      */
-    public static putApiAnalogueModelsComputecasesResults(
+    public static putApiV1AnalogueModelsComputecasesResults(
         id: string,
         computeCaseId: string,
         requestBody?: UpdateVariogramResultCommandBody,
     ): CancelablePromise<UpdateVariogramResultCommandResponse> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/api/analogue-models/{id}/computecases/{computeCaseId}/results',
+            url: '/api/v1/analogue-models/{id}/computecases/{computeCaseId}/results',
             path: {
                 'id': id,
                 'computeCaseId': computeCaseId,

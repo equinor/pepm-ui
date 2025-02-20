@@ -68,7 +68,7 @@ export const ModelMetadataView = ({
 
   const generateThumbnail = useMutation({
     mutationFn: (requestBody: GenerateThumbnailCommand) => {
-      return JobsService.postApiJobsComputeThumbnailGen(requestBody);
+      return JobsService.postApiV1JobsComputeThumbnailGen(requestBody);
     },
   });
 
@@ -141,7 +141,7 @@ export const ModelMetadataView = ({
       id: string;
       requestBody: UpdateAnalogueModelCommandBody;
     }) => {
-      return AnalogueModelsService.putApiAnalogueModels(id, requestBody);
+      return AnalogueModelsService.putApiV1AnalogueModels(id, requestBody);
     },
   });
 
@@ -171,7 +171,7 @@ export const ModelMetadataView = ({
       analogueModelId: string;
       stratigraphicGroupId: string;
     }) => {
-      return AnalogueModelsService.deleteApiAnalogueModelsStratigraphicGroups(
+      return AnalogueModelsService.deleteApiV1AnalogueModelsStratigraphicGroups(
         analogueModelId,
         stratigraphicGroupId,
       );
@@ -189,7 +189,7 @@ export const ModelMetadataView = ({
       analogueModelId: string;
       geologicalGroupId: string;
     }) => {
-      return AnalogueModelsService.deleteApiAnalogueModelsGeologicalGroups(
+      return AnalogueModelsService.deleteApiV1AnalogueModelsGeologicalGroups(
         analogueModelId,
         geologicalGroupId,
       );

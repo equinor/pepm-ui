@@ -27,10 +27,10 @@ export class JobsService {
      * @returns GetJobListQueryResponse Success
      * @throws ApiError
      */
-    public static getApiJobs(): CancelablePromise<GetJobListQueryResponse> {
+    public static getApiV1Jobs(): CancelablePromise<GetJobListQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/jobs',
+            url: '/api/v1/jobs',
             errors: {
                 403: `Forbidden`,
                 404: `Not Found`,
@@ -43,12 +43,12 @@ export class JobsService {
      * @returns GetJobDetailQueryResponse Success
      * @throws ApiError
      */
-    public static getApiJobs1(
+    public static getApiV1Jobs1(
         id: string,
     ): CancelablePromise<GetJobDetailQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/jobs/{id}',
+            url: '/api/v1/jobs/{id}',
             path: {
                 'id': id,
             },
@@ -65,12 +65,12 @@ export class JobsService {
      * @returns GetCurrentJobStatusCommandResponse Success
      * @throws ApiError
      */
-    public static getApiJobsStatus(
+    public static getApiV1JobsStatus(
         id: string,
     ): CancelablePromise<GetCurrentJobStatusCommandResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/jobs/{id}/status',
+            url: '/api/v1/jobs/{id}/status',
             path: {
                 'id': id,
             },
@@ -86,10 +86,10 @@ export class JobsService {
      * @returns GetCurrentJobStatusListCommand Success
      * @throws ApiError
      */
-    public static getApiJobsStatus1(): CancelablePromise<GetCurrentJobStatusListCommand> {
+    public static getApiV1JobsStatus1(): CancelablePromise<GetCurrentJobStatusListCommand> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/jobs/status',
+            url: '/api/v1/jobs/status',
             errors: {
                 403: `Forbidden`,
                 404: `Not Found`,
@@ -103,12 +103,12 @@ export class JobsService {
      * @returns PostCancelJobCommandResponse Accepted
      * @throws ApiError
      */
-    public static postApiJobsCancel(
+    public static postApiV1JobsCancel(
         requestBody?: PostCancelJobCommand,
     ): CancelablePromise<PostCancelJobCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/jobs/cancel',
+            url: '/api/v1/jobs/cancel',
             body: requestBody,
             mediaType: 'application/json-patch+json',
             errors: {
@@ -124,12 +124,12 @@ export class JobsService {
      * @returns ConvertAnalogueModelCommandResponse Accepted
      * @throws ApiError
      */
-    public static postApiJobsComputeModelConversions(
+    public static postApiV1JobsComputeModelConversions(
         requestBody?: ConvertAnalogueModelCommand,
     ): CancelablePromise<ConvertAnalogueModelCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/jobs/compute/model-conversions',
+            url: '/api/v1/jobs/compute/model-conversions',
             body: requestBody,
             mediaType: 'application/json-patch+json',
             errors: {
@@ -145,12 +145,12 @@ export class JobsService {
      * @returns EstimateObjectCommandResponse Accepted
      * @throws ApiError
      */
-    public static postApiJobsComputeObjectEstimations(
+    public static postApiV1JobsComputeObjectEstimations(
         requestBody?: EstimateObjectCommand,
     ): CancelablePromise<EstimateObjectCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/jobs/compute/object-estimations',
+            url: '/api/v1/jobs/compute/object-estimations',
             body: requestBody,
             mediaType: 'application/json-patch+json',
             errors: {
@@ -166,12 +166,12 @@ export class JobsService {
      * @returns EstimateVariogramCommandResponse Accepted
      * @throws ApiError
      */
-    public static postApiJobsComputeVariogramEstimations(
+    public static postApiV1JobsComputeVariogramEstimations(
         requestBody?: EstimateVariogramCommand,
     ): CancelablePromise<EstimateVariogramCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/jobs/compute/variogram-estimations',
+            url: '/api/v1/jobs/compute/variogram-estimations',
             body: requestBody,
             mediaType: 'application/json-patch+json',
             errors: {
@@ -187,12 +187,12 @@ export class JobsService {
      * @returns GenerateThumbnailCommandResponse Accepted
      * @throws ApiError
      */
-    public static postApiJobsComputeThumbnailGen(
+    public static postApiV1JobsComputeThumbnailGen(
         requestBody?: GenerateThumbnailCommand,
     ): CancelablePromise<GenerateThumbnailCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/jobs/compute/thumbnail-gen',
+            url: '/api/v1/jobs/compute/thumbnail-gen',
             body: requestBody,
             mediaType: 'application/json-patch+json',
             errors: {

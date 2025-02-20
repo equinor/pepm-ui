@@ -15,7 +15,7 @@ export const useFetchCases = () => {
   const query = useQuery({
     queryKey: ['model-cases', modelId],
     queryFn: () =>
-      AnalogueModelComputeCasesService.getApiAnalogueModelsComputeCases(
+      AnalogueModelComputeCasesService.getApiV1AnalogueModelsComputeCases(
         modelId as string,
       ),
     enabled: !!token,

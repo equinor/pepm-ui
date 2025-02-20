@@ -11,7 +11,8 @@ export const useFetchGrossDepData = () => {
 
   const query = useQuery({
     queryKey: ['smda-GDE'],
-    queryFn: () => MetadataService.getApiMetadataSmdaMetadataGeologyStandards(),
+    queryFn: () =>
+      MetadataService.getApiV1MetadataSmdaMetadataGeologyStandards(),
     enabled: !!token && geologyStandards.length === 0,
   });
 

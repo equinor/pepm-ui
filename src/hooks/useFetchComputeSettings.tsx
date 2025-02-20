@@ -12,7 +12,7 @@ export const useFetchComputeSettings = () => {
   const query = useQuery({
     queryKey: ['compute-settings', modelId],
     queryFn: () =>
-      ComputeSettingsService.getApiComputeSettings(modelId as string),
+      ComputeSettingsService.getApiV1ComputeSettings(modelId as string),
     enabled: !!token,
   });
 

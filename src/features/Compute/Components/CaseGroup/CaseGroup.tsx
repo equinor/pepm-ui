@@ -49,7 +49,7 @@ export const CaseGroup = ({
       id: string;
       requestBody: CreateComputeCaseCommandForm;
     }) => {
-      return AnalogueModelComputeCasesService.postApiAnalogueModelsComputeCases(
+      return AnalogueModelComputeCasesService.postApiV1AnalogueModelsComputeCases(
         id,
         requestBody,
       );
@@ -69,7 +69,7 @@ export const CaseGroup = ({
       computeCaseId: string;
       requestBody: UpdateComputeCaseCommandForm;
     }) => {
-      return AnalogueModelComputeCasesService.putApiAnalogueModelsComputeCases(
+      return AnalogueModelComputeCasesService.putApiV1AnalogueModelsComputeCases(
         id,
         computeCaseId,
         requestBody,
@@ -88,7 +88,7 @@ export const CaseGroup = ({
       id: string;
       computeCaseId: string;
     }) => {
-      return AnalogueModelComputeCasesService.deleteApiAnalogueModelsComputeCases(
+      return AnalogueModelComputeCasesService.deleteApiV1AnalogueModelsComputeCases(
         id,
         computeCaseId,
       );

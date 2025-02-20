@@ -126,7 +126,7 @@ export const CaseRow = ({
   );
 
   const cancelJob = useMutation({
-    mutationFn: JobsService.postApiJobsCancel,
+    mutationFn: JobsService.postApiV1JobsCancel,
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ['model-cases'] });
     },

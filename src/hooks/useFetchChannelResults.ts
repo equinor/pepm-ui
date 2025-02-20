@@ -13,7 +13,7 @@ export const useFetchObjectResults = () => {
   const query = useQuery({
     queryKey: ['object-results', modelId],
     queryFn: () =>
-      ResultsService.getApiAnalogueModelsResultsObject(modelId as string),
+      ResultsService.getApiV1AnalogueModelsResultsObject(modelId as string),
     enabled: !!token,
   });
 

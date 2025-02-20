@@ -32,13 +32,37 @@ import { request as __request } from '../core/request';
 export class AnalogueModelsService {
 
     /**
+     * @param expand
+     * @param isProcessed
+     * @param stratigraphicGroupsCountryIdentifier
+     * @param stratigraphicGroupsFieldIdentifier
+     * @param stratigraphicGroupsStratColumnIdentifier
+     * @param stratigraphicGroupsStratUnitIdentifier
+     * @param outcropsName
      * @returns GetAnalogueModelListQueryResponse Success
      * @throws ApiError
      */
-    public static getApiAnalogueModels(): CancelablePromise<GetAnalogueModelListQueryResponse> {
+    public static getApiV1AnalogueModels(
+        expand?: string,
+        isProcessed?: boolean,
+        stratigraphicGroupsCountryIdentifier?: string,
+        stratigraphicGroupsFieldIdentifier?: string,
+        stratigraphicGroupsStratColumnIdentifier?: string,
+        stratigraphicGroupsStratUnitIdentifier?: string,
+        outcropsName?: string,
+    ): CancelablePromise<GetAnalogueModelListQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/analogue-models',
+            url: '/api/v1/analogue-models',
+            query: {
+                'expand': expand,
+                'isProcessed': isProcessed,
+                'stratigraphicGroupsCountryIdentifier': stratigraphicGroupsCountryIdentifier,
+                'stratigraphicGroupsFieldIdentifier': stratigraphicGroupsFieldIdentifier,
+                'stratigraphicGroupsStratColumnIdentifier': stratigraphicGroupsStratColumnIdentifier,
+                'stratigraphicGroupsStratUnitIdentifier': stratigraphicGroupsStratUnitIdentifier,
+                'outcropsName': outcropsName,
+            },
             errors: {
                 403: `Forbidden`,
                 404: `Not Found`,
@@ -52,12 +76,12 @@ export class AnalogueModelsService {
      * @returns CreateAnalogueModelCommandResponse Success
      * @throws ApiError
      */
-    public static postApiAnalogueModels(
+    public static postApiV1AnalogueModels(
         requestBody?: CreateAnalogueModelCommand,
     ): CancelablePromise<CreateAnalogueModelCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/analogue-models',
+            url: '/api/v1/analogue-models',
             body: requestBody,
             mediaType: 'application/json-patch+json',
             errors: {
@@ -73,12 +97,12 @@ export class AnalogueModelsService {
      * @returns GetAnalogueModelQueryResponse Success
      * @throws ApiError
      */
-    public static getApiAnalogueModels1(
+    public static getApiV1AnalogueModels1(
         id: string,
     ): CancelablePromise<GetAnalogueModelQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/analogue-models/{id}',
+            url: '/api/v1/analogue-models/{id}',
             path: {
                 'id': id,
             },
@@ -96,13 +120,13 @@ export class AnalogueModelsService {
      * @returns PatchAnalogueModelCommandResponse Success
      * @throws ApiError
      */
-    public static patchApiAnalogueModels(
+    public static patchApiV1AnalogueModels(
         id: string,
         requestBody?: Array<Operation>,
     ): CancelablePromise<PatchAnalogueModelCommandResponse> {
         return __request(OpenAPI, {
             method: 'PATCH',
-            url: '/api/analogue-models/{id}',
+            url: '/api/v1/analogue-models/{id}',
             path: {
                 'id': id,
             },
@@ -123,13 +147,13 @@ export class AnalogueModelsService {
      * @returns UpdateAnalogueModelCommandResponse Success
      * @throws ApiError
      */
-    public static putApiAnalogueModels(
+    public static putApiV1AnalogueModels(
         id: string,
         requestBody?: UpdateAnalogueModelCommandBody,
     ): CancelablePromise<UpdateAnalogueModelCommandResponse> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/api/analogue-models/{id}',
+            url: '/api/v1/analogue-models/{id}',
             path: {
                 'id': id,
             },
@@ -149,12 +173,12 @@ export class AnalogueModelsService {
      * @returns void
      * @throws ApiError
      */
-    public static deleteApiAnalogueModels(
+    public static deleteApiV1AnalogueModels(
         id: string,
     ): CancelablePromise<void> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/api/analogue-models/{id}',
+            url: '/api/v1/analogue-models/{id}',
             path: {
                 'id': id,
             },
@@ -173,7 +197,7 @@ export class AnalogueModelsService {
      * @returns UploadAnalogueModelCommandResponse Success
      * @throws ApiError
      */
-    public static postApiAnalogueModelsInputModels(
+    public static postApiV1AnalogueModelsInputModels(
         id: string,
         formData?: {
             File: Blob;
@@ -182,7 +206,7 @@ export class AnalogueModelsService {
     ): CancelablePromise<UploadAnalogueModelCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/analogue-models/{id}/input-models',
+            url: '/api/v1/analogue-models/{id}/input-models',
             path: {
                 'id': id,
             },
@@ -202,7 +226,7 @@ export class AnalogueModelsService {
      * @returns UploadAnalogueModelCommandResponse Success
      * @throws ApiError
      */
-    public static postApiAnalogueModelsNetcdfModels(
+    public static postApiV1AnalogueModelsNetcdfModels(
         id: string,
         formData?: {
             file?: Blob;
@@ -210,7 +234,7 @@ export class AnalogueModelsService {
     ): CancelablePromise<UploadAnalogueModelCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/analogue-models/{id}/netcdf-models',
+            url: '/api/v1/analogue-models/{id}/netcdf-models',
             path: {
                 'id': id,
             },
@@ -229,13 +253,13 @@ export class AnalogueModelsService {
      * @returns AddAnalogueModelAreaCommandResponse Success
      * @throws ApiError
      */
-    public static postApiAnalogueModelsModelAreas(
+    public static postApiV1AnalogueModelsModelAreas(
         id: string,
         requestBody?: AddAnalogueModelAreaCommandForm,
     ): CancelablePromise<AddAnalogueModelAreaCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/analogue-models/{id}/model-areas',
+            url: '/api/v1/analogue-models/{id}/model-areas',
             path: {
                 'id': id,
             },
@@ -255,14 +279,14 @@ export class AnalogueModelsService {
      * @returns AddAnalogueModelAreaCommandResponse Success
      * @throws ApiError
      */
-    public static putApiAnalogueModelsModelAreas(
+    public static putApiV1AnalogueModelsModelAreas(
         id: string,
         modelAreaId: string,
         requestBody?: UpdateAnalogueModelAreaCommandForm,
     ): CancelablePromise<AddAnalogueModelAreaCommandResponse> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/api/analogue-models/{id}/model-areas/{modelAreaId}',
+            url: '/api/v1/analogue-models/{id}/model-areas/{modelAreaId}',
             path: {
                 'id': id,
                 'modelAreaId': modelAreaId,
@@ -283,13 +307,13 @@ export class AnalogueModelsService {
      * @returns AddAnalogueModelOutcropResponse Success
      * @throws ApiError
      */
-    public static postApiAnalogueModelsOutcrops(
+    public static postApiV1AnalogueModelsOutcrops(
         id: string,
         requestBody?: AddAnalogueModelOutcropForm,
     ): CancelablePromise<AddAnalogueModelOutcropResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/analogue-models/{id}/outcrops',
+            url: '/api/v1/analogue-models/{id}/outcrops',
             path: {
                 'id': id,
             },
@@ -308,13 +332,13 @@ export class AnalogueModelsService {
      * @returns DeleteOutcropResponse Success
      * @throws ApiError
      */
-    public static deleteApiAnalogueModelsOutcrops(
+    public static deleteApiV1AnalogueModelsOutcrops(
         id: string,
         outcropId: string,
     ): CancelablePromise<DeleteOutcropResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/api/analogue-models/{id}/outcrops/{outcropId}',
+            url: '/api/v1/analogue-models/{id}/outcrops/{outcropId}',
             path: {
                 'id': id,
                 'outcropId': outcropId,
@@ -333,13 +357,13 @@ export class AnalogueModelsService {
      * @returns AddStratigraphicGroupCommandResponse Success
      * @throws ApiError
      */
-    public static postApiAnalogueModelsStratigraphicGroups(
+    public static postApiV1AnalogueModelsStratigraphicGroups(
         id: string,
         requestBody?: AddStatigraphicGroupForm,
     ): CancelablePromise<AddStratigraphicGroupCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/analogue-models/{id}/stratigraphic-groups',
+            url: '/api/v1/analogue-models/{id}/stratigraphic-groups',
             path: {
                 'id': id,
             },
@@ -359,13 +383,13 @@ export class AnalogueModelsService {
      * @returns AddGeologicalGroupCommandResponse Success
      * @throws ApiError
      */
-    public static postApiAnalogueModelsGeologicalGroups(
+    public static postApiV1AnalogueModelsGeologicalGroups(
         id: string,
         requestBody?: AddGeologicalGroupForm,
     ): CancelablePromise<AddGeologicalGroupCommandResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/analogue-models/{id}/geological-groups',
+            url: '/api/v1/analogue-models/{id}/geological-groups',
             path: {
                 'id': id,
             },
@@ -386,13 +410,13 @@ export class AnalogueModelsService {
      * @returns DeleteGeologicalGroupCommandResponse Success
      * @throws ApiError
      */
-    public static deleteApiAnalogueModelsGeologicalGroups(
+    public static deleteApiV1AnalogueModelsGeologicalGroups(
         analogueModelId: string,
         geologicalGroupId: string,
     ): CancelablePromise<DeleteGeologicalGroupCommandResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/api/analogue-models/{analogueModelId}/geological-groups/{geologicalGroupId}',
+            url: '/api/v1/analogue-models/{analogueModelId}/geological-groups/{geologicalGroupId}',
             path: {
                 'analogueModelId': analogueModelId,
                 'geologicalGroupId': geologicalGroupId,
@@ -412,13 +436,13 @@ export class AnalogueModelsService {
      * @returns DeleteStratigraphicGroupCommandResponse Success
      * @throws ApiError
      */
-    public static deleteApiAnalogueModelsStratigraphicGroups(
+    public static deleteApiV1AnalogueModelsStratigraphicGroups(
         analogueModelId: string,
         stratigraphicGroupId: string,
     ): CancelablePromise<DeleteStratigraphicGroupCommandResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/api/analogue-models/{analogueModelId}/stratigraphic-groups/{stratigraphicGroupId}',
+            url: '/api/v1/analogue-models/{analogueModelId}/stratigraphic-groups/{stratigraphicGroupId}',
             path: {
                 'analogueModelId': analogueModelId,
                 'stratigraphicGroupId': stratigraphicGroupId,

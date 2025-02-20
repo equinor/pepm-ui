@@ -17,13 +17,13 @@ export class AnalogueModelImagesService {
      * @returns File Success
      * @throws ApiError
      */
-    public static getApiAnalogueModelsImages(
+    public static getApiV1AnalogueModelsImages(
         analogueModelId: string,
         imageId: string,
     ): CancelablePromise<File> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/analogue-models/{analogueModelId}/images/{imageId}',
+            url: '/api/v1/analogue-models/{analogueModelId}/images/{imageId}',
             path: {
                 'analogueModelId': analogueModelId,
                 'imageId': imageId,
@@ -41,13 +41,13 @@ export class AnalogueModelImagesService {
      * @returns GetImageMetadataCommandResponse Success
      * @throws ApiError
      */
-    public static getApiAnalogueModelsImagesMetadata(
+    public static getApiV1AnalogueModelsImagesMetadata(
         analogueModelId: string,
         imageId: string,
     ): CancelablePromise<GetImageMetadataCommandResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/analogue-models/{analogueModelId}/images/{imageId}/metadata',
+            url: '/api/v1/analogue-models/{analogueModelId}/images/{imageId}/metadata',
             path: {
                 'analogueModelId': analogueModelId,
                 'imageId': imageId,

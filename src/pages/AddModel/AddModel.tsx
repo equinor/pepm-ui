@@ -47,22 +47,22 @@ export const AddModel = () => {
   const [uploadStatus, setUploadStatus] = useState<string>();
 
   const createModel = useMutation({
-    mutationFn: AnalogueModelsService.postApiAnalogueModels,
+    mutationFn: AnalogueModelsService.postApiV1AnalogueModels,
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ['analogue-models'] });
     },
   });
 
   const modelManifest = useMutation({
-    mutationFn: UploadsService.postApiUploadsModelsManifest,
+    mutationFn: UploadsService.postApiV1UploadsModelsManifest,
   });
 
   const chunkUpload = useMutation({
-    mutationFn: UploadsService.postApiUploadsModelsChunks,
+    mutationFn: UploadsService.postApiV1UploadsModelsChunks,
   });
 
   const uploadFinished = useMutation({
-    mutationFn: UploadsService.postApiUploadsModelsComplete,
+    mutationFn: UploadsService.postApiV1UploadsModelsComplete,
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ['analogue-models'] });
     },
@@ -70,7 +70,7 @@ export const AddModel = () => {
 
   const convertModelFile = useMutation({
     mutationFn: (requestBody: ConvertAnalogueModelCommand) => {
-      return JobsService.postApiJobsComputeModelConversions(requestBody);
+      return JobsService.postApiV1JobsComputeModelConversions(requestBody);
     },
   });
 
@@ -88,7 +88,7 @@ export const AddModel = () => {
 
   const deleteModel = useMutation({
     mutationFn: ({ id }: { id: string }) => {
-      return AnalogueModelsService.deleteApiAnalogueModels(id);
+      return AnalogueModelsService.deleteApiV1AnalogueModels(id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['analogue-model'] });

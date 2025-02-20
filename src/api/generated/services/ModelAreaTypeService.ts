@@ -14,10 +14,10 @@ export class ModelAreaTypeService {
      * @returns ListModelAreaTypesQueryResponse Success
      * @throws ApiError
      */
-    public static getApiModelareatype(): CancelablePromise<ListModelAreaTypesQueryResponse> {
+    public static getApiV1Modelareatype(): CancelablePromise<ListModelAreaTypesQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/modelareatype',
+            url: '/api/v1/modelareatype',
             errors: {
                 403: `Forbidden`,
                 404: `Not Found`,

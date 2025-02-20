@@ -14,10 +14,10 @@ export class OutcropsService {
      * @returns GetOutcropsCommandResponse Success
      * @throws ApiError
      */
-    public static getApiOutcrops(): CancelablePromise<GetOutcropsCommandResponse> {
+    public static getApiV1Outcrops(): CancelablePromise<GetOutcropsCommandResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/outcrops',
+            url: '/api/v1/outcrops',
             errors: {
                 403: `Forbidden`,
                 404: `Not Found`,

@@ -13,7 +13,7 @@ export const useFetchVariogramResults = () => {
   const query = useQuery({
     queryKey: ['variogram-results', modelId],
     queryFn: () =>
-      ResultsService.getApiAnalogueModelsResultsVariogram(modelId as string),
+      ResultsService.getApiV1AnalogueModelsResultsVariogram(modelId as string),
     enabled: !!token,
   });
 

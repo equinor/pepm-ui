@@ -16,7 +16,7 @@ export const useFetchModel = (id?: string) => {
 
   const query = useQuery({
     queryKey: ['analogue-model', ID],
-    queryFn: () => AnalogueModelsService.getApiAnalogueModels1(ID),
+    queryFn: () => AnalogueModelsService.getApiV1AnalogueModels1(ID),
     enabled: !!token && analogueModel === analogueModelDefault,
   });
 
