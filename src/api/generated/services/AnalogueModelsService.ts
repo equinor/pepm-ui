@@ -94,17 +94,40 @@ export class AnalogueModelsService {
     /**
      * Get AnalogueModel by id
      * @param id
+     * @param expand
+     * @param isProcessed
+     * @param stratigraphicGroupsCountryIdentifier
+     * @param stratigraphicGroupsFieldIdentifier
+     * @param stratigraphicGroupsStratColumnIdentifier
+     * @param stratigraphicGroupsStratUnitIdentifier
+     * @param outcropsName
      * @returns GetAnalogueModelQueryResponse Success
      * @throws ApiError
      */
     public static getApiV1AnalogueModels1(
         id: string,
+        expand?: string,
+        isProcessed?: boolean,
+        stratigraphicGroupsCountryIdentifier?: string,
+        stratigraphicGroupsFieldIdentifier?: string,
+        stratigraphicGroupsStratColumnIdentifier?: string,
+        stratigraphicGroupsStratUnitIdentifier?: string,
+        outcropsName?: string,
     ): CancelablePromise<GetAnalogueModelQueryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/analogue-models/{id}',
             path: {
                 'id': id,
+            },
+            query: {
+                'expand': expand,
+                'isProcessed': isProcessed,
+                'stratigraphicGroupsCountryIdentifier': stratigraphicGroupsCountryIdentifier,
+                'stratigraphicGroupsFieldIdentifier': stratigraphicGroupsFieldIdentifier,
+                'stratigraphicGroupsStratColumnIdentifier': stratigraphicGroupsStratColumnIdentifier,
+                'stratigraphicGroupsStratUnitIdentifier': stratigraphicGroupsStratUnitIdentifier,
+                'outcropsName': outcropsName,
             },
             errors: {
                 403: `Forbidden`,

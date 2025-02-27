@@ -16,7 +16,11 @@ export const useFetchModel = (id?: string) => {
 
   const query = useQuery({
     queryKey: ['analogue-model', ID],
-    queryFn: () => AnalogueModelsService.getApiV1AnalogueModels1(ID),
+    queryFn: () =>
+      AnalogueModelsService.getApiV1AnalogueModels1(
+        ID,
+        'outcrops, stratigraphicgroups, fileuploads, modelareas, geologicalgroups, inifile, computecases',
+      ),
     enabled: !!token && analogueModel === analogueModelDefault,
   });
 
