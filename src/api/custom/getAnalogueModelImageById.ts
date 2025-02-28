@@ -9,7 +9,7 @@ export const getAnalogueModelImage = async (
   const base = OpenAPI.BASE;
 
   const response = await axios.get(
-    `/api/analogue-models/${analogueModelId}/images/${imageId}`,
+    `/api/v1/analogue-models/${analogueModelId}/images/${imageId}`,
     {
       headers: { Authorization: `Bearer ${token}` },
       responseType: 'blob', // response type of blob to handle images

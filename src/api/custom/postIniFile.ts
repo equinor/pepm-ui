@@ -10,7 +10,7 @@ export const postIniFile = async (
   const base = OpenAPI.BASE;
 
   const response = await axios.post(
-    `/api/uploads/models/${modelId}/ini-file`,
+    `/api/v1/uploads/models/${modelId}/ini-file`,
     formData,
     {
       headers: {

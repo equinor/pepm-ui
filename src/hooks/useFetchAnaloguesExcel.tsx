@@ -16,7 +16,7 @@ export const getFetchAnaloguesExcelAxios = async (
   }
 
   const response = await axios.get(
-    '/api/downloads/analogue-models-excel' + params,
+    '/api/v1/downloads/analogue-models-excel' + params,
     {
       headers: { Authorization: `Bearer ${token}` },
       responseType: 'blob', // response type of blob to handle images

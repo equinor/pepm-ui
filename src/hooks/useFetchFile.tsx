@@ -8,7 +8,7 @@ export const getFetchIniFileAxios = async (
   const base = OpenAPI.BASE;
 
   const response = await axios.get(
-    `/api/downloads/${analogueModel.analogueModelId}/ini`,
+    `/api/v1/downloads/${analogueModel.analogueModelId}/ini`,
     {
       headers: { Authorization: `Bearer ${token}` },
       responseType: 'blob', // response type of blob to handle images
