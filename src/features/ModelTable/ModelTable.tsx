@@ -19,8 +19,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import {
   AnalogueModelList,
-  AnalogueModelsService,
-  OpenAPI,
+  getApiV1AnalogueModels,
   StratigraphicGroupDto,
   StratUnitDto,
 } from '../../api/generated';
@@ -55,15 +54,14 @@ export const ModelTable = () => {
   } = usePepmContextStore();
   const { instance, accounts } = useMsal();
   const token = useAccessToken(instance, accounts[0]);
-  if (token) OpenAPI.TOKEN = token;
   const navigate = useNavigate();
 
   const { isLoading, data } = useQuery({
     queryKey: ['analogue-models'],
     queryFn: () =>
-      AnalogueModelsService.getApiV1AnalogueModels(
-        'outcrops, stratigraphicgroups',
-      ),
+      getApiV1AnalogueModels({
+        query: { expand: 'outcrops, stratigraphicgroups' },
+      }),
     enabled: !!token,
     refetchInterval: 60000,
   });
@@ -88,29 +86,29 @@ export const ModelTable = () => {
   };
 
   useEffect(() => {
-    if (data?.data !== undefined) {
+    if (data?.data?.data !== undefined) {
       setCountryFilterList(
-        data.data
+        data.data.data
           .map((i) => i.stratigraphicGroups.map((s) => s.country.identifier))
           .flat(),
       );
       setOutcropFilterList(
-        data.data.map((i) => i.outcrops.map((i) => i.name)).flat(),
+        data.data.data.map((i) => i.outcrops.map((i) => i.name)).flat(),
       );
       setFieldFilterList(
-        data.data
+        data.data.data
           .map((i) => i.stratigraphicGroups.map((s) => s.field.identifier))
           .flat(),
       );
       setStratColFilterList(
-        data.data
+        data.data.data
           .map((i) =>
             i.stratigraphicGroups.map((s) => s.stratColumn.identifier),
           )
           .flat(),
       );
       setGroupFilterList(
-        data.data
+        data.data.data
           .map((i) =>
             getRowGroup(i.stratigraphicGroups).map((s) => s.identifier),
           )
@@ -126,12 +124,12 @@ export const ModelTable = () => {
     setStratColFilterList,
   ]);
 
-  if (isLoading || !data?.success) return <p>Loading...</p>;
+  if (isLoading || !data?.data) return <p>Loading...</p>;
 
   const getModelStatus = (id: string) => {
     let status = ModelStatus.UNKNOWN;
 
-    const model = data.data.find((m) => m.analogueModelId === id);
+    const model = data.data.data.find((m) => m.analogueModelId === id);
     const transforming =
       model && model.processingStatus ? model.processingStatus : undefined;
     const isProcessed = model ? model.isProcessed : undefined;
@@ -162,7 +160,7 @@ export const ModelTable = () => {
   const headerStyle = (): CSSProperties => ({ verticalAlign: 'middle' });
 
   const headerComponent = (
-    header: HeaderContext<AnalogueModelList, any>,
+    header: HeaderContext<AnalogueModelList, unknown>,
     title: string,
     options: string[],
   ) => {
@@ -247,7 +245,7 @@ export const ModelTable = () => {
         enableColumnFiltering
         emptyMessage="Empty :("
         columnResizeMode="onChange"
-        rows={data.data}
+        rows={data.data.data}
         columnPinState={{
           right: ['navigate'],
         }}

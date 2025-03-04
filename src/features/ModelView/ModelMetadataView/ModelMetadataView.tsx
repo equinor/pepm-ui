@@ -6,11 +6,13 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   AnalogueModelDetail,
+  deleteApiV1AnalogueModelsByAnalogueModelIdGeologicalGroupsByGeologicalGroupId,
+  deleteApiV1AnalogueModelsByAnalogueModelIdStratigraphicGroupsByStratigraphicGroupId,
   GenerateThumbnailCommand,
-  JobsService,
+  postApiV1JobsComputeThumbnailGen,
+  putApiV1AnalogueModelsById,
   UpdateAnalogueModelCommandBody,
 } from '../../../api/generated';
-import { AnalogueModelsService } from '../../../api/generated/services/AnalogueModelsService';
 import { queryClient } from '../../../auth/queryClient';
 import { GrossDepositionEnviromentGroup } from '../../../components/GrossDepositionEnviroment/GrossDepositionEnviromentGroup/GrossDepositionEnviromentGroup';
 import { OutcropAnalogueGroup } from '../../../components/OutcropAnalogue/OutcropAnalogueGroup/OutcropAnalogueGroup';
@@ -68,7 +70,7 @@ export const ModelMetadataView = ({
 
   const generateThumbnail = useMutation({
     mutationFn: (requestBody: GenerateThumbnailCommand) => {
-      return JobsService.postApiV1JobsComputeThumbnailGen(requestBody);
+      return postApiV1JobsComputeThumbnailGen({ body: requestBody });
     },
   });
 
@@ -85,15 +87,15 @@ export const ModelMetadataView = ({
   );
 
   useEffect(() => {
-    if (countryData.data?.data) setCountries(countryData.data.data);
-    if (fieldData.data?.data) setFields(fieldData.data.data);
-    if (stratColumnData.data?.data)
-      setStratigraphicColumns(stratColumnData.data.data);
-    if (stratUnitData.data?.data)
-      setStratigraphicUnits(stratUnitData.data.data);
-    if (outcropData.data?.data) setOutcrops(outcropData.data.data);
-    if (geologyStandards.data?.data)
-      setGeologicalStandards(geologyStandards.data.data);
+    if (countryData.data?.data?.data) setCountries(countryData.data.data.data);
+    if (fieldData.data?.data?.data) setFields(fieldData.data.data.data);
+    if (stratColumnData.data?.data?.data)
+      setStratigraphicColumns(stratColumnData.data.data.data);
+    if (stratUnitData.data?.data?.data)
+      setStratigraphicUnits(stratUnitData.data.data.data);
+    if (outcropData.data?.data?.data) setOutcrops(outcropData.data.data.data);
+    if (geologyStandards.data?.data?.data)
+      setGeologicalStandards(geologyStandards.data.data.data);
   }, [
     geologyStandards.data?.data,
     outcropData.data?.data,
@@ -141,7 +143,10 @@ export const ModelMetadataView = ({
       id: string;
       requestBody: UpdateAnalogueModelCommandBody;
     }) => {
-      return AnalogueModelsService.putApiV1AnalogueModels(id, requestBody);
+      return putApiV1AnalogueModelsById({
+        body: requestBody,
+        path: { id: id },
+      });
     },
   });
 
@@ -171,9 +176,13 @@ export const ModelMetadataView = ({
       analogueModelId: string;
       stratigraphicGroupId: string;
     }) => {
-      return AnalogueModelsService.deleteApiV1AnalogueModelsStratigraphicGroups(
-        analogueModelId,
-        stratigraphicGroupId,
+      return deleteApiV1AnalogueModelsByAnalogueModelIdStratigraphicGroupsByStratigraphicGroupId(
+        {
+          path: {
+            analogueModelId: analogueModelId,
+            stratigraphicGroupId: stratigraphicGroupId,
+          },
+        },
       );
     },
     onSuccess: () => {
@@ -189,9 +198,13 @@ export const ModelMetadataView = ({
       analogueModelId: string;
       geologicalGroupId: string;
     }) => {
-      return AnalogueModelsService.deleteApiV1AnalogueModelsGeologicalGroups(
-        analogueModelId,
-        geologicalGroupId,
+      return deleteApiV1AnalogueModelsByAnalogueModelIdGeologicalGroupsByGeologicalGroupId(
+        {
+          path: {
+            analogueModelId: analogueModelId,
+            geologicalGroupId: geologicalGroupId,
+          },
+        },
       );
     },
     onSuccess: () => {
@@ -211,7 +224,7 @@ export const ModelMetadataView = ({
         analogueModelId: modelIdParent,
         stratigraphicGroupId: stratigraphicGroupId,
       });
-      return res;
+      return res.request;
     }
   };
   const deleteGdeRow = async (gdeGroupId: string) => {
@@ -226,7 +239,7 @@ export const ModelMetadataView = ({
         analogueModelId: modelIdParent,
         geologicalGroupId: gdeGroupId,
       });
-      return res;
+      return res.request;
     }
   };
 

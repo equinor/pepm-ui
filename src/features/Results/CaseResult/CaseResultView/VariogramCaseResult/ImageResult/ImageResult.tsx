@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
 import {
   Button,
@@ -8,8 +9,11 @@ import {
 } from '@equinor/eds-core-react';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { getVariogramImage } from '../../../../../../api/custom/getImageById';
-import { GetVariogramResultsVariogramResultFileDto } from '../../../../../../api/generated';
+// import { getVariogramImage } from '../../../../../../api/custom/getImageById';
+import {
+  getApiV1ImagesVariogramByImageId,
+  GetVariogramResultsVariogramResultFileDto,
+} from '../../../../../../api/generated';
 import * as Styled from './ImageResult.styled';
 
 export const ImageResult = ({
@@ -34,7 +38,10 @@ export const ImageResult = ({
 
   const loadedVariogramSlicesImage = useQuery({
     queryKey: ['case-image', variogramSlicesImageId],
-    queryFn: () => getVariogramImage(variogramSlicesImageId as string),
+    queryFn: () =>
+      getApiV1ImagesVariogramByImageId({
+        path: { imageId: variogramSlicesImageId as string },
+      }),
     enabled: !!variogramSlicesImageId,
   });
 
@@ -45,7 +52,10 @@ export const ImageResult = ({
 
   const loadedSphericalImage = useQuery({
     queryKey: ['case-image', sphericalImageId],
-    queryFn: () => getVariogramImage(sphericalImageId as string),
+    queryFn: () =>
+      getApiV1ImagesVariogramByImageId({
+        path: { imageId: sphericalImageId as string },
+      }),
     enabled: !!sphericalImageId,
   });
 
@@ -54,7 +64,10 @@ export const ImageResult = ({
   const gaussianImageId = gaussianImage && gaussianImage.variogramResultFileId;
   const loadedGaussianImage = useQuery({
     queryKey: ['case-image', gaussianImageId],
-    queryFn: () => getVariogramImage(gaussianImageId as string),
+    queryFn: () =>
+      getApiV1ImagesVariogramByImageId({
+        path: { imageId: gaussianImageId as string },
+      }),
     enabled: !!gaussianImageId,
   });
 
@@ -65,7 +78,10 @@ export const ImageResult = ({
     generalExponentialImage && generalExponentialImage.variogramResultFileId;
   const loadedGeneralExponentialImage = useQuery({
     queryKey: ['case-image', generalExponentialImageId],
-    queryFn: () => getVariogramImage(generalExponentialImageId as string),
+    queryFn: () =>
+      getApiV1ImagesVariogramByImageId({
+        path: { imageId: generalExponentialImageId as string },
+      }),
     enabled: !!generalExponentialImageId,
   });
 
@@ -76,7 +92,10 @@ export const ImageResult = ({
     exponentialImage && exponentialImage.variogramResultFileId;
   const loadedExponentialImage = useQuery({
     queryKey: ['case-image', exponentialImageId],
-    queryFn: () => getVariogramImage(exponentialImageId as string),
+    queryFn: () =>
+      getApiV1ImagesVariogramByImageId({
+        path: { imageId: exponentialImageId as string },
+      }),
     enabled: !!exponentialImageId,
   });
 
@@ -111,8 +130,10 @@ export const ImageResult = ({
                       className="image"
                       alt="Variogram x/y/z slice"
                       src={
-                        loadedVariogramSlicesImage.data
-                          ? loadedVariogramSlicesImage.data
+                        loadedVariogramSlicesImage.data.data instanceof Blob
+                          ? URL.createObjectURL(
+                              loadedVariogramSlicesImage.data.data,
+                            )
                           : ''
                       }
                     />
@@ -140,8 +161,10 @@ export const ImageResult = ({
                           className="image"
                           alt="Spherical variogram (empirical and fitted)"
                           src={
-                            loadedSphericalImage.data
-                              ? loadedSphericalImage.data
+                            loadedSphericalImage.data.data instanceof Blob
+                              ? URL.createObjectURL(
+                                  loadedSphericalImage.data.data,
+                                )
                               : ''
                           }
                         />
@@ -180,8 +203,10 @@ export const ImageResult = ({
                           className="image"
                           alt="Gaussian variogram (empirical and fitted)"
                           src={
-                            loadedGaussianImage.data
-                              ? loadedGaussianImage.data
+                            loadedGaussianImage.data.data instanceof Blob
+                              ? URL.createObjectURL(
+                                  loadedGaussianImage.data.data,
+                                )
                               : ''
                           }
                         />
@@ -222,8 +247,11 @@ export const ImageResult = ({
                           className="image"
                           alt="General Exponential variogram (empirical and fitted)"
                           src={
-                            loadedGeneralExponentialImage.data
-                              ? loadedGeneralExponentialImage.data
+                            loadedGeneralExponentialImage.data.data instanceof
+                            Blob
+                              ? URL.createObjectURL(
+                                  loadedGeneralExponentialImage.data.data,
+                                )
                               : ''
                           }
                         />
@@ -263,8 +291,10 @@ export const ImageResult = ({
                           className="image"
                           alt="Exponential variogram (empirical and fitted)"
                           src={
-                            loadedExponentialImage.data
-                              ? loadedExponentialImage.data
+                            loadedExponentialImage.data.data instanceof Blob
+                              ? URL.createObjectURL(
+                                  loadedExponentialImage.data.data,
+                                )
                               : ''
                           }
                         />

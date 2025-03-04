@@ -25,7 +25,7 @@ export const useCaseParameters = (
   const [selectedVariogramModels, setVariogramModels] =
     useState<ListComputeSettingsModelDto[]>();
 
-  const variogramSettings = allSettings!.variogramComputeSettings!;
+  const variogramSettings = allSettings?.variogramComputeSettings;
   const IndicatorSettings =
     variogramSettings &&
     variogramSettings.filter(
@@ -43,7 +43,7 @@ export const useCaseParameters = (
     );
 
   const filterSettings = (
-    setting: ListComputeSettingsModelDto[] | undefined,
+    setting: ListComputeSettingsModelDto[] | undefined | null,
     inputValueType: string,
   ) => {
     return setting?.filter((value) => value.inputValueType === inputValueType);
@@ -152,6 +152,7 @@ export const useCaseParameters = (
                   s.name,
               ) ===
               Md5.hashStr(
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 i.computeMethod! +
                   i.computeType +
                   i.inputValueType +

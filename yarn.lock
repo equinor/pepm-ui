@@ -1481,6 +1481,11 @@
   dependencies:
     tslib "^2.4.0"
 
+"@hey-api/client-axios@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@hey-api/client-axios/-/client-axios-0.6.1.tgz#d67e08c00cde66816668d35edfe0c634f5608c81"
+  integrity sha512-1rvO7L5l4fHCqJJlvr1bOFWR1XcjGgdPnqzTODRuOHdrighyCjt9lP2MR7wVQbGO+EjYM0qNIs5E1qxt12rwqA==
+
 "@hey-api/client-fetch@^0.8.1":
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/@hey-api/client-fetch/-/client-fetch-0.8.1.tgz#4c52b96e44f96e31c620e2a05b772cea84e775a0"

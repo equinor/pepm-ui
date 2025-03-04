@@ -1,19 +1,17 @@
 import axios from 'axios';
-import { OpenAPI } from '../generated';
+import { apiConfig } from '../../auth/authConfig';
+import { client } from '../generated/client.gen';
 
 export const getAnalogueModelImage = async (
   analogueModelId: string,
   imageId: string,
 ): Promise<string> => {
-  const token = OpenAPI.TOKEN; // replace with your bearer token
-  const base = OpenAPI.BASE;
-
   const response = await axios.get(
-    `/api/analogue-models/${analogueModelId}/images/${imageId}`,
+    `/api/v1/analogue-models/${analogueModelId}/images/${imageId}`,
     {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${client.getConfig().auth}` },
       responseType: 'blob', // response type of blob to handle images
-      baseURL: base,
+      baseURL: apiConfig.baseUrl,
     },
   );
 

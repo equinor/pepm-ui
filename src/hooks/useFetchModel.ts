@@ -1,10 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { AnalogueModelsService } from '../api/generated/services/AnalogueModelsService';
-
 import { useMsal } from '@azure/msal-react';
 import { useParams } from 'react-router-dom';
 import { useAccessToken } from './useAccessToken';
 import { analogueModelDefault, usePepmContextStore } from './GlobalState';
+import { getApiV1AnalogueModelsById } from '../api/generated';
 
 export const useFetchModel = (id?: string) => {
   const { analogueModel } = usePepmContextStore();
@@ -13,10 +12,16 @@ export const useFetchModel = (id?: string) => {
   const token = useAccessToken(instance, accounts[0]);
 
   const ID = id ? id : (modelId as string);
-
   const query = useQuery({
     queryKey: ['analogue-model', ID],
-    queryFn: () => AnalogueModelsService.getApiV1AnalogueModels1(ID),
+    queryFn: () =>
+      getApiV1AnalogueModelsById({
+        path: { id: ID },
+        query: {
+          expand:
+            'fileuploads, stratigraphicgroups, modelareas, geologicalgroups, outcrops, inifile, computecases',
+        },
+      }),
     enabled: !!token && analogueModel === analogueModelDefault,
   });
 

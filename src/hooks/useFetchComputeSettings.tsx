@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMsal } from '@azure/msal-react';
 import { useAccessToken } from './useAccessToken';
-import { ComputeSettingsService } from '../api/generated';
+import { getApiV1ByAnalogueModelIdComputeSettings } from '../api/generated';
 import { useParams } from 'react-router-dom';
 
 export const useFetchComputeSettings = () => {
@@ -12,7 +12,9 @@ export const useFetchComputeSettings = () => {
   const query = useQuery({
     queryKey: ['compute-settings', modelId],
     queryFn: () =>
-      ComputeSettingsService.getApiV1ComputeSettings(modelId as string),
+      getApiV1ByAnalogueModelIdComputeSettings({
+        path: { analogueModelId: modelId as string },
+      }),
     enabled: !!token,
   });
 

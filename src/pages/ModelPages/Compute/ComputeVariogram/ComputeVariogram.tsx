@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import {
   ComputeMethod,
   EstimateVariogramCommand,
-  JobsService,
+  postApiV1JobsComputeVariogramEstimations,
 } from '../../../../api/generated';
 import { queryClient } from '../../../../auth/queryClient';
 import { CaseGroup } from '../../../../features/Compute/Components/CaseGroup/CaseGroup';
@@ -73,12 +73,12 @@ export const ComputeVariogram = () => {
   };
 
   const computeVariogram = useMutation({
-    mutationFn: JobsService.postApiV1JobsComputeVariogramEstimations,
+    mutationFn: (requestBody: EstimateVariogramCommand) =>
+      postApiV1JobsComputeVariogramEstimations({ body: requestBody }),
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ['model-cases'] });
     },
   });
-
   const runComputeVariogram = async (computeCaseId: string) => {
     if (!modelId) return;
     const requestBody: EstimateVariogramCommand = {
@@ -88,7 +88,7 @@ export const ComputeVariogram = () => {
 
     const res = await computeVariogram.mutateAsync(requestBody);
 
-    if (res.success) {
+    if (res.data?.success) {
       setAlertMessage('Started computing case');
     }
   };

@@ -1,9 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { ResultsService } from '../api/generated/services/ResultsService';
-
 import { useMsal } from '@azure/msal-react';
 import { useParams } from 'react-router-dom';
 import { useAccessToken } from './useAccessToken';
+import { getApiV1AnalogueModelsByIdResultsObject } from '../api/generated';
 
 export const useFetchObjectResults = () => {
   const { modelId } = useParams();
@@ -13,7 +12,9 @@ export const useFetchObjectResults = () => {
   const query = useQuery({
     queryKey: ['object-results', modelId],
     queryFn: () =>
-      ResultsService.getApiV1AnalogueModelsResultsObject(modelId as string),
+      getApiV1AnalogueModelsByIdResultsObject({
+        path: { id: modelId as string },
+      }),
     enabled: !!token,
   });
 

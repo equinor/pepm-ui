@@ -5,19 +5,22 @@ import { Snackbar, Typography } from '@equinor/eds-core-react';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import {
-  AnalogueModelsService,
   ConvertAnalogueModelCommand,
   CreateAnalogueModelCommand,
-  JobsService,
+  deleteApiV1AnalogueModelsById,
+  postApiV1AnalogueModels,
+  postApiV1JobsComputeModelConversions,
+  postApiV1UploadsModelsByIdIniFile,
+  postApiV1UploadsModelsChunks,
+  postApiV1UploadsModelsComplete,
+  postApiV1UploadsModelsManifest,
   UploadFileType,
-  UploadsService,
 } from '../../api/generated';
 import { queryClient } from '../../auth/queryClient';
 import { HandleModelComponent } from '../../features/HandleModel/HandleModelComponent/HandleModelComponent';
 import { SidePane } from '../../features/HandleModel/SidePane/SidePane';
 import { ModelMetadataView } from '../../features/ModelView/ModelMetadataView/ModelMetadataView';
 import * as Styled from './AddModel.styled';
-import { postIniFile } from '../../api/custom/postIniFile';
 import {
   analogueModelDefault,
   usePepmContextStore,
@@ -47,22 +50,35 @@ export const AddModel = () => {
   const [uploadStatus, setUploadStatus] = useState<string>();
 
   const createModel = useMutation({
-    mutationFn: AnalogueModelsService.postApiV1AnalogueModels,
+    mutationFn: (requestBody: CreateAnalogueModelCommand) =>
+      postApiV1AnalogueModels({ body: requestBody }),
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ['analogue-models'] });
     },
   });
 
   const modelManifest = useMutation({
-    mutationFn: UploadsService.postApiV1UploadsModelsManifest,
+    mutationFn: (requestBody: {
+      ModelId: string;
+      FileSize: bigint;
+      FileName: string;
+      FileExtension: string;
+      FileType: UploadFileType;
+    }) => postApiV1UploadsModelsManifest({ body: requestBody }),
   });
 
   const chunkUpload = useMutation({
-    mutationFn: UploadsService.postApiV1UploadsModelsChunks,
+    mutationFn: (requestBody: {
+      ModelId: string;
+      UploadId: string;
+      Blob: Blob | File;
+      ChunkNumber: number;
+    }) => postApiV1UploadsModelsChunks({ body: requestBody }),
   });
 
   const uploadFinished = useMutation({
-    mutationFn: UploadsService.postApiV1UploadsModelsComplete,
+    mutationFn: (requestBody: { ModelId: string; UploadId: string }) =>
+      postApiV1UploadsModelsComplete({ body: requestBody }),
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ['analogue-models'] });
     },
@@ -70,25 +86,26 @@ export const AddModel = () => {
 
   const convertModelFile = useMutation({
     mutationFn: (requestBody: ConvertAnalogueModelCommand) => {
-      return JobsService.postApiV1JobsComputeModelConversions(requestBody);
+      return postApiV1JobsComputeModelConversions({ body: requestBody });
     },
   });
 
   const uploadIniFile = useMutation({
-    mutationFn: ({
-      id,
-      requestBody,
-    }: {
-      id: string;
-      requestBody: FormData;
-    }) => {
-      return postIniFile(id, requestBody);
+    mutationFn: ({ id, requestBody }: { id: string; requestBody: File }) => {
+      return postApiV1UploadsModelsByIdIniFile({
+        body: {
+          File: requestBody,
+        },
+        path: {
+          id: id,
+        },
+      });
     },
   });
 
   const deleteModel = useMutation({
     mutationFn: ({ id }: { id: string }) => {
-      return AnalogueModelsService.deleteApiV1AnalogueModels(id);
+      return deleteApiV1AnalogueModelsById({ path: { id: id } });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['analogue-model'] });
@@ -108,10 +125,10 @@ export const AddModel = () => {
 
     const modelUpload = await createModel.mutateAsync(ModelBody);
 
-    if (createModel.error === null && modelUpload.success) {
+    if (createModel.error === null && modelUpload.data?.success) {
       setAnalogueModel({
         ...analogueModel,
-        analogueModelId: modelUpload.data.analogueModelId,
+        analogueModelId: modelUpload.data.data.analogueModelId,
       });
     }
 
@@ -125,18 +142,18 @@ export const AddModel = () => {
     const fileExtention = '.' + filenameExtention;
 
     const data = {
-      ModelId: modelUpload.data.analogueModelId,
-      FileSize: file.size,
+      ModelId: modelUpload.data?.data.analogueModelId as string,
+      FileSize: file.size as unknown as bigint,
       FileName: file.name,
       FileExtension: fileExtention,
       FileType: fileType,
     };
 
     const createManifest = await modelManifest.mutateAsync(data);
-    if (modelManifest.error === null && createManifest.success) {
-      const uploadId = createManifest.data.uploadId;
-      const recivedChunkSize = createManifest.data.fileSize;
-      const numberOfChunks = createManifest.data.numChunks;
+    if (modelManifest.error === null && createManifest.data?.success) {
+      const uploadId = createManifest.data?.data.uploadId;
+      const recivedChunkSize = Number(createManifest.data?.data.fileSize);
+      const numberOfChunks = createManifest.data?.data.numChunks;
       setUploadId(uploadId);
       setChunkSize(recivedChunkSize);
       setEndOfTheChunk(recivedChunkSize);
@@ -190,14 +207,14 @@ export const AddModel = () => {
     };
     try {
       const uploadChunks = await chunkUpload.mutateAsync(chunkData);
-      if (chunkUpload.error === null && uploadChunks.success) {
+      if (chunkUpload.error === null && uploadChunks.data?.success) {
         if (counter === chunkCount) {
           const finishBody = {
             ModelId: analogueModel.analogueModelId,
             UploadId: uploadId,
           };
           const finishedUpload = await uploadFinished.mutateAsync(finishBody);
-          if (uploadFinished.error === null && finishedUpload.success) {
+          if (uploadFinished.error === null && finishedUpload.data?.success) {
             // eslint-disable-next-line max-depth
             try {
               const convert = await convertModelFile.mutateAsync({
@@ -205,7 +222,7 @@ export const AddModel = () => {
               });
 
               // eslint-disable-next-line max-depth
-              if (convertModelFile.error === null && convert.success) {
+              if (convertModelFile.error === null && convert.data?.success) {
                 setProgress(100);
                 setUploadStatus(UploadProcess.SUCCESS);
                 setUploading(false);
@@ -239,11 +256,9 @@ export const AddModel = () => {
 
   useEffect(() => {
     const uploadIniFileAsync = async (file: File, id: string) => {
-      const data = new FormData();
-      data.append('file', file!);
       const response = await uploadIniFile.mutateAsync({
         id: id,
-        requestBody: data,
+        requestBody: file,
       });
       return response;
     };

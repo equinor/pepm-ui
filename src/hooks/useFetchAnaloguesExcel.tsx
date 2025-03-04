@@ -1,11 +1,8 @@
-import { OpenAPI } from '../api/generated';
 import axios from 'axios';
+import { apiConfig } from '../auth/authConfig';
+import { client } from '../api/generated/client.gen';
 
-export const getFetchAnaloguesExcelAxios = async (
-  exportModels: string[],
-): Promise<string> => {
-  const token = OpenAPI.TOKEN; // replace with your bearer token
-  const base = OpenAPI.BASE;
+export const getFetchAnaloguesExcelAxios = async (exportModels: string[]) => {
   let params = '';
 
   if (exportModels.length > 0) {
@@ -14,13 +11,12 @@ export const getFetchAnaloguesExcelAxios = async (
       else params += '&AnalogueModelIds=' + element;
     });
   }
-
   const response = await axios.get(
-    '/api/downloads/analogue-models-excel' + params,
+    '/api/v1/downloads/analogue-models-excel' + params,
     {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${client.getConfig().auth}` },
       responseType: 'blob', // response type of blob to handle images
-      baseURL: base,
+      baseURL: apiConfig.baseUrl,
     },
   );
 
@@ -38,6 +34,5 @@ export const getFetchAnaloguesExcelAxios = async (
     URL.revokeObjectURL(fileURL);
   }
 
-  // create an object URL for the image blob and return it
-  return URL.createObjectURL(response.data);
+  return URL.revokeObjectURL(response.data);
 };

@@ -1,6 +1,6 @@
 import { useMsal } from '@azure/msal-react';
 import { useQuery } from '@tanstack/react-query';
-import { MetadataService } from '../api/generated';
+import { getApiV1MetadataSmdaMetadataGeologyStandards } from '../api/generated';
 import { useAccessToken } from './useAccessToken';
 import { usePepmContextStore } from './GlobalState';
 
@@ -11,8 +11,7 @@ export const useFetchGrossDepData = () => {
 
   const query = useQuery({
     queryKey: ['smda-GDE'],
-    queryFn: () =>
-      MetadataService.getApiV1MetadataSmdaMetadataGeologyStandards(),
+    queryFn: () => getApiV1MetadataSmdaMetadataGeologyStandards(),
     enabled: !!token && geologyStandards.length === 0,
   });
 

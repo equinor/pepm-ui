@@ -11,7 +11,6 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import {
   AddStatigraphicGroupForm,
-  AnalogueModelsService,
   CountryDto,
   DeleteStratigraphicGroupCommandResponse,
   FieldDto,
@@ -19,6 +18,7 @@ import {
   StratUnitDto,
   // eslint-disable-next-line sort-imports
   StratigraphicGroupDto,
+  postApiV1AnalogueModelsByIdStratigraphicGroups,
 } from '../../../api/generated';
 import { queryClient } from '../../../auth/queryClient';
 import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
@@ -92,10 +92,10 @@ export const StratigrapicGroups = ({
       id: string;
       requestBody: AddStatigraphicGroupForm;
     }) => {
-      return AnalogueModelsService.postApiV1AnalogueModelsStratigraphicGroups(
-        id,
-        requestBody,
-      );
+      return postApiV1AnalogueModelsByIdStratigraphicGroups({
+        body: requestBody,
+        path: { id: id },
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['analogue-model'] });
@@ -140,9 +140,9 @@ export const StratigrapicGroups = ({
         id: id,
         requestBody: postRequestBody,
       });
-      if (rowUpload.success) {
+      if (rowUpload.data?.success) {
         handleStratColDialog();
-        addAnalogueModelStratGroup(rowUpload.data);
+        addAnalogueModelStratGroup(rowUpload.data.data);
       }
     }
   };
