@@ -19,7 +19,7 @@ export const useFetchModel = (id?: string) => {
         path: { id: ID },
         query: {
           expand:
-            'fileuploads, stratigraphicgroups, modelareas, geologicalgroups, outcrops, inifile, computecases',
+            'outcrops, stratigraphicgroups, fileuploads, modelareas, geologicalgroups, inifile, computecases',
         },
       }),
     enabled: !!token && analogueModel === analogueModelDefault,
