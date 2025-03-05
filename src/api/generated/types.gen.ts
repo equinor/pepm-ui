@@ -356,9 +356,9 @@ export type FieldDto = {
   countryId: string;
 };
 
-// export type File = {
-//   [key: string]: never;
-// };
+export type File = {
+  [key: string]: never;
+};
 
 export type FileType = 'JPG' | 'PNG' | 'CSV';
 

@@ -53,8 +53,8 @@
     "prettier:fix": "prettier . --write",
     "prepare": "husky install",
     "pre-commit": "yarn test --watchAll=false && yarn lint-staged",
-    "generate-schema:radix": "yarn openapi-ts -i https://api-pepm-dev.radix.equinor.com/swagger/v1/swagger.json -o $PWD/src/api/generated -c @hey-api/client-axios",
-    "generate-schema:local": "yarn openapi-ts -i http://localhost:5000/swagger/v1/swagger.json -o $PWD/src/api/generated -c @hey-api/client-axios"
+    "generate-schema:dev": "yarn openapi-ts -f openapi-ts.dev.config.ts",
+    "generate-schema:local": "yarn openapi-ts -f openapi-ts.local.config.ts"
   },
   "lint-staged": {
     "*.{ts,tsx}": "yarn lint --max-warnings 10"
