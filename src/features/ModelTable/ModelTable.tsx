@@ -259,12 +259,14 @@ export const ModelTable = () => {
           {
             accessorKey: 'analogueModelId',
             enableColumnFilter: false,
+            enableSorting: false,
             header: function () {
               <Styled.List>{<Checkbox></Checkbox>}</Styled.List>;
             },
             id: 'expand',
+            size: 80,
             cell: ({ row }) => (
-              <Styled.List>
+              <>
                 {
                   <Checkbox
                     checked={
@@ -278,7 +280,7 @@ export const ModelTable = () => {
                     }
                   ></Checkbox>
                 }
-              </Styled.List>
+              </>
             ),
           },
           { accessorKey: 'name', header: 'Model name', id: 'name', size: 200 },
