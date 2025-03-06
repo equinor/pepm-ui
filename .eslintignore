@@ -1,4 +1,3 @@
-src/models/schema.d.ts
 src/api/generated/client.gen.ts
 src/api/generated/sdk.gen.ts
 src/api/generated/schema.gen.ts
