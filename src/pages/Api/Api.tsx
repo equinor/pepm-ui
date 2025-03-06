@@ -1,6 +1,7 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { external_link as externalLink } from '@equinor/eds-icons';
 import { InfoPageComponent } from '../../components/InfoPageComponent/InfoPageComponent';
+import { apiConfig } from '../../auth/authConfig';
 
 export const Api = () => {
   return (
@@ -9,8 +10,7 @@ export const Api = () => {
         For API documentation and interactive testing, please visit our Swagger
         UI interface.
       </Typography>
-      {/* TODO Add a link to Swagger */}
-      <Typography link href="">
+      <Typography link href={`${apiConfig.baseUrl}/swagger/index.html`}>
         PEPM API reference
         <Icon data={externalLink} title={'Link to Swagger'} size={18} />
       </Typography>
