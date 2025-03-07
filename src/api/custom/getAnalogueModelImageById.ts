@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { apiConfig } from '../../auth/authConfig';
 import { client } from '../generated/client.gen';
 
 export const getAnalogueModelImage = async (
@@ -11,7 +10,7 @@ export const getAnalogueModelImage = async (
     {
       headers: { Authorization: `Bearer ${client.getConfig().auth}` },
       responseType: 'blob', // response type of blob to handle images
-      baseURL: apiConfig.baseUrl,
+      baseURL: client.getConfig().baseURL,
     },
   );
 

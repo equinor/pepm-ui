@@ -1,6 +1,5 @@
 import { AnalogueModelDetail, UploadFileType } from '../api/generated';
 import { client } from '../api/generated/client.gen';
-import { apiConfig } from '../auth/authConfig';
 import axios from 'axios';
 
 export const GetFetchIniFileAxios = async (
@@ -11,7 +10,7 @@ export const GetFetchIniFileAxios = async (
     {
       headers: { Authorization: `Bearer ${client.getConfig().auth}` },
       responseType: 'blob', // response type of blob to handle images
-      baseURL: apiConfig.baseUrl,
+      baseURL: client.getConfig().baseURL,
     },
   );
 
@@ -43,7 +42,7 @@ export const GetFetchNcFileAxios = async (
     {
       headers: { Authorization: `Bearer ${client.getConfig().auth}` },
       responseType: 'blob', // response type of blob to handle images
-      baseURL: apiConfig.baseUrl,
+      baseURL: client.getConfig().baseURL,
     },
   );
 
@@ -75,7 +74,7 @@ export const GetFetchResqmlFileAxios = async (
     {
       headers: { Authorization: `Bearer ${client.getConfig().auth}` },
       responseType: 'blob', // response type of blob to handle images
-      baseURL: apiConfig.baseUrl,
+      baseURL: client.getConfig().baseURL,
     },
   );
 

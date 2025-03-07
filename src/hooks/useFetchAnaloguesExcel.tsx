@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { apiConfig } from '../auth/authConfig';
 import { client } from '../api/generated/client.gen';
 
 export const getFetchAnaloguesExcelAxios = async (exportModels: string[]) => {
@@ -16,7 +15,7 @@ export const getFetchAnaloguesExcelAxios = async (exportModels: string[]) => {
     {
       headers: { Authorization: `Bearer ${client.getConfig().auth}` },
       responseType: 'blob', // response type of blob to handle images
-      baseURL: apiConfig.baseUrl,
+      baseURL: client.getConfig().baseURL,
     },
   );
 

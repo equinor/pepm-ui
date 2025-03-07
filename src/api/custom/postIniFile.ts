@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { UploadIniFileCommandResponse } from '../generated';
 import { client } from '../generated/client.gen';
-import { apiConfig } from '../../auth/authConfig';
 
 export const postIniFile = async (
   modelId: string,
@@ -15,7 +14,7 @@ export const postIniFile = async (
         Authorization: `Bearer ${client.getConfig().auth}`,
         'Content-Type': 'multipart/form-data',
       },
-      baseURL: apiConfig.baseUrl,
+      baseURL: client.getConfig().baseURL,
     },
   );
 

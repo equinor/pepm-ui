@@ -9,7 +9,6 @@ import {
 } from '@equinor/eds-core-react';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-// import { getVariogramImage } from '../../../../../../api/custom/getImageById';
 import {
   getApiV1ImagesVariogramByImageId,
   GetVariogramResultsVariogramResultFileDto,
