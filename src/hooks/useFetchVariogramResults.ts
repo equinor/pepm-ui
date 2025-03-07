@@ -1,9 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { ResultsService } from '../api/generated/services/ResultsService';
-
 import { useMsal } from '@azure/msal-react';
 import { useParams } from 'react-router-dom';
 import { useAccessToken } from './useAccessToken';
+import { getApiV1AnalogueModelsByIdResultsVariogram } from '../api/generated';
 
 export const useFetchVariogramResults = () => {
   const { modelId } = useParams();
@@ -13,7 +12,9 @@ export const useFetchVariogramResults = () => {
   const query = useQuery({
     queryKey: ['variogram-results', modelId],
     queryFn: () =>
-      ResultsService.getApiV1AnalogueModelsResultsVariogram(modelId as string),
+      getApiV1AnalogueModelsByIdResultsVariogram({
+        path: { id: modelId as string },
+      }),
     enabled: !!token,
   });
 

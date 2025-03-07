@@ -1,7 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 import {
   AddAnalogueModelAreaCommandForm,
-  AnalogueModelsService,
+  postApiV1AnalogueModelsByIdModelAreas,
+  putApiV1AnalogueModelsByIdModelAreasByModelAreaId,
   UpdateAnalogueModelAreaCommandForm,
 } from '../api/generated';
 import { queryClient } from '../auth/queryClient';
@@ -15,10 +16,10 @@ export const useMutateAreaCoordinates = () => {
       id: string;
       requestBody: AddAnalogueModelAreaCommandForm;
     }) => {
-      return AnalogueModelsService.postApiV1AnalogueModelsModelAreas(
-        id,
-        requestBody,
-      );
+      return postApiV1AnalogueModelsByIdModelAreas({
+        body: requestBody,
+        path: { id: id },
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['analogue-model'] });
@@ -35,11 +36,13 @@ export const useMutateAreaCoordinates = () => {
       modelAreaId: string;
       requestBody: UpdateAnalogueModelAreaCommandForm;
     }) => {
-      return AnalogueModelsService.putApiV1AnalogueModelsModelAreas(
-        id,
-        modelAreaId,
-        requestBody,
-      );
+      return putApiV1AnalogueModelsByIdModelAreasByModelAreaId({
+        body: requestBody,
+        path: {
+          id: id,
+          modelAreaId: modelAreaId,
+        },
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['analogue-model'] });

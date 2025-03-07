@@ -9,9 +9,9 @@ import {
   ComputeType,
   CreateComputeCaseCommandResponse,
   InputValueType,
-  JobsService,
   ListComputeCasesByAnalogueModelIdQueryResponse,
   ListComputeSettingsModelDto,
+  postApiV1JobsCancel,
   PostCancelJobCommand,
 } from '../../../../../api/generated';
 import { CaseButtons } from '../CaseButtons/CaseButtons';
@@ -126,7 +126,8 @@ export const CaseRow = ({
   );
 
   const cancelJob = useMutation({
-    mutationFn: JobsService.postApiV1JobsCancel,
+    mutationFn: (requestBody: PostCancelJobCommand) =>
+      postApiV1JobsCancel({ body: requestBody }),
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ['model-cases'] });
     },
@@ -141,7 +142,7 @@ export const CaseRow = ({
 
     const res = await cancelJob.mutateAsync(requestBody);
 
-    if (res.success) {
+    if (res.data?.success) {
       setAlertMessage('Canceled computing case');
     }
   };

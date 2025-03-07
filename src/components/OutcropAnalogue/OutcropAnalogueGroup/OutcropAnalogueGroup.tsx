@@ -79,9 +79,9 @@ export const OutcropAnalogueGroup = ({
         id: id,
         requestBody: postRequestBody,
       });
-      if (rowUpload.success) {
+      if (rowUpload.data?.success) {
         handleOutcropDialog();
-        addAnalogueModelOutcrop(rowUpload.data);
+        addAnalogueModelOutcrop(rowUpload.data.data);
       }
     }
   };
@@ -92,7 +92,7 @@ export const OutcropAnalogueGroup = ({
       id: id,
       outcropId: stratigraphicGroupId,
     });
-    if (res.success) deleteAnalogueModelOutcrop(stratigraphicGroupId);
+    if (res.data?.success) deleteAnalogueModelOutcrop(stratigraphicGroupId);
     return res;
   };
 

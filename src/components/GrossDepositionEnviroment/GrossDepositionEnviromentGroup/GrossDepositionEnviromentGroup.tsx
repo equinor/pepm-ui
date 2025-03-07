@@ -11,9 +11,9 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import {
   AddGeologicalGroupForm,
-  AnalogueModelsService,
   DeleteGeologicalGroupCommandResponse,
   GeologicalStandardDto,
+  postApiV1AnalogueModelsByIdGeologicalGroups,
 } from '../../../api/generated';
 import { queryClient } from '../../../auth/queryClient';
 import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
@@ -76,10 +76,10 @@ export const GrossDepositionEnviromentGroup = ({
       id: string;
       requestBody: AddGeologicalGroupForm;
     }) => {
-      return AnalogueModelsService.postApiV1AnalogueModelsGeologicalGroups(
-        id,
-        requestBody,
-      );
+      return postApiV1AnalogueModelsByIdGeologicalGroups({
+        body: requestBody,
+        path: { id: id },
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['analogue-model'] });
@@ -117,8 +117,8 @@ export const GrossDepositionEnviromentGroup = ({
         id: id,
         requestBody: postRequestBody,
       });
-      if (rowUpload.success) {
-        addAnalogueModelGde(rowUpload.data);
+      if (rowUpload.data?.success) {
+        addAnalogueModelGde(rowUpload.data.data);
         setGdeObject(defaultGdeData);
         handleGdeDialog();
       }

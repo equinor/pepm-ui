@@ -46,6 +46,7 @@ export const CaseSettingSelect = ({
         label={label}
         disabled={disabled}
         options={options && options.length > 0 ? options : []}
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         optionLabel={(option) => option.name!}
         selectedOptions={selectedValue}
         onOptionsChange={onSelectChange}

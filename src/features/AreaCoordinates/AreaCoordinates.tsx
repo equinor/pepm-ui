@@ -213,8 +213,8 @@ export const AreaCoordinates = ({
             requestBody: postRequestBody,
           });
 
-        if (coordinateRes.success) {
-          addAnalogueModelArea(coordinateRes.data);
+        if (coordinateRes.data?.success) {
+          addAnalogueModelArea(coordinateRes.data.data);
           const res = await clearAndUpdate();
           if (res === 'success') setSaveAlert(true);
         }
@@ -230,8 +230,8 @@ export const AreaCoordinates = ({
           modelAreaId: areaCoordinate.modelAreaId,
           requestBody: { coordinates: areaCoordinate.coordinates },
         });
-      if (coordinateRes.success) {
-        updateAnalogueModelArea(coordinateRes.data);
+      if (coordinateRes.data?.success) {
+        updateAnalogueModelArea(coordinateRes.data.data);
         const res = await clearAndUpdate();
         if (res === 'success') setSaveAlert(true);
       }

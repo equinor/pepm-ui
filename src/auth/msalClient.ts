@@ -4,7 +4,8 @@ import {
   EventType,
   PublicClientApplication,
 } from '@azure/msal-browser';
-import { msalConfig } from './authConfig';
+import { apiConfig, loginRequest, msalConfig } from './authConfig';
+import { client } from '../api/generated/client.gen';
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -13,6 +14,16 @@ const msalInstance = new PublicClientApplication(msalConfig);
 const accounts = msalInstance.getAllAccounts();
 if (accounts.length > 0) {
   msalInstance.setActiveAccount(accounts[0]);
+  await msalInstance.initialize();
+  await msalInstance.handleRedirectPromise();
+
+  const token = await msalInstance.acquireTokenSilent(loginRequest);
+  if (token) {
+    client.setConfig({
+      baseURL: apiConfig.baseUrl,
+      auth: token.accessToken,
+    });
+  }
 }
 
 // Set active account
@@ -21,6 +32,13 @@ msalInstance.addEventCallback((event: EventMessage) => {
     const payload = event.payload as AuthenticationResult;
     const account = payload.account;
     msalInstance.setActiveAccount(account);
+
+    msalInstance.acquireTokenSilent(loginRequest).then((token) => {
+      client.setConfig({
+        baseURL: apiConfig.baseUrl,
+        auth: token.accessToken,
+      });
+    });
   }
 });
 

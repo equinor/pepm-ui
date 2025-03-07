@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { useMsal } from '@azure/msal-react';
 import { useParams } from 'react-router-dom';
-import { AnalogueModelComputeCasesService } from '../api/generated';
+import { getApiV1AnalogueModelsByIdComputeCases } from '../api/generated';
 import { useAccessToken } from './useAccessToken';
 import { usePepmContextStore } from './GlobalState';
 
@@ -15,15 +15,15 @@ export const useFetchCases = () => {
   const query = useQuery({
     queryKey: ['model-cases', modelId],
     queryFn: () =>
-      AnalogueModelComputeCasesService.getApiV1AnalogueModelsComputeCases(
-        modelId as string,
-      ),
+      getApiV1AnalogueModelsByIdComputeCases({
+        path: { id: modelId as string },
+      }),
     enabled: !!token,
     refetchInterval: 30000,
   });
 
   if (query.data?.data && computeCases.length !== 0)
-    setComputeCases(query.data.data);
+    setComputeCases(query.data.data.data);
 
   return query;
 };

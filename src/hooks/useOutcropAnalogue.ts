@@ -1,7 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 import {
   AddAnalogueModelOutcropForm,
-  AnalogueModelsService,
+  deleteApiV1AnalogueModelsByIdOutcropsByOutcropId,
+  postApiV1AnalogueModelsByIdOutcrops,
 } from '../api/generated';
 import { queryClient } from '../auth/queryClient';
 
@@ -14,10 +15,10 @@ export const useOutcropAnalouge = () => {
       id: string;
       requestBody: AddAnalogueModelOutcropForm;
     }) => {
-      return AnalogueModelsService.postApiV1AnalogueModelsOutcrops(
-        id,
-        requestBody,
-      );
+      return postApiV1AnalogueModelsByIdOutcrops({
+        body: requestBody,
+        path: { id: id },
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['analogue-model'] });
@@ -26,10 +27,9 @@ export const useOutcropAnalouge = () => {
 
   const deleteOutcropAnalogue = useMutation({
     mutationFn: ({ id, outcropId }: { id: string; outcropId: string }) => {
-      return AnalogueModelsService.deleteApiV1AnalogueModelsOutcrops(
-        id,
-        outcropId,
-      );
+      return deleteApiV1AnalogueModelsByIdOutcropsByOutcropId({
+        path: { id: id, outcropId: outcropId },
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['analogue-model'] });

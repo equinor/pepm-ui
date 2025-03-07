@@ -10,11 +10,11 @@ import {
 } from '@equinor/eds-core-react';
 import { bar_chart as barChart } from '@equinor/eds-icons';
 import { ChangeEvent, useState } from 'react';
-import { GetObjectResultsDto } from '../../../../../../api/generated/models/GetObjectResultsDto';
 import { ResultPlotDialog } from '../ResultPlotDialog/ResultPlotDialog';
 import * as Styled from './ResultArea.styled';
 import { ResultCaseMetadata } from './ResultCaseMetadata/ResultCaseMetadata';
 import {
+  GetObjectResultsDto,
   ResultStatus,
   UpdateObjectResultCommandBody,
 } from '../../../../../../api/generated';
@@ -44,7 +44,7 @@ export const ResultArea = ({
       requestBody: requestBody,
     });
 
-    if (objectUpdate.success) {
+    if (objectUpdate.data?.success) {
       updateObjectResult({ ...data, status: status });
     }
   };

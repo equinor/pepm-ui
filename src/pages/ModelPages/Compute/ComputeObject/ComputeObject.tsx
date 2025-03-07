@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import {
   ComputeMethod,
   EstimateObjectCommand,
-  JobsService,
+  postApiV1JobsComputeObjectEstimations,
 } from '../../../../api/generated';
 import { queryClient } from '../../../../auth/queryClient';
 import { CaseGroup } from '../../../../features/Compute/Components/CaseGroup/CaseGroup';
@@ -37,7 +37,8 @@ export const ComputeObject = () => {
   const { computeCases } = usePepmContextStore();
 
   const computeObject = useMutation({
-    mutationFn: JobsService.postApiV1JobsComputeObjectEstimations,
+    mutationFn: (requestBody: EstimateObjectCommand) =>
+      postApiV1JobsComputeObjectEstimations({ body: requestBody }),
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ['model-cases'] });
     },
@@ -52,7 +53,7 @@ export const ComputeObject = () => {
 
     const res = await computeObject.mutateAsync(requestBody);
 
-    if (res.success) {
+    if (res.data?.success) {
       setAlertMessage('Started computing case');
     }
   };

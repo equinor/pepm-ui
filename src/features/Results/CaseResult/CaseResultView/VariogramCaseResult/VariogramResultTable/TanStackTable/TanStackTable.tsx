@@ -164,7 +164,7 @@ export const TanStackTable = ({
       requestBody: requestBody,
     });
 
-    if (variogramUpdate.success) {
+    if (variogramUpdate.data?.success) {
       variogramResults.forEach((elem) => {
         if (
           elem.computeCaseId === variogram.computeCaseId &&

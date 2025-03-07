@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { ModelAreaTypeService } from '../api/generated';
+import { getApiV1Modelareatype } from '../api/generated';
 import { useMsal } from '@azure/msal-react';
 import { useAccessToken } from './useAccessToken';
 
@@ -9,7 +9,7 @@ export const useFetchModelAreas = () => {
 
   const query = useQuery({
     queryKey: ['model-area'],
-    queryFn: () => ModelAreaTypeService.getApiV1Modelareatype(),
+    queryFn: () => getApiV1Modelareatype(),
     enabled: !!token,
   });
 

@@ -1,8 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import { Table } from '@equinor/eds-core-react';
-
-import { GetObjectResultsDto } from '../../../../../../api/generated/models/GetObjectResultsDto';
 import * as Styled from './ChannelResultTable.styled';
+import { GetObjectResultsDto } from '../../../../../../api/generated';
 
 const NumberOfDecimals = 2;
 

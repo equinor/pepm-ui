@@ -2,7 +2,7 @@ import { Button, Dialog, Typography } from '@equinor/eds-core-react';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { AnalogueModelsService } from '../../../api/generated';
+import { deleteApiV1AnalogueModelsById } from '../../../api/generated';
 import { queryClient } from '../../../auth/queryClient';
 import * as Styled from './DeleteModel.styled';
 import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
@@ -16,7 +16,7 @@ export const DeleteModel = () => {
 
   const deleteModel = useMutation({
     mutationFn: ({ id }: { id: string }) => {
-      return AnalogueModelsService.deleteApiV1AnalogueModels(id);
+      return deleteApiV1AnalogueModelsById({ path: { id: id } });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['analogue-model'] });
