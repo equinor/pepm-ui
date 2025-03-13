@@ -22,7 +22,7 @@ export const useFetchCases = () => {
     refetchInterval: 30000,
   });
 
-  if (query.data?.data && computeCases.length !== 0)
+  if (query.data?.data?.data && computeCases.length !== 0)
     setComputeCases(query.data.data.data);
 
   return query;

@@ -65,14 +65,14 @@ export const Model = () => {
 
   useEffect(() => {
     if (image.data) setAnalogueModelImage(image.data);
-    if (imageMetadata.data?.data)
+    if (imageMetadata.data?.data?.data)
       setAnalogueModelImageMetadata(imageMetadata.data.data.data);
-    if (cases.data?.data) setComputeCases(cases.data.data.data);
-    if (modelArea.data?.data) setModelAreaTypes(modelArea.data.data.data);
-    if (outcropData.data?.data) setOutcrops(outcropData.data.data.data);
-    if (geologyStandards.data?.data)
+    if (cases.data?.data?.data) setComputeCases(cases.data.data.data);
+    if (modelArea.data?.data?.data) setModelAreaTypes(modelArea.data.data.data);
+    if (outcropData.data?.data?.data) setOutcrops(outcropData.data.data.data);
+    if (geologyStandards.data?.data?.data)
       setGeologicalStandards(geologyStandards.data.data.data);
-    if (computeSettings.data?.data)
+    if (computeSettings.data?.data?.data)
       setComputeSettings(computeSettings.data.data.data);
   }, [
     cases.data?.data,
