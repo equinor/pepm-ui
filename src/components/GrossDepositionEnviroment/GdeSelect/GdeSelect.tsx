@@ -7,7 +7,7 @@ import {
   GDEErrorType,
   GdeType,
 } from '../GrossDepositionEnviromentGroup/GrossDepositionEnviromentGroup';
-import { usePepmContextStore } from '../../../hooks/GlobalState';
+import { usePepmContextStore } from '../../../stores/GlobalStore';
 
 export const GdeSelect = ({
   gdeObject,

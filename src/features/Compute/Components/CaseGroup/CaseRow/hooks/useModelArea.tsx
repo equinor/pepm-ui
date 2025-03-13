@@ -4,7 +4,7 @@ import { ComputeCaseDto, ModelAreaDto } from '../../../../../../api/generated';
 import {
   analogueModelDefault,
   usePepmContextStore,
-} from '../../../../../../hooks/GlobalState';
+} from '../../../../../../stores/GlobalStore';
 
 export const useModelArea = (allCasesList: ComputeCaseDto[]) => {
   const [selectedModelArea, setModelArea] = useState<ModelAreaDto[]>();

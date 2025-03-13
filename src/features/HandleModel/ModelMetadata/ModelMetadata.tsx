@@ -1,9 +1,9 @@
 /* eslint-disable max-lines-per-function */
 import { Label } from '@equinor/eds-core-react';
-import { ErrorType } from '../HandleModelComponent/HandleModelComponent';
 
 import { AnalogueModelDetail } from '../../../api/generated';
 import * as Styled from './ModelMetadata.styled';
+import { ErrorType } from '../../../pages/AddModel/stores/AddModelStore';
 
 export const ModelMetadata = ({
   errors,

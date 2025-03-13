@@ -9,7 +9,7 @@ import * as Styled from '../AreaCoordinates.styled';
 import {
   analogueModelDefault,
   usePepmContextStore,
-} from '../../../hooks/GlobalState';
+} from '../../../stores/GlobalStore';
 
 export type AreaCoordinateType = {
   modelAreaId: string;

@@ -80,7 +80,7 @@ export const getFetchResqmlFileAxios = async (
   const base = OpenAPI.BASE;
 
   const response = await axios.get(
-    `/api/downloads/${analogueModel.analogueModelId}/resqml`,
+    `/api/v1/downloads/${analogueModel.analogueModelId}/resqml`,
     {
       headers: { Authorization: `Bearer ${token}` },
       responseType: 'blob', // response type of blob to handle images

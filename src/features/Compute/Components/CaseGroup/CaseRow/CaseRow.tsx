@@ -27,7 +27,7 @@ import { useParams } from 'react-router-dom';
 import {
   analogueModelDefault,
   usePepmContextStore,
-} from '../../../../../hooks/GlobalState';
+} from '../../../../../stores/GlobalStore';
 import { useGetParameterList } from './hooks/useGetParameterList';
 
 export const CaseRow = ({

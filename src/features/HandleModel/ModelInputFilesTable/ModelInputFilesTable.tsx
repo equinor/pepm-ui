@@ -1,25 +1,28 @@
 /* eslint-disable max-lines-per-function */
 import { Table } from '@equinor/eds-core-react';
 import { FileRow } from '../FileRow/FileRow';
+import { useAddModelStore } from '../../../pages/AddModel/stores/AddModelStore';
 
 type FileDisplay = { isVisible: boolean; toggle: () => void };
 
 export const ModelInputFilesTable = ({
   fileDisplay,
-  files,
-  setFiles,
-  fileChange,
 }: {
   fileDisplay: FileDisplay;
-  files: { INI?: File; NC?: File };
-  setFiles: React.Dispatch<
-    React.SetStateAction<{
-      NC?: File | undefined;
-      INI?: File | undefined;
-    }>
-  >;
-  fileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
+  const { files, setFiles } = useAddModelStore();
+
+  const fileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    if (
+      !e.target.files[0].name.endsWith('.nc') &&
+      !e.target.files[0].name.endsWith('.ini')
+    )
+      return;
+    const file = e.target.files[0];
+    const type = e.target.name;
+    setFiles({ ...files, [type]: file });
+  };
   return (
     <Table>
       <Table.Head>

@@ -3,7 +3,7 @@ import { useMsal } from '@azure/msal-react';
 import { useParams } from 'react-router-dom';
 import { useAccessToken } from './useAccessToken';
 import { AnalogueModelImagesService } from '../api/generated';
-import { usePepmContextStore } from './GlobalState';
+import { usePepmContextStore } from '../stores/GlobalStore';
 
 export const useFetchImageMetadata = () => {
   const { analogueModel } = usePepmContextStore();

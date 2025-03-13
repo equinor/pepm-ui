@@ -1,7 +1,7 @@
 import { CaseResultView } from '../../../../features/Results/CaseResult/CaseResultView/CaseResultView';
 import { NoResults } from '../../../../features/Results/NoResults/NoResults';
 import { useFetchObjectResults } from '../../../../hooks/useFetchChannelResults';
-import { usePepmContextStore } from '../../../../hooks/GlobalState';
+import { usePepmContextStore } from '../../../../stores/GlobalStore';
 import { useEffect } from 'react';
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
 import * as Styled from '../../Model/Model.styled';
