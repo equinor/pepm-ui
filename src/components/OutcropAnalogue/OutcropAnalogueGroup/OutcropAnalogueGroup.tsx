@@ -14,7 +14,7 @@ import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled'
 import { OutcropSelect } from '../OutcropSelect/OutcropSelect';
 import * as Styled from './OutcropAnalogueGroup.styled';
 import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
-import { usePepmContextStore } from '../../../hooks/GlobalState';
+import { usePepmContextStore } from '../../../stores/GlobalStore';
 
 export interface OutcropType {
   outcropId?: string;

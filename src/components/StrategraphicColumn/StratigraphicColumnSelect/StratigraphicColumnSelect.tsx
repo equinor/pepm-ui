@@ -12,7 +12,7 @@ import {
   StratColumnErrorType,
   StratColumnType,
 } from '../StratigrapicGroups/StratigrapicGroups';
-import { usePepmContextStore } from '../../../hooks/GlobalState';
+import { usePepmContextStore } from '../../../stores/GlobalStore';
 
 export const StratigraphicColumnSelect = ({
   stratColumnObject,

@@ -14,7 +14,7 @@ import { CaseGroup } from '../../../../features/Compute/Components/CaseGroup/Cas
 import { ComputeHeader } from '../../../../features/Compute/Components/ComputeHeader/ComputeHeader';
 import * as Styled from '../Compute.styled';
 import { useIsOwnerOrAdmin } from '../../../../hooks/useIsOwnerOrAdmin';
-import { usePepmContextStore } from '../../../../hooks/GlobalState';
+import { usePepmContextStore } from '../../../../stores/GlobalStore';
 
 export interface CaseInfoTyoe {
   type: string;

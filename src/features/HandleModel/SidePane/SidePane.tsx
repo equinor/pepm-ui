@@ -3,10 +3,12 @@ import { arrow_back as BACK } from '@equinor/eds-icons';
 import { useNavigate } from 'react-router-dom';
 
 import * as Styled from './SidePane.styled';
-import { usePepmContextStore } from '../../../hooks/GlobalState';
+import { usePepmContextStore } from '../../../stores/GlobalStore';
+import { useAddModelStore } from '../../../pages/AddModel/stores/AddModelStore';
 
 export const SidePane = ({ uploading }: { uploading: boolean }) => {
   const { setAnalogueModelDefault } = usePepmContextStore();
+  const { resetState } = useAddModelStore();
   const navigate = useNavigate();
 
   const backItems: SidebarLinkProps = {
@@ -32,6 +34,7 @@ export const SidePane = ({ uploading }: { uploading: boolean }) => {
               icon={backItems.icon}
               onClick={() => {
                 setAnalogueModelDefault();
+                resetState();
                 navigate('/');
               }}
             ></Styled.Back>

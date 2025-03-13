@@ -9,7 +9,7 @@ import { useIsOwnerOrAdmin } from '../../hooks/useIsOwnerOrAdmin';
 import {
   analogueModelDefault,
   usePepmContextStore,
-} from '../../hooks/GlobalState';
+} from '../../stores/GlobalStore';
 import { getFetchAnaloguesExcelAxios } from '../../hooks/useFetchAnaloguesExcel';
 import * as StyledDialog from '../../styles/addRowDialog/AddRowDialog.styled';
 

@@ -2,7 +2,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMsal } from '@azure/msal-react';
 import { useAccessToken } from './useAccessToken';
-import { usePepmContextStore } from './GlobalState';
+import { usePepmContextStore } from '../stores/GlobalStore';
 import { getAnalogueModelImage } from '../api/custom/getAnalogueModelImageById';
 
 export const useFetchImage = () => {

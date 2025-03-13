@@ -3,7 +3,7 @@ import * as Styled from './ModelNameFrame.styled';
 import {
   analogueModelDefault,
   usePepmContextStore,
-} from '../../../hooks/GlobalState';
+} from '../../../stores/GlobalStore';
 
 export const ModelNameFrame = () => {
   const { analogueModel } = usePepmContextStore();

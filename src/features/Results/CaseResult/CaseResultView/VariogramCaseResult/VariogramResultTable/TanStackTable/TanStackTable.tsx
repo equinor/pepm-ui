@@ -25,7 +25,7 @@ import {
   UpdateVariogramResultCommandBody,
   // UpdateVariogramResultCommandBody,
 } from '../../../../../../../api/generated';
-import { usePepmContextStore } from '../../../../../../../hooks/GlobalState';
+import { usePepmContextStore } from '../../../../../../../stores/GlobalStore';
 import { roundResultString } from '../../../../../../../utils/RoundResultString';
 import { SubRowResult } from '../SubRowResult/SubRowResult';
 import * as Styled from './TanStackTable.styled';

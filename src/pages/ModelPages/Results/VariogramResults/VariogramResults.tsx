@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { CaseResultView } from '../../../../features/Results/CaseResult/CaseResultView/CaseResultView';
 import { NoResults } from '../../../../features/Results/NoResults/NoResults';
-import { usePepmContextStore } from '../../../../hooks/GlobalState';
+import { usePepmContextStore } from '../../../../stores/GlobalStore';
 import { useFetchVariogramResults } from '../../../../hooks/useFetchVariogramResults';
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
 import * as Styled from '../../Model/Model.styled';

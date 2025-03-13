@@ -9,7 +9,7 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom';
 import { VariogramIcon } from '../../../assets/VaritogramIcon';
 import * as Styled from './ModelNavigationBar.styled';
-import { usePepmContextStore } from '../../../hooks/GlobalState';
+import { usePepmContextStore } from '../../../stores/GlobalStore';
 
 type MenuItems = SidebarLinkProps & {
   subItems?: Array<{

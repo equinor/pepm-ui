@@ -12,7 +12,7 @@ import {
 } from '@equinor/eds-core-react';
 import { mood_sad } from '@equinor/eds-icons';
 import { useEffect } from 'react';
-import { usePepmContextStore } from '../../../hooks/GlobalState';
+import { usePepmContextStore } from '../../../stores/GlobalStore';
 import { useFetchModelAreas } from '../../../hooks/useFetchModelAreas';
 import { useFetchOutcropData } from '../../../hooks/useFetchOutcropData';
 import {
