@@ -4,7 +4,7 @@ import { useMsal } from '@azure/msal-react';
 import { useParams } from 'react-router-dom';
 import { getApiV1AnalogueModelsByIdComputeCases } from '../api/generated';
 import { useAccessToken } from './useAccessToken';
-import { usePepmContextStore } from './GlobalState';
+import { usePepmContextStore } from '../stores/GlobalStore';
 
 export const useFetchCases = () => {
   const { modelId } = useParams();

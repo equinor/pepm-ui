@@ -2,8 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import { useMsal } from '@azure/msal-react';
 import { useParams } from 'react-router-dom';
 import { useAccessToken } from './useAccessToken';
-import { analogueModelDefault, usePepmContextStore } from './GlobalState';
 import { getApiV1AnalogueModelsById } from '../api/generated';
+import {
+  analogueModelDefault,
+  usePepmContextStore,
+} from '../stores/GlobalStore';
 
 export const useFetchModel = (id?: string) => {
   const { analogueModel } = usePepmContextStore();

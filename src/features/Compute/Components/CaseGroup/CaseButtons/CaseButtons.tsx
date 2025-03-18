@@ -15,7 +15,7 @@ import {
 import { ConfirmDialog } from '../../../../../components/ConfirmDialog/ConfirmDialog';
 import * as Styled from './CaseButtons.styled';
 import { useIsOwnerOrAdmin } from '../../../../../hooks/useIsOwnerOrAdmin';
-import { usePepmContextStore } from '../../../../../hooks/GlobalState';
+import { usePepmContextStore } from '../../../../../stores/GlobalStore';
 
 export const CaseButtons = ({
   id,

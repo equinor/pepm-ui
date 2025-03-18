@@ -26,7 +26,7 @@ import { StratigraphicColumnSelect } from '../StratigraphicColumnSelect/Stratigr
 import { validateInput } from './StratigrapicGroups.hooks';
 import * as Styled from './StratigrapicGroups.styled';
 import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
-import { usePepmContextStore } from '../../../hooks/GlobalState';
+import { usePepmContextStore } from '../../../stores/GlobalStore';
 
 export interface StratColumnType {
   country?: CountryDto;

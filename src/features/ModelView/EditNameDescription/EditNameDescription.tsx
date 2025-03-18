@@ -5,7 +5,7 @@ import { AnalogueModelDetail } from '../../../api/generated';
 import { validateValues } from '../../HandleModel/HandleModelComponent/HandleModelComponent.hooks';
 import { ModelMetadata } from '../../HandleModel/ModelMetadata/ModelMetadata';
 import * as Styled from './EditNameDescription.styled';
-import { usePepmContextStore } from '../../../hooks/GlobalState';
+import { usePepmContextStore } from '../../../stores/GlobalStore';
 export const EditNameDescription = ({
   edit,
   isEdit,

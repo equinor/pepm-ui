@@ -25,7 +25,7 @@ import {
 } from '../../api/generated';
 import { useAccessToken } from '../../hooks/useAccessToken';
 import * as Styled from './ModelTable.styled';
-import { usePepmContextStore } from '../../hooks/GlobalState';
+import { usePepmContextStore } from '../../stores/GlobalStore';
 
 export enum ModelStatus {
   UNKNOWN = 'Unknown',

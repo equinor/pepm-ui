@@ -21,7 +21,7 @@ import { CaseCardComponent } from '../../../../components/CaseCardComponent/Case
 import * as Styled from './CaseGroup.styled';
 import { CaseRow } from './CaseRow/CaseRow';
 import { useIsOwnerOrAdmin } from '../../../../hooks/useIsOwnerOrAdmin';
-import { usePepmContextStore } from '../../../../hooks/GlobalState';
+import { usePepmContextStore } from '../../../../stores/GlobalStore';
 
 export const CaseGroup = ({
   caseList,

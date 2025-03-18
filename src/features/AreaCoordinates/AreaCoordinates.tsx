@@ -26,7 +26,7 @@ import { useModelResults } from './hooks/useModelResults';
 import {
   analogueModelDefault,
   usePepmContextStore,
-} from '../../hooks/GlobalState';
+} from '../../stores/GlobalStore';
 import { ErrorMessage } from './ErrorMessage/ErrorMessage';
 import { AnalogueModelImageView } from './ImageView/AnalogueModelImageView';
 

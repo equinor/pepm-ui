@@ -1,5 +1,5 @@
 import { useMsal } from '@azure/msal-react';
-import { usePepmContextStore } from './GlobalState';
+import { usePepmContextStore } from '../stores/GlobalStore';
 
 export const useIsOwnerOrAdmin = () => {
   const { analogueModel } = usePepmContextStore();

@@ -22,7 +22,7 @@ import * as Styled from './GrossDepositionEnviromentGroup.styled';
 
 import { validateInput } from './GDE.hooks';
 import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
-import { usePepmContextStore } from '../../../hooks/GlobalState';
+import { usePepmContextStore } from '../../../stores/GlobalStore';
 
 export interface GdeType {
   grossDepEnv?: GeologicalStandardDto;

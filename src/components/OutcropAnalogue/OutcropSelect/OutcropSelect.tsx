@@ -7,7 +7,7 @@ import {
   OutcropErrorType,
   OutcropType,
 } from '../OutcropAnalogueGroup/OutcropAnalogueGroup';
-import { usePepmContextStore } from '../../../hooks/GlobalState';
+import { usePepmContextStore } from '../../../stores/GlobalStore';
 
 export const OutcropSelect = ({
   outcropObject,

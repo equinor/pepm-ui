@@ -2,7 +2,7 @@ import { useMsal } from '@azure/msal-react';
 import { useQuery } from '@tanstack/react-query';
 import { getApiV1MetadataSmdaMetadataGeologyStandards } from '../api/generated';
 import { useAccessToken } from './useAccessToken';
-import { usePepmContextStore } from './GlobalState';
+import { usePepmContextStore } from '../stores/GlobalStore';
 
 export const useFetchGrossDepData = () => {
   const { instance, accounts } = useMsal();

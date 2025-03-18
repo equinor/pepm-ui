@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import * as Styled from '../App.styled';
 import AppBar from '../features/AppBar/AppBar';
 import { Footer } from '../features/Footer/Footer';
+import { ErrorNotifications } from '../components/ErrorBanner/ErrorBanner';
 
 export const Layout = () => {
   return (
@@ -9,6 +10,7 @@ export const Layout = () => {
       <AppBar title="PEPM" />
       <Styled.OutletWrapper>
         <Outlet />
+        <ErrorNotifications />
       </Styled.OutletWrapper>
       <Footer
         text={`All information is proprietary of Equinor © ${new Date().getFullYear()} Equinor ASA`}

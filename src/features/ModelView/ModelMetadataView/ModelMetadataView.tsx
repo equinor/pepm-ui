@@ -23,7 +23,7 @@ import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
 import {
   analogueModelDefault,
   usePepmContextStore,
-} from '../../../hooks/GlobalState';
+} from '../../../stores/GlobalStore';
 import { useFetchOutcropData } from '../../../hooks/useFetchOutcropData';
 import {
   useFetchSmdaCountries,
@@ -35,13 +35,14 @@ import { useFetchGrossDepData } from '../../../hooks/useFetchGrossDepData';
 import { IniParametersDialog } from '../IniParametersDialog/IniParametersDialog';
 import { IniParametersWrapper } from './ModelMetadataView.styled';
 import { ModelStatus } from '../../ModelTable/ModelTable';
+import { UploadingStatus } from '../../../pages/AddModel/stores/AddModelStore';
 
 export const ModelMetadataView = ({
   modelIdParent,
-  uploadingProgress,
+  uploadingStatus,
 }: {
   modelIdParent?: string;
-  uploadingProgress?: number;
+  uploadingStatus?: UploadingStatus;
 }) => {
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const {
@@ -269,12 +270,12 @@ export const ModelMetadataView = ({
     return status;
   };
 
-  if (analogueModel === analogueModelDefault && uploadingProgress === undefined)
+  if (analogueModel === analogueModelDefault && uploadingStatus === undefined)
     return <p>Loading ...</p>;
 
   return (
     <Styled.Wrapper className="metadata-row">
-      {uploadingProgress === undefined && (
+      {uploadingStatus === undefined && (
         <Styled.DescriotionImageWrapper>
           <Styled.DescriptionMeta>
             <Typography variant="h3">Description</Typography>
@@ -361,23 +362,21 @@ export const ModelMetadataView = ({
           </Styled.ImageMessage>
         </Styled.DescriotionImageWrapper>
       )}
-      {uploadingProgress !== undefined &&
-        uploadingProgress >= 0 &&
-        uploadingProgress < 100 && (
-          <Styled.UploadingMeta>
-            <Typography variant="body_long">
-              While your model is being uploaded, you can add some metadata like
-              outcrop analogue, stratigraphic column, or gross depositional
-              environment. Please note that at least one type of metadata is
-              required for PEPM models before they can be approved later on.
-            </Typography>
-          </Styled.UploadingMeta>
-        )}
+      {uploadingStatus === UploadingStatus.Uploading && (
+        <Styled.UploadingMeta>
+          <Typography variant="body_long">
+            While your model is being uploaded, you can add some metadata like
+            outcrop analogue, stratigraphic column, or gross depositional
+            environment. Please note that at least one type of metadata is
+            required for PEPM models before they can be approved later on.
+          </Typography>
+        </Styled.UploadingMeta>
+      )}
 
       <Typography variant="h3" as="h2">
         Model metadata
       </Typography>
-      {analogueModel.iniParameters && uploadingProgress === undefined && (
+      {analogueModel.iniParameters && uploadingStatus === undefined && (
         <IniParametersWrapper>
           <Typography variant="h4" as="h3">
             Ini Parameters

@@ -7,7 +7,7 @@ import {
   getApiV1MetadataSmdaMetadataStratigraphicUnits,
 } from '../api/generated';
 import { useAccessToken } from './useAccessToken';
-import { usePepmContextStore } from './GlobalState';
+import { usePepmContextStore } from '../stores/GlobalStore';
 
 export const useFetchSmdaCountries = () => {
   const { instance, accounts } = useMsal();

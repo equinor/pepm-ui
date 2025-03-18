@@ -13,7 +13,7 @@ import { CaseGroup } from '../../../../features/Compute/Components/CaseGroup/Cas
 import { ComputeHeader } from '../../../../features/Compute/Components/ComputeHeader/ComputeHeader';
 import * as Styled from '../Compute.styled';
 import { CaseInfoTyoe } from '../ComputeVariogram/ComputeVariogram';
-import { usePepmContextStore } from '../../../../hooks/GlobalState';
+import { usePepmContextStore } from '../../../../stores/GlobalStore';
 
 const ObjectCaseInfo: CaseInfoTyoe = {
   type: 'Channel',

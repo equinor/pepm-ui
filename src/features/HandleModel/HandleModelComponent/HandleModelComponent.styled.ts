@@ -6,6 +6,7 @@ import { TextField } from '@equinor/eds-core-react';
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  min-width: 60%;
 
   row-gap: ${spacings.LARGE};
 `;

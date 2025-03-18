@@ -18,7 +18,7 @@ import {
   ResultStatus,
   UpdateObjectResultCommandBody,
 } from '../../../../../../api/generated';
-import { usePepmContextStore } from '../../../../../../hooks/GlobalState';
+import { usePepmContextStore } from '../../../../../../stores/GlobalStore';
 import { useIsOwnerOrAdmin } from '../../../../../../hooks/useIsOwnerOrAdmin';
 import { useMutateObjectResult } from '../../../../../../hooks/useMutateResults';
 export const ResultArea = ({

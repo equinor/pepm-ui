@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useQuery } from '@tanstack/react-query';
-import { usePepmContextStore } from './GlobalState';
+import { usePepmContextStore } from '../stores/GlobalStore';
 import { getAnalogueModelImage } from '../api/custom/getAnalogueModelImageById';
 import { client } from '../api/generated/client.gen';
 
