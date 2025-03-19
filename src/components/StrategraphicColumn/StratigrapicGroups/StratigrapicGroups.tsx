@@ -82,6 +82,7 @@ export const StratigrapicGroups = ({
   const deleteRow = async (id: string) => {
     const res = await deleteStratColRow(id);
     if (res?.success) deleteAnalogueModelStratGroup(id);
+    return res;
   };
 
   const postSmdaMetadataRow = useMutation({
