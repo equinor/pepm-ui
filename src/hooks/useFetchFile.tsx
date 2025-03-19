@@ -1,18 +1,16 @@
-import { AnalogueModelDetail, OpenAPI, UploadFileType } from '../api/generated';
+import { AnalogueModelDetail, UploadFileType } from '../api/generated';
+import { client } from '../api/generated/client.gen';
 import axios from 'axios';
 
-export const getFetchIniFileAxios = async (
+export const GetFetchIniFileAxios = async (
   analogueModel: AnalogueModelDetail,
-): Promise<string> => {
-  const token = OpenAPI.TOKEN; // replace with your bearer token
-  const base = OpenAPI.BASE;
-
+) => {
   const response = await axios.get(
     `/api/v1/downloads/${analogueModel.analogueModelId}/ini`,
     {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${client.getConfig().auth}` },
       responseType: 'blob', // response type of blob to handle images
-      baseURL: base,
+      baseURL: client.getConfig().baseURL,
     },
   );
 
@@ -33,22 +31,18 @@ export const getFetchIniFileAxios = async (
     URL.revokeObjectURL(fileURL);
   }
 
-  // create an object URL for the image blob and return it
-  return URL.createObjectURL(response.data);
+  return URL.revokeObjectURL(response.data);
 };
 
-export const getFetchNcFileAxios = async (
+export const GetFetchNcFileAxios = async (
   analogueModel: AnalogueModelDetail,
-): Promise<string> => {
-  const token = OpenAPI.TOKEN; // replace with your bearer token
-  const base = OpenAPI.BASE;
-
+) => {
   const response = await axios.get(
-    `/api/downloads/${analogueModel.analogueModelId}/nc`,
+    `/api/v1/downloads/${analogueModel.analogueModelId}/nc`,
     {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${client.getConfig().auth}` },
       responseType: 'blob', // response type of blob to handle images
-      baseURL: base,
+      baseURL: client.getConfig().baseURL,
     },
   );
 
@@ -69,27 +63,23 @@ export const getFetchNcFileAxios = async (
     URL.revokeObjectURL(fileURL);
   }
 
-  // create an object URL for the image blob and return it
-  return URL.createObjectURL(response.data);
+  return URL.revokeObjectURL(response.data);
 };
 
-export const getFetchResqmlFileAxios = async (
+export const GetFetchResqmlFileAxios = async (
   analogueModel: AnalogueModelDetail,
 ) => {
-  const token = OpenAPI.TOKEN; // replace with your bearer token
-  const base = OpenAPI.BASE;
-
   const response = await axios.get(
     `/api/v1/downloads/${analogueModel.analogueModelId}/resqml`,
     {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${client.getConfig().auth}` },
       responseType: 'blob', // response type of blob to handle images
-      baseURL: base,
+      baseURL: client.getConfig().baseURL,
     },
   );
 
   if (response.data) {
-    const fileURL = window.URL.createObjectURL(response.data);
+    const fileURL = window.URL.createObjectURL(response.data.data);
 
     const link = document.createElement('a');
     link.href = fileURL;
@@ -102,6 +92,5 @@ export const getFetchResqmlFileAxios = async (
     URL.revokeObjectURL(fileURL);
   }
 
-  // create an object URL for the image blob and return it
-  return URL.createObjectURL(response.data);
+  return URL.revokeObjectURL(response.data);
 };

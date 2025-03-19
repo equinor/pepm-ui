@@ -1,21 +1,18 @@
 import axios from 'axios';
-import { OpenAPI } from '../generated';
-import type { UploadIniFileCommandResponse } from '../generated/models/UploadIniFileCommandResponse';
+import { UploadIniFileCommandResponse } from '../generated';
+import { client } from '../generated/client.gen';
 
 export const postIniFile = async (
   modelId: string,
   formData: FormData,
 ): Promise<UploadIniFileCommandResponse> => {
-  const token = OpenAPI.TOKEN; // replace with your bearer token
-  const base = OpenAPI.BASE;
-
   const response = await axios
     .post(`/api/v1/uploads/models/${modelId}/ini-file`, formData, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${client.getConfig().auth}`,
         'Content-Type': 'multipart/form-data',
       },
-      baseURL: base,
+      baseURL: client.getConfig().baseURL,
     })
     .catch(function (err) {
       return Promise.reject(err);

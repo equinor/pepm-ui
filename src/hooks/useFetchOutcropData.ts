@@ -1,6 +1,6 @@
 import { useMsal } from '@azure/msal-react';
 import { useQuery } from '@tanstack/react-query';
-import { OutcropsService } from '../api/generated';
+import { getApiV1Outcrops } from '../api/generated';
 import { useAccessToken } from './useAccessToken';
 import { usePepmContextStore } from '../stores/GlobalStore';
 
@@ -11,7 +11,7 @@ export const useFetchOutcropData = () => {
 
   const query = useQuery({
     queryKey: ['outcrop'],
-    queryFn: () => OutcropsService.getApiV1Outcrops(),
+    queryFn: () => getApiV1Outcrops(),
     enabled: !!token && outcrops.length === 0,
   });
 

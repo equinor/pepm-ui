@@ -79,20 +79,20 @@ export const OutcropAnalogueGroup = ({
         id: id,
         requestBody: postRequestBody,
       });
-      if (rowUpload.success) {
+      if (rowUpload.data?.success) {
         handleOutcropDialog();
-        addAnalogueModelOutcrop(rowUpload.data);
+        addAnalogueModelOutcrop(rowUpload.data.data);
       }
     }
   };
 
-  const handleDeleteOutcropAnalogue = async (stratigraphicGroupId: string) => {
+  const handleDeleteOutcropAnalogue = async (outcropId: string) => {
     const id = modelIdParent ? modelIdParent : analogueModel.analogueModelId;
     const res = await useOutcrop.deleteOutcropAnalogue.mutateAsync({
       id: id,
-      outcropId: stratigraphicGroupId,
+      outcropId: outcropId,
     });
-    if (res.success) deleteAnalogueModelOutcrop(stratigraphicGroupId);
+    if (res.data?.success) deleteAnalogueModelOutcrop(outcropId);
     return res;
   };
 

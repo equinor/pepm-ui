@@ -12,7 +12,7 @@ export const VariogramResults = () => {
     usePepmContextStore();
 
   useEffect(() => {
-    if (data) setVariogramResults(data.data);
+    if (data?.data) setVariogramResults(data.data.data);
   }, [data, setVariogramResults]);
 
   if (isLoading)

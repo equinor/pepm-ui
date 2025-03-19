@@ -60,20 +60,20 @@ export const Model = () => {
   } = usePepmContextStore();
 
   useEffect(() => {
-    if (data) setAnalogueModel(data.data);
+    if (data?.data) setAnalogueModel(data.data.data);
   }, [data, setAnalogueModel]);
 
   useEffect(() => {
     if (image.data) setAnalogueModelImage(image.data);
-    if (imageMetadata.data?.data)
-      setAnalogueModelImageMetadata(imageMetadata.data.data);
-    if (cases.data?.data) setComputeCases(cases.data.data);
-    if (modelArea.data?.data) setModelAreaTypes(modelArea.data.data);
-    if (outcropData.data?.data) setOutcrops(outcropData.data.data);
-    if (geologyStandards.data?.data)
-      setGeologicalStandards(geologyStandards.data.data);
-    if (computeSettings.data?.data)
-      setComputeSettings(computeSettings.data.data);
+    if (imageMetadata.data?.data?.data)
+      setAnalogueModelImageMetadata(imageMetadata.data.data.data);
+    if (cases.data?.data?.data) setComputeCases(cases.data.data.data);
+    if (modelArea.data?.data?.data) setModelAreaTypes(modelArea.data.data.data);
+    if (outcropData.data?.data?.data) setOutcrops(outcropData.data.data.data);
+    if (geologyStandards.data?.data?.data)
+      setGeologicalStandards(geologyStandards.data.data.data);
+    if (computeSettings.data?.data?.data)
+      setComputeSettings(computeSettings.data.data.data);
   }, [
     cases.data?.data,
     image,
@@ -92,12 +92,12 @@ export const Model = () => {
   ]);
 
   useEffect(() => {
-    if (countryData.data?.data) setCountries(countryData.data.data);
-    if (fieldData.data?.data) setFields(fieldData.data.data);
+    if (countryData.data?.data) setCountries(countryData.data.data.data);
+    if (fieldData.data?.data) setFields(fieldData.data.data.data);
     if (stratColumnData.data?.data)
-      setStratigraphicColumns(stratColumnData.data.data);
+      setStratigraphicColumns(stratColumnData.data.data.data);
     if (stratUnitData.data?.data)
-      setStratigraphicUnits(stratUnitData.data.data);
+      setStratigraphicUnits(stratUnitData.data.data.data);
   }, [
     countryData.data?.data,
     fieldData.data?.data,

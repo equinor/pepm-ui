@@ -6,12 +6,14 @@ import { useMutation } from '@tanstack/react-query';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
-  AnalogueModelComputeCasesService,
   ComputeCaseDto,
   ComputeJobStatus,
   ComputeMethod,
   ComputeType,
   CreateComputeCaseCommandForm,
+  deleteApiV1AnalogueModelsByIdComputeCasesByComputeCaseId,
+  postApiV1AnalogueModelsByIdComputeCases,
+  putApiV1AnalogueModelsByIdComputeCasesByComputeCaseId,
   UpdateComputeCaseCommandForm,
 } from '../../../../api/generated';
 import { queryClient } from '../../../../auth/queryClient';
@@ -49,10 +51,10 @@ export const CaseGroup = ({
       id: string;
       requestBody: CreateComputeCaseCommandForm;
     }) => {
-      return AnalogueModelComputeCasesService.postApiV1AnalogueModelsComputeCases(
-        id,
-        requestBody,
-      );
+      return postApiV1AnalogueModelsByIdComputeCases({
+        body: requestBody,
+        path: { id: id },
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['model-cases'] });
@@ -69,11 +71,10 @@ export const CaseGroup = ({
       computeCaseId: string;
       requestBody: UpdateComputeCaseCommandForm;
     }) => {
-      return AnalogueModelComputeCasesService.putApiV1AnalogueModelsComputeCases(
-        id,
-        computeCaseId,
-        requestBody,
-      );
+      return putApiV1AnalogueModelsByIdComputeCasesByComputeCaseId({
+        body: requestBody,
+        path: { id: id, computeCaseId: computeCaseId },
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['model-cases'] });
@@ -88,10 +89,9 @@ export const CaseGroup = ({
       id: string;
       computeCaseId: string;
     }) => {
-      return AnalogueModelComputeCasesService.deleteApiV1AnalogueModelsComputeCases(
-        id,
-        computeCaseId,
-      );
+      return deleteApiV1AnalogueModelsByIdComputeCasesByComputeCaseId({
+        path: { id: id, computeCaseId: computeCaseId },
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['model-cases'] });
@@ -102,11 +102,11 @@ export const CaseGroup = ({
     if (computeSettings) {
       switch (computeType) {
         case ComputeType.OBJECT:
-          return computeSettings.objectComputeSettings!.filter(
+          return computeSettings.objectComputeSettings?.filter(
             (item) => item.name === name,
           );
         case ComputeType.VARIOGRAM:
-          return computeSettings.variogramComputeSettings!.filter(
+          return computeSettings.variogramComputeSettings?.filter(
             (item) => item.name === name,
           );
       }
@@ -184,9 +184,9 @@ export const CaseGroup = ({
         id: modelId,
         requestBody: caseRequestBody,
       });
-      if (res.success)
+      if (res.data?.success)
         updateLocalCaseList && updateLocalCaseList(methodName, false);
-      return res;
+      return res.request;
     }
   };
 
@@ -205,7 +205,7 @@ export const CaseGroup = ({
         computeCaseId: computeCaseId,
         requestBody: caseRequestBody,
       });
-      return res;
+      return res.request;
     }
   };
 
@@ -219,7 +219,7 @@ export const CaseGroup = ({
           id: modelId,
           computeCaseId: computeCaseId,
         });
-        return res;
+        return res.request;
       }
     }
   };

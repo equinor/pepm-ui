@@ -12,7 +12,7 @@ export const ObjectResult = () => {
   const { data, isLoading } = useFetchObjectResults();
 
   useEffect(() => {
-    if (data) setObjectEstimationResults(data.data);
+    if (data?.data) setObjectEstimationResults(data.data.data);
   }, [data, setObjectEstimationResults]);
 
   if (isLoading)

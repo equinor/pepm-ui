@@ -13,9 +13,9 @@ import {
 import IconButton from '../../../components/IconButton/IconButton';
 import { download } from '@equinor/eds-icons';
 import {
-  getFetchIniFileAxios,
-  getFetchNcFileAxios,
-  getFetchResqmlFileAxios,
+  GetFetchIniFileAxios,
+  GetFetchNcFileAxios,
+  GetFetchResqmlFileAxios,
 } from '../../../hooks/useFetchFile';
 import { useState } from 'react';
 
@@ -31,17 +31,17 @@ export const ModelFilesView = () => {
     switch (fileType) {
       case UploadFileType.NET_CDF:
         setIsLoadingNc(true);
-        await getFetchNcFileAxios(analogueModel);
+        await GetFetchNcFileAxios(analogueModel);
         setIsLoadingNc(false);
         break;
       case UploadFileType.INI_DATA:
         setIsLoadingIni(true);
-        await getFetchIniFileAxios(analogueModel);
+        await GetFetchIniFileAxios(analogueModel);
         setIsLoadingIni(false);
         break;
-      case UploadFileType.RES_QMLDATA:
+      case UploadFileType.RES_QML_DATA:
         setIsLoadingResqml(true);
-        await getFetchResqmlFileAxios(analogueModel);
+        await GetFetchResqmlFileAxios(analogueModel);
         setIsLoadingResqml(false);
         break;
     }
@@ -67,7 +67,7 @@ export const ModelFilesView = () => {
           variant="indeterminate"
         />
       );
-    if (isLoadingResqml && fileType === UploadFileType.RES_QMLDATA)
+    if (isLoadingResqml && fileType === UploadFileType.RES_QML_DATA)
       return (
         <CircularProgress
           color="primary"
@@ -132,7 +132,9 @@ export const ModelFilesView = () => {
             <Table.Row>
               <Table.Cell>Resqml.zip</Table.Cell>
               <Table.Cell>-</Table.Cell>
-              <Table.Cell>{iconButtons(UploadFileType.RES_QMLDATA)}</Table.Cell>
+              <Table.Cell>
+                {iconButtons(UploadFileType.RES_QML_DATA)}
+              </Table.Cell>
             </Table.Row>
           ) : (
             <></>

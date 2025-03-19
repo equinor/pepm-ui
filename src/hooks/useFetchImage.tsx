@@ -1,14 +1,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useQuery } from '@tanstack/react-query';
-import { useMsal } from '@azure/msal-react';
-import { useAccessToken } from './useAccessToken';
 import { usePepmContextStore } from '../stores/GlobalStore';
 import { getAnalogueModelImage } from '../api/custom/getAnalogueModelImageById';
+import { client } from '../api/generated/client.gen';
 
 export const useFetchImage = () => {
   const { analogueModel } = usePepmContextStore();
-  const { instance, accounts } = useMsal();
-  const token = useAccessToken(instance, accounts[0]);
+  const token = client.getConfig().auth;
 
   const imageId = analogueModel.analogueModelImage?.analogueModelImageId
     ? analogueModel.analogueModelImage.analogueModelImageId

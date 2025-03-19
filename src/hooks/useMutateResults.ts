@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import {
-  ResultsService,
+  putApiV1AnalogueModelsByIdComputecasesByComputeCaseIdResults,
+  putApiV1AnalogueModelsByIdResultsObjectByObjectId,
   UpdateObjectResultCommandBody,
   UpdateVariogramResultCommandBody,
 } from '../api/generated';
@@ -17,11 +18,10 @@ export const useMutateObjectResult = () => {
       objectId: string;
       requestBody: UpdateObjectResultCommandBody;
     }) => {
-      return ResultsService.putApiV1AnalogueModelsResultsObject(
-        id,
-        objectId,
-        requestBody,
-      );
+      return putApiV1AnalogueModelsByIdResultsObjectByObjectId({
+        body: requestBody,
+        path: { id: id, objectId: objectId },
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['object-result'] });
@@ -42,11 +42,10 @@ export const useMutateVariogramResult = () => {
       computeCaseId: string;
       requestBody: UpdateVariogramResultCommandBody;
     }) => {
-      return ResultsService.putApiV1AnalogueModelsComputecasesResults(
-        id,
-        computeCaseId,
-        requestBody,
-      );
+      return putApiV1AnalogueModelsByIdComputecasesByComputeCaseIdResults({
+        body: requestBody,
+        path: { id: id, computeCaseId: computeCaseId },
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['variogram-result'] });

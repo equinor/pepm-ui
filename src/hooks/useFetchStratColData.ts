@@ -1,6 +1,11 @@
 import { useMsal } from '@azure/msal-react';
 import { useQuery } from '@tanstack/react-query';
-import { MetadataService } from '../api/generated';
+import {
+  getApiV1MetadataSmdaMetadataCountries,
+  getApiV1MetadataSmdaMetadataFields,
+  getApiV1MetadataSmdaMetadataStratigraphicColumns,
+  getApiV1MetadataSmdaMetadataStratigraphicUnits,
+} from '../api/generated';
 import { useAccessToken } from './useAccessToken';
 import { usePepmContextStore } from '../stores/GlobalStore';
 
@@ -11,7 +16,7 @@ export const useFetchSmdaCountries = () => {
 
   const query = useQuery({
     queryKey: ['smda-countries'],
-    queryFn: () => MetadataService.getApiV1MetadataSmdaMetadataCountries(),
+    queryFn: () => getApiV1MetadataSmdaMetadataCountries(),
     enabled: !!token && countries.length === 0,
   });
 
@@ -25,7 +30,7 @@ export const useFetchSmdaFields = () => {
 
   const query = useQuery({
     queryKey: ['smda-fields'],
-    queryFn: () => MetadataService.getApiV1MetadataSmdaMetadataFields(),
+    queryFn: () => getApiV1MetadataSmdaMetadataFields(),
     enabled: !!token && fields.length === 0,
   });
 
@@ -39,8 +44,7 @@ export const useFetchSmdaStratigraphicColumns = () => {
 
   const query = useQuery({
     queryKey: ['smda-strat-columns'],
-    queryFn: () =>
-      MetadataService.getApiV1MetadataSmdaMetadataStratigraphicColumns(),
+    queryFn: () => getApiV1MetadataSmdaMetadataStratigraphicColumns(),
     enabled: !!token && stratigraphicColumns.length === 0,
   });
 
@@ -54,8 +58,7 @@ export const useFetchSmdaMetadataStratigraphicUnits = () => {
 
   const query = useQuery({
     queryKey: ['smda-strat-units'],
-    queryFn: () =>
-      MetadataService.getApiV1MetadataSmdaMetadataStratigraphicUnits(),
+    queryFn: () => getApiV1MetadataSmdaMetadataStratigraphicUnits(),
     enabled: !!token && stratigraphicUnits.length === 0,
   });
 

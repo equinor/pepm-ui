@@ -29,12 +29,15 @@ import {
 } from '../../../pages/AddModel/stores/AddModelStore';
 import { useMutation } from '@tanstack/react-query';
 import {
-  AnalogueModelsService,
   ConvertAnalogueModelCommand,
   CreateAnalogueModelCommand,
-  JobsService,
+  deleteApiV1AnalogueModelsById,
+  postApiV1AnalogueModels,
+  postApiV1JobsComputeModelConversions,
+  postApiV1UploadsModelsChunks,
+  postApiV1UploadsModelsComplete,
+  postApiV1UploadsModelsManifest,
   UploadFileType,
-  UploadsService,
 } from '../../../api/generated';
 import { queryClient } from '../../../auth/queryClient';
 import { postIniFile } from '../../../api/custom/postIniFile';
@@ -62,7 +65,9 @@ export const HandleModelComponent = () => {
   useHandleModelComponent(setAnalogueModel);
 
   const createModel = useMutation({
-    mutationFn: AnalogueModelsService.postApiV1AnalogueModels,
+    mutationFn: (requestBody: CreateAnalogueModelCommand) => {
+      return postApiV1AnalogueModels({ body: requestBody });
+    },
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ['analogue-models'] });
     },
@@ -79,23 +84,40 @@ export const HandleModelComponent = () => {
     },
   });
   const createModelManifest = useMutation({
-    mutationFn: UploadsService.postApiV1UploadsModelsManifest,
+    mutationFn: (requestBody: {
+      ModelId: string;
+      FileSize: bigint;
+      FileName: string;
+      FileExtension: string;
+      FileType: UploadFileType;
+    }) => {
+      return postApiV1UploadsModelsManifest({ body: requestBody });
+    },
   });
 
   const uploadModelChunk = useMutation({
-    mutationFn: UploadsService.postApiV1UploadsModelsChunks,
+    mutationFn: (requestBody: {
+      ModelId: string;
+      UploadId: string;
+      Blob: Blob | File;
+      ChunkNumber: number;
+    }) => {
+      return postApiV1UploadsModelsChunks({ body: requestBody });
+    },
   });
 
   const finishUpload = useMutation({
-    mutationFn: UploadsService.postApiV1UploadsModelsComplete,
+    mutationFn: (requestBody: { ModelId: string; UploadId: string }) => {
+      return postApiV1UploadsModelsComplete({ body: requestBody });
+    },
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ['analogue-models'] });
     },
   });
 
   const deleteModel = useMutation({
-    mutationFn: (id: string) => {
-      return AnalogueModelsService.deleteApiV1AnalogueModels(id);
+    mutationFn: ({ id }: { id: string }) => {
+      return deleteApiV1AnalogueModelsById({ path: { id: id } });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['analogue-model'] });
@@ -104,7 +126,7 @@ export const HandleModelComponent = () => {
 
   const convertModelFile = useMutation({
     mutationFn: (requestBody: ConvertAnalogueModelCommand) => {
-      return JobsService.postApiV1JobsComputeModelConversions(requestBody);
+      return postApiV1JobsComputeModelConversions({ body: requestBody });
     },
   });
 
@@ -127,14 +149,14 @@ export const HandleModelComponent = () => {
       };
 
       const model = await createModel.mutateAsync(ModelBody);
-      if (model.success && model && model.data.analogueModelId) {
+      if (model.data?.success && model && model.data.data.analogueModelId) {
         const iniFile = files.INI;
         const modelFile = files.NC;
         setAnalogueModel({
           ...analogueModel,
-          analogueModelId: model.data.analogueModelId,
+          analogueModelId: model.data.data.analogueModelId,
         });
-        const analogueModelId = model.data.analogueModelId;
+        const analogueModelId = model.data.data.analogueModelId;
         // UploadIniFile
         const data = new FormData();
         data.append('file', iniFile!);
@@ -152,7 +174,7 @@ export const HandleModelComponent = () => {
 
             const data = {
               ModelId: analogueModelId,
-              FileSize: modelFile.size,
+              FileSize: BigInt(modelFile.size),
               FileName: modelFile.name,
               FileExtension: fileExtention,
               FileType: fileType,
@@ -160,10 +182,10 @@ export const HandleModelComponent = () => {
 
             const modelManifest = await createModelManifest.mutateAsync(data);
             // UploadChunks
-            if (modelManifest.success) {
-              const totalChunkCount = modelManifest.data.numChunks;
-              const chunkSize = modelManifest.data.fileSize;
-              const uploadId = modelManifest.data.uploadId;
+            if (modelManifest.data?.success) {
+              const totalChunkCount = modelManifest.data.data.numChunks;
+              const chunkSize = Number(modelManifest.data.data.fileSize);
+              const uploadId = modelManifest.data.data.uploadId;
 
               let begginingOfChunk = 0;
               let endOfChunk = begginingOfChunk + chunkSize;
@@ -183,7 +205,7 @@ export const HandleModelComponent = () => {
                 );
                 const percentage = (chunkNumber / totalChunkCount) * 100;
                 setProgress(percentage);
-                if (!uploadedChunk.success) {
+                if (!uploadedChunk.data?.success) {
                   setUploadStatus(UploadingStatus.Failed);
                   addError('Failed to upload model file');
                   setUploading(false);
@@ -201,12 +223,12 @@ export const HandleModelComponent = () => {
                   UploadId: uploadId,
                 };
                 const finished = await finishUpload.mutateAsync(finishBody);
-                if (finished.success) {
+                if (finished.data?.success) {
                   const convertion = await convertModelFile.mutateAsync({
                     modelId: analogueModelId,
                   });
 
-                  if (convertion.success) {
+                  if (convertion.data?.success) {
                     setUploadStatus(UploadingStatus.Success);
                     setUploading(false);
                     setProgress(100);
@@ -242,14 +264,14 @@ export const HandleModelComponent = () => {
           addError(
             'Failed to upload ini file. Make sure ini file is correct and try again',
           );
-          await deleteModel.mutateAsync(analogueModelId);
+          await deleteModel.mutateAsync({ id: analogueModelId });
           setAnalogueModelDefault();
           setUploadStatus(UploadingStatus.NotStarted);
           setUploading(false);
           setProgress(0);
         }
         if (uploadStatus === UploadingStatus.Failed) {
-          await deleteModel.mutateAsync(analogueModelId);
+          await deleteModel.mutateAsync({ id: analogueModelId });
           setAnalogueModelDefault();
           setUploadStatus(UploadingStatus.NotStarted);
           setUploading(false);
