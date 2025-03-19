@@ -12,13 +12,11 @@ import { useState } from 'react';
 import {
   AddStatigraphicGroupForm,
   CountryDto,
-  DeleteStratigraphicGroupCommandResponse,
   FieldDto,
-  StratColumnDto,
-  StratUnitDto,
-  // eslint-disable-next-line sort-imports
-  StratigraphicGroupDto,
   postApiV1AnalogueModelsByIdStratigraphicGroups,
+  StratColumnDto,
+  StratigraphicGroupDto,
+  StratUnitDto,
 } from '../../../api/generated';
 import { queryClient } from '../../../auth/queryClient';
 import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
@@ -27,6 +25,7 @@ import { validateInput } from './StratigrapicGroups.hooks';
 import * as Styled from './StratigrapicGroups.styled';
 import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
 import { usePepmContextStore } from '../../../stores/GlobalStore';
+import { useStratColAnalogue } from '../../../hooks/useStratColAnalogue';
 
 export interface StratColumnType {
   country?: CountryDto;
@@ -56,12 +55,8 @@ export type StratColumnErrorType = {
 
 export const StratigrapicGroups = ({
   modelIdParent,
-  deleteStratColRow,
 }: {
   modelIdParent?: string;
-  deleteStratColRow: (
-    stratigraphicGroupId: string,
-  ) => Promise<DeleteStratigraphicGroupCommandResponse | undefined>;
 }) => {
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const {
@@ -75,13 +70,25 @@ export const StratigrapicGroups = ({
   const [showStratColDialog, setShowStratColDialog] = useState<boolean>(false);
   const [errors, setErrors] = useState<StratColumnErrorType>({});
 
+  const useStratCol = useStratColAnalogue();
+
   const filterUnitLevel = (row: StratigraphicGroupDto, level: number) => {
     return row.stratUnits.filter((unit) => unit.level === level);
   };
 
+  const deleteStratColRow = async (stratigraphicGroupId: string) => {
+    if (analogueModel.analogueModelId) {
+      const res = await useStratCol.deleteStratColCase.mutateAsync({
+        analogueModelId: analogueModel.analogueModelId,
+        stratigraphicGroupId: stratigraphicGroupId,
+      });
+      return res;
+    }
+  };
+
   const deleteRow = async (id: string) => {
     const res = await deleteStratColRow(id);
-    if (res?.success) deleteAnalogueModelStratGroup(id);
+    if (res?.data?.success) deleteAnalogueModelStratGroup(id);
     return res;
   };
 

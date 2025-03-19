@@ -7,7 +7,6 @@ import { useParams } from 'react-router-dom';
 import {
   AnalogueModelDetail,
   deleteApiV1AnalogueModelsByAnalogueModelIdGeologicalGroupsByGeologicalGroupId,
-  deleteApiV1AnalogueModelsByAnalogueModelIdStratigraphicGroupsByStratigraphicGroupId,
   GenerateThumbnailCommand,
   postApiV1JobsComputeThumbnailGen,
   putApiV1AnalogueModelsById,
@@ -169,28 +168,6 @@ export const ModelMetadataView = ({
     toggleEditMetadata();
   };
 
-  const deleteStratColCase = useMutation({
-    mutationFn: ({
-      analogueModelId,
-      stratigraphicGroupId,
-    }: {
-      analogueModelId: string;
-      stratigraphicGroupId: string;
-    }) => {
-      return deleteApiV1AnalogueModelsByAnalogueModelIdStratigraphicGroupsByStratigraphicGroupId(
-        {
-          path: {
-            analogueModelId: analogueModelId,
-            stratigraphicGroupId: stratigraphicGroupId,
-          },
-        },
-      );
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['analogue-model'] });
-    },
-  });
-
   const deleteGdeCase = useMutation({
     mutationFn: ({
       analogueModelId,
@@ -213,21 +190,6 @@ export const ModelMetadataView = ({
     },
   });
 
-  const deleteStratColRow = async (stratigraphicGroupId: string) => {
-    if (modelId) {
-      const res = await deleteStratColCase.mutateAsync({
-        analogueModelId: modelId,
-        stratigraphicGroupId: stratigraphicGroupId,
-      });
-      return res;
-    } else if (modelIdParent) {
-      const res = await deleteStratColCase.mutateAsync({
-        analogueModelId: modelIdParent,
-        stratigraphicGroupId: stratigraphicGroupId,
-      });
-      return res.request;
-    }
-  };
   const deleteGdeRow = async (gdeGroupId: string) => {
     if (modelId) {
       const res = await deleteGdeCase.mutateAsync({
@@ -390,10 +352,7 @@ export const ModelMetadataView = ({
         <OutcropAnalogueGroup modelIdParent={modelIdParent} />
       </div>
       <div>
-        <StratigrapicGroups
-          modelIdParent={modelIdParent}
-          deleteStratColRow={deleteStratColRow}
-        />
+        <StratigrapicGroups modelIdParent={modelIdParent} />
       </div>
       <div>
         <GrossDepositionEnviromentGroup
