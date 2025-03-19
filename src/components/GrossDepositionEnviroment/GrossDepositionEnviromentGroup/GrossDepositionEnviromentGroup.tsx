@@ -7,22 +7,18 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { delete_to_trash as deleteIcon } from '@equinor/eds-icons';
-import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import {
   AddGeologicalGroupForm,
-  DeleteGeologicalGroupCommandResponse,
   GeologicalStandardDto,
-  postApiV1AnalogueModelsByIdGeologicalGroups,
 } from '../../../api/generated';
-import { queryClient } from '../../../auth/queryClient';
 import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
 import { GdeSelect } from '../GdeSelect/GdeSelect';
 import * as Styled from './GrossDepositionEnviromentGroup.styled';
-
 import { validateInput } from './GDE.hooks';
 import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
 import { usePepmContextStore } from '../../../stores/GlobalStore';
+import { useGdeAnalogue } from '../../../hooks/useGdeAnalogue';
 
 export interface GdeType {
   grossDepEnv?: GeologicalStandardDto;
@@ -45,12 +41,8 @@ export type GDEErrorType = {
 };
 export const GrossDepositionEnviromentGroup = ({
   modelIdParent,
-  deleteGdeRow,
 }: {
   modelIdParent?: string;
-  deleteGdeRow: (
-    geologicalGroupId: string,
-  ) => Promise<DeleteGeologicalGroupCommandResponse | undefined>;
 }) => {
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const { analogueModel, addAnalogueModelGde, deleteAnalogueModelGde } =
@@ -59,32 +51,19 @@ export const GrossDepositionEnviromentGroup = ({
   const [gdeObject, setGdeObject] = useState<GdeType>(defaultGdeData);
   const [errors, setErrors] = useState<GDEErrorType>({});
 
+  const useGde = useGdeAnalogue();
+
   const handleGdeDialog = () => {
     setShowGdeDialog(!showGdeDialog);
   };
 
   const handleGdeDelete = async (id: string) => {
-    const res = await deleteGdeRow(id);
-    if (res?.success) deleteAnalogueModelGde(id);
+    const res = await useGde.deleteGde.mutateAsync({
+      analogueModelId: analogueModel.analogueModelId,
+      geologicalGroupId: id,
+    });
+    if (res?.data?.success) deleteAnalogueModelGde(id);
   };
-
-  const postGdeRow = useMutation({
-    mutationFn: ({
-      id,
-      requestBody,
-    }: {
-      id: string;
-      requestBody: AddGeologicalGroupForm;
-    }) => {
-      return postApiV1AnalogueModelsByIdGeologicalGroups({
-        body: requestBody,
-        path: { id: id },
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['analogue-model'] });
-    },
-  });
 
   const handleAddGde = async () => {
     const id = modelIdParent ? modelIdParent : analogueModel.analogueModelId;
@@ -113,7 +92,7 @@ export const GrossDepositionEnviromentGroup = ({
             ? architecturalElementsList
             : [],
       };
-      const rowUpload = await postGdeRow.mutateAsync({
+      const rowUpload = await useGde.postGde.mutateAsync({
         id: id,
         requestBody: postRequestBody,
       });

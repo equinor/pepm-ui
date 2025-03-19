@@ -1,21 +1,21 @@
 import { useMutation } from '@tanstack/react-query';
 import {
-  AddStatigraphicGroupForm,
-  deleteApiV1AnalogueModelsByAnalogueModelIdStratigraphicGroupsByStratigraphicGroupId,
-  postApiV1AnalogueModelsByIdStratigraphicGroups,
+  AddGeologicalGroupForm,
+  deleteApiV1AnalogueModelsByAnalogueModelIdGeologicalGroupsByGeologicalGroupId,
+  postApiV1AnalogueModelsByIdGeologicalGroups,
 } from '../api';
 import { queryClient } from '../auth/queryClient';
 
-export const useStratColAnalogue = () => {
-  const postSmdaMetadata = useMutation({
+export const useGdeAnalogue = () => {
+  const postGde = useMutation({
     mutationFn: ({
       id,
       requestBody,
     }: {
       id: string;
-      requestBody: AddStatigraphicGroupForm;
+      requestBody: AddGeologicalGroupForm;
     }) => {
-      return postApiV1AnalogueModelsByIdStratigraphicGroups({
+      return postApiV1AnalogueModelsByIdGeologicalGroups({
         body: requestBody,
         path: { id: id },
       });
@@ -25,19 +25,19 @@ export const useStratColAnalogue = () => {
     },
   });
 
-  const deleteStratCol = useMutation({
+  const deleteGde = useMutation({
     mutationFn: ({
       analogueModelId,
-      stratigraphicGroupId,
+      geologicalGroupId,
     }: {
       analogueModelId: string;
-      stratigraphicGroupId: string;
+      geologicalGroupId: string;
     }) => {
-      return deleteApiV1AnalogueModelsByAnalogueModelIdStratigraphicGroupsByStratigraphicGroupId(
+      return deleteApiV1AnalogueModelsByAnalogueModelIdGeologicalGroupsByGeologicalGroupId(
         {
           path: {
             analogueModelId: analogueModelId,
-            stratigraphicGroupId: stratigraphicGroupId,
+            geologicalGroupId: geologicalGroupId,
           },
         },
       );
@@ -46,6 +46,5 @@ export const useStratColAnalogue = () => {
       queryClient.invalidateQueries({ queryKey: ['analogue-model'] });
     },
   });
-
-  return { postSmdaMetadata, deleteStratCol };
+  return { postGde, deleteGde };
 };

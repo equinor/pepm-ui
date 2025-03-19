@@ -6,13 +6,11 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   AnalogueModelDetail,
-  deleteApiV1AnalogueModelsByAnalogueModelIdGeologicalGroupsByGeologicalGroupId,
   GenerateThumbnailCommand,
   postApiV1JobsComputeThumbnailGen,
   putApiV1AnalogueModelsById,
   UpdateAnalogueModelCommandBody,
 } from '../../../api/generated';
-import { queryClient } from '../../../auth/queryClient';
 import { GrossDepositionEnviromentGroup } from '../../../components/GrossDepositionEnviroment/GrossDepositionEnviromentGroup/GrossDepositionEnviromentGroup';
 import { OutcropAnalogueGroup } from '../../../components/OutcropAnalogue/OutcropAnalogueGroup/OutcropAnalogueGroup';
 import { StratigrapicGroups } from '../../../components/StrategraphicColumn/StratigrapicGroups/StratigrapicGroups';
@@ -168,44 +166,6 @@ export const ModelMetadataView = ({
     toggleEditMetadata();
   };
 
-  const deleteGdeCase = useMutation({
-    mutationFn: ({
-      analogueModelId,
-      geologicalGroupId,
-    }: {
-      analogueModelId: string;
-      geologicalGroupId: string;
-    }) => {
-      return deleteApiV1AnalogueModelsByAnalogueModelIdGeologicalGroupsByGeologicalGroupId(
-        {
-          path: {
-            analogueModelId: analogueModelId,
-            geologicalGroupId: geologicalGroupId,
-          },
-        },
-      );
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['analogue-model'] });
-    },
-  });
-
-  const deleteGdeRow = async (gdeGroupId: string) => {
-    if (modelId) {
-      const res = await deleteGdeCase.mutateAsync({
-        analogueModelId: modelId,
-        geologicalGroupId: gdeGroupId,
-      });
-      return res;
-    } else if (modelIdParent) {
-      const res = await deleteGdeCase.mutateAsync({
-        analogueModelId: modelIdParent,
-        geologicalGroupId: gdeGroupId,
-      });
-      return res.request;
-    }
-  };
-
   const getModelStatus = () => {
     let status = ModelStatus.UNKNOWN;
 
@@ -355,10 +315,7 @@ export const ModelMetadataView = ({
         <StratigrapicGroups modelIdParent={modelIdParent} />
       </div>
       <div>
-        <GrossDepositionEnviromentGroup
-          modelIdParent={modelIdParent}
-          deleteGdeRow={deleteGdeRow}
-        />
+        <GrossDepositionEnviromentGroup modelIdParent={modelIdParent} />
       </div>
     </Styled.Wrapper>
   );
