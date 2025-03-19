@@ -186,7 +186,7 @@ export const CaseGroup = ({
       });
       if (res.data?.success)
         updateLocalCaseList && updateLocalCaseList(methodName, false);
-      return res.request;
+      return res.data;
     }
   };
 
@@ -205,7 +205,7 @@ export const CaseGroup = ({
         computeCaseId: computeCaseId,
         requestBody: caseRequestBody,
       });
-      return res.request;
+      return res.data;
     }
   };
 
@@ -219,7 +219,7 @@ export const CaseGroup = ({
           id: modelId,
           computeCaseId: computeCaseId,
         });
-        return res.request;
+        return res.data;
       }
     }
   };

@@ -7,26 +7,22 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { delete_to_trash as deleteIcon } from '@equinor/eds-icons';
-import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import {
   AddStatigraphicGroupForm,
   CountryDto,
-  DeleteStratigraphicGroupCommandResponse,
   FieldDto,
   StratColumnDto,
-  StratUnitDto,
-  // eslint-disable-next-line sort-imports
   StratigraphicGroupDto,
-  postApiV1AnalogueModelsByIdStratigraphicGroups,
+  StratUnitDto,
 } from '../../../api/generated';
-import { queryClient } from '../../../auth/queryClient';
 import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
 import { StratigraphicColumnSelect } from '../StratigraphicColumnSelect/StratigraphicColumnSelect';
 import { validateInput } from './StratigrapicGroups.hooks';
 import * as Styled from './StratigrapicGroups.styled';
 import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
 import { usePepmContextStore } from '../../../stores/GlobalStore';
+import { useStratColAnalogue } from '../../../hooks/useStratColAnalogue';
 
 export interface StratColumnType {
   country?: CountryDto;
@@ -56,12 +52,8 @@ export type StratColumnErrorType = {
 
 export const StratigrapicGroups = ({
   modelIdParent,
-  deleteStratColRow,
 }: {
   modelIdParent?: string;
-  deleteStratColRow: (
-    stratigraphicGroupId: string,
-  ) => Promise<DeleteStratigraphicGroupCommandResponse | undefined>;
 }) => {
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const {
@@ -75,33 +67,27 @@ export const StratigrapicGroups = ({
   const [showStratColDialog, setShowStratColDialog] = useState<boolean>(false);
   const [errors, setErrors] = useState<StratColumnErrorType>({});
 
+  const useStratCol = useStratColAnalogue();
+
   const filterUnitLevel = (row: StratigraphicGroupDto, level: number) => {
     return row.stratUnits.filter((unit) => unit.level === level);
   };
 
-  const deleteRow = async (id: string) => {
-    const res = await deleteStratColRow(id);
-    if (res?.success) deleteAnalogueModelStratGroup(id);
-    return res;
+  const deleteStratColRow = async (stratigraphicGroupId: string) => {
+    if (analogueModel.analogueModelId) {
+      const res = await useStratCol.deleteStratCol.mutateAsync({
+        analogueModelId: analogueModel.analogueModelId,
+        stratigraphicGroupId: stratigraphicGroupId,
+      });
+      return res;
+    }
   };
 
-  const postSmdaMetadataRow = useMutation({
-    mutationFn: ({
-      id,
-      requestBody,
-    }: {
-      id: string;
-      requestBody: AddStatigraphicGroupForm;
-    }) => {
-      return postApiV1AnalogueModelsByIdStratigraphicGroups({
-        body: requestBody,
-        path: { id: id },
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['analogue-model'] });
-    },
-  });
+  const deleteRow = async (id: string) => {
+    const res = await deleteStratColRow(id);
+    if (res?.data?.success) deleteAnalogueModelStratGroup(id);
+    return res;
+  };
 
   const handleAddStratCol = async () => {
     const id = modelIdParent ? modelIdParent : analogueModel.analogueModelId;
@@ -137,7 +123,7 @@ export const StratigrapicGroups = ({
         stratigraphicUnitIds: stratUnitList.length > 0 ? stratUnitList : [],
       };
 
-      const rowUpload = await postSmdaMetadataRow.mutateAsync({
+      const rowUpload = await useStratCol.postSmdaMetadata.mutateAsync({
         id: id,
         requestBody: postRequestBody,
       });
