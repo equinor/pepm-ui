@@ -1,5 +1,37 @@
 # Changelog
 
+## [1.8.0](https://github.com/equinor/pepm-ui/compare/v1.7.1...v1.8.0) (2025-03-19)
+
+
+### 🧹 Chores
+
+* Disabled max lines for 2 files so that i could commit :) ([#440](https://github.com/equinor/pepm-ui/issues/440)) ([accaa42](https://github.com/equinor/pepm-ui/commit/accaa42f40254c992199118f77c45565f5f48a1e))
+* radixconfonfig update for production ([949007d](https://github.com/equinor/pepm-ui/commit/949007ddd99b7a7351b86fab944e2f0ddb8d98f9))
+
+
+### ✨ Features
+
+* added error checking for ini file and rewrote upload components ([#452](https://github.com/equinor/pepm-ui/issues/452)) ([74340fa](https://github.com/equinor/pepm-ui/commit/74340facad44ad8d8795243cd3d668cbc617d883))
+* Added filter on status ([#450](https://github.com/equinor/pepm-ui/issues/450)) ([fd5a636](https://github.com/equinor/pepm-ui/commit/fd5a6361789fbb3798a5ed2910927ed9cfddd7a1))
+* Added image gen message if transforming ([#443](https://github.com/equinor/pepm-ui/issues/443)) ([1228a0f](https://github.com/equinor/pepm-ui/commit/1228a0fc6845469437dc2ee592db03c9b4014eef))
+* Added link to api ([#448](https://github.com/equinor/pepm-ui/issues/448)) ([fbaa785](https://github.com/equinor/pepm-ui/commit/fbaa7850f235c9e6f0707ff3bed773d526eca720))
+* Added loading icon while waiting for download response ([#441](https://github.com/equinor/pepm-ui/issues/441)) ([c2f5b5e](https://github.com/equinor/pepm-ui/commit/c2f5b5ea5416b34d5ccd6080029b7d5f12102304))
+* Added multi select filtering on browse page ([#444](https://github.com/equinor/pepm-ui/issues/444)) ([95ac5d8](https://github.com/equinor/pepm-ui/commit/95ac5d8d9c5cbbfb0c6e2b547d7416fe09fad6b6))
+* Added tooltip on failed case. Fixed cancel color for variogram cases ([#439](https://github.com/equinor/pepm-ui/issues/439)) ([7b5fda0](https://github.com/equinor/pepm-ui/commit/7b5fda027d2a7313ebea7815c98ef0bf1a969625))
+* Removed openapi-typescript and added new openapi library ([#446](https://github.com/equinor/pepm-ui/issues/446)) ([16dd5c9](https://github.com/equinor/pepm-ui/commit/16dd5c90ee3ce6482c615e243422adac72499d4a))
+* rework of compute feature ([#433](https://github.com/equinor/pepm-ui/issues/433)) ([d0dbc1a](https://github.com/equinor/pepm-ui/commit/d0dbc1abdacca460ee0ebbd6f9af42459817c5da))
+
+
+### 🐛 Bug Fixes
+
+* Clean up the application header ([#429](https://github.com/equinor/pepm-ui/issues/429)) ([f606818](https://github.com/equinor/pepm-ui/commit/f60681819af3d95bb19ed6f1d39e2c8140d6a1ad))
+* compute logic ([#438](https://github.com/equinor/pepm-ui/issues/438)) ([7932750](https://github.com/equinor/pepm-ui/commit/79327508883f46ddb224d8abfbb272c4bc3db271))
+* fixed missing expand ([0526514](https://github.com/equinor/pepm-ui/commit/0526514746f0ddd5bda960e00a84267a78e39114))
+* Repair checkbox column on models page ([#449](https://github.com/equinor/pepm-ui/issues/449)) ([9cb7e98](https://github.com/equinor/pepm-ui/commit/9cb7e9864337d2b9b13ab35c32de25244c6c244b))
+* state bugs ([#456](https://github.com/equinor/pepm-ui/issues/456)) ([898cea5](https://github.com/equinor/pepm-ui/commit/898cea54b228581c5710fb5373b35b0c3e457549))
+* updated name mapping for results, added required for ini-file ([#436](https://github.com/equinor/pepm-ui/issues/436)) ([d84ff24](https://github.com/equinor/pepm-ui/commit/d84ff24a0eddeb98ebaf30859fb2425230d69ea4))
+* updated urls ([e982192](https://github.com/equinor/pepm-ui/commit/e9821923905c30d97640ad46e618b836a1c05bfd))
+
 ## [1.7.1](https://github.com/equinor/pepm-ui/compare/v1.7.0...v1.7.1) (2025-01-24)
 
 
