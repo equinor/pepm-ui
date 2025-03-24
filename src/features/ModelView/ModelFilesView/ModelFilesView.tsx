@@ -21,59 +21,56 @@ import { useState } from 'react';
 
 export const ModelFilesView = () => {
   const { analogueModel } = usePepmContextStore();
-  const [isLoadingNc, setIsLoadingNc] = useState<boolean>(false);
-  const [isLoadingIni, setIsLoadingIni] = useState<boolean>(false);
-  const [isLoadingResqml, setIsLoadingResqml] = useState<boolean>(false);
+  const [isLoadingNc, setIsLoadingNc] = useState<number>(0);
+  const [isLoadingIni, setIsLoadingIni] = useState<number>(0);
+  const [isLoadingResqml, setIsLoadingResqml] = useState<number>(0);
 
   if (analogueModel === analogueModelDefault) return <p>Loading ...</p>;
 
   const downloadFile = async (fileType: UploadFileType) => {
     switch (fileType) {
       case UploadFileType.NET_CDF:
-        setIsLoadingNc(true);
-        await GetFetchNcFileAxios(analogueModel);
-        setIsLoadingNc(false);
+        await GetFetchNcFileAxios(analogueModel, setIsLoadingNc);
+        setIsLoadingNc(0);
         break;
       case UploadFileType.INI_DATA:
-        setIsLoadingIni(true);
-        await GetFetchIniFileAxios(analogueModel);
-        setIsLoadingIni(false);
+        await GetFetchIniFileAxios(analogueModel, setIsLoadingIni);
+        setIsLoadingIni(0);
         break;
       case UploadFileType.RES_QML_DATA:
-        setIsLoadingResqml(true);
-        await GetFetchResqmlFileAxios(analogueModel);
-        setIsLoadingResqml(false);
+        await GetFetchResqmlFileAxios(analogueModel, setIsLoadingResqml);
+        setIsLoadingResqml(0);
         break;
     }
     return;
   };
 
   const iconButtons = (fileType: UploadFileType) => {
-    if (isLoadingNc && fileType === UploadFileType.NET_CDF)
+    if (isLoadingNc !== 0 && fileType === UploadFileType.NET_CDF)
       return (
         <CircularProgress
           color="primary"
           size={24}
-          value={100}
-          variant="indeterminate"
+          value={isLoadingNc}
+          variant="determinate"
         />
       );
-    if (isLoadingIni && fileType === UploadFileType.INI_DATA)
+    if (isLoadingIni !== 0 && fileType === UploadFileType.INI_DATA)
       return (
         <CircularProgress
           color="primary"
           size={24}
-          value={100}
-          variant="indeterminate"
+          value={isLoadingIni}
+          variant="determinate"
         />
       );
-    if (isLoadingResqml && fileType === UploadFileType.RES_QML_DATA)
+    if (isLoadingResqml !== 0 && fileType === UploadFileType.RES_QML_DATA)
       return (
         <CircularProgress
           color="primary"
           size={24}
-          value={100}
-          variant="indeterminate"
+          value={isLoadingResqml}
+          variant="determinate"
         />
       );
 

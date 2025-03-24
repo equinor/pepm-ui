@@ -4,6 +4,7 @@ import axios from 'axios';
 
 export const GetFetchIniFileAxios = async (
   analogueModel: AnalogueModelDetail,
+  setIsLoadingIni: React.Dispatch<React.SetStateAction<number>>,
 ) => {
   const response = await axios.get(
     `/api/v1/downloads/${analogueModel.analogueModelId}/ini`,
@@ -11,6 +12,13 @@ export const GetFetchIniFileAxios = async (
       headers: { Authorization: `Bearer ${client.getConfig().auth}` },
       responseType: 'blob', // response type of blob to handle images
       baseURL: client.getConfig().baseURL,
+      onDownloadProgress: (progressEvent) => {
+        const percentCompleted = Math.round(
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          (progressEvent.loaded * 100) / progressEvent.total!,
+        );
+        setIsLoadingIni(percentCompleted);
+      },
     },
   );
 
@@ -36,6 +44,7 @@ export const GetFetchIniFileAxios = async (
 
 export const GetFetchNcFileAxios = async (
   analogueModel: AnalogueModelDetail,
+  setIsLoadingNc: React.Dispatch<React.SetStateAction<number>>,
 ) => {
   const response = await axios.get(
     `/api/v1/downloads/${analogueModel.analogueModelId}/nc`,
@@ -43,6 +52,13 @@ export const GetFetchNcFileAxios = async (
       headers: { Authorization: `Bearer ${client.getConfig().auth}` },
       responseType: 'blob', // response type of blob to handle images
       baseURL: client.getConfig().baseURL,
+      onDownloadProgress: (progressEvent) => {
+        const percentCompleted = Math.round(
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          (progressEvent.loaded * 100) / progressEvent.total!,
+        );
+        setIsLoadingNc(percentCompleted);
+      },
     },
   );
 
@@ -68,6 +84,7 @@ export const GetFetchNcFileAxios = async (
 
 export const GetFetchResqmlFileAxios = async (
   analogueModel: AnalogueModelDetail,
+  setIsLoadingResqml: React.Dispatch<React.SetStateAction<number>>,
 ) => {
   const response = await axios.get(
     `/api/v1/downloads/${analogueModel.analogueModelId}/resqml`,
@@ -75,6 +92,13 @@ export const GetFetchResqmlFileAxios = async (
       headers: { Authorization: `Bearer ${client.getConfig().auth}` },
       responseType: 'blob', // response type of blob to handle images
       baseURL: client.getConfig().baseURL,
+      onDownloadProgress: (progressEvent) => {
+        const percentCompleted = Math.round(
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          (progressEvent.loaded * 100) / progressEvent.total!,
+        );
+        setIsLoadingResqml(percentCompleted);
+      },
     },
   );
 
