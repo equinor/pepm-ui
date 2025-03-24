@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/equinor/pepm-ui/compare/v1.8.0...v1.9.0) (2025-03-24)
+
+
+### ✨ Features
+
+* Added progression when downloading file ([#459](https://github.com/equinor/pepm-ui/issues/459)) ([f88cb39](https://github.com/equinor/pepm-ui/commit/f88cb396534f16fa4c33ed7a940e1cf8904f508f))
+
 ## [1.8.0](https://github.com/equinor/pepm-ui/compare/v1.7.1...v1.8.0) (2025-03-19)
 
 
