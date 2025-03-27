@@ -14,6 +14,8 @@ import { CaseSettingSelect } from '../CaseSettingSelects/CaseSettingSelect';
 import { ModelAreaSelect } from '../CaseSettingSelects/ModelAreaSelect';
 import * as Styled from '../CaseSettingSelects/SettingSelect.styled';
 import { ViewSelectedVariogramSettings } from '../ViewSelectedVariogramSettings/ViewSelectedVariogramSettings';
+import { useCaseRowStore } from '../../../../../stores/CaseRowStore';
+import { Variants } from '@equinor/eds-core-react/dist/types/components/types';
 
 export const VariogramOptionSelect = ({
   rowCase,
@@ -41,7 +43,6 @@ export const VariogramOptionSelect = ({
   indicatorIndicatorSettings,
   existingCases,
   saved,
-  caseError,
   selectedParamValue,
 }: {
   rowCase: ComputeCaseDto;
@@ -82,10 +83,21 @@ export const VariogramOptionSelect = ({
   contParamsArchelSettings?: ListComputeSettingsModelDto[] | undefined;
   existingCases: ComputeCaseDto[];
   saved: boolean;
-  caseError: string;
   selectedParamValue: (method: string) => ListComputeSettingsModelDto[];
 }) => {
   const [expandSettings, setExpandSettings] = useState<boolean>(false);
+  const {
+    indicatorParams,
+    indicatorVariogramModel,
+    netToGrossGrain,
+    netToGrossVariogramModel,
+    contParamParameters,
+    contParamArchel,
+    contParamVariogramModel,
+    indicatorModelArea,
+    netToGrossModelArea,
+    contParamModelArea,
+  } = useCaseRowStore();
 
   const getDefaultParameters = (
     loadedParameters: ListComputeSettingsModelDto[],
@@ -140,6 +152,16 @@ export const VariogramOptionSelect = ({
     setExpandSettings(!expandSettings);
   };
 
+  const modelAreaVariant = (): Variants | undefined => {
+    if (!indicatorModelArea && caseType === ComputeMethod.INDICATOR)
+      return 'error';
+    if (!netToGrossModelArea && caseType === ComputeMethod.NET_TO_GROSS)
+      return 'error';
+    if (!contParamModelArea && caseType === ComputeMethod.CONTINIOUS_PARAMETER)
+      return 'error';
+    return undefined;
+  };
+
   return (
     <Styled.AutocompleteWrapper>
       <Styled.ButtonWrapper>
@@ -161,8 +183,8 @@ export const VariogramOptionSelect = ({
           selectedModelArea={selectedModelArea}
           setModelArea={setModelArea}
           existingCases={existingCases}
-          caseError={caseError}
           caseType="Variogram"
+          variant={modelAreaVariant()}
         />
       </ViewSelectedVariogramSettings>
 
@@ -182,6 +204,7 @@ export const VariogramOptionSelect = ({
               setIfLoadedValues && setIfLoadedValues(InputValueType.INDICATOR)
             }
             setValue={setIndicatorParameters}
+            variant={indicatorParams ? undefined : 'error'}
           />
         </ViewSelectedVariogramSettings>
       )}
@@ -203,6 +226,7 @@ export const VariogramOptionSelect = ({
               setIfLoadedValues(InputValueType.NET_TO_GROSS)
             }
             setValue={setGrainSize}
+            variant={netToGrossGrain ? undefined : 'error'}
           />
         </ViewSelectedVariogramSettings>
       )}
@@ -225,6 +249,7 @@ export const VariogramOptionSelect = ({
                 setIfLoadedValues(InputValueType.ATTRIBUTE_NAME)
               }
               setValue={setContiniousParameters}
+              variant={contParamParameters ? undefined : 'error'}
             />
           </ViewSelectedVariogramSettings>
         )}
@@ -247,6 +272,13 @@ export const VariogramOptionSelect = ({
             setIfLoadedValues && setIfLoadedValues(InputValueType.ARCHEL)
           }
           setValue={setArchelFilter}
+          variant={
+            caseType === ComputeMethod.CONTINIOUS_PARAMETER
+              ? contParamArchel
+                ? undefined
+                : 'error'
+              : undefined
+          }
         />
       </ViewSelectedVariogramSettings>
 
@@ -273,6 +305,21 @@ export const VariogramOptionSelect = ({
             setIfLoadedValues(InputValueType.VARIOGRAM_FAMILY_FILTER)
           }
           setValue={setVariogramModels}
+          variant={
+            caseType === ComputeMethod.NET_TO_GROSS
+              ? netToGrossVariogramModel
+                ? undefined
+                : 'error'
+              : caseType === ComputeMethod.INDICATOR
+              ? indicatorVariogramModel
+                ? undefined
+                : 'error'
+              : caseType === ComputeMethod.CONTINIOUS_PARAMETER
+              ? contParamVariogramModel
+                ? undefined
+                : 'error'
+              : undefined
+          }
         />
       </ViewSelectedVariogramSettings>
     </Styled.AutocompleteWrapper>

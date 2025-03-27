@@ -1,33 +1,31 @@
 /* eslint-disable max-lines-per-function */
-import {
-  Autocomplete,
-  AutocompleteChanges,
-  Label,
-} from '@equinor/eds-core-react';
+import { Autocomplete, AutocompleteChanges } from '@equinor/eds-core-react';
 import { ComputeCaseDto, ModelAreaDto } from '../../../../../api/generated';
 import * as Styled from './SettingSelect.styled';
 import { useIsOwnerOrAdmin } from '../../../../../hooks/useIsOwnerOrAdmin';
+import { Variants } from '@equinor/eds-core-react/dist/types/components/types';
 
 export const ModelAreaSelect = ({
   modelAreas,
   selectedModelArea,
   disableSelect,
   existingCases,
-  caseError,
   caseType,
   setModelArea,
+  variant,
 }: {
   modelAreas: ModelAreaDto[];
   selectedModelArea: ModelAreaDto[] | undefined;
   disableSelect?: boolean;
   existingCases: ComputeCaseDto[];
-  caseError: string;
   caseType?: string;
   setModelArea?: React.Dispatch<
     React.SetStateAction<ModelAreaDto[] | undefined>
   >;
+  variant?: Variants;
 }) => {
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
+
   const filterDisabled = (option: ModelAreaDto) => {
     if (existingCases.length === 0) {
       return false;
@@ -80,10 +78,9 @@ export const ModelAreaSelect = ({
             setModelArea && setModelArea(changes.selectedItems)
           }
           optionDisabled={!caseType ? filterDisabled : undefined}
-          variant={caseError.length > 0 ? 'error' : undefined}
           disabled={!isOwnerOrAdmin}
+          variant={variant}
         />
-        {caseError.length > 0 && <Label label={caseError}></Label>}
       </Styled.Required>
     </Styled.AutocompleteRow>
   );

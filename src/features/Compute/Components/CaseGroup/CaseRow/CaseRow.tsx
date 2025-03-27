@@ -1,7 +1,6 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-depth */
 /* eslint-disable max-lines-per-function */
-import { useState } from 'react';
 import {
   ComputeCaseDto,
   ComputeJobStatus,
@@ -29,6 +28,15 @@ import {
   usePepmContextStore,
 } from '../../../../../stores/GlobalStore';
 import { useGetParameterList } from './hooks/useGetParameterList';
+import { useErrorStore } from '../../../../../stores/ErrorStore';
+import {
+  checkDuplicateType,
+  validateContiniousParameter,
+  validateIndicator,
+  validateModelArea,
+  validateNetToGross,
+} from './hooks/CaseRow.hooks';
+import { useCaseRowStore } from '../../../../../stores/CaseRowStore';
 
 export const CaseRow = ({
   rowCase,
@@ -73,9 +81,25 @@ export const CaseRow = ({
   ) => ListComputeSettingsModelDto[] | undefined;
   duplicateCase?: (id: string) => void;
 }) => {
-  const [caseError, setCaseError] = useState<string>('');
   const { modelId } = useParams<{ modelId: string }>();
   const { analogueModel, computeSettings } = usePepmContextStore();
+  const { addError } = useErrorStore();
+  const {
+    setIndicatorParams,
+    setIndicatorVariogramModel,
+    setIndicatorModelArea,
+    setNetToGrossGrain,
+    setNetToGrossVariogramModel,
+    setNetToGrossModelArea,
+    setContParamParameters,
+    setContParamArchel,
+    setContParamVariogramModel,
+    setContParamModelArea,
+    setObjectModelArea,
+    setChannelModelArea,
+    channelModelArea,
+    objectModelArea,
+  } = useCaseRowStore();
 
   // const indicatorSettings = settingsFilter('Indicator');
   // const netToGrossSettings = settingsFilter('Net-To-Gross');
@@ -124,6 +148,98 @@ export const CaseRow = ({
     selectedContiniousParameters,
     selectedVariogramModels,
   );
+
+  const runValidations = () => {
+    let ret = true;
+    switch (settingMethodType) {
+      case ComputeMethod.INDICATOR:
+        ret = validateIndicator(
+          addError,
+          setIndicatorParams,
+          setIndicatorVariogramModel,
+          selectedIndicatorParameters,
+          selectedVariogramModels,
+        );
+        ret = validateModelArea(
+          addError,
+          setIndicatorModelArea,
+          selectedModelArea,
+        );
+        break;
+      case ComputeMethod.NET_TO_GROSS:
+        ret = validateNetToGross(
+          addError,
+          setNetToGrossGrain,
+          setNetToGrossVariogramModel,
+          selectedGrainSize,
+          selectedVariogramModels,
+        );
+        ret = validateModelArea(
+          addError,
+          setNetToGrossModelArea,
+          selectedModelArea,
+        );
+        break;
+      case ComputeMethod.CONTINIOUS_PARAMETER:
+        ret = validateContiniousParameter(
+          addError,
+          setContParamParameters,
+          setContParamArchel,
+          setContParamVariogramModel,
+          selectedContiniousParameters,
+          selectedArchelFilter,
+          selectedVariogramModels,
+        );
+        ret = validateModelArea(
+          addError,
+          setContParamModelArea,
+          selectedModelArea,
+        );
+        break;
+      case ComputeMethod.MOUTHBAR:
+        ret = validateModelArea(
+          addError,
+          setObjectModelArea,
+          selectedModelArea,
+        );
+        ret = checkDuplicateType(
+          addError,
+          setObjectModelArea,
+          caseList,
+          selectedModelArea,
+          caseType,
+        );
+        break;
+      case ComputeMethod.CHANNEL:
+        ret = validateModelArea(
+          addError,
+          setChannelModelArea,
+          selectedModelArea,
+        );
+        ret = checkDuplicateType(
+          addError,
+          setChannelModelArea,
+          caseList,
+          selectedModelArea,
+          caseType,
+        );
+
+        break;
+    }
+
+    return ret;
+  };
+
+  // useEffect(() => {
+  //   if(indicatorSettings && indicatorSettings.length > 0)
+  //   if(netToGrossSettings && netToGrossSettings.length > 0)
+  //   if(continiousParameterSettings && continiousParameterSettings.length > 0)
+  //   if(selectedIndicatorParameters && selectedIndicatorParameters.length > 0)
+  //   if(selectedArchelFilter && selectedArchelFilter.length > 0)
+  //   if(selectedGrainSize && selectedGrainSize.length > 0)
+  //   if(selectedContiniousParameters && selectedContiniousParameters.length > 0)
+  //   if(selectedVariogramModels && selectedVariogramModels.length > 0)
+  // }, []);
 
   const cancelJob = useMutation({
     mutationFn: (requestBody: PostCancelJobCommand) =>
@@ -186,7 +302,7 @@ export const CaseRow = ({
 
     // Checks if Case already exists in the db
     const caseExists = caseList.filter((c) => c.computeCaseId === id);
-    if (caseExists.length > 0 && updateCase) {
+    if (caseExists.length > 0 && updateCase && runValidations()) {
       // Check if model area has changed
       // Check if the new settings already exists
       const row = allCasesList.filter((c) => c.computeCaseId === id);
@@ -211,19 +327,9 @@ export const CaseRow = ({
         if (
           row[0] !== undefined &&
           selectedModelArea &&
-          selectedModelArea[0].modelAreaId !== ''
+          selectedModelArea[0]?.modelAreaId !== ''
         ) {
-          // filters out cases without defined model area, 'Whole model'
-          // Checks if given model area already exists
-          const checkDuplicateType = caseList
-            .filter((c) => c.modelArea !== null)
-            .filter(
-              (cl) => cl.modelArea.name === selectedModelArea[0].modelAreaType,
-            );
-
-          if (caseType === 'Object' && checkDuplicateType.length > 0) {
-            setCaseError('Duplicate Object case, model area');
-          } else {
+          if (runValidations()) {
             const res = await saveCase(
               selectedModelArea[0].modelAreaId,
               row[0].computeMethod,
@@ -236,13 +342,7 @@ export const CaseRow = ({
             }
           }
         } else {
-          // Case should have no set model area, is a 'whole model' case
-          // Checks if 'whole model' case already exists
-          const checkDuplicate = caseList.filter((c) => c.modelArea === null);
-
-          if (caseType === 'Object' && checkDuplicate.length > 0) {
-            setCaseError('Duplicate Object case, model area');
-          } else if (selectedModelArea !== undefined) {
+          if (runValidations() && selectedModelArea !== undefined) {
             const res = await saveCase(
               '',
               row[0].computeMethod,
@@ -253,8 +353,6 @@ export const CaseRow = ({
               removeLocalCase(id);
               setAlertMessage('New case saved');
             }
-          } else {
-            setCaseError('You must select a model area');
           }
         }
       }
@@ -352,7 +450,6 @@ export const CaseRow = ({
             setVariogramModels={setVariogramModels}
             existingCases={caseList}
             saved={saved}
-            caseError={caseError}
             selectedParamValue={selectedValues}
           />
         )}
@@ -375,7 +472,6 @@ export const CaseRow = ({
             setArchelFilter={setArchelFilter}
             existingCases={caseList}
             saved={saved}
-            caseError={caseError}
             selectedParamValue={selectedValues}
           />
         )}
@@ -400,7 +496,6 @@ export const CaseRow = ({
             setVariogramModels={setVariogramModels}
             existingCases={caseList}
             saved={saved}
-            caseError={caseError}
             selectedParamValue={selectedValues}
           />
         )}
@@ -413,7 +508,9 @@ export const CaseRow = ({
               selectedModelArea={selectedRowArea(rowCase.computeCaseId)}
               setModelArea={setModelArea}
               existingCases={caseList}
-              caseError={caseError}
+              variant={
+                saved ? undefined : channelModelArea ? undefined : 'error'
+              }
             />
           </Styled.AutocompleteWrapper>
         )}
@@ -426,7 +523,9 @@ export const CaseRow = ({
               selectedModelArea={selectedRowArea(rowCase.computeCaseId)}
               setModelArea={setModelArea}
               existingCases={caseList}
-              caseError={caseError}
+              variant={
+                saved ? undefined : objectModelArea ? undefined : 'error'
+              }
             />
           </Styled.AutocompleteWrapper>
         )}

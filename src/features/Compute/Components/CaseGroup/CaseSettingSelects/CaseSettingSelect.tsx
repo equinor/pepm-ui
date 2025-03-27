@@ -6,6 +6,7 @@ import {
   InputValueType,
   ListComputeSettingsModelDto,
 } from '../../../../../api/generated';
+import { Variants } from '@equinor/eds-core-react/dist/types/components/types';
 
 export const CaseSettingSelect = ({
   label,
@@ -14,6 +15,7 @@ export const CaseSettingSelect = ({
   options,
   selectedValue,
   setValue,
+  variant,
 }: {
   label: string;
   settingType?: InputValueType;
@@ -23,6 +25,7 @@ export const CaseSettingSelect = ({
   setValue?: React.Dispatch<
     React.SetStateAction<ListComputeSettingsModelDto[] | undefined>
   >;
+  variant: Variants | undefined;
 }) => {
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const onSelectChange = (
@@ -51,6 +54,7 @@ export const CaseSettingSelect = ({
         selectedOptions={selectedValue}
         onOptionsChange={onSelectChange}
         multiple={settingType !== InputValueType.NET_TO_GROSS}
+        variant={variant}
       ></Autocomplete>
     </Styled.MetadataWrapper>
   );
