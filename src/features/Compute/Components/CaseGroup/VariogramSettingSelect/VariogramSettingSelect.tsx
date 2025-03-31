@@ -14,6 +14,8 @@ import { CaseSettingSelect } from '../CaseSettingSelects/CaseSettingSelect';
 import { ModelAreaSelect } from '../CaseSettingSelects/ModelAreaSelect';
 import * as Styled from '../CaseSettingSelects/SettingSelect.styled';
 import { ViewSelectedVariogramSettings } from '../ViewSelectedVariogramSettings/ViewSelectedVariogramSettings';
+import { Variants } from '@equinor/eds-core-react/dist/types/components/types';
+import { useCaseRowStore } from '../../../../../stores/CaseRowStore';
 
 export const VariogramOptionSelect = ({
   rowCase,
@@ -41,7 +43,6 @@ export const VariogramOptionSelect = ({
   indicatorIndicatorSettings,
   existingCases,
   saved,
-  caseError,
   selectedParamValue,
 }: {
   rowCase: ComputeCaseDto;
@@ -82,10 +83,21 @@ export const VariogramOptionSelect = ({
   contParamsArchelSettings?: ListComputeSettingsModelDto[] | undefined;
   existingCases: ComputeCaseDto[];
   saved: boolean;
-  caseError: string;
   selectedParamValue: (method: string) => ListComputeSettingsModelDto[];
 }) => {
   const [expandSettings, setExpandSettings] = useState<boolean>(false);
+  const {
+    indicatorParams,
+    indicatorVariogramModel,
+    netToGrossGrain,
+    netToGrossVariogramModel,
+    contParamParameters,
+    contParamArchel,
+    contParamVariogramModel,
+    indicatorModelArea,
+    netToGrossModelArea,
+    contParamModelArea,
+  } = useCaseRowStore();
 
   const getDefaultParameters = (
     loadedParameters: ListComputeSettingsModelDto[],
@@ -140,6 +152,102 @@ export const VariogramOptionSelect = ({
     setExpandSettings(!expandSettings);
   };
 
+  const modelAreaVariant = (): Variants | undefined => {
+    if (
+      caseType === ComputeMethod.INDICATOR &&
+      selectedModelArea?.filter((c) => c.modelAreaType !== '').length === 0 &&
+      indicatorModelArea
+    ) {
+      return 'error';
+    }
+    if (
+      caseType === ComputeMethod.NET_TO_GROSS &&
+      selectedModelArea?.filter((c) => c.modelAreaType !== '').length === 0 &&
+      netToGrossModelArea
+    ) {
+      return 'error';
+    }
+    if (
+      caseType === ComputeMethod.CONTINIOUS_PARAMETER &&
+      selectedModelArea?.filter((c) => c.modelAreaType !== '').length === 0 &&
+      contParamModelArea
+    ) {
+      return 'error';
+    }
+    return undefined;
+  };
+
+  const parameterVariant = (): Variants | undefined => {
+    if (
+      caseType === ComputeMethod.INDICATOR &&
+      selectedIndicatorParameters?.filter(
+        (c) => c.inputValueType === InputValueType.INDICATOR,
+      ).length === 0 &&
+      indicatorParams
+    )
+      return 'error';
+
+    if (
+      caseType === ComputeMethod.NET_TO_GROSS &&
+      selectedGrainSize?.filter(
+        (c) => c.inputValueType === InputValueType.NET_TO_GROSS,
+      ).length === 0 &&
+      netToGrossGrain
+    )
+      return 'error';
+
+    if (
+      caseType === ComputeMethod.CONTINIOUS_PARAMETER &&
+      selectedContiniousParameters?.filter(
+        (c) => c.inputValueType === InputValueType.ATTRIBUTE_NAME,
+      ).length === 0 &&
+      contParamParameters
+    )
+      return 'error';
+
+    return undefined;
+  };
+
+  const variogramModelVariant = (): Variants | undefined => {
+    if (
+      caseType === ComputeMethod.INDICATOR &&
+      selectedVariogramModels?.filter((c) => c.computeSettingId !== '')
+        .length === 0 &&
+      indicatorVariogramModel
+    ) {
+      return 'error';
+    }
+    if (
+      caseType === ComputeMethod.NET_TO_GROSS &&
+      selectedVariogramModels?.filter((c) => c.computeSettingId !== '')
+        .length === 0 &&
+      netToGrossVariogramModel
+    ) {
+      return 'error';
+    }
+    if (
+      caseType === ComputeMethod.CONTINIOUS_PARAMETER &&
+      selectedVariogramModels?.filter((c) => c.computeSettingId !== '')
+        .length === 0 &&
+      contParamVariogramModel
+    ) {
+      return 'error';
+    }
+    return undefined;
+  };
+
+  const archelFilterVariant = (): Variants | undefined => {
+    if (
+      caseType === ComputeMethod.CONTINIOUS_PARAMETER &&
+      selectedArchelFilter?.filter((c) => c.computeSettingId !== '').length ===
+        0 &&
+      contParamArchel
+    ) {
+      return 'error';
+    }
+    return undefined;
+  };
+
   return (
     <Styled.AutocompleteWrapper>
       <Styled.ButtonWrapper>
@@ -161,8 +269,8 @@ export const VariogramOptionSelect = ({
           selectedModelArea={selectedModelArea}
           setModelArea={setModelArea}
           existingCases={existingCases}
-          caseError={caseError}
           caseType="Variogram"
+          variant={modelAreaVariant()}
         />
       </ViewSelectedVariogramSettings>
 
@@ -182,6 +290,7 @@ export const VariogramOptionSelect = ({
               setIfLoadedValues && setIfLoadedValues(InputValueType.INDICATOR)
             }
             setValue={setIndicatorParameters}
+            variant={parameterVariant()}
           />
         </ViewSelectedVariogramSettings>
       )}
@@ -203,6 +312,7 @@ export const VariogramOptionSelect = ({
               setIfLoadedValues(InputValueType.NET_TO_GROSS)
             }
             setValue={setGrainSize}
+            variant={parameterVariant()}
           />
         </ViewSelectedVariogramSettings>
       )}
@@ -225,6 +335,7 @@ export const VariogramOptionSelect = ({
                 setIfLoadedValues(InputValueType.ATTRIBUTE_NAME)
               }
               setValue={setContiniousParameters}
+              variant={parameterVariant()}
             />
           </ViewSelectedVariogramSettings>
         )}
@@ -247,6 +358,7 @@ export const VariogramOptionSelect = ({
             setIfLoadedValues && setIfLoadedValues(InputValueType.ARCHEL)
           }
           setValue={setArchelFilter}
+          variant={archelFilterVariant()}
         />
       </ViewSelectedVariogramSettings>
 
@@ -273,6 +385,7 @@ export const VariogramOptionSelect = ({
             setIfLoadedValues(InputValueType.VARIOGRAM_FAMILY_FILTER)
           }
           setValue={setVariogramModels}
+          variant={variogramModelVariant()}
         />
       </ViewSelectedVariogramSettings>
     </Styled.AutocompleteWrapper>
