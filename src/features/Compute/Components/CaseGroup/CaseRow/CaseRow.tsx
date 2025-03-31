@@ -37,6 +37,7 @@ import {
   validateNetToGross,
 } from './hooks/CaseRow.hooks';
 import { useCaseRowStore } from '../../../../../stores/CaseRowStore';
+import { Variants } from '@equinor/eds-core-react/dist/types/components/types';
 
 export const CaseRow = ({
   rowCase,
@@ -99,6 +100,7 @@ export const CaseRow = ({
     setChannelModelArea,
     channelModelArea,
     objectModelArea,
+    resetStates,
   } = useCaseRowStore();
 
   // const indicatorSettings = settingsFilter('Indicator');
@@ -149,97 +151,106 @@ export const CaseRow = ({
     selectedVariogramModels,
   );
 
-  const runValidations = () => {
-    let ret = true;
+  const runValidations = async () => {
+    const ret = [];
     switch (settingMethodType) {
       case ComputeMethod.INDICATOR:
-        ret = validateIndicator(
-          addError,
-          setIndicatorParams,
-          setIndicatorVariogramModel,
-          selectedIndicatorParameters,
-          selectedVariogramModels,
+        ret.push(
+          await validateIndicator(
+            addError,
+            setIndicatorParams,
+            setIndicatorVariogramModel,
+            selectedIndicatorParameters,
+            selectedVariogramModels,
+          ),
         );
-        ret = validateModelArea(
-          addError,
-          setIndicatorModelArea,
-          selectedModelArea,
+        ret.push(
+          await validateModelArea(
+            addError,
+            setIndicatorModelArea,
+            selectedModelArea,
+          ),
         );
         break;
       case ComputeMethod.NET_TO_GROSS:
-        ret = validateNetToGross(
-          addError,
-          setNetToGrossGrain,
-          setNetToGrossVariogramModel,
-          selectedGrainSize,
-          selectedVariogramModels,
+        ret.push(
+          await validateNetToGross(
+            addError,
+            setNetToGrossGrain,
+            setNetToGrossVariogramModel,
+            selectedGrainSize,
+            selectedVariogramModels,
+          ),
         );
-        ret = validateModelArea(
-          addError,
-          setNetToGrossModelArea,
-          selectedModelArea,
+        ret.push(
+          await validateModelArea(
+            addError,
+            setNetToGrossModelArea,
+            selectedModelArea,
+          ),
         );
         break;
       case ComputeMethod.CONTINIOUS_PARAMETER:
-        ret = validateContiniousParameter(
-          addError,
-          setContParamParameters,
-          setContParamArchel,
-          setContParamVariogramModel,
-          selectedContiniousParameters,
-          selectedArchelFilter,
-          selectedVariogramModels,
+        ret.push(
+          await validateContiniousParameter(
+            addError,
+            setContParamParameters,
+            setContParamArchel,
+            setContParamVariogramModel,
+            selectedContiniousParameters,
+            selectedArchelFilter,
+            selectedVariogramModels,
+          ),
         );
-        ret = validateModelArea(
-          addError,
-          setContParamModelArea,
-          selectedModelArea,
+        ret.push(
+          await validateModelArea(
+            addError,
+            setContParamModelArea,
+            selectedModelArea,
+          ),
         );
         break;
       case ComputeMethod.MOUTHBAR:
-        ret = validateModelArea(
-          addError,
-          setObjectModelArea,
-          selectedModelArea,
+        ret.push(
+          await validateModelArea(
+            addError,
+            setObjectModelArea,
+            selectedModelArea,
+          ),
         );
-        ret = checkDuplicateType(
-          addError,
-          setObjectModelArea,
-          caseList,
-          selectedModelArea,
-          caseType,
+        ret.push(
+          await checkDuplicateType(
+            addError,
+            setObjectModelArea,
+            caseList,
+            selectedModelArea,
+            caseType,
+          ),
         );
         break;
       case ComputeMethod.CHANNEL:
-        ret = validateModelArea(
-          addError,
-          setChannelModelArea,
-          selectedModelArea,
+        ret.push(
+          await validateModelArea(
+            addError,
+            setChannelModelArea,
+            selectedModelArea,
+          ),
         );
-        ret = checkDuplicateType(
-          addError,
-          setChannelModelArea,
-          caseList,
-          selectedModelArea,
-          caseType,
+        ret.push(
+          await checkDuplicateType(
+            addError,
+            setChannelModelArea,
+            caseList,
+            selectedModelArea,
+            caseType,
+          ),
         );
 
         break;
     }
 
-    return ret;
+    return !ret.includes(true);
   };
-
-  // useEffect(() => {
-  //   if(indicatorSettings && indicatorSettings.length > 0)
-  //   if(netToGrossSettings && netToGrossSettings.length > 0)
-  //   if(continiousParameterSettings && continiousParameterSettings.length > 0)
-  //   if(selectedIndicatorParameters && selectedIndicatorParameters.length > 0)
-  //   if(selectedArchelFilter && selectedArchelFilter.length > 0)
-  //   if(selectedGrainSize && selectedGrainSize.length > 0)
-  //   if(selectedContiniousParameters && selectedContiniousParameters.length > 0)
-  //   if(selectedVariogramModels && selectedVariogramModels.length > 0)
-  // }, []);
 
   const cancelJob = useMutation({
     mutationFn: (requestBody: PostCancelJobCommand) =>
@@ -302,7 +313,7 @@ export const CaseRow = ({
 
     // Checks if Case already exists in the db
     const caseExists = caseList.filter((c) => c.computeCaseId === id);
-    if (caseExists.length > 0 && updateCase && runValidations()) {
+    if (caseExists.length > 0 && updateCase && (await runValidations())) {
       // Check if model area has changed
       // Check if the new settings already exists
       const row = allCasesList.filter((c) => c.computeCaseId === id);
@@ -329,7 +340,7 @@ export const CaseRow = ({
           selectedModelArea &&
           selectedModelArea[0]?.modelAreaId !== ''
         ) {
-          if (runValidations()) {
+          if (await runValidations()) {
             const res = await saveCase(
               selectedModelArea[0].modelAreaId,
               row[0].computeMethod,
@@ -338,11 +349,12 @@ export const CaseRow = ({
             );
             if (res?.success) {
               removeLocalCase(id);
+              resetStates();
               setAlertMessage('New case saved');
             }
           }
         } else {
-          if (runValidations() && selectedModelArea !== undefined) {
+          if ((await runValidations()) && selectedModelArea !== undefined) {
             const res = await saveCase(
               '',
               row[0].computeMethod,
@@ -351,6 +363,7 @@ export const CaseRow = ({
             );
             if (res?.success) {
               removeLocalCase(id);
+              resetStates();
               setAlertMessage('New case saved');
             }
           }
@@ -427,6 +440,28 @@ export const CaseRow = ({
     continiousParameterSettings,
     InputValueType.ARCHEL,
   );
+
+  const variantChannel = (): Variants | undefined => {
+    if (
+      !saved &&
+      selectedModelArea?.filter((c) => c.modelAreaType !== '').length === 0 &&
+      channelModelArea
+    )
+      return 'error';
+
+    return undefined;
+  };
+
+  const variantObject = (): Variants | undefined => {
+    if (
+      !saved &&
+      selectedModelArea?.filter((c) => c.modelAreaType === '').length !== 0 &&
+      objectModelArea
+    )
+      return 'error';
+
+    return undefined;
+  };
 
   if (analogueModel === analogueModelDefault) return <p>Loading ...</p>;
 
@@ -508,9 +543,7 @@ export const CaseRow = ({
               selectedModelArea={selectedRowArea(rowCase.computeCaseId)}
               setModelArea={setModelArea}
               existingCases={caseList}
-              variant={
-                saved ? undefined : channelModelArea ? undefined : 'error'
-              }
+              variant={variantChannel()}
             />
           </Styled.AutocompleteWrapper>
         )}
@@ -523,9 +556,7 @@ export const CaseRow = ({
               selectedModelArea={selectedRowArea(rowCase.computeCaseId)}
               setModelArea={setModelArea}
               existingCases={caseList}
-              variant={
-                saved ? undefined : objectModelArea ? undefined : 'error'
-              }
+              variant={variantObject()}
             />
           </Styled.AutocompleteWrapper>
         )}

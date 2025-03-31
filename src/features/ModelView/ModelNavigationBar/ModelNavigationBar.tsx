@@ -10,6 +10,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { VariogramIcon } from '../../../assets/VaritogramIcon';
 import * as Styled from './ModelNavigationBar.styled';
 import { usePepmContextStore } from '../../../stores/GlobalStore';
+import { useCaseRowStore } from '../../../stores/CaseRowStore';
 
 type MenuItems = SidebarLinkProps & {
   subItems?: Array<{
@@ -23,6 +24,7 @@ type MenuItems = SidebarLinkProps & {
 
 export const ModelNavigationBar = () => {
   const { setAnalogueModelDefault } = usePepmContextStore();
+  const { resetStates } = useCaseRowStore();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -95,6 +97,7 @@ export const ModelNavigationBar = () => {
           icon={backItems.icon}
           onClick={() => {
             setAnalogueModelDefault();
+            resetStates();
             navigate('/');
           }}
         ></Styled.Back>

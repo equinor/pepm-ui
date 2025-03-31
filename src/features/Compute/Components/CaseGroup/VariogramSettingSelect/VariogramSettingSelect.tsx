@@ -14,8 +14,8 @@ import { CaseSettingSelect } from '../CaseSettingSelects/CaseSettingSelect';
 import { ModelAreaSelect } from '../CaseSettingSelects/ModelAreaSelect';
 import * as Styled from '../CaseSettingSelects/SettingSelect.styled';
 import { ViewSelectedVariogramSettings } from '../ViewSelectedVariogramSettings/ViewSelectedVariogramSettings';
-import { useCaseRowStore } from '../../../../../stores/CaseRowStore';
 import { Variants } from '@equinor/eds-core-react/dist/types/components/types';
+import { useCaseRowStore } from '../../../../../stores/CaseRowStore';
 
 export const VariogramOptionSelect = ({
   rowCase,
@@ -153,12 +153,98 @@ export const VariogramOptionSelect = ({
   };
 
   const modelAreaVariant = (): Variants | undefined => {
-    if (!indicatorModelArea && caseType === ComputeMethod.INDICATOR)
+    if (
+      caseType === ComputeMethod.INDICATOR &&
+      selectedModelArea?.filter((c) => c.modelAreaType !== '').length === 0 &&
+      indicatorModelArea
+    ) {
       return 'error';
-    if (!netToGrossModelArea && caseType === ComputeMethod.NET_TO_GROSS)
+    }
+    if (
+      caseType === ComputeMethod.NET_TO_GROSS &&
+      selectedModelArea?.filter((c) => c.modelAreaType !== '').length === 0 &&
+      netToGrossModelArea
+    ) {
       return 'error';
-    if (!contParamModelArea && caseType === ComputeMethod.CONTINIOUS_PARAMETER)
+    }
+    if (
+      caseType === ComputeMethod.CONTINIOUS_PARAMETER &&
+      selectedModelArea?.filter((c) => c.modelAreaType !== '').length === 0 &&
+      contParamModelArea
+    ) {
       return 'error';
+    }
+    return undefined;
+  };
+
+  const parameterVariant = (): Variants | undefined => {
+    if (
+      caseType === ComputeMethod.INDICATOR &&
+      selectedIndicatorParameters?.filter(
+        (c) => c.inputValueType === InputValueType.INDICATOR,
+      ).length === 0 &&
+      indicatorParams
+    )
+      return 'error';
+
+    if (
+      caseType === ComputeMethod.NET_TO_GROSS &&
+      selectedGrainSize?.filter(
+        (c) => c.inputValueType === InputValueType.NET_TO_GROSS,
+      ).length === 0 &&
+      netToGrossGrain
+    )
+      return 'error';
+
+    if (
+      caseType === ComputeMethod.CONTINIOUS_PARAMETER &&
+      selectedContiniousParameters?.filter(
+        (c) => c.inputValueType === InputValueType.ATTRIBUTE_NAME,
+      ).length === 0 &&
+      contParamParameters
+    )
+      return 'error';
+
+    return undefined;
+  };
+
+  const variogramModelVariant = (): Variants | undefined => {
+    if (
+      caseType === ComputeMethod.INDICATOR &&
+      selectedVariogramModels?.filter((c) => c.computeSettingId !== '')
+        .length === 0 &&
+      indicatorVariogramModel
+    ) {
+      return 'error';
+    }
+    if (
+      caseType === ComputeMethod.NET_TO_GROSS &&
+      selectedVariogramModels?.filter((c) => c.computeSettingId !== '')
+        .length === 0 &&
+      netToGrossVariogramModel
+    ) {
+      return 'error';
+    }
+    if (
+      caseType === ComputeMethod.CONTINIOUS_PARAMETER &&
+      selectedVariogramModels?.filter((c) => c.computeSettingId !== '')
+        .length === 0 &&
+      contParamVariogramModel
+    ) {
+      return 'error';
+    }
+    return undefined;
+  };
+
+  const archelFilterVariant = (): Variants | undefined => {
+    if (
+      caseType === ComputeMethod.CONTINIOUS_PARAMETER &&
+      selectedArchelFilter?.filter((c) => c.computeSettingId !== '').length ===
+        0 &&
+      contParamArchel
+    ) {
+      return 'error';
+    }
     return undefined;
   };
 
@@ -204,7 +290,7 @@ export const VariogramOptionSelect = ({
               setIfLoadedValues && setIfLoadedValues(InputValueType.INDICATOR)
             }
             setValue={setIndicatorParameters}
-            variant={indicatorParams ? undefined : 'error'}
+            variant={parameterVariant()}
           />
         </ViewSelectedVariogramSettings>
       )}
@@ -226,7 +312,7 @@ export const VariogramOptionSelect = ({
               setIfLoadedValues(InputValueType.NET_TO_GROSS)
             }
             setValue={setGrainSize}
-            variant={netToGrossGrain ? undefined : 'error'}
+            variant={parameterVariant()}
           />
         </ViewSelectedVariogramSettings>
       )}
@@ -249,7 +335,7 @@ export const VariogramOptionSelect = ({
                 setIfLoadedValues(InputValueType.ATTRIBUTE_NAME)
               }
               setValue={setContiniousParameters}
-              variant={contParamParameters ? undefined : 'error'}
+              variant={parameterVariant()}
             />
           </ViewSelectedVariogramSettings>
         )}
@@ -272,13 +358,7 @@ export const VariogramOptionSelect = ({
             setIfLoadedValues && setIfLoadedValues(InputValueType.ARCHEL)
           }
           setValue={setArchelFilter}
-          variant={
-            caseType === ComputeMethod.CONTINIOUS_PARAMETER
-              ? contParamArchel
-                ? undefined
-                : 'error'
-              : undefined
-          }
+          variant={archelFilterVariant()}
         />
       </ViewSelectedVariogramSettings>
 
@@ -305,21 +385,7 @@ export const VariogramOptionSelect = ({
             setIfLoadedValues(InputValueType.VARIOGRAM_FAMILY_FILTER)
           }
           setValue={setVariogramModels}
-          variant={
-            caseType === ComputeMethod.NET_TO_GROSS
-              ? netToGrossVariogramModel
-                ? undefined
-                : 'error'
-              : caseType === ComputeMethod.INDICATOR
-              ? indicatorVariogramModel
-                ? undefined
-                : 'error'
-              : caseType === ComputeMethod.CONTINIOUS_PARAMETER
-              ? contParamVariogramModel
-                ? undefined
-                : 'error'
-              : undefined
-          }
+          variant={variogramModelVariant()}
         />
       </ViewSelectedVariogramSettings>
     </Styled.AutocompleteWrapper>

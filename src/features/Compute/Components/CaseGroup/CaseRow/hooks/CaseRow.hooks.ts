@@ -4,57 +4,52 @@ import {
   ListComputeSettingsModelDto,
   ModelAreaDto,
 } from '../../../../../../api';
-// import { useCaseRowStore } from '../../../../../../stores/CaseRowStore';
 
-export const validateIndicator = (
+export const validateIndicator = async (
   addError: (message: string) => void,
   setIndicatorParams: (bool: boolean) => void,
   setIndicatorVariogramModel: (bool: boolean) => void,
   selectedIndicatorParameters: ListComputeSettingsModelDto[] | undefined,
   selectedVariogramModels: ListComputeSettingsModelDto[] | undefined,
 ) => {
-  let ret = true;
-  setIndicatorParams(true);
-  setIndicatorVariogramModel(true);
+  let ret = false;
 
   if (selectedIndicatorParameters?.length === 0) {
     addError('Indicator parameters not selected!');
-    setIndicatorParams(false);
-    ret = false;
+    setIndicatorParams(true);
+    ret = true;
   }
   if (selectedVariogramModels?.length === 0) {
     addError('Indicator variogram model not selected!');
-    setIndicatorVariogramModel(false);
-    ret = false;
+    setIndicatorVariogramModel(true);
+    ret = true;
   }
   return ret;
 };
 
-export const validateNetToGross = (
+export const validateNetToGross = async (
   addError: (message: string) => void,
   setNetToGrossGrain: (bool: boolean) => void,
   setNetToGrossVariogramModel: (bool: boolean) => void,
   selectedGrainSize: ListComputeSettingsModelDto[] | undefined,
   selectedVariogramModels: ListComputeSettingsModelDto[] | undefined,
 ) => {
-  let ret = true;
-  setNetToGrossGrain(true);
-  setNetToGrossVariogramModel(true);
+  let ret = false;
 
   if (selectedGrainSize?.length === 0) {
     addError('Net-to-gross grain size not selected!');
-    setNetToGrossGrain(false);
-    ret = false;
+    setNetToGrossGrain(true);
+    ret = true;
   }
   if (selectedVariogramModels?.length === 0) {
     addError('Net-to-gross variogram model not selected!');
-    setNetToGrossVariogramModel(false);
-    ret = false;
+    setNetToGrossVariogramModel(true);
+    ret = true;
   }
   return ret;
 };
 
-export const validateContiniousParameter = (
+export const validateContiniousParameter = async (
   addError: (message: string) => void,
   setContParamParameters: (bool: boolean) => void,
   setContParamArchel: (bool: boolean) => void,
@@ -63,31 +58,28 @@ export const validateContiniousParameter = (
   selectedArchelFilter: ListComputeSettingsModelDto[] | undefined,
   selectedVariogramModels: ListComputeSettingsModelDto[] | undefined,
 ) => {
-  let ret = true;
-  setContParamParameters(true);
-  setContParamArchel(true);
-  setContParamVariogramModel(true);
+  let ret = false;
 
   if (selectedContiniousParameters?.length === 0) {
     addError('Continious parameter parameters not selected!');
-    setContParamParameters(false);
-    ret = false;
+    setContParamParameters(true);
+    ret = true;
   }
   if (selectedArchelFilter?.length === 0) {
     addError('Continious parameter archel filter not selected!');
-    setContParamArchel(false);
-    ret = false;
+    setContParamArchel(true);
+    ret = true;
   }
   if (selectedVariogramModels?.length === 0) {
     addError('Continious parameter variogram model not selected!');
-    setContParamVariogramModel(false);
-    ret = false;
+    setContParamVariogramModel(true);
+    ret = true;
   }
 
   return ret;
 };
 
-export const checkDuplicateType = (
+export const checkDuplicateType = async (
   addError: (message: string) => void,
   setFunc: (bool: boolean) => void,
   caseList: ComputeCaseDto[],
@@ -101,25 +93,25 @@ export const checkDuplicateType = (
 
     if (caseType === 'Object' && checkDuplicateType.length > 0) {
       addError('Duplicate Object case, model area1');
-      setFunc(false);
-      return false;
+      setFunc(true);
+      return true;
     }
 
-    return true;
+    return false;
   }
 
-  return false;
+  return true;
 };
 
-export const validateModelArea = (
+export const validateModelArea = async (
   addError: (message: string) => void,
   setFunc: (bool: boolean) => void,
   selectedModelArea: ModelAreaDto[] | undefined,
 ) => {
   if (selectedModelArea === undefined || selectedModelArea.length === 0) {
     addError('You must select a model area');
-    setFunc(false);
-    return false;
+    setFunc(true);
+    return true;
   }
-  return true;
+  return false;
 };

@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
 
 import { useCallback, useEffect, useState } from 'react';
@@ -165,16 +166,16 @@ export const useCaseParameters = (
       return loadedParameters;
     },
     [
-      NetGrossGrainSizeSettings,
-      NetGrossVariogramFamilySettings,
-      NetGrossArchelSettings,
-      contParamsArchelSettings,
-      contParamsParamsSettings,
-      contParamsVariogramFamilySettings,
-      indicatorFamilySettings,
       indicatorIndicatorSettings,
       rowCase.computeMethod,
       rowCase.inputSettings,
+      indicatorFamilySettings,
+      NetGrossVariogramFamilySettings,
+      contParamsVariogramFamilySettings,
+      NetGrossGrainSizeSettings,
+      contParamsParamsSettings,
+      NetGrossArchelSettings,
+      contParamsArchelSettings,
     ],
   );
 
@@ -233,12 +234,12 @@ export const useCaseParameters = (
       }
     },
     [
-      selectedArchelFilter,
-      selectedGrainSize,
-      selectedIndicatorParameters,
       selectedParamValue,
-      selectedContiniousParameters,
+      selectedIndicatorParameters,
       selectedVariogramModels,
+      selectedGrainSize,
+      selectedContiniousParameters,
+      selectedArchelFilter,
     ],
   );
 

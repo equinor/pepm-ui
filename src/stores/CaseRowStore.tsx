@@ -30,22 +30,23 @@ type ICaseRowStoreActions = {
   setContParamModelArea: (bool: boolean) => void;
   setChannelModelArea: (bool: boolean) => void;
   setObjectModelArea: (bool: boolean) => void;
+  resetStates: () => void;
 };
 
 export const useCaseRowStore = create<ICaseRowStore & ICaseRowStoreActions>()(
   immer((set) => ({
-    indicatorParams: true,
-    indicatorVariogramModel: true,
-    netToGrossGrain: true,
-    netToGrossVariogramModel: true,
-    contParamParameters: true,
-    contParamArchel: true,
-    contParamVariogramModel: true,
-    indicatorModelArea: true,
-    netToGrossModelArea: true,
-    contParamModelArea: true,
-    channelModelArea: true,
-    objectModelArea: true,
+    indicatorParams: false,
+    indicatorVariogramModel: false,
+    netToGrossGrain: false,
+    netToGrossVariogramModel: false,
+    contParamParameters: false,
+    contParamArchel: false,
+    contParamVariogramModel: false,
+    indicatorModelArea: false,
+    netToGrossModelArea: false,
+    contParamModelArea: false,
+    channelModelArea: false,
+    objectModelArea: false,
     setIndicatorParams: (bool: boolean) =>
       set((state) => {
         state.indicatorParams = bool;
@@ -93,6 +94,21 @@ export const useCaseRowStore = create<ICaseRowStore & ICaseRowStoreActions>()(
     setObjectModelArea: (bool: boolean) =>
       set((state) => {
         state.objectModelArea = bool;
+      }),
+    resetStates: () =>
+      set((state) => {
+        state.indicatorParams = true;
+        state.indicatorVariogramModel = true;
+        state.netToGrossGrain = true;
+        state.netToGrossVariogramModel = true;
+        state.contParamParameters = true;
+        state.contParamArchel = true;
+        state.contParamVariogramModel = true;
+        state.indicatorModelArea = true;
+        state.netToGrossModelArea = true;
+        state.contParamModelArea = true;
+        state.channelModelArea = true;
+        state.objectModelArea = true;
       }),
   })),
 );
