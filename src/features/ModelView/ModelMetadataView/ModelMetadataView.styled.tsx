@@ -57,6 +57,7 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: ${spacings.XXX_LARGE};
+  background-color: ${theme.light.ui.background.light};
 
   table {
     border: 1px solid ${theme.light.ui.background.medium};

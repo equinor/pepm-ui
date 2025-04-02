@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
-import { Button, Typography } from '@equinor/eds-core-react';
+import { Button, Card, Typography } from '@equinor/eds-core-react';
 import { useMutation } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -33,6 +33,8 @@ import { IniParametersDialog } from '../IniParametersDialog/IniParametersDialog'
 import { IniParametersWrapper } from './ModelMetadataView.styled';
 import { ModelStatus } from '../../ModelTable/ModelTable';
 import { UploadingStatus } from '../../../pages/AddModel/stores/AddModelStore';
+import { ModelAreaCoordinates } from '../ModelAreaCoordinates/ModelAreaCoordinates';
+import { CoordinatesDialog } from '../../AreaCoordinates/CoordinatesDialog/CoordinatesDialog';
 
 export const ModelMetadataView = ({
   modelIdParent,
@@ -59,6 +61,7 @@ export const ModelMetadataView = ({
   const stratColumnData = useFetchSmdaStratigraphicColumns();
   const stratUnitData = useFetchSmdaMetadataStratigraphicUnits();
   const geologyStandards = useFetchGrossDepData();
+  const [open, setOpen] = useState<boolean>(false);
 
   const [isAddModelDialog, setAddModelDialog] = useState<boolean>(false);
 
@@ -83,6 +86,10 @@ export const ModelMetadataView = ({
     },
     [generateThumbnail],
   );
+
+  const toggleOpen = () => {
+    setOpen(!open);
+  };
 
   useEffect(() => {
     if (countryData.data?.data?.data) setCountries(countryData.data.data.data);
@@ -197,103 +204,114 @@ export const ModelMetadataView = ({
 
   return (
     <Styled.Wrapper className="metadata-row">
-      {uploadingStatus === undefined && (
-        <Styled.DescriotionImageWrapper>
-          <Styled.DescriptionMeta>
-            <Typography variant="h3">Description</Typography>
-            <>
-              {analogueModel.description && (
-                <Typography variant="body_long">
-                  {analogueModel.description}
-                </Typography>
-              )}
-            </>
+      <Card>
+        <Card.Content>
+          {uploadingStatus === undefined && (
+            <Styled.DescriotionImageWrapper>
+              <Styled.DescriptionMeta>
+                <Typography variant="h3">Description</Typography>
+                <>
+                  {analogueModel.description && (
+                    <Typography variant="body_long">
+                      {analogueModel.description}
+                    </Typography>
+                  )}
+                </>
 
-            {isOwnerOrAdmin && (
-              <Button
-                onClick={toggleEditMetadata}
-                variant="outlined"
-                className="edit-metadata-button"
-              >
-                Edit name and description…
-              </Button>
-            )}
-            <EditNameDescription
-              edit={updateModelMetadata}
-              isEdit={isAddModelDialog}
-              closeDialog={toggleEditMetadata}
-            />
-          </Styled.DescriptionMeta>
-          {analogueModelImageURL && analogueModel !== analogueModelDefault && (
-            <Styled.ModelImageView>
-              <img src={analogueModelImageURL} alt=""></img>
-              <Typography>{analogueModel.name}</Typography>
-            </Styled.ModelImageView>
+                {isOwnerOrAdmin && (
+                  <Button
+                    onClick={toggleEditMetadata}
+                    variant="outlined"
+                    className="edit-metadata-button"
+                  >
+                    Edit name and description…
+                  </Button>
+                )}
+                <EditNameDescription
+                  edit={updateModelMetadata}
+                  isEdit={isAddModelDialog}
+                  closeDialog={toggleEditMetadata}
+                />
+              </Styled.DescriptionMeta>
+              {analogueModelImageURL &&
+                analogueModel !== analogueModelDefault && (
+                  <Styled.ModelImageView>
+                    <img src={analogueModelImageURL} alt=""></img>
+                    <Typography>{analogueModel.name}</Typography>
+                  </Styled.ModelImageView>
+                )}
+              <Styled.ImageMessage>
+                {analogueModel.isProcessed &&
+                  !analogueModelImageURL &&
+                  generateImageRequested.current && (
+                    <div>
+                      <Typography as="p">
+                        We are generating image for this analogue model
+                      </Typography>
+                      <Typography as="p">
+                        Please come back to this page in a couple of minutes
+                      </Typography>
+                    </div>
+                  )}
+                {getModelStatus() === ModelStatus.TRANSFORMING && (
+                  <div>
+                    <Typography as="p">
+                      Model picture will be generated after the model is
+                      transformed.
+                    </Typography>
+                  </div>
+                )}
+                {getModelStatus() === ModelStatus.FAILED_TRANSFORMING && (
+                  <div>
+                    <Typography as="p">
+                      Model transformation failed. Delete the model and upload
+                      again.
+                    </Typography>
+                  </div>
+                )}
+                {!analogueModel.processingStatus && (
+                  <div>
+                    <Typography as="p">
+                      Cannot generate picture for unprocessed model.
+                    </Typography>
+                    <Typography as="p">
+                      If processing failed, delete this model and reupload
+                      again. Else, wait.
+                    </Typography>
+                  </div>
+                )}
+                {!analogueModel.isProcessed && (
+                  <div>
+                    <Typography as="p">
+                      Cannot generate picture for unprocessed model.
+                    </Typography>
+                    <Typography as="p">
+                      If processing failed, delete this model and reupload
+                      again. Else, wait.
+                    </Typography>
+                  </div>
+                )}
+              </Styled.ImageMessage>
+            </Styled.DescriotionImageWrapper>
           )}
-          <Styled.ImageMessage>
-            {analogueModel.isProcessed &&
-              !analogueModelImageURL &&
-              generateImageRequested.current && (
-                <div>
-                  <Typography as="p">
-                    We are generating image for this analogue model
-                  </Typography>
-                  <Typography as="p">
-                    Please come back to this page in a couple of minutes
-                  </Typography>
-                </div>
-              )}
-            {getModelStatus() === ModelStatus.TRANSFORMING && (
-              <div>
-                <Typography as="p">
-                  Model picture will be generated after the model is
-                  transformed.
-                </Typography>
-              </div>
-            )}
-            {getModelStatus() === ModelStatus.FAILED_TRANSFORMING && (
-              <div>
-                <Typography as="p">
-                  Model transformation failed. Delete the model and upload
-                  again.
-                </Typography>
-              </div>
-            )}
-            {!analogueModel.processingStatus && (
-              <div>
-                <Typography as="p">
-                  Cannot generate picture for unprocessed model.
-                </Typography>
-                <Typography as="p">
-                  If processing failed, delete this model and reupload again.
-                  Else, wait.
-                </Typography>
-              </div>
-            )}
-            {!analogueModel.isProcessed && (
-              <div>
-                <Typography as="p">
-                  Cannot generate picture for unprocessed model.
-                </Typography>
-                <Typography as="p">
-                  If processing failed, delete this model and reupload again.
-                  Else, wait.
-                </Typography>
-              </div>
-            )}
-          </Styled.ImageMessage>
-        </Styled.DescriotionImageWrapper>
-      )}
-      {uploadingStatus === UploadingStatus.Uploading && (
-        <Styled.UploadingMeta>
-          <Typography variant="body_long">
-            While your model is being uploaded, you can add some metadata like
-            outcrop analogue, stratigraphic column, or gross depositional
-            environment. Please note that at least one type of metadata is
-            required for PEPM models before they can be approved later on.
-          </Typography>
-        </Styled.UploadingMeta>
-      )}
+        </Card.Content>
+        <Card.Content>
+          {uploadingStatus === UploadingStatus.Uploading && (
+            <Styled.UploadingMeta>
+              <Typography variant="body_long">
+                While your model is being uploaded, you can add some metadata
+                like outcrop analogue, stratigraphic column, or gross
+                depositional environment. Please note that at least one type of
+                metadata is required for PEPM models before they can be approved
+                later on.
+              </Typography>
+            </Styled.UploadingMeta>
+          )}
+        </Card.Content>
+        <Card.Content>
+          <ModelAreaCoordinates toggleOpen={toggleOpen}></ModelAreaCoordinates>
+        </Card.Content>
+      </Card>
 
       <Typography variant="h3" as="h2">
         Model metadata
@@ -308,15 +326,22 @@ export const ModelMetadataView = ({
           </div>
         </IniParametersWrapper>
       )}
-      <div>
-        <OutcropAnalogueGroup modelIdParent={modelIdParent} />
-      </div>
-      <div>
-        <StratigrapicGroups modelIdParent={modelIdParent} />
-      </div>
-      <div>
-        <GrossDepositionEnviromentGroup modelIdParent={modelIdParent} />
-      </div>
+      <Card>
+        <Card.Content>
+          <OutcropAnalogueGroup modelIdParent={modelIdParent} />
+        </Card.Content>
+      </Card>
+      <Card>
+        <Card.Content>
+          <StratigrapicGroups modelIdParent={modelIdParent} />
+        </Card.Content>
+      </Card>
+      <Card>
+        <Card.Content>
+          <GrossDepositionEnviromentGroup modelIdParent={modelIdParent} />
+        </Card.Content>
+      </Card>
+      <CoordinatesDialog open={open} toggleOpen={toggleOpen} />
     </Styled.Wrapper>
   );
 };
