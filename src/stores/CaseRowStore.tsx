@@ -97,18 +97,18 @@ export const useCaseRowStore = create<ICaseRowStore & ICaseRowStoreActions>()(
       }),
     resetStates: () =>
       set((state) => {
-        state.indicatorParams = true;
-        state.indicatorVariogramModel = true;
-        state.netToGrossGrain = true;
-        state.netToGrossVariogramModel = true;
-        state.contParamParameters = true;
-        state.contParamArchel = true;
-        state.contParamVariogramModel = true;
-        state.indicatorModelArea = true;
-        state.netToGrossModelArea = true;
-        state.contParamModelArea = true;
-        state.channelModelArea = true;
-        state.objectModelArea = true;
+        state.indicatorParams = false;
+        state.indicatorVariogramModel = false;
+        state.netToGrossGrain = false;
+        state.netToGrossVariogramModel = false;
+        state.contParamParameters = false;
+        state.contParamArchel = false;
+        state.contParamVariogramModel = false;
+        state.indicatorModelArea = false;
+        state.netToGrossModelArea = false;
+        state.contParamModelArea = false;
+        state.channelModelArea = false;
+        state.objectModelArea = false;
       }),
   })),
 );
