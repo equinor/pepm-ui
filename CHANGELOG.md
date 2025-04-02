@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.9.0](https://github.com/equinor/pepm-ui/compare/v1.8.0...v1.9.0) (2025-04-02)
+
+
+### ✨ Features
+
+* Added progression when downloading file ([#459](https://github.com/equinor/pepm-ui/issues/459)) ([f88cb39](https://github.com/equinor/pepm-ui/commit/f88cb396534f16fa4c33ed7a940e1cf8904f508f))
+* Validate compute settings ([#461](https://github.com/equinor/pepm-ui/issues/461)) ([b4f3f59](https://github.com/equinor/pepm-ui/commit/b4f3f590ad9bea7905c00e17f945bde4a46f4a49))
+
+
+### 🐛 Bug Fixes
+
+* Fixed incorrect value on state reset ([#462](https://github.com/equinor/pepm-ui/issues/462)) ([d16a4e8](https://github.com/equinor/pepm-ui/commit/d16a4e8aa36af2a3466ae5f29e0168593fe1cfa2))
+
 ## [1.8.0](https://github.com/equinor/pepm-ui/compare/v1.7.1...v1.8.0) (2025-03-19)
 
 
