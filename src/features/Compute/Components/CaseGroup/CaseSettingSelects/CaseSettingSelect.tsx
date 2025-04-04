@@ -50,7 +50,11 @@ export const CaseSettingSelect = ({
         disabled={disabled}
         options={options && options.length > 0 ? options : []}
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        optionLabel={(option) => option.name!}
+        optionLabel={(option) =>
+          option.equinorName !== null && option.equinorName !== undefined
+            ? option.equinorName!
+            : option.name!
+        }
         selectedOptions={selectedValue}
         onOptionsChange={onSelectChange}
         multiple={settingType !== InputValueType.NET_TO_GROSS}
