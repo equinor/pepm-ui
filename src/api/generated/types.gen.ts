@@ -205,6 +205,14 @@ export type ConfigurationArchelDto = {
   analogueModelConfigurationArchelId?: string;
   name?: string | null;
   value?: string | null;
+  analogueModelComputeSettingArchelMap?: ConfigurationArchelMappingDto;
+};
+
+export type ConfigurationArchelMappingDto = {
+  analogueModelConfigurationArchelMapId?: string;
+  identifier?: string | null;
+  equinorCode?: number;
+  smdaGeologyStandardId?: string;
 };
 
 export type ConfigurationParameterDto = {
@@ -673,6 +681,8 @@ export type ListComputeSettingsModelDto = {
   inputValueType?: InputValueType;
   value?: string | null;
   name?: string | null;
+  equinorCode?: string | null;
+  equinorName?: string | null;
 };
 
 export type ListComputeSettingsQueryResponse = {
@@ -892,6 +902,26 @@ export type ProblemDetails = {
     | (string | null)
     | (string | null)
     | undefined;
+};
+
+export type PutComputeSettingArchelMapCommandForm = {
+  smdaGeologyStandardId?: string | null;
+};
+
+export type PutComputeSettingArchelMapCommandResponse = {
+  success?: boolean;
+  count?: number | null;
+  message?: string | null;
+  validationErrors?: Array<string> | null;
+  data: PutComputeSettingArchelMapDto;
+};
+
+export type PutComputeSettingArchelMapDto = {
+  analogueModelConfigurationArchelMapId?: string;
+  analogueModelConfigurationArchelId?: string;
+  smdaGeologyStandardId?: string;
+  identifier?: string | null;
+  equinorCode?: number;
 };
 
 export type RadixJobDto = {
@@ -1162,6 +1192,43 @@ export const UploadStatus = {
   FAILED: 'Failed',
 } as const;
 
+export type PutApiV1AnalogueModelsByAnalogueModelIdConfigurationByArchelIdArchelMapData =
+  {
+    body?: PutComputeSettingArchelMapCommandForm;
+    path: {
+      analogueModelId: string;
+      archelId: string;
+    };
+    query?: never;
+    url: '/api/v1/analogue-models/{analogueModelId}/configuration/{archelId}/archel-map';
+  };
+
+export type PutApiV1AnalogueModelsByAnalogueModelIdConfigurationByArchelIdArchelMapErrors =
+  {
+    /**
+     * Forbidden
+     */
+    403: ErrorResponse;
+    /**
+     * Not Found
+     */
+    404: ErrorResponse;
+  };
+
+export type PutApiV1AnalogueModelsByAnalogueModelIdConfigurationByArchelIdArchelMapError =
+  PutApiV1AnalogueModelsByAnalogueModelIdConfigurationByArchelIdArchelMapErrors[keyof PutApiV1AnalogueModelsByAnalogueModelIdConfigurationByArchelIdArchelMapErrors];
+
+export type PutApiV1AnalogueModelsByAnalogueModelIdConfigurationByArchelIdArchelMapResponses =
+  {
+    /**
+     * Success
+     */
+    200: PutComputeSettingArchelMapCommandResponse;
+  };
+
+export type PutApiV1AnalogueModelsByAnalogueModelIdConfigurationByArchelIdArchelMapResponse =
+  PutApiV1AnalogueModelsByAnalogueModelIdConfigurationByArchelIdArchelMapResponses[keyof PutApiV1AnalogueModelsByAnalogueModelIdConfigurationByArchelIdArchelMapResponses];
+
 export type GetApiV1AnalogueModelsByAnalogueModelIdComputeSettingsData = {
   body?: never;
   path: {
@@ -1409,13 +1476,13 @@ export type GetApiV1AnalogueModelsData = {
   body?: never;
   path?: never;
   query?: {
-    expand?: string;
     isProcessed?: boolean;
     stratigraphicGroupsCountryIdentifier?: string;
     stratigraphicGroupsFieldIdentifier?: string;
     stratigraphicGroupsStratColumnIdentifier?: string;
     stratigraphicGroupsStratUnitIdentifier?: string;
     outcropsName?: string;
+    expand?: string;
   };
   url: '/api/v1/analogue-models';
 };
@@ -1518,13 +1585,13 @@ export type GetApiV1AnalogueModelsByIdData = {
     id: string;
   };
   query?: {
-    expand?: string;
     isProcessed?: boolean;
     stratigraphicGroupsCountryIdentifier?: string;
     stratigraphicGroupsFieldIdentifier?: string;
     stratigraphicGroupsStratColumnIdentifier?: string;
     stratigraphicGroupsStratUnitIdentifier?: string;
     outcropsName?: string;
+    expand?: string;
   };
   url: '/api/v1/analogue-models/{id}';
 };
@@ -3275,5 +3342,5 @@ export type PostApiWebhooksVargrestStatusResponse =
   PostApiWebhooksVargrestStatusResponses[keyof PostApiWebhooksVargrestStatusResponses];
 
 export type ClientOptions = {
-  baseURL: 'http://localhost:5000' | (string & {});
+  baseURL: 'https://api-pepm-dev.radix.equinor.com' | (string & {});
 };

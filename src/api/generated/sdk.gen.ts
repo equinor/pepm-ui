@@ -7,6 +7,9 @@ import {
   formDataBodySerializer,
 } from '@hey-api/client-axios';
 import type {
+  PutApiV1AnalogueModelsByAnalogueModelIdConfigurationByArchelIdArchelMapData,
+  PutApiV1AnalogueModelsByAnalogueModelIdConfigurationByArchelIdArchelMapResponse,
+  PutApiV1AnalogueModelsByAnalogueModelIdConfigurationByArchelIdArchelMapError,
   GetApiV1AnalogueModelsByAnalogueModelIdComputeSettingsData,
   GetApiV1AnalogueModelsByAnalogueModelIdComputeSettingsResponse,
   GetApiV1AnalogueModelsByAnalogueModelIdComputeSettingsError,
@@ -214,6 +217,33 @@ export type Options<
    */
   meta?: Record<string, unknown>;
 };
+
+export const putApiV1AnalogueModelsByAnalogueModelIdConfigurationByArchelIdArchelMap =
+  <ThrowOnError extends boolean = false>(
+    options: Options<
+      PutApiV1AnalogueModelsByAnalogueModelIdConfigurationByArchelIdArchelMapData,
+      ThrowOnError
+    >,
+  ) => {
+    return (options.client ?? _heyApiClient).put<
+      PutApiV1AnalogueModelsByAnalogueModelIdConfigurationByArchelIdArchelMapResponse,
+      PutApiV1AnalogueModelsByAnalogueModelIdConfigurationByArchelIdArchelMapError,
+      ThrowOnError
+    >({
+      security: [
+        {
+          scheme: 'bearer',
+          type: 'http',
+        },
+      ],
+      url: '/api/v1/analogue-models/{analogueModelId}/configuration/{archelId}/archel-map',
+      ...options,
+      headers: {
+        'Content-Type': 'application/json-patch+json',
+        ...options?.headers,
+      },
+    });
+  };
 
 export const getApiV1AnalogueModelsByAnalogueModelIdComputeSettings = <
   ThrowOnError extends boolean = false,
@@ -894,7 +924,6 @@ export const getApiV1DownloadsAnalogueModelsExcel = <
     GetApiV1DownloadsAnalogueModelsExcelError,
     ThrowOnError
   >({
-    responseType: 'blob',
     security: [
       {
         scheme: 'bearer',
