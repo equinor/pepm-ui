@@ -17,10 +17,10 @@ export const ModelArchelMapTable = () => {
             a.analogueModelComputeSettingArchelMap && (
               <Table.Row key={a.analogueModelConfigurationArchelId}>
                 <Table.Cell>
-                  {a.value} {a.name}
+                  {a.value} - {a.name}
                 </Table.Cell>
                 <Table.Cell>
-                  {a.analogueModelComputeSettingArchelMap.equinorCode}{' '}
+                  {a.analogueModelComputeSettingArchelMap.equinorCode} -{' '}
                   {a.analogueModelComputeSettingArchelMap.identifier}
                 </Table.Cell>
               </Table.Row>

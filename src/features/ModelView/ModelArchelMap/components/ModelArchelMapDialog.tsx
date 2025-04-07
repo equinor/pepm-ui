@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Dialog } from '@equinor/eds-core-react';
+import { Button, Dialog, Typography } from '@equinor/eds-core-react';
 import { ArchelDialogWrapper } from '../ModelArchelMap.styled';
 import { Wrapper } from '../../ModelMetadataView/ModelMetadataView.styled';
 import { ModelArchelMapSelectTable } from './ModelArchelMapSelectTable';
@@ -99,6 +99,12 @@ export const ModelArchelMapDialog = () => {
         <Dialog.Header>
           <Dialog.Title>Define architectural elements mapping</Dialog.Title>
         </Dialog.Header>
+        <Dialog.CustomContent>
+          <Typography variant="body_short">
+            Select the corresponding element in PEPM for each of the elements
+            provided in the model.
+          </Typography>
+        </Dialog.CustomContent>
         <Dialog.CustomContent>
           <ModelArchelMapSelectTable
             selectedArchelMaps={selectedArchelMaps}
