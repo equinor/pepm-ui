@@ -1,4 +1,4 @@
-import { Button, Dialog, Typography } from '@equinor/eds-core-react';
+import { Button, Card, Dialog, Typography } from '@equinor/eds-core-react';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -37,15 +37,25 @@ export const DeleteModel = () => {
 
   return (
     <Styled.Wrapper>
-      <Typography variant="h3" as="h2">
-        Delete model
-      </Typography>
-      <Typography variant="body_long">
-        This will delete the model along with all related cases and results.
-      </Typography>
-      <Button variant="outlined" onClick={() => setOpen(!open)} color="danger">
-        Delete…
-      </Button>
+      <Card>
+        <Card.Content style={{ padding: '1rem' }}>
+          <Typography variant="h3" as="h2">
+            Delete model
+          </Typography>
+          <Typography variant="body_long">
+            This will delete the model along with all related cases and results.
+          </Typography>
+          <div>
+            <Button
+              variant="outlined"
+              onClick={() => setOpen(!open)}
+              color="danger"
+            >
+              Delete…
+            </Button>
+          </div>
+        </Card.Content>
+      </Card>
 
       <Styled.DeleteDialog open={open}>
         <Dialog.Header>Delete model</Dialog.Header>

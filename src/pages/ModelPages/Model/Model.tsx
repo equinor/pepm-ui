@@ -1,5 +1,5 @@
 /* eslint-disable max-lines-per-function */
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { ModelNameFrame } from '../../../features/ModelView/ModelNameFrame/ModelNameFrame';
 import { ModelNavigationBar } from '../../../features/ModelView/ModelNavigationBar/ModelNavigationBar';
 import { useFetchModel } from '../../../hooks/useFetchModel';
@@ -31,6 +31,7 @@ import { useFetchImageMetadata } from '../../../hooks/useFetchImageMetadata';
 Icon.add({ mood_sad });
 
 export const Model = () => {
+  const path = useLocation();
   const { data, isLoading, failureReason } = useFetchModel();
   const modelArea = useFetchModelAreas();
   const outcropData = useFetchOutcropData();
@@ -109,6 +110,11 @@ export const Model = () => {
     stratUnitData.data?.data,
   ]);
 
+  const checkPath = () => {
+    const str = path.pathname.split('/');
+    return str[str.length - 1];
+  };
+
   if (failureReason)
     return (
       <Styled.EmptyPage>
@@ -144,7 +150,7 @@ export const Model = () => {
         <ModelNavigationBar />
       </Styled.SidebarWrapper>
       <Styled.ContentWrapper>
-        <ModelNameFrame />
+        {checkPath() !== 'details' ? <ModelNameFrame /> : <></>}
         <Outlet />
       </Styled.ContentWrapper>
     </Styled.Wrapper>

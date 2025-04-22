@@ -6,13 +6,15 @@ export const TableWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  width: 65%;
   row-gap: ${spacings.LARGE};
 `;
 
 export const FileTable = styled(Table)`
   min-width: 256px;
+  width: fit-content;
 `;
 
 export const TableCell = styled(Table.Cell)`
-  padding-right: ${spacings.X_LARGE};
+  white-space: nowrap;
 `;

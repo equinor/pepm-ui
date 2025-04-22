@@ -35,9 +35,9 @@ export const IniParametersDialog = (props: {
   }
 
   return (
-    <>
+    <div>
       <Button variant="outlined" onClick={handleOpen}>
-        See Parameters
+        See parameters
       </Button>
       <IniParamDialog open={isOpen} isDismissable onClose={handleClose}>
         <Dialog.Header>
@@ -100,6 +100,6 @@ export const IniParametersDialog = (props: {
           <Button onClick={handleClose}>Close</Button>
         </Dialog.Actions>
       </IniParamDialog>
-    </>
+    </div>
   );
 };
