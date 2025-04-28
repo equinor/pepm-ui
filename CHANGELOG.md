@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.9.0](https://github.com/equinor/pepm-ui/compare/v1.8.0...v1.9.0) (2025-04-28)
+
+
+### ✨ Features
+
+* added archel map functionality ([#464](https://github.com/equinor/pepm-ui/issues/464)) ([976aa5a](https://github.com/equinor/pepm-ui/commit/976aa5a93aafc9ecc3c12cc991fa83a7cf7d3075))
+* Added progression when downloading file ([#459](https://github.com/equinor/pepm-ui/issues/459)) ([f88cb39](https://github.com/equinor/pepm-ui/commit/f88cb396534f16fa4c33ed7a940e1cf8904f508f))
+* Model page grid ([#465](https://github.com/equinor/pepm-ui/issues/465)) ([9ff6e5b](https://github.com/equinor/pepm-ui/commit/9ff6e5b2d18c4e43a16f37b6f6f2a1eb7c05f507))
+* Validate compute settings ([#461](https://github.com/equinor/pepm-ui/issues/461)) ([b4f3f59](https://github.com/equinor/pepm-ui/commit/b4f3f590ad9bea7905c00e17f945bde4a46f4a49))
+
+
+### 🐛 Bug Fixes
+
+* Fixed incorrect value on state reset ([#462](https://github.com/equinor/pepm-ui/issues/462)) ([d16a4e8](https://github.com/equinor/pepm-ui/commit/d16a4e8aa36af2a3466ae5f29e0168593fe1cfa2))
+* Remove duplicate option values ([#466](https://github.com/equinor/pepm-ui/issues/466)) ([7dcb0d3](https://github.com/equinor/pepm-ui/commit/7dcb0d3dc6f11af7484a6a054696dd4c869f62e5))
+
 ## [1.8.0](https://github.com/equinor/pepm-ui/compare/v1.7.1...v1.8.0) (2025-03-19)
 
 
