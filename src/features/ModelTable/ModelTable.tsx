@@ -200,6 +200,7 @@ export const ModelTable = () => {
     const [selectedValues, setSelectedValues] = useState(
       (values as string[]) || [],
     );
+    const uniqueOptions = Array.from(new Set(options));
 
     useEffect(() => {
       setSelectedValues(values || []); // Update selectedValues when value prop changes
@@ -213,7 +214,7 @@ export const ModelTable = () => {
     return (
       <Autocomplete
         label="Select multiple labels"
-        options={options}
+        options={uniqueOptions}
         multiple
         initialSelectedOptions={selectedValues}
         onOptionsChange={handleSelections}
