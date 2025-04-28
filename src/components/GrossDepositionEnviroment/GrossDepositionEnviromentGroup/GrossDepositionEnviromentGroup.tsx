@@ -39,11 +39,7 @@ export type GDEErrorType = {
   subEnv?: string;
   AEl?: string;
 };
-export const GrossDepositionEnviromentGroup = ({
-  modelIdParent,
-}: {
-  modelIdParent?: string;
-}) => {
+export const GrossDepositionEnviromentGroup = () => {
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const { analogueModel, addAnalogueModelGde, deleteAnalogueModelGde } =
     usePepmContextStore();
@@ -66,7 +62,7 @@ export const GrossDepositionEnviromentGroup = ({
   };
 
   const handleAddGde = async () => {
-    const id = modelIdParent ? modelIdParent : analogueModel.analogueModelId;
+    const id = analogueModel.analogueModelId;
     const err = await validateInput(gdeObject);
     setErrors(err);
 

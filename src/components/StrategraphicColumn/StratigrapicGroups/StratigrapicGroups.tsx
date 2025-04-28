@@ -50,11 +50,7 @@ export type StratColumnErrorType = {
   level3?: string;
 };
 
-export const StratigrapicGroups = ({
-  modelIdParent,
-}: {
-  modelIdParent?: string;
-}) => {
+export const StratigrapicGroups = () => {
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const {
     analogueModel,
@@ -90,7 +86,7 @@ export const StratigrapicGroups = ({
   };
 
   const handleAddStratCol = async () => {
-    const id = modelIdParent ? modelIdParent : analogueModel.analogueModelId;
+    const id = analogueModel.analogueModelId;
     const err = await validateInput(stratColumnObject);
     setErrors(err);
     if (

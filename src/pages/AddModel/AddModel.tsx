@@ -25,10 +25,7 @@ export const AddModel = () => {
         <HandleModelComponent />
         {analogueModel.analogueModelId !== '' && (
           <>
-            <ModelMetadataView
-              modelIdParent={analogueModel.analogueModelId}
-              uploadingStatus={uploadStatus}
-            />
+            <ModelMetadataView uploadingStatus={uploadStatus} />
           </>
         )}
       </Styled.Content>

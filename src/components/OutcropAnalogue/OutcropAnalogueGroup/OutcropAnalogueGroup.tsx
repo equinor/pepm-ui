@@ -36,11 +36,7 @@ export type OutcropErrorType = {
   Analogue?: string;
 };
 
-export const OutcropAnalogueGroup = ({
-  modelIdParent,
-}: {
-  modelIdParent?: string;
-}) => {
+export const OutcropAnalogueGroup = () => {
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const { analogueModel, addAnalogueModelOutcrop, deleteAnalogueModelOutcrop } =
     usePepmContextStore();
@@ -67,7 +63,7 @@ export const OutcropAnalogueGroup = ({
   };
 
   const handleAddOutcropAnalogue = async () => {
-    const id = modelIdParent ? modelIdParent : analogueModel.analogueModelId;
+    const id = analogueModel.analogueModelId;
     const err = await validateInput(outcropObject);
     setErrors(err);
 
@@ -87,7 +83,7 @@ export const OutcropAnalogueGroup = ({
   };
 
   const handleDeleteOutcropAnalogue = async (outcropId: string) => {
-    const id = modelIdParent ? modelIdParent : analogueModel.analogueModelId;
+    const id = analogueModel.analogueModelId;
     const res = await useOutcrop.deleteOutcropAnalogue.mutateAsync({
       id: id,
       outcropId: outcropId,

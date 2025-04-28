@@ -18,3 +18,18 @@ export const Layout = () => {
     </>
   );
 };
+
+export const GreyLayout = () => {
+  return (
+    <>
+      <AppBar title="PEPM" />
+      <Styled.GreyOutletWrapper>
+        <Outlet />
+        <ErrorNotifications />
+      </Styled.GreyOutletWrapper>
+      <Footer
+        text={`All information is proprietary of Equinor © ${new Date().getFullYear()} Equinor ASA`}
+      />
+    </>
+  );
+};

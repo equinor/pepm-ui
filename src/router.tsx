@@ -5,7 +5,7 @@ import { AddModel } from './pages/AddModel/AddModel';
 import { Api } from './pages/Api/Api';
 import { Browse } from './pages/Browse/Browse';
 import { InvalidURL } from './pages/InvalidURL/InvalidURL';
-import { Layout } from './pages/Layout';
+import { GreyLayout, Layout } from './pages/Layout';
 import { ComputeObject } from './pages/ModelPages/Compute/ComputeObject/ComputeObject';
 import { ComputeVariogram } from './pages/ModelPages/Compute/ComputeVariogram/ComputeVariogram';
 import { Model } from './pages/ModelPages/Model/Model';
@@ -38,11 +38,6 @@ const router = createBrowserRouter([
         element: <Model />,
         children: [
           {
-            path: 'details',
-            element: <ModelView />,
-          },
-
-          {
             path: 'compute/variogram',
             element: <ComputeVariogram />,
           },
@@ -63,6 +58,23 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: '/',
+    element: <GreyLayout />,
+    children: [
+      {
+        path: ':modelId/',
+        element: <Model />,
+        children: [
+          {
+            path: 'details',
+            element: <ModelView />,
+          },
+        ],
+      },
+    ],
+  },
+
   {
     path: '*',
     element: <InvalidURL />,
