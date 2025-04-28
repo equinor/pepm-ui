@@ -5,6 +5,7 @@ import { ModelAreaCoordinates } from './ModelAreaCoordinates/ModelAreaCoordinate
 import { ModelFilesView } from './ModelFilesView/ModelFilesView';
 import * as Styled from './ModelView.styled';
 import { CoordinatesDialog } from '../AreaCoordinates/CoordinatesDialog/CoordinatesDialog';
+import { ModelArchelMap } from './ModelArchelMap/ModelArchelMap';
 
 export const ModelView = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -17,6 +18,7 @@ export const ModelView = () => {
     <>
       <Styled.MetadataWrapper>
         <ModelMetadataView />
+        <ModelArchelMap />
         <ModelAreaCoordinates toggleOpen={toggleOpen}></ModelAreaCoordinates>
         <ModelFilesView />
         <DeleteModel />

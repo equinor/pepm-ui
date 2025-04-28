@@ -652,6 +652,32 @@ export const ConfigurationArchelDtoSchema = {
       type: 'string',
       nullable: true,
     },
+    analogueModelComputeSettingArchelMap: {
+      $ref: '#/components/schemas/ConfigurationArchelMappingDto',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const ConfigurationArchelMappingDtoSchema = {
+  type: 'object',
+  properties: {
+    analogueModelConfigurationArchelMapId: {
+      type: 'string',
+      format: 'uuid',
+    },
+    identifier: {
+      type: 'string',
+      nullable: true,
+    },
+    equinorCode: {
+      type: 'integer',
+      format: 'int32',
+    },
+    smdaGeologyStandardId: {
+      type: 'string',
+      format: 'uuid',
+    },
   },
   additionalProperties: false,
 } as const;
@@ -2209,6 +2235,14 @@ export const ListComputeSettingsModelDtoSchema = {
       type: 'string',
       nullable: true,
     },
+    equinorCode: {
+      type: 'string',
+      nullable: true,
+    },
+    equinorName: {
+      type: 'string',
+      nullable: true,
+    },
   },
   additionalProperties: false,
 } as const;
@@ -2949,6 +2983,75 @@ export const ProblemDetailsSchema = {
     },
   },
   additionalProperties: {},
+} as const;
+
+export const PutComputeSettingArchelMapCommandFormSchema = {
+  type: 'object',
+  properties: {
+    smdaGeologyStandardId: {
+      type: 'string',
+      format: 'uuid',
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const PutComputeSettingArchelMapCommandResponseSchema = {
+  required: ['data'],
+  type: 'object',
+  properties: {
+    success: {
+      type: 'boolean',
+    },
+    count: {
+      type: 'integer',
+      format: 'int32',
+      nullable: true,
+    },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
+    validationErrors: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+      nullable: true,
+    },
+    data: {
+      $ref: '#/components/schemas/PutComputeSettingArchelMapDto',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const PutComputeSettingArchelMapDtoSchema = {
+  type: 'object',
+  properties: {
+    analogueModelConfigurationArchelMapId: {
+      type: 'string',
+      format: 'uuid',
+    },
+    analogueModelConfigurationArchelId: {
+      type: 'string',
+      format: 'uuid',
+    },
+    smdaGeologyStandardId: {
+      type: 'string',
+      format: 'uuid',
+    },
+    identifier: {
+      type: 'string',
+      nullable: true,
+    },
+    equinorCode: {
+      type: 'integer',
+      format: 'int32',
+    },
+  },
+  additionalProperties: false,
 } as const;
 
 export const RadixJobDtoSchema = {
