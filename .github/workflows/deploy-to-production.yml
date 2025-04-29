@@ -43,7 +43,7 @@ jobs:
           id: get_version_tag
           uses: docker/metadata-action@v5
           with:
-            images: ${{ env.REGISTRY }}/${{ github.repository }}/test:latest
+            images: ${{ env.REGISTRY }}/${{ github.repository }}/test
             tags: |
                 type=semver,pattern=v{{version}}
 
