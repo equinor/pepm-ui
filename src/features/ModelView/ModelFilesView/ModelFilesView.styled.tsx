@@ -12,7 +12,7 @@ export const TableWrapper = styled.div`
 
 export const FileTable = styled(Table)`
   min-width: 256px;
-  width: fit-content;
+  // width: fit-content;
 `;
 
 export const TableCell = styled(Table.Cell)`
