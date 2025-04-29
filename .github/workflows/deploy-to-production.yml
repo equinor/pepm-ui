@@ -2,7 +2,7 @@ name: Deploy to Production
 
 # Only one workflow in a concurrency group may run at a time
 concurrency:
-  group: test-concurrency
+  group: prod-concurrency
   cancel-in-progress: true
 
 on:
