@@ -26,7 +26,7 @@ jobs:
         Registry: ghcr.io
         ImageName: ${{ github.repository }}
         Tag: ${{ github.event.release.tag_name }}
-        Environment: test
+        Environment: prod
       secrets: inherit
     
     deploy:
@@ -34,7 +34,7 @@ jobs:
       needs: [trigger-github-deployment, build-and-publish-release-to-prod]
       uses: ./.github/workflows/deploy-to-radix.yml
       with:
-        Environment: test
+        Environment: prod
         VersionTag: ${{ github.event.release.tag_name }}
       secrets:
         ClientId: ${{ secrets.CLIENT_ID }}
