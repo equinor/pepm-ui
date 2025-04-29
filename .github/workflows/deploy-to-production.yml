@@ -45,7 +45,7 @@ jobs:
           with:
             images: ${{ env.REGISTRY }}/${{ github.repository }}/test
             tags: |
-                type=semver,pattern=v{{version}}
+                type=semver,pattern={{version}}
 
     build-and-publish-prod:
         name: Build and publish Production
