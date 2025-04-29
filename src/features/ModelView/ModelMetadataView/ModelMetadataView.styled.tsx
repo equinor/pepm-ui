@@ -30,8 +30,8 @@ export const ModelImageView = styled.div`
   border: 1px solid ${theme.light.ui.background.medium};
   padding: ${spacings.SMALL};
   gap: ${spacings.SMALL};
-  img {
-    height: 35vh;
+  canvas {
+    height: 45vh;
     width: auto;
   }
   p {

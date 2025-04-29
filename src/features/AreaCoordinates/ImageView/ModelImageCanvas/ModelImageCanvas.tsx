@@ -13,7 +13,7 @@ export const ModelImageCanvas = ({
 }: {
   imageData: string;
   imageMetadata: ImageMetadataDto;
-  coordinateBox: AreaCoordinateType;
+  coordinateBox?: AreaCoordinateType;
   showLegend: boolean;
   showCoordinates: boolean;
 }) => {
