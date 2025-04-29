@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.2](https://github.com/equinor/pepm-ui/compare/v1.9.1...v1.9.2) (2025-04-29)
+
+
+### 🐛 Bug Fixes
+
+* changed concurrency group in production ([673c2ae](https://github.com/equinor/pepm-ui/commit/673c2aed739ce5b6354f8e529308b695c103a139))
+
 ## [1.9.1](https://github.com/equinor/pepm-ui/compare/v1.9.0...v1.9.1) (2025-04-29)
 
 
