@@ -13,7 +13,7 @@ export const ModelImageCanvas = ({
 }: {
   imageData: string;
   imageMetadata: ImageMetadataDto;
-  coordinateBox: AreaCoordinateType;
+  coordinateBox?: AreaCoordinateType;
   showLegend: boolean;
   showCoordinates: boolean;
 }) => {
@@ -183,7 +183,16 @@ export const ModelImageCanvas = ({
         const legendSpacing = 30; // Spacing between legend items
 
         let currentY = legendY;
-
+        // Draw the header text
+        context.fillStyle = 'black';
+        context.font = '24px Arial';
+        context.textBaseline = 'middle';
+        context.fillText(
+          'Architechtural elements',
+          legendX,
+          currentY + legendBoxSize / 2,
+        );
+        currentY += 40;
         // Iterate through the dictionary and draw each color and label
         for (const [key, color] of Object.entries(imageMetadata.colorLegend)) {
           // Draw the color box
@@ -194,6 +203,7 @@ export const ModelImageCanvas = ({
           context.fillStyle = 'black';
           context.font = '16px Arial';
           context.textBaseline = 'middle';
+
           context.fillText(
             `${
               archelFilterMaps[key] !== undefined ? archelFilterMaps[key] : key

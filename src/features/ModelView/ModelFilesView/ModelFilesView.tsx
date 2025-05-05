@@ -98,7 +98,7 @@ export const ModelFilesView = () => {
           <Styled.FileTable>
             <Table.Head>
               <Table.Row className="table-row">
-                <Table.Cell>File name</Table.Cell>
+                <Table.Cell style={{ minWidth: '512px' }}>File name</Table.Cell>
                 <Table.Cell>Size</Table.Cell>
                 <Table.Cell>Download</Table.Cell>
               </Table.Row>

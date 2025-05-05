@@ -37,7 +37,9 @@ import { ModelAreaCoordinates } from '../ModelAreaCoordinates/ModelAreaCoordinat
 import { CoordinatesDialog } from '../../AreaCoordinates/CoordinatesDialog/CoordinatesDialog';
 import { ModelFilesView } from '../ModelFilesView/ModelFilesView';
 import { ModelNameFrameDetail } from '../ModelNameFrame/ModelNameFrameDetail';
+import { ModelImageCanvas } from '../../AreaCoordinates/ImageView/ModelImageCanvas/ModelImageCanvas';
 import { ModelArchelMap } from '../ModelArchelMap/ModelArchelMap';
+
 
 export const ModelMetadataView = ({
   uploadingStatus,
@@ -55,6 +57,7 @@ export const ModelMetadataView = ({
     setStratigraphicUnits,
     setGeologicalStandards,
     setAnalogueModel,
+    analogueModelImageMetadata,
   } = usePepmContextStore();
   const outcropData = useFetchOutcropData();
   const countryData = useFetchSmdaCountries();
@@ -261,9 +264,15 @@ export const ModelMetadataView = ({
             {uploadingStatus === undefined && (
               <Styled.DescriotionImageWrapper>
                 {analogueModelImageURL &&
+                  analogueModelImageMetadata &&
                   analogueModel !== analogueModelDefault && (
                     <Styled.ModelImageView>
-                      <img src={analogueModelImageURL} alt=""></img>
+                      <ModelImageCanvas
+                        imageData={analogueModelImageURL}
+                        imageMetadata={analogueModelImageMetadata}
+                        showLegend={true}
+                        showCoordinates={false}
+                      />
                       <Typography>{analogueModel.name}</Typography>
                     </Styled.ModelImageView>
                   )}

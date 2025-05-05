@@ -45,7 +45,7 @@ export const DeleteModel = () => {
           <Typography variant="body_long">
             This will delete the model along with all related cases and results.
           </Typography>
-          <div>
+          <div style={{ paddingTop: '1rem' }}>
             <Button
               variant="outlined"
               onClick={() => setOpen(!open)}
