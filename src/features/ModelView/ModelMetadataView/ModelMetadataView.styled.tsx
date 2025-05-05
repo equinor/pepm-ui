@@ -27,7 +27,6 @@ export const ModelImageView = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  border: 1px solid ${theme.light.ui.background.medium};
   padding: ${spacings.SMALL};
   gap: ${spacings.SMALL};
   canvas {
