@@ -5,7 +5,9 @@ import { ArchelMapContainer } from './ModelArchelMap.styled';
 export const ModelArchelMap = () => {
   return (
     <ArchelMapContainer>
-      <Typography variant="h3">Architectural Elements</Typography>
+      <Typography variant="h4" as="h3">
+        Architectural Elements
+      </Typography>
       <ModelArchelMapTable />
       <ModelArchelMapDialog />
     </ArchelMapContainer>

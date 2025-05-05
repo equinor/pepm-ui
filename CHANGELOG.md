@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.9.2](https://github.com/equinor/pepm-ui/compare/v1.9.1...v1.9.2) (2025-04-29)
+
+
+### 🐛 Bug Fixes
+
+* changed concurrency group in production ([673c2ae](https://github.com/equinor/pepm-ui/commit/673c2aed739ce5b6354f8e529308b695c103a139))
+
+## [1.9.1](https://github.com/equinor/pepm-ui/compare/v1.9.0...v1.9.1) (2025-04-29)
+
+
+### 🐛 Bug Fixes
+
+* get-version github action ([e671522](https://github.com/equinor/pepm-ui/commit/e671522948c01ef3346b0f24db7e36a1a7e68039))
+* get-version github action get all tags ([8f6f650](https://github.com/equinor/pepm-ui/commit/8f6f6504bf56da31bc874fe9a0d2dd227cb35129))
+* get-version github actions ([89fdfba](https://github.com/equinor/pepm-ui/commit/89fdfba4598b8232d2e0a1e90cf6def3dda66e32))
+* get-version in deploy ([b1dee0b](https://github.com/equinor/pepm-ui/commit/b1dee0bb320f9a89388571474bf866053dd86783))
+* updated cd pipeline ([c8682ad](https://github.com/equinor/pepm-ui/commit/c8682adb133c8a3c44fcd25d4dc9367c7d9d31e1))
+* updated environment in yaml file ([35a4f1a](https://github.com/equinor/pepm-ui/commit/35a4f1a9e8c2cc8c7dd609b76b998fad8a897f50))
+
 ## [1.9.0](https://github.com/equinor/pepm-ui/compare/v1.8.0...v1.9.0) (2025-04-28)
 
 

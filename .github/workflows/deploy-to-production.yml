@@ -1,69 +1,41 @@
-name: Promote to Production
+name: Deploy to Production
 
 # Only one workflow in a concurrency group may run at a time
 concurrency:
-  group: production-concurrency
+  group: prod-concurrency
   cancel-in-progress: true
 
 on:
-  workflow_dispatch:
-
-env:
-    REGISTRY: ghcr.io
+  release:
+    types: [created]
 
 jobs:
     trigger-github-deployment:
-        name: Trigger GitHub Deployment
-        environment: prod
-        runs-on: ubuntu-latest
-        steps:
-          - name: Deploy production
-            run: echo "Deplying to production"
+      name: Trigger GitHub Deployment
+      environment: prod
+      runs-on: ubuntu-latest
+      steps:
+        - name: Start deployment to production
+          run: echo "Deployment to production started"
 
-    get-test-version:
-        name: Get version from test
-        needs: trigger-github-deployment
-        outputs:
-            versionTag: ${{ steps.get_version_tag.outputs.tags }}
-        runs-on: ubuntu-latest
-        environment: prod
-        steps:
-
-        - name: Checkout repository
-          uses: actions/checkout@v4
-  
-        - name: Log in to the Github Container registry
-          uses: docker/login-action@v3
-          with:
-            registry: ${{ env.REGISTRY }}
-            username: ${{ github.actor }}
-            password: ${{ secrets.GITHUB_TOKEN }}
-  
-        - name: Extract metadata (tags, labels) for Docker
-          id: get_version_tag
-          uses: docker/metadata-action@v5
-          with:
-            images: ${{ env.REGISTRY }}/${{ github.repository }}
-
-    build-and-publish-prod:
-        name: Build and publish Production
-        needs: get-test-version
-        uses: ./.github/workflows/build-and-publish.yml
-        with:
-            Registry: ghcr.io
-            ImageName: ${{ github.repository }}
-            Tag: ${{ needs.get-test-version.outputs.versionTag }}
-            Environment: prod
-            GitRef: ${{ needs.get-test-version.outputs.versionTag }}
-        secrets: inherit
-
+    build-and-publish-release-to-prod:
+      name: Build and publish containers for prod
+      uses: ./.github/workflows/build-and-publish.yml
+      needs: trigger-github-deployment
+      with:
+        Registry: ghcr.io
+        ImageName: ${{ github.repository }}
+        Tag: ${{ github.event.release.tag_name }}
+        Environment: prod
+      secrets: inherit
+    
     deploy:
-        name: Update deployment in Production
-        needs: [get-test-version, trigger-github-deployment]
-        uses: ./.github/workflows/deploy-to-radix.yml
-        with:
-          Environment: prod
-          VersionTag: ${{ needs.get-test-version.outputs.versionTag }}
-        secrets:
-          ClientId: ${{ secrets.CLIENT_ID }}
-          TenantId: ${{ secrets.TENANT_ID }}
+      name: Update deployment in Production
+      needs: [trigger-github-deployment, build-and-publish-release-to-prod]
+      uses: ./.github/workflows/deploy-to-radix.yml
+      with:
+        Environment: prod
+        VersionTag: ${{ github.event.release.tag_name }}
+      secrets:
+        ClientId: ${{ secrets.CLIENT_ID }}
+        TenantId: ${{ secrets.TENANT_ID }}

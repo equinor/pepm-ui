@@ -287,6 +287,31 @@ spec:
                 useAdls: true
                 streaming:
                   enabled: false
+                - environment: test
+
+        - environment: prod
+          volumeMounts:
+            - name: pepm-nrchannest-model-storage-prod
+              path: /mnt/azure-storage/models
+              blobfuse2:
+                protocol: fuse2
+                container: models
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+
+            - name: pepm-nrchannest-worker-storage-prod
+              path: /mnt/azure-storage/worker
+              blobfuse2:
+                protocol: fuse2
+                container: worker
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
 
     - name: pepm-nrvargrest
       image: ghcr.io/equinor/pepm-worker-api/variogram-estimation:latest
@@ -356,6 +381,30 @@ spec:
                 streaming:
                   enabled: false
 
+        - environment: prod
+          volumeMounts:
+            - name: pepm-nrvargrest-worker-storage-prod
+              path: /mnt/azure-storage/models
+              blobfuse2:
+                protocol: fuse2
+                container: models
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+
+            - name: pepm-nrvargrest-worker-storage-prod
+              path: /mnt/azure-storage/worker
+              blobfuse2:
+                protocol: fuse2
+                container: worker
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+
     - name: pepm-thumbnail-gen
       image: ghcr.io/equinor/pepm-worker-api/thumbnail-generation:latest
       schedulerPort: 8090
@@ -414,6 +463,30 @@ spec:
                   enabled: false
 
             - name: pepm-thumbnail-gen-worker-storage-test
+              path: /mnt/azure-storage/worker
+              blobfuse2:
+                protocol: fuse2
+                container: worker
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+
+        - environment: prod
+          volumeMounts:
+            - name: pepm-thumbnail-gen-model-storage-prod
+              path: /mnt/azure-storage/models
+              blobfuse2:
+                protocol: fuse2
+                container: models
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+
+            - name: pepm-thumbnail-gen-worker-storage-prod
               path: /mnt/azure-storage/worker
               blobfuse2:
                 protocol: fuse2
