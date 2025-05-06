@@ -27,10 +27,11 @@ export const ModelImageView = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  border: 1px solid ${theme.light.ui.background.medium};
   padding: ${spacings.SMALL};
   gap: ${spacings.SMALL};
-  canvas {
-    height: 45vh;
+  img {
+    height: 35vh;
     width: auto;
   }
   p {
@@ -56,7 +57,6 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: ${spacings.XXX_LARGE};
-  background-color: ${theme.light.ui.background.light};
 
   table {
     border: 1px solid ${theme.light.ui.background.medium};

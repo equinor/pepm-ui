@@ -3,9 +3,8 @@
 /* eslint-disable max-lines-per-function */
 import { Typography } from '@equinor/eds-core-react';
 import { HandleModelComponent } from '../../features/HandleModel/HandleModelComponent/HandleModelComponent';
-import { ModelMetadataView } from '../../features/ModelView/ModelMetadataView/ModelMetadataView';
+import { ModelAddView } from '../../features/ModelView/ModelAddView/ModelAddView';
 import * as Styled from './AddModel.styled';
-
 import { usePepmContextStore } from '../../stores/GlobalStore';
 import { useAddModelStore } from './stores/AddModelStore';
 import { SidePane } from '../../features/HandleModel/SidePane/SidePane';
@@ -25,7 +24,7 @@ export const AddModel = () => {
         <HandleModelComponent />
         {analogueModel.analogueModelId !== '' && (
           <>
-            <ModelMetadataView uploadingStatus={uploadStatus} />
+            <ModelAddView uploadingStatus={uploadStatus} />
           </>
         )}
       </Styled.Content>
