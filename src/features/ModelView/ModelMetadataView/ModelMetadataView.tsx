@@ -38,6 +38,7 @@ import { CoordinatesDialog } from '../../AreaCoordinates/CoordinatesDialog/Coord
 import { ModelFilesView } from '../ModelFilesView/ModelFilesView';
 import { ModelNameFrameDetail } from '../ModelNameFrame/ModelNameFrameDetail';
 import { ModelImageCanvas } from '../../AreaCoordinates/ImageView/ModelImageCanvas/ModelImageCanvas';
+import { ModelArchelMap } from '../ModelArchelMap/ModelArchelMap';
 
 export const ModelMetadataView = ({
   uploadingStatus,
@@ -345,6 +346,11 @@ export const ModelMetadataView = ({
       <Card>
         <Card.Content style={{ padding: '1rem' }}>
           <GrossDepositionEnviromentGroup />
+        </Card.Content>
+      </Card>
+      <Card>
+        <Card.Content style={{ padding: '1rem' }}>
+          <ModelArchelMap />
         </Card.Content>
       </Card>
       <Card>
