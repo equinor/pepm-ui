@@ -25,7 +25,6 @@ export const ModelAreaCoordinates = ({
 
   return (
     <Styled.Wrapper>
-      {/* <Card style={{ height: '100%', overflow: 'auto' }}> */}
       <Card style={{ height: '100%' }}>
         <Card.Content style={{ padding: '1rem' }}>
           <Typography variant="h3" as="h2">
