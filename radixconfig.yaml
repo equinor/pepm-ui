@@ -32,7 +32,7 @@ spec:
       publicPort: http
       resources:
         requests:
-          memory: "2048Mi"
+          memory: "8192Mi"
       ports:
         - name: http
           port: 5000
