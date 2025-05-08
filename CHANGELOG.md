@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.10.0](https://github.com/equinor/pepm-ui/compare/v1.9.2...v1.10.0) (2025-05-08)
+
+
+### ✨ Features
+
+* Add ModelAddView page ([#472](https://github.com/equinor/pepm-ui/issues/472)) ([86b8343](https://github.com/equinor/pepm-ui/commit/86b8343acb6865e44bb7fdadb3a743e7a8bba086))
+* Updated image detail page ([#469](https://github.com/equinor/pepm-ui/issues/469)) ([638d59d](https://github.com/equinor/pepm-ui/commit/638d59d409b8d9dae8249ea0c70d12b932d52203))
+
+
+### 🐛 Bug Fixes
+
+* Added missing archel map component ([#471](https://github.com/equinor/pepm-ui/issues/471)) ([8449dc4](https://github.com/equinor/pepm-ui/commit/8449dc44f85917e228cb6235e0661ea2e9274254))
+* removed wrong key in radixconfig ([d1a15db](https://github.com/equinor/pepm-ui/commit/d1a15dbd84bdca8972f5b6939f064583f0d200d0))
+* removed wrong name in radixconfig ([dc5c736](https://github.com/equinor/pepm-ui/commit/dc5c736ee18ef752f903c90658bc1ebc9e29eac7))
+* updated radix config ([6bbe792](https://github.com/equinor/pepm-ui/commit/6bbe7928d2565681d43a6f8384d53e8c36158022))
+
 ## [1.9.2](https://github.com/equinor/pepm-ui/compare/v1.9.1...v1.9.2) (2025-04-29)
 
 

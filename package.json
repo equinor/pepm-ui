@@ -1,6 +1,6 @@
 {
   "name": "pepm-ui",
-  "version": "1.9.2",
+  "version": "1.10.0",
   "private": true,
   "dependencies": {
     "@azure/msal-browser": "^3.23.0",
