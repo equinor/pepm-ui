@@ -68,7 +68,6 @@ export const ModelImageCanvas = ({
       // Calculate scaling factors from coordinate space to canvas pixels
       const xScale = width / xRange;
       const yScale = height / yRange;
-
       // draw image with its top left corner at defined offset
       context.drawImage(img, imageXOffset, imageYOffset, width, height);
 
