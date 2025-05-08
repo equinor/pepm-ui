@@ -287,7 +287,6 @@ spec:
                 useAdls: true
                 streaming:
                   enabled: false
-                - environment: test
 
         - environment: prod
           volumeMounts:
