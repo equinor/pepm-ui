@@ -40,7 +40,6 @@ import { ModelNameFrameDetail } from '../ModelNameFrame/ModelNameFrameDetail';
 import { ModelImageCanvas } from '../../AreaCoordinates/ImageView/ModelImageCanvas/ModelImageCanvas';
 import { ModelArchelMap } from '../ModelArchelMap/ModelArchelMap';
 
-
 export const ModelMetadataView = ({
   uploadingStatus,
 }: {
