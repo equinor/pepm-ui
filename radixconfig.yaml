@@ -33,6 +33,7 @@ spec:
       resources:
         requests:
           memory: "8192Mi"
+          cpu: "4096Mi"
       ports:
         - name: http
           port: 5000
