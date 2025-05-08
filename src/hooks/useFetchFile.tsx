@@ -4,7 +4,7 @@ import axios from 'axios';
 
 export const GetFetchIniFileAxios = async (
   analogueModel: AnalogueModelDetail,
-  setIsLoadingIni: React.Dispatch<React.SetStateAction<number>>,
+  setIsLoadingIni: React.Dispatch<React.SetStateAction<number | undefined>>,
 ) => {
   const response = await axios.get(
     `/api/v1/downloads/${analogueModel.analogueModelId}/ini`,
@@ -23,7 +23,7 @@ export const GetFetchIniFileAxios = async (
   );
 
   if (response.data) {
-    const fileURL = window.URL.createObjectURL(response.data);
+    const fileURL = window.URL.createObjectURL(new Blob([response.data]));
 
     const link = document.createElement('a');
     link.href = fileURL;
@@ -44,7 +44,7 @@ export const GetFetchIniFileAxios = async (
 
 export const GetFetchNcFileAxios = async (
   analogueModel: AnalogueModelDetail,
-  setIsLoadingNc: React.Dispatch<React.SetStateAction<number>>,
+  setIsLoadingNc: React.Dispatch<React.SetStateAction<number | undefined>>,
 ) => {
   const response = await axios.get(
     `/api/v1/downloads/${analogueModel.analogueModelId}/nc`,
@@ -63,7 +63,7 @@ export const GetFetchNcFileAxios = async (
   );
 
   if (response.data) {
-    const fileURL = window.URL.createObjectURL(response.data);
+    const fileURL = window.URL.createObjectURL(new Blob([response.data]));
 
     const link = document.createElement('a');
     link.href = fileURL;
@@ -84,7 +84,7 @@ export const GetFetchNcFileAxios = async (
 
 export const GetFetchResqmlFileAxios = async (
   analogueModel: AnalogueModelDetail,
-  setIsLoadingResqml: React.Dispatch<React.SetStateAction<number>>,
+  setIsLoadingResqml: React.Dispatch<React.SetStateAction<number | undefined>>,
 ) => {
   const response = await axios.get(
     `/api/v1/downloads/${analogueModel.analogueModelId}/resqml`,
@@ -103,7 +103,7 @@ export const GetFetchResqmlFileAxios = async (
   );
 
   if (response.data) {
-    const fileURL = window.URL.createObjectURL(response.data.data);
+    const fileURL = window.URL.createObjectURL(new Blob([response.data]));
 
     const link = document.createElement('a');
     link.href = fileURL;
