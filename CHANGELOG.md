@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.11.0](https://github.com/equinor/pepm-ui/compare/v1.10.0...v1.11.0) (2025-05-08)
+
+
+### ✨ Features
+
+* Improved progress indicator when downloading file to show % completed ([#476](https://github.com/equinor/pepm-ui/issues/476)) ([a38286b](https://github.com/equinor/pepm-ui/commit/a38286b388613e2c969fde2b5cb0339936fecc18))
+
+
+### 🐛 Bug Fixes
+
+* changed Mi to m in cpu in radixconfig ([f5f8c7c](https://github.com/equinor/pepm-ui/commit/f5f8c7cbe759e061a346b9c385dcc9ec2fdbc868))
+* fixed status of models in model table ([1691293](https://github.com/equinor/pepm-ui/commit/16912933d3c09a44b7b82a04722a38ef1aadbffc))
+* Set min width and height for modal and canvas ([#474](https://github.com/equinor/pepm-ui/issues/474)) ([c9acbff](https://github.com/equinor/pepm-ui/commit/c9acbffa55969f0909df9884266109f2fcf37fad))
+* up cpu in radix api ([be5546b](https://github.com/equinor/pepm-ui/commit/be5546badfcf0082e63a01afb2a93fff8966df9f))
+* up memory radix api ([6421a8b](https://github.com/equinor/pepm-ui/commit/6421a8bbde275d9c8597b0d6b8806e0be8d3dc41))
+
 ## [1.10.0](https://github.com/equinor/pepm-ui/compare/v1.9.2...v1.10.0) (2025-05-08)
 
 
