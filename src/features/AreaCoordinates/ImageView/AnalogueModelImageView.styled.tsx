@@ -31,6 +31,10 @@ export const ImageWrapper = styled.div`
 export const CanvasWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 65vh;
-  width: 45vw;
+  min-height: 48rem;
+  min-width: 32rem;
+  canvas {
+    min-height: 32rem;
+    min-width: 32rem;
+  }
 `;
