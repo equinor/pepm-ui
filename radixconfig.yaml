@@ -382,7 +382,7 @@ spec:
 
         - environment: prod
           volumeMounts:
-            - name: pepm-nrvargrest-worker-storage-prod
+            - name: pepm-nrvargrest-model-storage-prod
               path: /mnt/azure-storage/models
               blobfuse2:
                 protocol: fuse2
