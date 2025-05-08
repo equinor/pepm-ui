@@ -60,7 +60,7 @@ export const ModelTable = () => {
     queryKey: ['analogue-models'],
     queryFn: () =>
       getApiV1AnalogueModels({
-        query: { expand: 'outcrops, stratigraphicgroups' },
+        query: { expand: 'outcrops, stratigraphicgroups, fileuploads' },
       }),
     enabled: !!token,
     refetchInterval: 60000,
@@ -133,6 +133,7 @@ export const ModelTable = () => {
     const transforming =
       model && model.processingStatus ? model.processingStatus : undefined;
     const isProcessed = model ? model.isProcessed : undefined;
+    const uploadStatus = model?.uploads.map((x) => x.uploadStatus);
 
     if (isProcessed === true) {
       status = ModelStatus.SUCCEEDED;
@@ -144,7 +145,7 @@ export const ModelTable = () => {
       status = ModelStatus.TRANSFORMING;
     } else if (transforming === 'Failed') {
       status = ModelStatus.FAILED_TRANSFORMING;
-    } else if (isProcessed === false) {
+    } else if (uploadStatus?.find((x) => x === 'Failed')) {
       status = ModelStatus.FAILED_UPLOADING;
     }
 
