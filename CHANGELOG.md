@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.11.1](https://github.com/equinor/pepm-ui/compare/v1.11.0...v1.11.1) (2025-05-09)
+
+
+### 🐛 Bug Fixes
+
+* added prod environment in radix config for nrresqml ([67501a2](https://github.com/equinor/pepm-ui/commit/67501a230eb27ca801cf89559ab33fea2fee931b))
+* name of the image tag ([476b33a](https://github.com/equinor/pepm-ui/commit/476b33a01409c4676b2a09530b29c1e46971f848))
+
 ## [1.11.0](https://github.com/equinor/pepm-ui/compare/v1.10.0...v1.11.0) (2025-05-08)
 
 
