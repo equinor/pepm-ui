@@ -60,7 +60,9 @@ export const ModelTable = () => {
     queryKey: ['analogue-models'],
     queryFn: () =>
       getApiV1AnalogueModels({
-        query: { expand: 'outcrops, stratigraphicgroups, fileuploads' },
+        query: {
+          expand: 'outcrops, stratigraphicgroups, fileuploads, modelareas',
+        },
       }),
     enabled: !!token,
     refetchInterval: 60000,

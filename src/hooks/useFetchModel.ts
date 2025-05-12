@@ -25,7 +25,9 @@ export const useFetchModel = (id?: string) => {
             'outcrops, stratigraphicgroups, fileuploads, modelareas, geologicalgroups, inifile, computecases',
         },
       }),
-    enabled: !!token && analogueModel === analogueModelDefault,
+    enabled:
+      !!token ||
+      JSON.stringify(analogueModel) === JSON.stringify(analogueModelDefault),
   });
 
   return query;
