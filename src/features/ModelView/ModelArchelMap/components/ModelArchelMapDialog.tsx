@@ -13,9 +13,11 @@ import { useMutation } from '@tanstack/react-query';
 import { usePepmContextStore } from '../../../../stores/GlobalStore';
 import { useErrorStore } from '../../../../stores/ErrorStore';
 import { queryClient } from '../../../../auth/queryClient';
+import { useIsOwnerOrAdmin } from '../../../../hooks/useIsOwnerOrAdmin';
 /* eslint-disable max-lines-per-function */
 
 export const ModelArchelMapDialog = () => {
+  const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedArchelMaps, setSelectedArchelMaps] = useState(
     [] as CustomPutArchelRequest[],
@@ -83,14 +85,16 @@ export const ModelArchelMapDialog = () => {
   };
   return (
     <div>
-      <Button
-        aria-haspopup="dialog"
-        color="primary"
-        variant="outlined"
-        onClick={handleOpen}
-      >
-        Map architectural elements
-      </Button>
+      {isOwnerOrAdmin && (
+        <Button
+          aria-haspopup="dialog"
+          color="primary"
+          variant="outlined"
+          onClick={handleOpen}
+        >
+          Map architectural elements
+        </Button>
+      )}
       <ArchelDialogWrapper
         open={isOpen}
         onClose={handleClose}
