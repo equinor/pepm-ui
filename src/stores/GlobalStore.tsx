@@ -2,6 +2,7 @@
 /* eslint-disable max-lines-per-function */
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
+import { devtools } from 'zustand/middleware';
 import {
   AnalogueModelDetail,
   AnalogueModelSourceType,
@@ -116,189 +117,208 @@ type IPepmContextActions = {
 };
 
 export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
-  immer((set, get) => ({
-    analogueModel: analogueModelDefault,
-    analogueModelImageURL: '',
-    computeCases: [],
-    modelAreaTypes: [],
-    outcrops: [],
-    countries: [],
-    fields: [],
-    stratigraphicColumns: [],
-    stratigraphicUnits: [],
-    geologyStandards: [],
-    computeSettings: computeSettingsDefault,
-    objectResults: [],
-    variogramResults: [],
-    exportModels: [],
-    countryFilterList: [],
-    outcropFilterList: [],
-    fieldFilterList: [],
-    stratColFilterList: [],
-    groupFilterList: [],
-    setAnalogueModel: (analogueModel: AnalogueModelDetail) =>
-      set((state) => {
-        state.analogueModel = analogueModel;
-      }),
-    setAnalogueModelDefault: () =>
-      set((state) => {
-        state.analogueModel = analogueModelDefault;
-        state.analogueModelImageURL = '';
-        state.analogueModelImageMetadata = undefined;
-        state.stratigraphicColumns = [];
-        state.geologyStandards = [];
-        state.computeCases = [];
-        state.computeSettings = computeSettingsDefault;
-        state.objectResults = [];
-        state.variogramResults = [];
-      }),
-    setAnalogueModelImage: (image: string) =>
-      set((state) => {
-        state.analogueModelImageURL = image;
-      }),
-    setAnalogueModelImageMetadata: (imageMetadata: ImageMetadataDto) =>
-      set((state) => {
-        state.analogueModelImageMetadata = imageMetadata;
-      }),
-    addAnalogueModelStratGroup: (stratGroup: StratigraphicGroupDto) =>
-      set((state) => {
-        state.analogueModel.stratigraphicGroups.push(stratGroup);
-      }),
-    deleteAnalogueModelStratGroup: (id: string) =>
-      set((state) => {
-        state.analogueModel.stratigraphicGroups =
-          state.analogueModel.stratigraphicGroups.filter(
-            (stratGroup) => stratGroup.stratigraphicGroupId !== id,
+  devtools(
+    immer((set, get) => ({
+      analogueModel: analogueModelDefault,
+      analogueModelImageURL: '',
+      computeCases: [],
+      modelAreaTypes: [],
+      outcrops: [],
+      countries: [],
+      fields: [],
+      stratigraphicColumns: [],
+      stratigraphicUnits: [],
+      geologyStandards: [],
+      computeSettings: computeSettingsDefault,
+      objectResults: [],
+      variogramResults: [],
+      exportModels: [],
+      countryFilterList: [],
+      outcropFilterList: [],
+      fieldFilterList: [],
+      stratColFilterList: [],
+      groupFilterList: [],
+      setAnalogueModel: (analogueModel: AnalogueModelDetail) =>
+        set(
+          (state) => {
+            state.analogueModel = analogueModel;
+          },
+          undefined,
+          `analogueModel/setAnalogueModel`,
+        ),
+      setAnalogueModelDefault: () =>
+        set((state) => {
+          state.analogueModel = analogueModelDefault;
+          state.analogueModelImageURL = '';
+          state.analogueModelImageMetadata = undefined;
+          state.stratigraphicColumns = [];
+          state.geologyStandards = [];
+          state.computeCases = [];
+          state.computeSettings = computeSettingsDefault;
+          state.objectResults = [];
+          state.variogramResults = [];
+        }),
+      setAnalogueModelImage: (image: string) =>
+        set((state) => {
+          state.analogueModelImageURL = image;
+        }),
+      setAnalogueModelImageMetadata: (imageMetadata: ImageMetadataDto) =>
+        set((state) => {
+          state.analogueModelImageMetadata = imageMetadata;
+        }),
+      addAnalogueModelStratGroup: (stratGroup: StratigraphicGroupDto) =>
+        set((state) => {
+          state.analogueModel.stratigraphicGroups.push(stratGroup);
+        }),
+      deleteAnalogueModelStratGroup: (id: string) =>
+        set((state) => {
+          state.analogueModel.stratigraphicGroups =
+            state.analogueModel.stratigraphicGroups.filter(
+              (stratGroup) => stratGroup.stratigraphicGroupId !== id,
+            );
+        }),
+      addAnalogueModelGde: (gde: GeologicalGroupDto) =>
+        set((state) => {
+          state.analogueModel.geologicalGroups.push(gde);
+        }),
+      deleteAnalogueModelGde: (id: string) =>
+        set((state) => {
+          state.analogueModel.geologicalGroups =
+            state.analogueModel.geologicalGroups.filter(
+              (gde) => gde.geologicalGroupId !== id,
+            );
+        }),
+      addAnalogueModelOutcrop: (outcrop: OutcropDto) =>
+        set((state) => {
+          state.analogueModel.outcrops.push(outcrop);
+        }),
+      deleteAnalogueModelOutcrop: (id: string) =>
+        set((state) => {
+          state.analogueModel.outcrops = state.analogueModel.outcrops.filter(
+            (outcrop) => outcrop.outcropId !== id,
           );
-      }),
-    addAnalogueModelGde: (gde: GeologicalGroupDto) =>
-      set((state) => {
-        state.analogueModel.geologicalGroups.push(gde);
-      }),
-    deleteAnalogueModelGde: (id: string) =>
-      set((state) => {
-        state.analogueModel.geologicalGroups =
-          state.analogueModel.geologicalGroups.filter(
-            (gde) => gde.geologicalGroupId !== id,
+        }),
+      addAnalogueModelArea: (modelArea: ModelAreaDto) =>
+        set(
+          (state) => {
+            state.analogueModel.modelAreas.push(modelArea);
+          },
+          undefined,
+          'analogueModels/addModelArea',
+        ),
+
+      updateAnalogueModelArea: (modelArea: ModelAreaDto) =>
+        set(
+          (state) => {
+            state.analogueModel.modelAreas = state.analogueModel.modelAreas.map(
+              (ma) =>
+                ma.modelAreaId !== modelArea.modelAreaId ? ma : modelArea,
+            );
+          },
+          undefined,
+          'analogueModels/updateModelArea',
+        ),
+      deleteAnalogueModelArea: (id: string) =>
+        set((state) => {
+          state.analogueModel.modelAreas =
+            state.analogueModel.modelAreas.filter(
+              (ma) => ma.modelAreaId !== id,
+            );
+        }),
+      setComputeCases: (computeCases: ComputeCaseDto[]) =>
+        set((state) => {
+          state.computeCases = computeCases;
+        }),
+      setComputeCasesDefault: () =>
+        set((state) => {
+          state.computeCases = [];
+        }),
+      setModelAreaTypes: (modelAreaTypes: ModelAreaTypeDto[]) =>
+        set((state) => {
+          state.modelAreaTypes = modelAreaTypes;
+        }),
+      setOutcrops: (outcrops: OutcropDto[]) =>
+        set((state) => {
+          state.outcrops = outcrops;
+        }),
+      setCountries: (countries: CountryDto[]) =>
+        set((state) => {
+          state.countries = countries;
+        }),
+      setFields: (fields: FieldDto[]) =>
+        set((state) => {
+          state.fields = fields;
+        }),
+      setStratigraphicColumns: (stratigraphicColumns: StratColumnDto[]) =>
+        set((state) => {
+          state.stratigraphicColumns = stratigraphicColumns;
+        }),
+      setStratigraphicUnits: (stratigraphicUnits: StratUnitDto[]) =>
+        set((state) => {
+          state.stratigraphicUnits = stratigraphicUnits;
+        }),
+      setGeologicalStandards: (geologyStandards: GeologicalStandardDto[]) =>
+        set((state) => {
+          state.geologyStandards = geologyStandards;
+        }),
+      setComputeSettings: (computeSettings: ListComputeSettingsMethodDto) =>
+        set((state) => {
+          state.computeSettings = computeSettings;
+        }),
+      setObjectEstimationResults: (objectResults: GetObjectResultsDto[]) =>
+        set((state) => {
+          state.objectResults = objectResults;
+        }),
+      setVariogramResults: (variogramResults: GetVariogramResultsDto[]) =>
+        set((state) => {
+          state.variogramResults = variogramResults;
+        }),
+      updateObjectResult: (objectResult: GetObjectResultsDto) =>
+        set((state) => {
+          state.objectResults = state.objectResults.map((res) =>
+            res.objectResultId !== objectResult.objectResultId
+              ? res
+              : objectResult,
           );
-      }),
-    addAnalogueModelOutcrop: (outcrop: OutcropDto) =>
-      set((state) => {
-        state.analogueModel.outcrops.push(outcrop);
-      }),
-    deleteAnalogueModelOutcrop: (id: string) =>
-      set((state) => {
-        state.analogueModel.outcrops = state.analogueModel.outcrops.filter(
-          (outcrop) => outcrop.outcropId !== id,
-        );
-      }),
-    addAnalogueModelArea: (modelArea: ModelAreaDto) =>
-      set((state) => {
-        state.analogueModel.modelAreas.push(modelArea);
-      }),
-    updateAnalogueModelArea: (modelArea: ModelAreaDto) =>
-      set((state) => {
-        state.analogueModel.modelAreas = state.analogueModel.modelAreas.map(
-          (ma) => (ma.modelAreaId !== modelArea.modelAreaId ? ma : modelArea),
-        );
-      }),
-    deleteAnalogueModelArea: (id: string) =>
-      set((state) => {
-        state.analogueModel.modelAreas = state.analogueModel.modelAreas.filter(
-          (ma) => ma.modelAreaId !== id,
-        );
-      }),
-    setComputeCases: (computeCases: ComputeCaseDto[]) =>
-      set((state) => {
-        state.computeCases = computeCases;
-      }),
-    setComputeCasesDefault: () =>
-      set((state) => {
-        state.computeCases = [];
-      }),
-    setModelAreaTypes: (modelAreaTypes: ModelAreaTypeDto[]) =>
-      set((state) => {
-        state.modelAreaTypes = modelAreaTypes;
-      }),
-    setOutcrops: (outcrops: OutcropDto[]) =>
-      set((state) => {
-        state.outcrops = outcrops;
-      }),
-    setCountries: (countries: CountryDto[]) =>
-      set((state) => {
-        state.countries = countries;
-      }),
-    setFields: (fields: FieldDto[]) =>
-      set((state) => {
-        state.fields = fields;
-      }),
-    setStratigraphicColumns: (stratigraphicColumns: StratColumnDto[]) =>
-      set((state) => {
-        state.stratigraphicColumns = stratigraphicColumns;
-      }),
-    setStratigraphicUnits: (stratigraphicUnits: StratUnitDto[]) =>
-      set((state) => {
-        state.stratigraphicUnits = stratigraphicUnits;
-      }),
-    setGeologicalStandards: (geologyStandards: GeologicalStandardDto[]) =>
-      set((state) => {
-        state.geologyStandards = geologyStandards;
-      }),
-    setComputeSettings: (computeSettings: ListComputeSettingsMethodDto) =>
-      set((state) => {
-        state.computeSettings = computeSettings;
-      }),
-    setObjectEstimationResults: (objectResults: GetObjectResultsDto[]) =>
-      set((state) => {
-        state.objectResults = objectResults;
-      }),
-    setVariogramResults: (variogramResults: GetVariogramResultsDto[]) =>
-      set((state) => {
-        state.variogramResults = variogramResults;
-      }),
-    updateObjectResult: (objectResult: GetObjectResultsDto) =>
-      set((state) => {
-        state.objectResults = state.objectResults.map((res) =>
-          res.objectResultId !== objectResult.objectResultId
-            ? res
-            : objectResult,
-        );
-      }),
-    updateVariogramResult: (variogramResult: GetVariogramResultsDto) =>
-      set((state) => {
-        state.variogramResults = state.variogramResults.map((res) =>
-          res.variogramResultId !== variogramResult.variogramResultId
-            ? res
-            : variogramResult,
-        );
-      }),
-    addExportModel: (modelId: string) =>
-      set((state) => {
-        state.exportModels.push(modelId);
-      }),
-    deleteExportModel: (modelId: string) =>
-      set((state) => {
-        state.exportModels = state.exportModels.filter((id) => id !== modelId);
-      }),
-    setCountryFilterList: (filters: string[]) =>
-      set((state) => {
-        state.countryFilterList = filters;
-      }),
-    setOutcropFilterList: (filters: string[]) =>
-      set((state) => {
-        state.outcropFilterList = filters;
-      }),
-    setFieldFilterList: (filters: string[]) =>
-      set((state) => {
-        state.fieldFilterList = filters;
-      }),
-    setStratColFilterList: (filters: string[]) =>
-      set((state) => {
-        state.stratColFilterList = filters;
-      }),
-    setGroupFilterList: (filters: string[]) =>
-      set((state) => {
-        state.groupFilterList = filters;
-      }),
-  })),
+        }),
+      updateVariogramResult: (variogramResult: GetVariogramResultsDto) =>
+        set((state) => {
+          state.variogramResults = state.variogramResults.map((res) =>
+            res.variogramResultId !== variogramResult.variogramResultId
+              ? res
+              : variogramResult,
+          );
+        }),
+      addExportModel: (modelId: string) =>
+        set((state) => {
+          state.exportModels.push(modelId);
+        }),
+      deleteExportModel: (modelId: string) =>
+        set((state) => {
+          state.exportModels = state.exportModels.filter(
+            (id) => id !== modelId,
+          );
+        }),
+      setCountryFilterList: (filters: string[]) =>
+        set((state) => {
+          state.countryFilterList = filters;
+        }),
+      setOutcropFilterList: (filters: string[]) =>
+        set((state) => {
+          state.outcropFilterList = filters;
+        }),
+      setFieldFilterList: (filters: string[]) =>
+        set((state) => {
+          state.fieldFilterList = filters;
+        }),
+      setStratColFilterList: (filters: string[]) =>
+        set((state) => {
+          state.stratColFilterList = filters;
+        }),
+      setGroupFilterList: (filters: string[]) =>
+        set((state) => {
+          state.groupFilterList = filters;
+        }),
+    })),
+  ),
 );
