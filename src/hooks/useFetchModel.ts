@@ -3,13 +3,8 @@ import { useMsal } from '@azure/msal-react';
 import { useParams } from 'react-router-dom';
 import { useAccessToken } from './useAccessToken';
 import { getApiV1AnalogueModelsById } from '../api/generated';
-import {
-  analogueModelDefault,
-  usePepmContextStore,
-} from '../stores/GlobalStore';
 
 export const useFetchModel = (id?: string) => {
-  const { analogueModel } = usePepmContextStore();
   const { modelId } = useParams();
   const { instance, accounts } = useMsal();
   const token = useAccessToken(instance, accounts[0]);
@@ -25,9 +20,7 @@ export const useFetchModel = (id?: string) => {
             'outcrops, stratigraphicgroups, fileuploads, modelareas, geologicalgroups, inifile, computecases',
         },
       }),
-    enabled:
-      !!token ||
-      JSON.stringify(analogueModel) === JSON.stringify(analogueModelDefault),
+    enabled: !!token,
   });
 
   return query;
