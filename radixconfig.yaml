@@ -26,7 +26,7 @@ spec:
         - environment: test
           imageTagName: test:latest
         - environment: prod
-          imageTagName: production:latest
+          imageTagName: prod:latest
     - name: api
       image: ghcr.io/equinor/pepm-core-api:{imageTagName}
       publicPort: http
@@ -218,6 +218,31 @@ spec:
                 useAdls: true
                 streaming:
                   enabled: false
+
+        - environment: prod
+          volumeMounts:
+            - name: pepm-nrresqml-model-storage-prod
+              path: /mnt/azure-storage/models
+              blobfuse2:
+                protocol: fuse2
+                container: models
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+
+            - name: pepm-nrresqml-worker-storage-prod
+              path: /mnt/azure-storage/worker
+              blobfuse2:
+                protocol: fuse2
+                container: worker
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+
         
 
 

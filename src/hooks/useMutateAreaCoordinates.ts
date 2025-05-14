@@ -6,8 +6,10 @@ import {
   UpdateAnalogueModelAreaCommandForm,
 } from '../api/generated';
 import { queryClient } from '../auth/queryClient';
+import { usePepmContextStore } from '../stores/GlobalStore';
 
 export const useMutateAreaCoordinates = () => {
+  const { analogueModel } = usePepmContextStore();
   const postAreaCoordinates = useMutation({
     mutationFn: ({
       id,
@@ -22,7 +24,9 @@ export const useMutateAreaCoordinates = () => {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['analogue-model'] });
+      queryClient.invalidateQueries({
+        queryKey: ['analogue-model', analogueModel.analogueModelId],
+      });
     },
   });
 
@@ -45,7 +49,9 @@ export const useMutateAreaCoordinates = () => {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['analogue-model'] });
+      queryClient.invalidateQueries({
+        queryKey: ['analogue-model', analogueModel.analogueModelId],
+      });
     },
   });
 

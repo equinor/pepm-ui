@@ -10,6 +10,13 @@ export const TableWrapper = styled.div`
   row-gap: ${spacings.LARGE};
 `;
 
+export const ProgressWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+`;
+
 export const FileTable = styled(Table)`
   min-width: 256px;
   width: fit-content;
