@@ -148,7 +148,7 @@ export const AddGeologicalGroupCommandResponseSchema = {
 } as const;
 
 export const AddGeologicalGroupFormSchema = {
-  required: ['architecturalElements', 'depEnvId', 'grossDepEnvId', 'subEnvId'],
+  required: ['depEnvId', 'grossDepEnvId', 'subEnvId'],
   type: 'object',
   properties: {
     grossDepEnvId: {
@@ -162,13 +162,6 @@ export const AddGeologicalGroupFormSchema = {
     subEnvId: {
       type: 'string',
       format: 'uuid',
-    },
-    architecturalElements: {
-      type: 'array',
-      items: {
-        type: 'string',
-        format: 'uuid',
-      },
     },
   },
   additionalProperties: false,
@@ -1282,13 +1275,7 @@ export const GenerateThumbnailDtoSchema = {
 } as const;
 
 export const GeologicalGroupDtoSchema = {
-  required: [
-    'architecturalElements',
-    'depEnv',
-    'geologicalGroupId',
-    'grossDepEnv',
-    'subenv',
-  ],
+  required: ['depEnv', 'geologicalGroupId', 'grossDepEnv', 'subenv'],
   type: 'object',
   properties: {
     geologicalGroupId: {
@@ -1303,12 +1290,6 @@ export const GeologicalGroupDtoSchema = {
     },
     subenv: {
       $ref: '#/components/schemas/GeologicalStandardDto',
-    },
-    architecturalElements: {
-      type: 'array',
-      items: {
-        $ref: '#/components/schemas/GeologicalStandardDto',
-      },
     },
   },
   additionalProperties: false,

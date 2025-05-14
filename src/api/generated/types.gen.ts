@@ -44,7 +44,6 @@ export type AddGeologicalGroupForm = {
   grossDepEnvId: string;
   depEnvId: string;
   subEnvId: string;
-  architecturalElements: Array<string>;
 };
 
 export type AddStatigraphicGroupForm = {
@@ -400,7 +399,6 @@ export type GeologicalGroupDto = {
   grossDepEnv: GeologicalStandardDto;
   depEnv: GeologicalStandardDto;
   subenv: GeologicalStandardDto;
-  architecturalElements: Array<GeologicalStandardDto>;
 };
 
 export type GeologicalStandardDto = {
@@ -3342,5 +3340,5 @@ export type PostApiWebhooksVargrestStatusResponse =
   PostApiWebhooksVargrestStatusResponses[keyof PostApiWebhooksVargrestStatusResponses];
 
 export type ClientOptions = {
-  baseURL: 'https://api-pepm-dev.radix.equinor.com' | (string & {});
+  baseURL: 'http://localhost:5000' | (string & {});
 };

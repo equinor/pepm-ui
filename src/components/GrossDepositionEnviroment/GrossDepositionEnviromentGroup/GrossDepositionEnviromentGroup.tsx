@@ -66,27 +66,11 @@ export const GrossDepositionEnviromentGroup = () => {
     const err = await validateInput(gdeObject);
     setErrors(err);
 
-    if (
-      id &&
-      gdeObject.grossDepEnv &&
-      gdeObject.depEnv &&
-      gdeObject.subenv &&
-      gdeObject.architecturalElements &&
-      gdeObject.architecturalElements.length > 0
-    ) {
-      const architecturalElementsList: string[] = [];
-      gdeObject.architecturalElements.map((x) =>
-        architecturalElementsList.push(x.geologicalStandardId),
-      );
-
+    if (id && gdeObject.grossDepEnv && gdeObject.depEnv && gdeObject.subenv) {
       const postRequestBody: AddGeologicalGroupForm = {
         grossDepEnvId: gdeObject.grossDepEnv.geologicalStandardId,
         depEnvId: gdeObject.depEnv.geologicalStandardId,
         subEnvId: gdeObject.subenv.geologicalStandardId,
-        architecturalElements:
-          gdeObject.architecturalElements.length > 0
-            ? architecturalElementsList
-            : [],
       };
       const rowUpload = await useGde.postGde.mutateAsync({
         id: id,
@@ -114,7 +98,6 @@ export const GrossDepositionEnviromentGroup = () => {
                 <Table.Cell>GDE</Table.Cell>
                 <Table.Cell>Depositional environment</Table.Cell>
                 <Table.Cell>Subenvironment</Table.Cell>
-                <Table.Cell>Architectural element</Table.Cell>
               </Table.Row>
             </Table.Head>
 
@@ -144,17 +127,6 @@ export const GrossDepositionEnviromentGroup = () => {
                   </Table.Cell>
                   <Table.Cell>
                     {row.grossDepEnv.equinorCode + ' ' + row.subenv.identifier}
-                  </Table.Cell>
-                  <Table.Cell>
-                    {row.architecturalElements.length > 0 && (
-                      <ul>
-                        {row.architecturalElements.map((a) => (
-                          <li key={a.geologicalStandardId}>
-                            {a.equinorCode + ' ' + a.identifier}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
                   </Table.Cell>
                 </Table.Row>
               ))}
