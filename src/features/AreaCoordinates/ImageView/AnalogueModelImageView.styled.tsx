@@ -31,7 +31,7 @@ export const ImageWrapper = styled.div`
 export const CanvasWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 48rem;
+  min-height: 40rem;
   min-width: 32rem;
   canvas {
     min-height: 32rem;

@@ -77,7 +77,7 @@ export const Model = () => {
       setComputeSettings(computeSettings.data.data.data);
   }, [
     cases.data?.data,
-    image,
+    image.data,
     geologyStandards.data?.data,
     modelArea.data?.data,
     outcropData.data?.data,

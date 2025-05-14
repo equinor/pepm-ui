@@ -306,7 +306,6 @@ export const ModelTable = () => {
             id: 'country',
             header: (header) =>
               headerComponent(header, 'Country', countryFilterList),
-            // filterFn: 'arrIncludes',
             filterFn: (row, columnId, filterValue) =>
               filterFunction(
                 filterValue,
