@@ -149,8 +149,8 @@ export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
       fieldFilterList: [],
       stratColFilterList: [],
       groupFilterList: [],
-      thumbnailJobId: '',
-      conversionJobId: '',
+      thumbnailJobId: undefined,
+      conversionJobId: undefined,
       setAnalogueModel: (analogueModel: AnalogueModelDetail) =>
         set(
           (state) => {
