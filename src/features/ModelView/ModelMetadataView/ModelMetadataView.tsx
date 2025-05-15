@@ -288,7 +288,7 @@ export const ModelMetadataView = ({
             justifyContent: 'space-between',
           }}
         >
-          <Card style={{ height: '45%', overflow: 'auto' }}>
+          <Card style={{ height: '45%', minWidth: '20rem', overflow: 'auto' }}>
             <Card.Content style={{ padding: '1rem' }}>
               {uploadingStatus === undefined && (
                 <div>
