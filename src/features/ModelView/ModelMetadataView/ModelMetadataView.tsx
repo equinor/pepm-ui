@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import {
   AnalogueModelDetail,
   GenerateThumbnailCommand,
+  getApiV1AnalogueModelsById,
   postApiV1JobsComputeThumbnailGen,
   putApiV1AnalogueModelsById,
   UpdateAnalogueModelCommandBody,
@@ -39,6 +40,7 @@ import { ModelFilesView } from '../ModelFilesView/ModelFilesView';
 import { ModelNameFrameDetail } from '../ModelNameFrame/ModelNameFrameDetail';
 import { ModelImageCanvas } from '../../AreaCoordinates/ImageView/ModelImageCanvas/ModelImageCanvas';
 import { ModelArchelMap } from '../ModelArchelMap/ModelArchelMap';
+import { useFetchJobStatus } from '../../../hooks/useFetchJobStatus';
 
 export const ModelMetadataView = ({
   uploadingStatus,
@@ -57,6 +59,11 @@ export const ModelMetadataView = ({
     setGeologicalStandards,
     setAnalogueModel,
     analogueModelImageMetadata,
+    setAnalogueModelImageDto,
+    conversionJobId,
+    setConversionJobId,
+    thumbnailJobId,
+    setThumbnailJobId,
   } = usePepmContextStore();
   const outcropData = useFetchOutcropData();
   const countryData = useFetchSmdaCountries();
@@ -72,9 +79,15 @@ export const ModelMetadataView = ({
 
   const { modelId } = useParams();
 
+  const checkThumbnailStatus = useFetchJobStatus(thumbnailJobId);
+  const checkConversionStatus = useFetchJobStatus(conversionJobId);
+
   const generateThumbnail = useMutation({
     mutationFn: (requestBody: GenerateThumbnailCommand) => {
       return postApiV1JobsComputeThumbnailGen({ body: requestBody });
+    },
+    onSuccess: (data) => {
+      setThumbnailJobId(data.data?.data.jobId);
     },
   });
 
@@ -89,6 +102,22 @@ export const ModelMetadataView = ({
     },
     [generateThumbnail],
   );
+
+  const fetchModel = useMutation({
+    mutationFn: () => {
+      return getApiV1AnalogueModelsById({
+        path: { id: analogueModel.analogueModelId },
+      });
+    },
+  });
+
+  const fetchModelCallback = useCallback(async () => {
+    const res = await fetchModel.mutateAsync();
+    if (res.data?.success)
+      setAnalogueModelImageDto(res.data.data.analogueModelImage);
+
+    return res;
+  }, [fetchModel, setAnalogueModelImageDto]);
 
   const toggleOpen = () => {
     setOpen(!open);
@@ -136,6 +165,44 @@ export const ModelMetadataView = ({
     modelId,
     generateThumbnailOnLoad,
     analogueModel.isProcessed,
+  ]);
+
+  useEffect(() => {
+    if (
+      generateImageRequested.current === true &&
+      analogueModel.analogueModelImage === null &&
+      thumbnailJobId !== '' &&
+      checkThumbnailStatus.data?.data?.data.jobStatus === 'Succeeded'
+    ) {
+      fetchModelCallback();
+    }
+    if (
+      analogueModel.analogueModelImage &&
+      analogueModel.analogueModelImage.analogueModelImageId !== ''
+    )
+      setThumbnailJobId(undefined);
+  }, [
+    analogueModel.analogueModelImage,
+    checkThumbnailStatus.data?.data?.data.jobStatus,
+    fetchModelCallback,
+    setThumbnailJobId,
+    thumbnailJobId,
+  ]);
+
+  useEffect(() => {
+    if (
+      analogueModel !== analogueModelDefault &&
+      !analogueModel.isProcessed &&
+      checkConversionStatus.data?.data?.data.jobStatus === 'Succeeded'
+    ) {
+      setAnalogueModel({ ...analogueModel, isProcessed: true });
+      setConversionJobId(undefined);
+    }
+  }, [
+    analogueModel,
+    checkConversionStatus.data?.data?.data.jobStatus,
+    setAnalogueModel,
+    setConversionJobId,
   ]);
 
   function toggleEditMetadata() {
@@ -290,6 +357,7 @@ export const ModelMetadataView = ({
                     )}
                   {getModelStatus() === ModelStatus.TRANSFORMING && (
                     <div>
+                      <Typography as="p">Model is transforming.</Typography>
                       <Typography as="p">
                         Model picture will be generated after the model is
                         transformed.

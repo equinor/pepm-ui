@@ -21,7 +21,9 @@ export const Browse = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if (analogueModel !== analogueModelDefault) setAnalogueModelDefault();
+    if (analogueModel !== analogueModelDefault) {
+      setAnalogueModelDefault();
+    }
   }, [analogueModel, setAnalogueModelDefault]);
 
   function clearStatus() {

@@ -46,8 +46,12 @@ import { useErrorStore } from '../../../stores/ErrorStore';
 Icon.add({ error_outlined });
 
 export const HandleModelComponent = () => {
-  const { setAnalogueModelDefault, analogueModel, setAnalogueModel } =
-    usePepmContextStore();
+  const {
+    setAnalogueModelDefault,
+    analogueModel,
+    setAnalogueModel,
+    setConversionJobId,
+  } = usePepmContextStore();
 
   const { progress, setProgress } = useAddModelStore();
   const { uploadStatus, setUploadStatus } = useAddModelStore();
@@ -127,6 +131,9 @@ export const HandleModelComponent = () => {
   const convertModelFile = useMutation({
     mutationFn: (requestBody: ConvertAnalogueModelCommand) => {
       return postApiV1JobsComputeModelConversions({ body: requestBody });
+    },
+    onSuccess: (data) => {
+      setConversionJobId(data.data?.data.jobId);
     },
   });
 

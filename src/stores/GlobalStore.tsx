@@ -5,6 +5,7 @@ import { immer } from 'zustand/middleware/immer';
 import { devtools } from 'zustand/middleware';
 import {
   AnalogueModelDetail,
+  AnalogueModelImageDto,
   AnalogueModelSourceType,
   ComputeCaseDto,
   CountryDto,
@@ -77,6 +78,8 @@ type IPepmContext = {
   fieldFilterList: string[];
   stratColFilterList: string[];
   groupFilterList: string[];
+  thumbnailJobId: string | undefined;
+  conversionJobId: string | undefined;
 };
 
 type IPepmContextActions = {
@@ -84,6 +87,7 @@ type IPepmContextActions = {
   setAnalogueModelDefault: () => void;
   setAnalogueModelImage: (image: string) => void;
   setAnalogueModelImageMetadata: (imageMetadata: ImageMetadataDto) => void;
+  setAnalogueModelImageDto: (imageDto: AnalogueModelImageDto) => void;
   addAnalogueModelStratGroup: (stratGroup: StratigraphicGroupDto) => void;
   deleteAnalogueModelStratGroup: (id: string) => void;
   addAnalogueModelArea: (modelArea: ModelAreaDto) => void;
@@ -114,6 +118,8 @@ type IPepmContextActions = {
   setFieldFilterList: (filters: string[]) => void;
   setStratColFilterList: (filters: string[]) => void;
   setGroupFilterList: (filters: string[]) => void;
+  setThumbnailJobId: (id: string | undefined) => void;
+  setConversionJobId: (id: string | undefined) => void;
 };
 
 export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
@@ -121,6 +127,11 @@ export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
     immer((set, get) => ({
       analogueModel: analogueModelDefault,
       analogueModelImageURL: '',
+      analogueModelImage: {
+        analogueModelImageId: '',
+        fileName: '',
+        type: FileType.JPG,
+      },
       computeCases: [],
       modelAreaTypes: [],
       outcrops: [],
@@ -138,6 +149,8 @@ export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
       fieldFilterList: [],
       stratColFilterList: [],
       groupFilterList: [],
+      thumbnailJobId: undefined,
+      conversionJobId: undefined,
       setAnalogueModel: (analogueModel: AnalogueModelDetail) =>
         set(
           (state) => {
@@ -165,6 +178,10 @@ export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
       setAnalogueModelImageMetadata: (imageMetadata: ImageMetadataDto) =>
         set((state) => {
           state.analogueModelImageMetadata = imageMetadata;
+        }),
+      setAnalogueModelImageDto: (imageDto: AnalogueModelImageDto) =>
+        set((state) => {
+          state.analogueModel.analogueModelImage = imageDto;
         }),
       addAnalogueModelStratGroup: (stratGroup: StratigraphicGroupDto) =>
         set((state) => {
@@ -318,6 +335,14 @@ export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
       setGroupFilterList: (filters: string[]) =>
         set((state) => {
           state.groupFilterList = filters;
+        }),
+      setThumbnailJobId: (id: string | undefined) =>
+        set((state) => {
+          state.thumbnailJobId = id;
+        }),
+      setConversionJobId: (id: string | undefined) =>
+        set((state) => {
+          state.conversionJobId = id;
         }),
     })),
   ),
