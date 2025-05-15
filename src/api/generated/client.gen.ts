@@ -23,6 +23,6 @@ export type CreateClientConfig<T extends DefaultClientOptions = ClientOptions> =
 
 export const client = createClient(
   createConfig<ClientOptions>({
-    baseURL: 'https://api-pepm-dev.radix.equinor.com',
+    baseURL: 'http://localhost:5000',
   }),
 );

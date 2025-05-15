@@ -41,10 +41,6 @@ export const GdeSelect = ({
         gdeObject.grossDepEnv?.geologicalStandardId,
   );
 
-  const ArchitecturalElement = geologyStandards.filter(
-    (g) => g.geologyGroup === 'ArchitecturalElement',
-  );
-
   const setDisplayName = (option: GeologicalStandardDto) => {
     return option.equinorCode + ' ' + option.identifier;
   };
@@ -138,22 +134,6 @@ export const GdeSelect = ({
             ? error.subEnv
             : undefined
         }
-      />
-
-      <Autocomplete
-        label="Architectural Element"
-        multiple
-        options={sortList(ArchitecturalElement, true)}
-        optionLabel={(option) => setDisplayName(option)}
-        onOptionsChange={(e: AutocompleteChanges<GeologicalStandardDto>) => {
-          setGdeObject({
-            ...gdeObject,
-            architecturalElements: e.selectedItems,
-          });
-        }}
-        noOptionsText="No options"
-        variant={error.AEl ? 'error' : undefined}
-        helperText={error.subEnv ? error.AEl : undefined}
       />
     </StyledDialog.AutocompleteList>
   );

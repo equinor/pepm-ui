@@ -13,9 +13,6 @@ export const validateInput = async (gdeObject: GdeType) => {
   if (gdeObject.subenv === undefined) {
     errorObject.subEnv = message;
   }
-  if (gdeObject.architecturalElements?.length === 0) {
-    errorObject.AEl = message;
-  }
 
   return errorObject;
 };
