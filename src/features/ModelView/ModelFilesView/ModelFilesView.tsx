@@ -1,7 +1,9 @@
 /* eslint-disable max-lines-per-function */
 import {
+  Button,
   Card,
   CircularProgress,
+  Icon,
   Table,
   Typography,
 } from '@equinor/eds-core-react';
@@ -15,7 +17,6 @@ import {
   analogueModelDefault,
   usePepmContextStore,
 } from '../../../stores/GlobalStore';
-import IconButton from '../../../components/IconButton/IconButton';
 import { download } from '@equinor/eds-icons';
 import {
   GetFetchIniFileAxios,
@@ -23,6 +24,7 @@ import {
   GetFetchResqmlFileAxios,
 } from '../../../hooks/useFetchFile';
 import { useState } from 'react';
+import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
 
 export const ModelFilesView = () => {
   const { analogueModel } = usePepmContextStore();
@@ -33,6 +35,7 @@ export const ModelFilesView = () => {
   const [isLoadingResqml, setIsLoadingResqml] = useState<number | undefined>(
     undefined,
   );
+  const isOwnerOrAdmin = useIsOwnerOrAdmin();
 
   if (analogueModel === analogueModelDefault) return <p>Loading ...</p>;
 
@@ -99,11 +102,13 @@ export const ModelFilesView = () => {
       );
 
     return (
-      <IconButton
-        icon={download}
-        title="download"
+      <Button
+        variant="ghost_icon"
         onClick={() => downloadFile(fileType)}
-      />
+        disabled={!isOwnerOrAdmin}
+      >
+        <Icon data={download} title={'download'} />
+      </Button>
     );
   };
 
