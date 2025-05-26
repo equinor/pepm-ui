@@ -3,7 +3,9 @@ import { usePepmContextStore } from '../../../../stores/GlobalStore';
 import { arrow_forward } from '@equinor/eds-icons';
 import { ConfigurationArchelDto, GeologicalStandardDto } from '../../../../api';
 import { CustomPutArchelRequest } from '../types/CustomPutArchelRequest';
+import { styled } from 'styled-components';
 import React from 'react';
+import { spacings } from '../../../../tokens/spacings';
 /* eslint-disable camelcase */
 /* eslint-disable max-lines-per-function */
 Icon.add({ arrow_forward });
@@ -53,11 +55,22 @@ export const ModelArchelMapSelectTable = ({
     }
   }
 
+  const StyledTable = styled(Table)`
+    white-space: nowrap;
+  `;
+
+  const StyledCell = styled(Table.Cell)`
+    display: flex;
+    column-gap: ${spacings.SMALL};
+    align-items: center;
+    justify-content: space-between;
+  `;
+
   return (
-    <Table style={{ width: '100%' }}>
+    <StyledTable>
       <Table.Head>
         <Table.Row>
-          <Table.Cell>Delf3D</Table.Cell>
+          <Table.Cell>Delft3D</Table.Cell>
           <Table.Cell>SMDA</Table.Cell>
         </Table.Row>
       </Table.Head>
@@ -67,21 +80,13 @@ export const ModelArchelMapSelectTable = ({
           .map((a) => {
             return (
               <Table.Row key={a.analogueModelConfigurationArchelId}>
-                <Table.Cell>
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <Typography group="table" variant="cell_text">
-                      {' '}
-                      {a.value} - {a.name}
-                    </Typography>
-                    <Icon data={arrow_forward} />
-                  </div>
-                </Table.Cell>
+                <StyledCell>
+                  <Typography group="table" variant="cell_text">
+                    {' '}
+                    {a.value} - {a.name}
+                  </Typography>
+                  <Icon data={arrow_forward} />
+                </StyledCell>
                 <Table.Cell>
                   <Autocomplete
                     options={geologyStandards
@@ -102,6 +107,6 @@ export const ModelArchelMapSelectTable = ({
             );
           })}
       </Table.Body>
-    </Table>
+    </StyledTable>
   );
 };

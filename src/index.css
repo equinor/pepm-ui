@@ -15,9 +15,17 @@ body {
 
 #root {
   height: 100vh;
+
+  /* TODO import EDS variables so that we don't need to specify default colors anywhere */
+  --eds_table__cell_text_color: #3d3d3d;
 }
 
 code {
   font-family: 'Equinor Mono', source-code-pro, Menlo, Monaco, Consolas,
     'Courier New', monospace;
+}
+
+/* TODO consider adding a reset CSS file so that we don't need to override default browser styles like this */
+figure {
+  margin: 0;
 }

@@ -6,6 +6,7 @@ import { deleteApiV1AnalogueModelsById } from '../../../api/generated';
 import { queryClient } from '../../../auth/queryClient';
 import * as Styled from './DeleteModel.styled';
 import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
+import * as StyledCard from '../../../styles/Card/Card.styled';
 
 // eslint-disable-next-line max-lines-per-function
 export const DeleteModel = () => {
@@ -36,25 +37,25 @@ export const DeleteModel = () => {
   if (!isOwnerOrAdmin) return <></>;
 
   return (
-    <Styled.Wrapper>
+    <>
       <Card>
-        <Card.Content style={{ padding: '1rem' }}>
-          <Typography variant="h3" as="h2">
+        <Card.Header>
+          <Typography variant="h4" as="h3" className="card-title">
             Delete model
           </Typography>
+        </Card.Header>
+        <StyledCard.Content>
           <Typography variant="body_long">
             This will delete the model along with all related cases and results.
           </Typography>
-          <div style={{ paddingTop: '1rem' }}>
-            <Button
-              variant="outlined"
-              onClick={() => setOpen(!open)}
-              color="danger"
-            >
-              Delete…
-            </Button>
-          </div>
-        </Card.Content>
+          <Button
+            variant="outlined"
+            onClick={() => setOpen(!open)}
+            color="danger"
+          >
+            Delete…
+          </Button>
+        </StyledCard.Content>
       </Card>
 
       <Styled.DeleteDialog open={open}>
@@ -78,6 +79,6 @@ export const DeleteModel = () => {
           </Button>
         </Dialog.Actions>
       </Styled.DeleteDialog>
-    </Styled.Wrapper>
+    </>
   );
 };

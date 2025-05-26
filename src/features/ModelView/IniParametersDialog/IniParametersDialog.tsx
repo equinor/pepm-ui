@@ -5,12 +5,7 @@ import {
   ConfigurationArchelDto,
   ConfigurationParameterDto,
 } from '../../../api/generated';
-import {
-  IniDialogContent,
-  IniParamAccordion,
-  IniParamDialog,
-  IniParamTable,
-} from './IniParametersDialog.style';
+import { IniDialogContent, IniParamDialog } from './IniParametersDialog.style';
 import { Accordion, Button, Dialog, Table } from '@equinor/eds-core-react';
 
 export const IniParametersDialog = (props: {
@@ -35,16 +30,16 @@ export const IniParametersDialog = (props: {
   }
 
   return (
-    <div>
+    <>
       <Button variant="outlined" onClick={handleOpen}>
         See parameters
       </Button>
       <IniParamDialog open={isOpen} isDismissable onClose={handleClose}>
         <Dialog.Header>
-          <Dialog.Title>Ini Parameters</Dialog.Title>
+          <Dialog.Title>Ini parameters</Dialog.Title>
         </Dialog.Header>
         <IniDialogContent scrollable>
-          <IniParamAccordion>
+          <Accordion>
             {Object.entries(props.iniParameters)
               .filter(([key, value]) => typeof value !== 'string')
               .map(([key, parameter]) => (
@@ -57,49 +52,47 @@ export const IniParametersDialog = (props: {
                         .trim()}
                   </Accordion.Header>
                   <Accordion.Panel>
-                    <IniParamTable>
-                      <Table>
-                        <Table.Head>
-                          <Table.Row>
-                            <Table.Cell key={`head-name-${key.toString}`}>
-                              Name
-                            </Table.Cell>
-                            <Table.Cell key={`head-value-${key.toString}`}>
-                              Value
-                            </Table.Cell>
-                          </Table.Row>
-                        </Table.Head>
-                        <Table.Body>
-                          {!isArchelArray(parameter) &&
-                            Object.entries(parameter)
-                              .filter(([key, value]) => value !== '')
-                              .map(([key, value]) => (
-                                <Table.Row key={key}>
-                                  <Table.Cell>{key}</Table.Cell>
-                                  <Table.Cell>{value}</Table.Cell>
-                                </Table.Row>
-                              ))}
-                          {Array.isArray(parameter) &&
-                            parameter.map((element) => (
-                              <Table.Row
-                                key={element.analogueModelConfigurationArchelId}
-                              >
-                                <Table.Cell>{element.name}</Table.Cell>
-                                <Table.Cell>{element.value}</Table.Cell>
+                    <Table>
+                      <Table.Head>
+                        <Table.Row>
+                          <Table.Cell key={`head-name-${key.toString}`}>
+                            Name
+                          </Table.Cell>
+                          <Table.Cell key={`head-value-${key.toString}`}>
+                            Value
+                          </Table.Cell>
+                        </Table.Row>
+                      </Table.Head>
+                      <Table.Body>
+                        {!isArchelArray(parameter) &&
+                          Object.entries(parameter)
+                            .filter(([key, value]) => value !== '')
+                            .map(([key, value]) => (
+                              <Table.Row key={key}>
+                                <Table.Cell>{key}</Table.Cell>
+                                <Table.Cell>{value}</Table.Cell>
                               </Table.Row>
                             ))}
-                        </Table.Body>
-                      </Table>
-                    </IniParamTable>
+                        {Array.isArray(parameter) &&
+                          parameter.map((element) => (
+                            <Table.Row
+                              key={element.analogueModelConfigurationArchelId}
+                            >
+                              <Table.Cell>{element.name}</Table.Cell>
+                              <Table.Cell>{element.value}</Table.Cell>
+                            </Table.Row>
+                          ))}
+                      </Table.Body>
+                    </Table>
                   </Accordion.Panel>
                 </Accordion.Item>
               ))}
-          </IniParamAccordion>
+          </Accordion>
         </IniDialogContent>
         <Dialog.Actions>
           <Button onClick={handleClose}>Close</Button>
         </Dialog.Actions>
       </IniParamDialog>
-    </div>
+    </>
   );
 };

@@ -1,5 +1,17 @@
-import { Table } from '@equinor/eds-core-react';
+import { Icon, Table } from '@equinor/eds-core-react';
+import { arrow_forward } from '@equinor/eds-icons';
 import { usePepmContextStore } from '../../../../stores/GlobalStore';
+import { styled } from 'styled-components';
+import { spacings } from '../../../../tokens/spacings';
+/* eslint-disable camelcase */
+Icon.add({ arrow_forward });
+
+const StyledCell = styled(Table.Cell)`
+  display: flex;
+  column-gap: ${spacings.SMALL};
+  align-items: center;
+  justify-content: space-between;
+`;
 
 export const ModelArchelMapTable = () => {
   const { analogueModel } = usePepmContextStore();
@@ -16,9 +28,10 @@ export const ModelArchelMapTable = () => {
           (a) =>
             a.analogueModelComputeSettingArchelMap && (
               <Table.Row key={a.analogueModelConfigurationArchelId}>
-                <Table.Cell>
+                <StyledCell>
                   {a.value} - {a.name}
-                </Table.Cell>
+                  <Icon data={arrow_forward} />
+                </StyledCell>
                 <Table.Cell>
                   {a.analogueModelComputeSettingArchelMap.equinorCode} -{' '}
                   {a.analogueModelComputeSettingArchelMap.identifier}

@@ -2,6 +2,7 @@ import { Button, Card, Chip, Typography } from '@equinor/eds-core-react';
 import * as Styled from './ModelAreaCoordinates.styled';
 import { useIsOwnerOrAdmin } from '../../../hooks/useIsOwnerOrAdmin';
 import { usePepmContextStore } from '../../../stores/GlobalStore';
+import * as StyledCard from '../../../styles/Card/Card.styled';
 
 export const ModelAreaCoordinates = ({
   toggleOpen,
@@ -16,34 +17,30 @@ export const ModelAreaCoordinates = ({
       analogueModel.modelAreas.map((x) => x.modelAreaType),
     );
 
-    return modelAreas.map((e, i) => (
-      <Chip className="busterCards" key={i}>
-        {e}
-      </Chip>
-    ));
+    return modelAreas.map((e, i) => <Chip key={i}>{e}</Chip>);
   };
 
   return (
-    <Styled.Wrapper>
-      <Card style={{ height: '100%', minWidth: '20rem', overflow: 'auto' }}>
-        <Card.Content style={{ padding: '1rem' }}>
-          <Typography variant="h3" as="h2">
+    <>
+      <Card className="card-areas">
+        <Card.Header>
+          <Typography variant="h4" as="h3" className="card-title">
             Model areas
           </Typography>
+        </Card.Header>
+        <StyledCard.Content>
           <Typography variant="body_long">
             You can define multiple areas for calculation in your model by
             entering coordinates. The current areas are listed below:
           </Typography>
           <Styled.ChipWrapper>{chips()}</Styled.ChipWrapper>
           {isOwnerOrAdmin && (
-            <div>
-              <Button onClick={toggleOpen} variant="outlined">
-                Set model areas…
-              </Button>
-            </div>
+            <Button onClick={toggleOpen} variant="outlined">
+              Set model areas…
+            </Button>
           )}
-        </Card.Content>
+        </StyledCard.Content>
       </Card>
-    </Styled.Wrapper>
+    </>
   );
 };

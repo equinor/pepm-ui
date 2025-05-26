@@ -1,40 +1,20 @@
-import styled from 'styled-components';
-import { theme } from '../../../tokens/theme';
+import { styled } from 'styled-components';
 import { spacings } from '../../../tokens/spacings';
+import { theme } from '../../../tokens/theme';
 
-export const ImageWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+export const CanvasWrapper = styled.figure`
+  width: fit-content;
+  margin: 0;
 
-  border-style: solid;
-  border-width: 1px;
-  border-color: ${theme.light.ui.background.medium};
-  width: auto;
-
-  max-width: 70vh;
-  max-height: 70vh;
-  height: fit-content;
-  > h5 {
-    font-weight: normal;
-    margin: 0;
-    padding: ${spacings.SMALL};
-  }
-
-  > .image {
-    width: 40%;
+  .analogue-image {
+    max-width: 100%;
     height: auto;
-    padding: ${spacings.SMALL};
   }
-`;
 
-export const CanvasWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 40rem;
-  min-width: 32rem;
-  canvas {
-    min-height: 32rem;
-    min-width: 32rem;
+  .caption {
+    border-top: 1px solid ${theme.light.ui.background.medium};
+    padding-top: ${spacings.SMALL};
+    text-align: center;
+    color: ${theme.light.text.staticIconsTertiary};
   }
 `;
