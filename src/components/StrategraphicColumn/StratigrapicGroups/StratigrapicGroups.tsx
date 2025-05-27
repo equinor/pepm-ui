@@ -1,11 +1,5 @@
 /* eslint-disable max-lines-per-function */
-import {
-  Button,
-  Dialog,
-  Icon,
-  Table,
-  Typography,
-} from '@equinor/eds-core-react';
+import { Button, Dialog, Icon, Table } from '@equinor/eds-core-react';
 import { delete_to_trash as deleteIcon } from '@equinor/eds-icons';
 import { useState } from 'react';
 import {
@@ -137,10 +131,6 @@ export const StratigrapicGroups = () => {
 
   return (
     <Styled.Wrapper>
-      <Typography variant="h4" as="h3">
-        Stratigraphic column
-      </Typography>
-
       {analogueModel.stratigraphicGroups.length > 0 && (
         <Table>
           <Table.Head>

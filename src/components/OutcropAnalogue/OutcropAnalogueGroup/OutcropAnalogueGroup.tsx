@@ -1,11 +1,5 @@
 /* eslint-disable max-lines-per-function */
-import {
-  Button,
-  Dialog,
-  Icon,
-  Table,
-  Typography,
-} from '@equinor/eds-core-react';
+import { Button, Dialog, Icon, Table } from '@equinor/eds-core-react';
 import { delete_to_trash as deleteIcon } from '@equinor/eds-icons';
 import { useState } from 'react';
 import { AddAnalogueModelOutcropForm, RegionDto } from '../../../api/generated';
@@ -94,9 +88,6 @@ export const OutcropAnalogueGroup = () => {
 
   return (
     <Styled.Wrapper>
-      <Typography variant="h4" as="h3">
-        Outcrop Analogue
-      </Typography>
       {analogueModel.outcrops.length > 0 && (
         <Table>
           <Table.Head>
@@ -171,7 +162,7 @@ export const OutcropAnalogueGroup = () => {
         )}
       </div>
       <StyledDialog.DialogWindow open={showOutcropDialog}>
-        <Dialog.Header>Add Outcrop Analogue</Dialog.Header>
+        <Dialog.Header>Add outcrop analogue</Dialog.Header>
         <Dialog.CustomContent>
           <OutcropSelect
             outcropObject={outcropObject}

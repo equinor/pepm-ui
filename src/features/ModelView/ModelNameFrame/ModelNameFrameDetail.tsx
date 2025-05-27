@@ -1,8 +1,21 @@
 import { Typography } from '@equinor/eds-core-react';
+import { spacings } from '../../../tokens/spacings';
+import { theme } from '../../../tokens/theme';
+import { styled } from 'styled-components';
 import {
   analogueModelDefault,
   usePepmContextStore,
 } from '../../../stores/GlobalStore';
+
+const ModelNameDescription = styled.header`
+  display: flex;
+  flex-direction: column;
+  row-gap: ${spacings.SMALL};
+`;
+
+const ModelCreatedBy = styled(Typography)`
+  color: ${theme.light.text.staticIconsTertiary};
+`;
 
 export const ModelNameFrameDetail = () => {
   const { analogueModel } = usePepmContextStore();
@@ -11,19 +24,21 @@ export const ModelNameFrameDetail = () => {
     : '';
 
   return (
-    <div style={{ paddingBottom: '1rem' }}>
+    <>
       {analogueModel !== analogueModelDefault ? (
-        <Typography variant="h2" as="h1">
-          {analogueModel.name}
-          <Typography>
-            Added by {analogueModel.createdBy} on {date}
+        <ModelNameDescription>
+          <Typography variant="h2" as="h1" className="model-title">
+            {analogueModel.name}
           </Typography>
-        </Typography>
+          <ModelCreatedBy group="navigation" variant="breadcrumb">
+            Added by {analogueModel.createdBy} on {date}
+          </ModelCreatedBy>
+        </ModelNameDescription>
       ) : (
         <Typography variant="h2" as="h1">
           Loading ....
         </Typography>
       )}
-    </div>
+    </>
   );
 };

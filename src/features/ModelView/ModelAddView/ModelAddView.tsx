@@ -194,9 +194,9 @@ export const ModelAddView = ({
     return <p>Loading ...</p>;
 
   return (
-    <Styled.Wrapper className="metadata-row">
+    <>
       {uploadingStatus === undefined && (
-        <Styled.DescriotionImageWrapper>
+        <Styled.DescriptionImageWrapper>
           <Styled.DescriptionMeta>
             <Typography variant="h3">Description</Typography>
             <>
@@ -280,7 +280,7 @@ export const ModelAddView = ({
               </div>
             )}
           </Styled.ImageMessage>
-        </Styled.DescriotionImageWrapper>
+        </Styled.DescriptionImageWrapper>
       )}
       {uploadingStatus === UploadingStatus.Uploading && (
         <Styled.UploadingMeta>
@@ -299,7 +299,7 @@ export const ModelAddView = ({
       {analogueModel.iniParameters && uploadingStatus === undefined && (
         <IniParametersWrapper>
           <Typography variant="h4" as="h3">
-            Ini Parameters
+            Ini parameters
           </Typography>
           <div>
             <IniParametersDialog iniParameters={analogueModel.iniParameters} />
@@ -315,6 +315,6 @@ export const ModelAddView = ({
       <div>
         <GrossDepositionEnviromentGroup />
       </div>
-    </Styled.Wrapper>
+    </>
   );
 };

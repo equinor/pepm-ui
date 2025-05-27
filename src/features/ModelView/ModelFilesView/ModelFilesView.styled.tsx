@@ -6,7 +6,6 @@ export const TableWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 65%;
   row-gap: ${spacings.LARGE};
 `;
 
@@ -18,10 +17,11 @@ export const ProgressWrapper = styled.div`
 `;
 
 export const FileTable = styled(Table)`
+  width: 100%;
   min-width: 256px;
-  width: fit-content;
 `;
 
 export const TableCell = styled(Table.Cell)`
   white-space: nowrap;
+  width: 100%;
 `;

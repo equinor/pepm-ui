@@ -30,7 +30,7 @@ export const ModelImageCanvas = ({
 
     // Canvas settings
     const tickInterval = 1000;
-    const canvasYOffset = 100;
+    const canvasYOffset = 40;
     const canvasXOffset = 300;
     const imageYOffset = 10;
     const imageXOffset = 40;
@@ -45,34 +45,25 @@ export const ModelImageCanvas = ({
     const yRange = y1 - y0;
 
     img.onload = () => {
-      // Scale image down based on the size of the parent
-      const container = canvas.parentElement;
-      if (container === null) return;
-      const containerWidth = container.clientWidth - canvasXOffset;
-      const containerHeight = container.clientHeight - canvasYOffset;
-      const scaleX = containerWidth / img.width;
-      const scaleY = containerHeight / img.height;
-      const scale = Math.min(scaleX, scaleY); // Use the smaller scale factor
+      const imageWidth = 400;
+      const imageHeight = 400;
 
-      // Calculate the new width and height
-      const scaledWidth = img.width * scale;
-      const scaledHeight = img.height * scale;
+      const width = imageWidth;
+      const height = imageHeight;
 
-      const height = scaledHeight;
-      const width = scaledWidth;
-
-      // Canvas will be bigger than image
-      canvas.width = container.clientWidth;
-      canvas.height = container.clientHeight;
+      // Canvas will be sized to accommodate the image plus offsets
+      canvas.width = width + canvasXOffset;
+      canvas.height = height + canvasYOffset;
 
       // Calculate scaling factors from coordinate space to canvas pixels
       const xScale = width / xRange;
       const yScale = height / yRange;
+
       // draw image with its top left corner at defined offset
       context.drawImage(img, imageXOffset, imageYOffset, width, height);
 
       if (showCoordinates) {
-        context.strokeStyle = 'black';
+        context.strokeStyle = '#3D3D3D';
         context.lineWidth = 2;
 
         // Draw x-axis
@@ -101,7 +92,7 @@ export const ModelImageCanvas = ({
 
           context.textAlign = 'start';
           context.textBaseline = 'middle';
-          context.strokeStyle = 'black';
+          context.strokeStyle = '#3D3D3D';
 
           // Draw tick line
           context.beginPath();
@@ -127,7 +118,7 @@ export const ModelImageCanvas = ({
             (yTick - imageMetadata.boundingBox.y0) * yScale;
           context.textAlign = 'start';
           context.textBaseline = 'middle';
-          context.strokeStyle = 'black';
+          context.strokeStyle = '#3D3D3D';
 
           // Draw tick line
           context.beginPath();
@@ -165,7 +156,13 @@ export const ModelImageCanvas = ({
           const boxHeight = (boxY1 - boxY0) * yScale;
 
           // Draw the box
-          context.strokeStyle = 'red';
+          context.strokeStyle = 'yellow';
+
+          context.save(); // Set a checkpoint before adding shadow to the area stroke
+          context.shadowColor = 'rgb(0 0 0 / 0.65)';
+          context.shadowBlur = 4;
+          context.shadowOffsetX = 2;
+          context.shadowOffsetY = 2;
           context.lineWidth = 2;
           context.strokeRect(
             boxCanvasX + imageXOffset,
@@ -173,18 +170,20 @@ export const ModelImageCanvas = ({
             boxWidth,
             boxHeight,
           );
+          context.restore(); // Restore the non-shadow state above for other elements
         }
       }
       if (showLegend) {
-        const legendX = scaledWidth + 60; // Position the legend on the right
-        const legendY = 50; // Starting y position for the legend
+        const legendX = width + 60; // Position the legend on the right
+        const legendY = 10; // Starting y position for the legend
         const legendBoxSize = 20; // Size of each color box
-        const legendSpacing = 30; // Spacing between legend items
+        const legendSpacing = 32; // Spacing between legend items
 
         let currentY = legendY;
         // Draw the header text
-        context.fillStyle = 'black';
-        context.font = '24px Arial';
+        context.fillStyle = '#3D3D3D';
+        context.font = '700 1rem Equinor, sans-serif';
+        context.letterSpacing = '0.2px';
         context.textBaseline = 'middle';
         context.fillText(
           'Architechtural elements',
@@ -196,11 +195,13 @@ export const ModelImageCanvas = ({
         for (const [key, color] of Object.entries(imageMetadata.colorLegend)) {
           // Draw the color box
           context.fillStyle = color;
-          context.fillRect(legendX, currentY, legendBoxSize, legendBoxSize);
+          context.beginPath();
+          context.roundRect(legendX, currentY, legendBoxSize, legendBoxSize, 2);
+          context.fill();
 
           // Draw the text label
-          context.fillStyle = 'black';
-          context.font = '16px Arial';
+          context.fillStyle = '#3D3D3D';
+          context.font = '500 0.875rem Equinor, sans-serif';
           context.textBaseline = 'middle';
 
           context.fillText(
@@ -218,5 +219,12 @@ export const ModelImageCanvas = ({
     };
   }, [imageData, imageMetadata, coordinateBox, showCoordinates, showLegend]);
 
-  return <canvas ref={canvasRef} />;
+  return (
+    <canvas
+      ref={canvasRef}
+      aria-label="Generated 2D geological model visualization"
+      role="img"
+      className="analogue-image"
+    />
+  );
 };

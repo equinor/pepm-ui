@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button, Dialog, Typography } from '@equinor/eds-core-react';
+import * as StyledDialog from '../../../../styles/addRowDialog/AddRowDialog.styled';
 import { ArchelDialogWrapper } from '../ModelArchelMap.styled';
-import { Wrapper } from '../../ModelMetadataView/ModelMetadataView.styled';
 import { ModelArchelMapSelectTable } from './ModelArchelMapSelectTable';
 import { CustomPutArchelRequest } from '../types/CustomPutArchelRequest';
 import {
@@ -103,34 +103,23 @@ export const ModelArchelMapDialog = () => {
         <Dialog.Header>
           <Dialog.Title>Define architectural elements mapping</Dialog.Title>
         </Dialog.Header>
-        <Dialog.CustomContent>
+        <StyledDialog.Content>
           <Typography variant="body_short">
             Select the corresponding element in PEPM for each of the elements
             provided in the model.
           </Typography>
-        </Dialog.CustomContent>
-        <Dialog.CustomContent>
+
           <ModelArchelMapSelectTable
             selectedArchelMaps={selectedArchelMaps}
             setSelectedArchelMaps={setSelectedArchelMaps}
           />
-        </Dialog.CustomContent>
-        <Dialog.Actions>
-          <Wrapper
-            style={{
-              justifyContent: 'space-between',
-              alignItems: 'start',
-              display: 'flex',
-              flexDirection: 'row',
-              marginTop: '1em',
-            }}
-          >
-            <Button onClick={handleSaveClose}>Save and close</Button>
-            <Button variant="ghost" onClick={handleClose}>
-              Cancel
-            </Button>
-          </Wrapper>
-        </Dialog.Actions>
+        </StyledDialog.Content>
+        <StyledDialog.Actions>
+          <Button onClick={handleSaveClose}>Save and close</Button>
+          <Button variant="ghost" onClick={handleClose}>
+            Cancel
+          </Button>
+        </StyledDialog.Actions>
       </ArchelDialogWrapper>
     </div>
   );

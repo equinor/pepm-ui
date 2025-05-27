@@ -13,7 +13,6 @@ export const ArchelMapContainer = styled.div`
   row-gap: ${spacings.MEDIUM};
 
   table {
-    width: 25em;
     border: 1px solid ${theme.light.ui.background.medium};
     border-collapse: collapse;
   }
