@@ -30,10 +30,10 @@ export const ModelImageCanvas = ({
 
     // Canvas settings
     const tickInterval = 1000;
-    const canvasYOffset = 40;
+    const canvasYOffset = 100;
     const canvasXOffset = 300;
-    const imageYOffset = 10;
-    const imageXOffset = 40;
+    const imageYOffset = 20;
+    const imageXOffset = 70;
 
     // coordinate system
     const y0 = imageMetadata.boundingBox.y0;
@@ -100,7 +100,12 @@ export const ModelImageCanvas = ({
           context.lineTo(tickX + imageXOffset, height + imageYOffset + 10);
           context.stroke();
 
-          context.fillText(tickLabel, tickX + imageXOffset - 10, height + 30);
+          // Rotate the X numbers to avoid overlapping the next number
+          context.save();
+          context.translate(tickX + imageXOffset - 3, height + 38);
+          context.rotate(Math.PI / 4); // 45 degrees clockwise
+          context.fillText(tickLabel, 0, 0);
+          context.restore();
         }
 
         // Draw y ticks
@@ -127,16 +132,37 @@ export const ModelImageCanvas = ({
           context.stroke();
 
           // Draw tick label
-          context.fillText(yTick.toFixed(0), 0, tickY);
-
-          // Draw axis labels
-          context.fillText(
-            'X',
-            imageXOffset + width + 5,
-            height + imageYOffset,
-          );
-          context.fillText('Y', imageXOffset - 3, imageYOffset - 5);
+          context.save();
+          context.textAlign = 'right';
+          context.fillText(yTick.toFixed(0), imageXOffset - 15, tickY);
+          context.restore();
         }
+
+        // Axis labels
+        context.save();
+        context.fillStyle = '#3D3D3D';
+        context.font = '500 0.875rem Equinor, sans-serif';
+        context.textBaseline = 'bottom';
+
+        // X-axis label
+        context.save();
+        context.textAlign = 'center';
+        context.fillText(
+          'X distance (m)',
+          imageXOffset + width / 2,
+          height + imageYOffset + 70,
+        );
+        context.restore();
+
+        // Y-axis label
+        context.save();
+        context.translate(imageXOffset - 50, imageYOffset + height / 2);
+        context.rotate(-Math.PI / 2);
+        context.textAlign = 'center';
+        context.fillText('Y distance (m)', 0, 0); // Draw at the origin
+        context.restore();
+
+        context.restore();
       }
 
       if (coordinateBox) {
@@ -174,8 +200,8 @@ export const ModelImageCanvas = ({
         }
       }
       if (showLegend) {
-        const legendX = width + 60; // Position the legend on the right
-        const legendY = 10; // Starting y position for the legend
+        const legendX = width + 90; // Position the legend on the right
+        const legendY = imageYOffset; // Starting y position for the legend
         const legendBoxSize = 20; // Size of each color box
         const legendSpacing = 32; // Spacing between legend items
 
@@ -186,7 +212,7 @@ export const ModelImageCanvas = ({
         context.letterSpacing = '0.2px';
         context.textBaseline = 'middle';
         context.fillText(
-          'Architechtural elements',
+          'Architectural elements',
           legendX,
           currentY + legendBoxSize / 2,
         );
