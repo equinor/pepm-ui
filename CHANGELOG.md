@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.12.0](https://github.com/equinor/pepm-ui/compare/v1.11.0...v1.12.0) (2025-06-19)
+
+
+### ✨ Features
+
+* Add check of jobs to automatically start image generation ([#481](https://github.com/equinor/pepm-ui/issues/481)) ([9b00e82](https://github.com/equinor/pepm-ui/commit/9b00e824b06ff378c14922e31bca04aaeb1b652e))
+* Removed architectural elements from gde ([#482](https://github.com/equinor/pepm-ui/issues/482)) ([22cf291](https://github.com/equinor/pepm-ui/commit/22cf2910a99de8188d459fda83de77fbbbed7893))
+
+
+### 🐛 Bug Fixes
+
+* added conditional edit button rendering, removed rendering of empty table ([#480](https://github.com/equinor/pepm-ui/issues/480)) ([2d54fd9](https://github.com/equinor/pepm-ui/commit/2d54fd9e5484ab53e9e578218e5fbbde1ed178b6))
+* added prod environment in radix config for nrresqml ([67501a2](https://github.com/equinor/pepm-ui/commit/67501a230eb27ca801cf89559ab33fea2fee931b))
+* added redux devtools, fixed problem with non-refreshing query ([#479](https://github.com/equinor/pepm-ui/issues/479)) ([bdf3be5](https://github.com/equinor/pepm-ui/commit/bdf3be5a6c569d08c5e363baaf6071427fbcaffb))
+* adjust model page grid layout, remove redundant styles ([#484](https://github.com/equinor/pepm-ui/issues/484)) ([5b6c1b0](https://github.com/equinor/pepm-ui/commit/5b6c1b02bf27f2fde05342c73a530a8cf97fced4))
+* image canvas improvements ([#486](https://github.com/equinor/pepm-ui/issues/486)) ([e9e039e](https://github.com/equinor/pepm-ui/commit/e9e039eaa84081be35890ab5e4845aae72d01b10))
+* name of the image tag ([476b33a](https://github.com/equinor/pepm-ui/commit/476b33a01409c4676b2a09530b29c1e46971f848))
+* upped memory, time limit and redused backofflimit in radix ([8753b8c](https://github.com/equinor/pepm-ui/commit/8753b8c64f654de0838334ad2e18469feced96f9))
+
 ## [1.11.0](https://github.com/equinor/pepm-ui/compare/v1.10.0...v1.11.0) (2025-05-08)
 
 
