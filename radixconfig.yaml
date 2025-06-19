@@ -249,11 +249,11 @@ spec:
     - name: pepm-nrchannest
       image: ghcr.io/equinor/pepm-worker-api/channel-estimation:latest
       schedulerPort: 8090
-      backoffLimit: 1
-      timeLimitSeconds: 43200
+      backoffLimit: 0
+      timeLimitSeconds: 172800
       resources:
         requests:
-          memory: "8192Mi"
+          memory: "16384Mi"
           cpu: "1000m"
         limits:
           cpu: "2000m"
@@ -341,11 +341,11 @@ spec:
     - name: pepm-nrvargrest
       image: ghcr.io/equinor/pepm-worker-api/variogram-estimation:latest
       schedulerPort: 8090
-      backoffLimit: 1
-      timeLimitSeconds: 43200
+      backoffLimit: 0
+      timeLimitSeconds: 172800
       resources:
         requests:
-          memory: "8192Mi"
+          memory: "16384Mi"
           cpu: "1000m"
         limits:
           cpu: "2000m"
@@ -433,7 +433,7 @@ spec:
     - name: pepm-thumbnail-gen
       image: ghcr.io/equinor/pepm-worker-api/thumbnail-generation:latest
       schedulerPort: 8090
-      backoffLimit: 1
+      backoffLimit: 0
       timeLimitSeconds: 43200
       resources:
         requests:
