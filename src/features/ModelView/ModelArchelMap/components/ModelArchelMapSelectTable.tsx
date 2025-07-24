@@ -10,6 +10,11 @@ import { spacings } from '../../../../tokens/spacings';
 /* eslint-disable max-lines-per-function */
 Icon.add({ arrow_forward });
 
+// requested by PO. Reduces SMDA archel list to given SMDA archel codes. Extend or Expand as wanted
+const filteredArchelList = [
+  10, 12, 16, 43, 48, 51, 52, 60, 61, 62, 63, 64, 65, 72, 75, 81, 87,
+];
+
 export const ModelArchelMapSelectTable = ({
   selectedArchelMaps,
   setSelectedArchelMaps,
@@ -91,6 +96,7 @@ export const ModelArchelMapSelectTable = ({
                   <Autocomplete
                     options={geologyStandards
                       .filter((g) => g.geologyGroup === 'ArchitecturalElement')
+                      .filter((g) => filteredArchelList.includes(g.equinorCode))
                       .slice()
                       .sort((a, b) => a.equinorCode - b.equinorCode)}
                     label={undefined}
