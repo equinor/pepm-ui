@@ -21,9 +21,10 @@ import {
   ComputeMethod,
   GetVariogramResultsDto,
   GetVariogramResultsVariogramResultFileDto,
+  InputValueType,
+  ListComputeSettingsModelDto,
   ResultStatus,
   UpdateVariogramResultCommandBody,
-  // UpdateVariogramResultCommandBody,
 } from '../../../../../../../api/generated';
 import { usePepmContextStore } from '../../../../../../../stores/GlobalStore';
 import { roundResultString } from '../../../../../../../utils/RoundResultString';
@@ -32,7 +33,6 @@ import * as Styled from './TanStackTable.styled';
 import { useIsOwnerOrAdmin } from '../../../../../../../hooks/useIsOwnerOrAdmin';
 import { useMutateVariogramResult } from '../../../../../../../hooks/useMutateResults';
 import { archelFilterMaps } from '../../../../../../../utils/ArchelFilterMapping';
-// import { useMutateVariogramResult } from '../../../../../../../hooks/useMutateResults';
 
 export interface ResultObjectType {
   variogramResultId: string;
@@ -145,9 +145,37 @@ export const TanStackTable = ({
     analogueModel,
     variogramResults,
     updateVariogramResult,
+    computeSettings,
   } = usePepmContextStore();
   const isOwner = useIsOwnerOrAdmin();
   const mutateVariogramResult = useMutateVariogramResult();
+  const indicatorSettings = computeSettings.variogramComputeSettings?.filter(
+    (val) => val.computeMethod === ComputeMethod.INDICATOR,
+  );
+
+  const filterSettings = (
+    settings: ListComputeSettingsModelDto[] | undefined,
+    inputValueType: InputValueType,
+  ) => {
+    switch (inputValueType) {
+      case InputValueType.INDICATOR:
+        return settings
+          ?.filter((setting) => setting.inputValueType === inputValueType)
+          .filter((setting) => setting.value !== '0');
+      case InputValueType.ARCHEL:
+        return settings
+          ?.filter((setting) => setting.inputValueType === inputValueType)
+          .filter((setting) => setting.value !== '0');
+      default:
+        return settings?.filter(
+          (setting) => setting.inputValueType === inputValueType,
+        );
+    }
+  };
+  const indicatorIndicatorSettings = filterSettings(
+    indicatorSettings,
+    InputValueType.INDICATOR,
+  );
 
   const putUpdateVariogramResult = async (
     status: ResultStatus,
@@ -203,7 +231,21 @@ export const TanStackTable = ({
 
         let parameter = '';
         if (method === ComputeMethod.INDICATOR) {
-          parameter = e.indicator ? e.indicator : '';
+          if (
+            e.indicator !== null &&
+            e.indicator !== undefined &&
+            !isNaN(parseInt(e.indicator))
+          ) {
+            parameter = e.indicator
+              ? indicatorIndicatorSettings?.find((i) => i.value === e.indicator)
+                  ?.equinorName ?? e.indicator
+              : '';
+          } else {
+            parameter = e.indicator
+              ? indicatorIndicatorSettings?.find((i) => i.name === e.indicator)
+                  ?.equinorName ?? e.indicator
+              : '';
+          }
         } else if (method === ComputeMethod.NET_TO_GROSS) {
           parameter = e.customIndicator ? e.customIndicator : '';
         } else if (method === ComputeMethod.CONTINIOUS_PARAMETER) {
@@ -228,7 +270,10 @@ export const TanStackTable = ({
           qualityZ: roundResultString(e.qualityZ),
           method: method ? method : '',
           parameter: parameter,
-          archelFilter: e.archelFilter ? e.archelFilter : '',
+          archelFilter: e.archelFilter
+            ? indicatorIndicatorSettings?.find((i) => i.name === e.archelFilter)
+                ?.equinorName ?? e.archelFilter
+            : '',
           modelArea: modelArea ? modelArea.name : '',
           variogramModel: e.family ? e.family : '',
           quality: roundResultString(e.quality),
@@ -340,7 +385,21 @@ export const TanStackTable = ({
       )[0]?.computeMethod;
       let parameter = '';
       if (method === ComputeMethod.INDICATOR) {
-        parameter = e.indicator ? e.indicator : '';
+        if (
+          e.indicator !== null &&
+          e.indicator !== undefined &&
+          !isNaN(parseInt(e.indicator))
+        ) {
+          parameter = e.indicator
+            ? indicatorIndicatorSettings?.find((i) => i.value === e.indicator)
+                ?.equinorName ?? e.indicator
+            : '';
+        } else {
+          parameter = e.indicator
+            ? indicatorIndicatorSettings?.find((i) => i.name === e.indicator)
+                ?.equinorName ?? e.indicator
+            : '';
+        }
       } else if (method === ComputeMethod.NET_TO_GROSS) {
         parameter = e.customIndicator ? e.customIndicator : '';
       } else if (method === ComputeMethod.CONTINIOUS_PARAMETER) {
@@ -369,11 +428,10 @@ export const TanStackTable = ({
             ? archelFilterMaps[parameter]
             : parameter,
         archelFilter: e.archelFilter
-          ? archelFilterMaps[e.archelFilter] !== undefined
-            ? archelFilterMaps[e.archelFilter]
-            : e.archelFilter
+          ? indicatorIndicatorSettings?.find((i) => i.name === e.archelFilter)
+              ?.equinorName ?? e.archelFilter
           : '',
-        modelArea: modelArea ? modelArea.name : '',
+        modelArea: modelArea ? modelArea.name : 'Whole Model',
         variogramModel: e.family ? e.family : '',
         quality: roundResultString(e.quality),
         identifier: e.identifier,
