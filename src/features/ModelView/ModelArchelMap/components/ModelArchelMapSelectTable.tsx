@@ -70,8 +70,6 @@ export const ModelArchelMapSelectTable = ({
     }
   }
 
-  console.log(selectedArchelMaps);
-
   return (
     <StyledTable>
       <Table.Head>
