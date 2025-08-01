@@ -14,6 +14,16 @@ Icon.add({ arrow_forward });
 const filteredArchelList = [
   10, 12, 16, 43, 48, 51, 52, 60, 61, 62, 63, 64, 65, 72, 75, 81, 87,
 ];
+const StyledTable = styled(Table)`
+  white-space: nowrap;
+`;
+
+const StyledCell = styled(Table.Cell)`
+  display: flex;
+  column-gap: ${spacings.SMALL};
+  align-items: center;
+  justify-content: space-between;
+`;
 
 export const ModelArchelMapSelectTable = ({
   selectedArchelMaps,
@@ -59,17 +69,6 @@ export const ModelArchelMapSelectTable = ({
       setSelectedArchelMaps(newArchelList);
     }
   }
-
-  const StyledTable = styled(Table)`
-    white-space: nowrap;
-  `;
-
-  const StyledCell = styled(Table.Cell)`
-    display: flex;
-    column-gap: ${spacings.SMALL};
-    align-items: center;
-    justify-content: space-between;
-  `;
 
   return (
     <StyledTable>
