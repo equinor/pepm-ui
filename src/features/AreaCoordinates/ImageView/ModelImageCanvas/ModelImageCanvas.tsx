@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 import { AreaCoordinateType } from '../../../AreaCoordinates/AreaCoordinates';
 import { ImageMetadataDto } from '../../../../api/generated';
 import { archelFilterMaps } from '../../../../utils/ArchelFilterMapping';
+import { usePepmContextStore } from '../../../../stores/GlobalStore';
 
 export const ModelImageCanvas = ({
   imageData,
@@ -18,6 +19,7 @@ export const ModelImageCanvas = ({
   showCoordinates: boolean;
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { analogueModel } = usePepmContextStore();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -232,7 +234,11 @@ export const ModelImageCanvas = ({
 
           context.fillText(
             `${
-              archelFilterMaps[key] !== undefined ? archelFilterMaps[key] : key
+              analogueModel.iniParameters.archels.find((x) => x.name == key)
+                ?.analogueModelComputeSettingArchelMap?.identifier ??
+              archelFilterMaps[key] ??
+              key
+              // archelFilterMaps[key] !== undefined ? archelFilterMaps[key] : key
             }`,
             legendX + legendBoxSize + 10,
             currentY + legendBoxSize / 2,
@@ -243,7 +249,14 @@ export const ModelImageCanvas = ({
         }
       }
     };
-  }, [imageData, imageMetadata, coordinateBox, showCoordinates, showLegend]);
+  }, [
+    imageData,
+    imageMetadata,
+    coordinateBox,
+    showCoordinates,
+    showLegend,
+    analogueModel.iniParameters.archels,
+  ]);
 
   return (
     <canvas
