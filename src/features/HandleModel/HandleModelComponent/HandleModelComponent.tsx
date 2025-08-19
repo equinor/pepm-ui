@@ -138,7 +138,9 @@ export const HandleModelComponent = () => {
   });
 
   async function handleSubmit() {
-    setSubmitErrors(validateValues(analogueModel, files));
+    const validationErrors = validateValues(analogueModel, files);
+    setSubmitErrors(validationErrors);
+
     if (
       Object.keys(submitErrors).length === 0 &&
       fileErrors.length === 0 &&
@@ -317,10 +319,6 @@ export const HandleModelComponent = () => {
       resetFileErrors();
     }
   }, [files, iniFileString, addErrors, addFileErrors, resetFileErrors]);
-
-  useEffect(() => {
-    setSubmitErrors(validateValues(analogueModel, files));
-  }, [setAnalogueModel, setSubmitErrors, analogueModel, files]);
 
   return (
     <Styled.Wrapper>
