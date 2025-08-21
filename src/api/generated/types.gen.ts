@@ -139,6 +139,7 @@ export type CancelJobDto = {
 
 export type ComputeCaseDto = {
   computeCaseId: string;
+  logFilePath: string;
   modelArea: ComputeCaseModelAreaDto;
   computeMethod: ComputeMethod;
   computeType: ComputeType;
@@ -744,6 +745,12 @@ export type LocationDto = {
   regionId: string;
   locationName: string;
   country: string;
+};
+
+export type LogFileResponse = {
+  originalFileName?: string | null;
+  stream?: string | null;
+  contentType?: string | null;
 };
 
 export type MergeModelCommandResponse = {
@@ -2226,6 +2233,43 @@ export type GetApiV1DownloadsAnalogueModelsExcelResponses = {
 export type GetApiV1DownloadsAnalogueModelsExcelResponse =
   GetApiV1DownloadsAnalogueModelsExcelResponses[keyof GetApiV1DownloadsAnalogueModelsExcelResponses];
 
+export type GetApiV1DownloadsAnalogueModelsByIdComputeCaseByComputeCaseIdData =
+  {
+    body?: never;
+    path: {
+      id: string;
+      computeCaseId: string;
+    };
+    query?: never;
+    url: '/api/v1/downloads/analogue-models/{id}/compute-case/{computeCaseId}';
+  };
+
+export type GetApiV1DownloadsAnalogueModelsByIdComputeCaseByComputeCaseIdErrors =
+  {
+    /**
+     * Forbidden
+     */
+    403: ErrorResponse;
+    /**
+     * Not Found
+     */
+    404: ErrorResponse;
+  };
+
+export type GetApiV1DownloadsAnalogueModelsByIdComputeCaseByComputeCaseIdError =
+  GetApiV1DownloadsAnalogueModelsByIdComputeCaseByComputeCaseIdErrors[keyof GetApiV1DownloadsAnalogueModelsByIdComputeCaseByComputeCaseIdErrors];
+
+export type GetApiV1DownloadsAnalogueModelsByIdComputeCaseByComputeCaseIdResponses =
+  {
+    /**
+     * Success
+     */
+    200: LogFileResponse;
+  };
+
+export type GetApiV1DownloadsAnalogueModelsByIdComputeCaseByComputeCaseIdResponse =
+  GetApiV1DownloadsAnalogueModelsByIdComputeCaseByComputeCaseIdResponses[keyof GetApiV1DownloadsAnalogueModelsByIdComputeCaseByComputeCaseIdResponses];
+
 export type GetApiV1ImagesVariogramByImageIdData = {
   body?: never;
   path: {
@@ -3340,5 +3384,5 @@ export type PostApiWebhooksVargrestStatusResponse =
   PostApiWebhooksVargrestStatusResponses[keyof PostApiWebhooksVargrestStatusResponses];
 
 export type ClientOptions = {
-  baseURL: 'http://localhost:5000' | (string & {});
+  baseURL: 'https://api-pepm-dev.radix.equinor.com' | (string & {});
 };
