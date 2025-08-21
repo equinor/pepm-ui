@@ -246,8 +246,9 @@ export const CaseButtons = ({
           {(caseStatus === 'Succeeded' || caseStatus === 'Failed') && (
             <Tooltip
               title={
-                !logFileExists &&
-                'Log file does not exist. Rerun the case to see the log file'
+                logFileExists === false
+                  ? 'Log file does not exist. Rerun the case to see the log file'
+                  : null
               }
             >
               <Styled.Button
