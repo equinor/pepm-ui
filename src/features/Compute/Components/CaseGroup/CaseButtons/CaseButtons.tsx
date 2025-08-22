@@ -1,8 +1,10 @@
 /* eslint-disable max-lines-per-function */
+/* eslint-disable max-lines */
 import { Button, Icon, Tooltip } from '@equinor/eds-core-react';
 import {
   copy as COPY,
   delete_to_trash as DELETE,
+  file_description as FILEDESC,
   play as PLAY,
   save as SAVE,
 } from '@equinor/eds-icons';
@@ -16,6 +18,7 @@ import { ConfirmDialog } from '../../../../../components/ConfirmDialog/ConfirmDi
 import * as Styled from './CaseButtons.styled';
 import { useIsOwnerOrAdmin } from '../../../../../hooks/useIsOwnerOrAdmin';
 import { usePepmContextStore } from '../../../../../stores/GlobalStore';
+import { LogSideSheet } from '../../LogSideSheet/LogSideSheet';
 
 export const CaseButtons = ({
   id,
@@ -23,6 +26,7 @@ export const CaseButtons = ({
   saved,
   caseStatus,
   hasUnsavedCase,
+  logFileExists,
   saveCase,
   runCase,
   deleteCase,
@@ -34,6 +38,7 @@ export const CaseButtons = ({
   saved: boolean;
   caseStatus: ComputeJobStatus;
   hasUnsavedCase: boolean;
+  logFileExists: boolean;
   runCase?: () => void;
   saveCase: () => void;
   deleteCase: (
@@ -46,6 +51,7 @@ export const CaseButtons = ({
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [saveConfirm, setSaveConfirm] = useState(false);
+  const [toggle, setToggle] = useState(false);
   const navigate = useNavigate();
   const handleConfirmSave = () => {
     saveCase();
@@ -237,6 +243,24 @@ export const CaseButtons = ({
               </Styled.Button>
             )}
           </Tooltip>
+          {(caseStatus === 'Succeeded' || caseStatus === 'Failed') && (
+            <Tooltip
+              title={
+                logFileExists === false
+                  ? 'Log file does not exist. Rerun the case to see the log file'
+                  : undefined
+              }
+            >
+              <Styled.Button
+                variant="outlined"
+                onClick={() => setToggle(!toggle)}
+                disabled={!logFileExists}
+              >
+                <Icon data={FILEDESC} size={18}></Icon>
+                Log
+              </Styled.Button>
+            </Tooltip>
+          )}
           <Button
             disabled={
               !isOwnerOrAdmin ||
@@ -270,6 +294,13 @@ export const CaseButtons = ({
           confirmAction={handleConfirmSave}
           setIsOpen={setSaveConfirm}
         ></ConfirmDialog>
+      )}
+      {logFileExists && (
+        <LogSideSheet
+          toggle={toggle}
+          setToggle={setToggle}
+          computeCaseId={id}
+        ></LogSideSheet>
       )}
     </Styled.ButtonDiv>
   );

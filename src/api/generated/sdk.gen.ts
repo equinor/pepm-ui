@@ -94,6 +94,9 @@ import type {
   GetApiV1DownloadsAnalogueModelsExcelData,
   GetApiV1DownloadsAnalogueModelsExcelResponse,
   GetApiV1DownloadsAnalogueModelsExcelError,
+  GetApiV1DownloadsAnalogueModelsByIdComputeCaseByComputeCaseIdData,
+  GetApiV1DownloadsAnalogueModelsByIdComputeCaseByComputeCaseIdResponse,
+  GetApiV1DownloadsAnalogueModelsByIdComputeCaseByComputeCaseIdError,
   GetApiV1ImagesVariogramByImageIdData,
   GetApiV1ImagesVariogramByImageIdResponse,
   GetApiV1ImagesVariogramByImageIdError,
@@ -931,6 +934,30 @@ export const getApiV1DownloadsAnalogueModelsExcel = <
       },
     ],
     url: '/api/v1/downloads/analogue-models-excel',
+    ...options,
+  });
+};
+
+export const getApiV1DownloadsAnalogueModelsByIdComputeCaseByComputeCaseId = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<
+    GetApiV1DownloadsAnalogueModelsByIdComputeCaseByComputeCaseIdData,
+    ThrowOnError
+  >,
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetApiV1DownloadsAnalogueModelsByIdComputeCaseByComputeCaseIdResponse,
+    GetApiV1DownloadsAnalogueModelsByIdComputeCaseByComputeCaseIdError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: 'bearer',
+        type: 'http',
+      },
+    ],
+    url: '/api/v1/downloads/analogue-models/{id}/compute-case/{computeCaseId}',
     ...options,
   });
 };

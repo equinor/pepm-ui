@@ -234,7 +234,7 @@ export const ModelImageCanvas = ({
 
           context.fillText(
             `${
-              analogueModel.iniParameters.archels.find((x) => x.name == key)
+              analogueModel.iniParameters.archels.find((x) => x.name === key)
                 ?.analogueModelComputeSettingArchelMap?.identifier ??
               archelFilterMaps[key] ??
               key

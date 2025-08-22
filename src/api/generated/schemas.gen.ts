@@ -519,6 +519,7 @@ export const ComputeCaseDtoSchema = {
     'computeType',
     'inputSettings',
     'jobStatus',
+    'logFilePath',
     'modelArea',
   ],
   type: 'object',
@@ -526,6 +527,10 @@ export const ComputeCaseDtoSchema = {
     computeCaseId: {
       type: 'string',
       format: 'uuid',
+    },
+    logFilePath: {
+      minLength: 1,
+      type: 'string',
     },
     modelArea: {
       $ref: '#/components/schemas/ComputeCaseModelAreaDto',
@@ -2475,6 +2480,26 @@ export const LocationDtoSchema = {
     country: {
       minLength: 1,
       type: 'string',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const LogFileResponseSchema = {
+  type: 'object',
+  properties: {
+    originalFileName: {
+      type: 'string',
+      nullable: true,
+    },
+    stream: {
+      type: 'string',
+      format: 'byte',
+      nullable: true,
+    },
+    contentType: {
+      type: 'string',
+      nullable: true,
     },
   },
   additionalProperties: false,

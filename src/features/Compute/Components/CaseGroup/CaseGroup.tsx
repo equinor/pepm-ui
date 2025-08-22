@@ -148,6 +148,7 @@ export const CaseGroup = ({
       const newCase: ComputeCaseDto = {
         computeCaseId: randomId,
         computeMethod: methodType,
+        logFilePath: '',
         modelArea: {
           modelAreaId: '',
           name: '',
@@ -237,6 +238,7 @@ export const CaseGroup = ({
       const newCase: ComputeCaseDto = {
         computeCaseId: randomLocalId,
         computeMethod: caseToDuplicate[0].computeMethod,
+        logFilePath: '',
         modelArea: caseToDuplicate[0].modelArea,
         inputSettings: caseToDuplicate[0].inputSettings,
         jobStatus: ComputeJobStatus.NOT_STARTED,

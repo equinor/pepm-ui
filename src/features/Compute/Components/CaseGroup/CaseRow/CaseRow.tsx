@@ -566,6 +566,11 @@ export const CaseRow = ({
           caseType={caseType === 'Object' ? 'Object' : 'Variogram'}
           saved={saved}
           caseStatus={rowCase.jobStatus}
+          logFileExists={
+            rowCase.logFilePath === null || rowCase.logFilePath.length === 0
+              ? false
+              : true
+          }
           hasUnsavedCase={hasUnsavedCase(id)}
           saveCase={() => handleSaveCase(id)}
           runCase={runRowCase}
