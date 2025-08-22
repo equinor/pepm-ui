@@ -20,6 +20,7 @@ export const LogSideSheet = ({
     >
       {data?.data !== undefined ? (
         <StyledTextField
+          id={computeCaseId}
           multiline
           readOnly
           rowsMax={40}
