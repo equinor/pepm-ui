@@ -248,7 +248,7 @@ export const CaseButtons = ({
               title={
                 logFileExists === false
                   ? 'Log file does not exist. Rerun the case to see the log file'
-                  : null
+                  : undefined
               }
             >
               <Styled.Button
