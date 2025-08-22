@@ -28,6 +28,7 @@ export const LogSideSheet = ({
         ></StyledTextField>
       ) : (
         <StyledTextField
+          id={computeCaseId}
           readOnly
           value={'Could not load log file'}
         ></StyledTextField>
