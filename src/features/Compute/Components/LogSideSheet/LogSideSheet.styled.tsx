@@ -2,7 +2,7 @@ import { SideSheet, TextField } from '@equinor/eds-core-react';
 import { styled } from 'styled-components';
 
 export const StyledSideSheet = styled(SideSheet)`
-  width: 30%;
+  width: 40%;
 `;
 
 export const StyledTextField = styled(TextField)`
