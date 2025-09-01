@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.1](https://github.com/equinor/pepm-ui/compare/v1.12.0...v1.12.1) (2025-09-01)
+
+
+### 🐛 Bug Fixes
+
+* updated formatting for log file ([#495](https://github.com/equinor/pepm-ui/issues/495)) ([21ed4f5](https://github.com/equinor/pepm-ui/commit/21ed4f5f82051f14ff8c0603d74f95915f906e67))
+
 ## [1.12.0](https://github.com/equinor/pepm-ui/compare/v1.11.0...v1.12.0) (2025-08-22)
 
 
