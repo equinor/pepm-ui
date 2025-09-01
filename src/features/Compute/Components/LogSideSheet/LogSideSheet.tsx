@@ -11,6 +11,7 @@ export const LogSideSheet = ({
   computeCaseId: string;
 }) => {
   const { data } = useFetchLog(computeCaseId);
+  console.log('Log data:', data?.data);
 
   return (
     <StyledSideSheet
@@ -18,13 +19,13 @@ export const LogSideSheet = ({
       onClose={() => setToggle(!toggle)}
       title="Log file"
     >
-      {data?.data !== undefined ? (
+      {data?.data ? (
         <StyledTextField
           id={computeCaseId}
           multiline
           readOnly
           rowsMax={40}
-          value={JSON.stringify(data?.data)}
+          value={data.data as string}
         ></StyledTextField>
       ) : (
         <StyledTextField
