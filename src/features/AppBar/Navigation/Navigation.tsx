@@ -8,7 +8,8 @@ interface Tab {
 }
 
 const tabs: Tab[] = [
-  { title: 'Models', path: '/' },
+  { title: 'Scenario Builder', path: 'scenario-builder' },
+  { title: 'Models', path: '' },
   { title: 'API', path: 'api' },
   { title: 'About', path: 'about' },
 ];
