@@ -155,6 +155,92 @@ spec:
                 - name: AzureAdPeacock--ResourceId
                   envVar: AzureAdPeacock__ResourceId     
   jobs:
+    - name: delft3d-preprocessing
+      image: ghcr.io/equinor/gt-post:latest
+      schedulerPort: 8090
+      resources:
+        requests:
+          memory: "2048Mi"
+          cpu: "1000m"
+        limits:
+          cpu: "2000m"
+      payload:
+        path: /app/args
+      variables:
+        JOB_MODE: "preprocess"
+        MAIN_DIR: "/mnt/azure-storage/simulation"
+        WORK_DIR: "/mnt/azure-storage/worker"
+        ARGS_FOLDER: "/app/args"
+      notifications:
+        webhook: http://api:5002/api/webhooks/delft3d-preprocess/status
+      environmentConfig:
+        - environment: dev
+          volumeMounts:
+            - name: delft3d-preprocess-storage-dev
+              path: /mnt/azure-storage/simulation
+              blobfuse2:
+                protocol: fuse2
+                container: simulation
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+            - name: delft3d-preprocess-worker-storage-dev
+              path: /mnt/azure-storage/worker
+              blobfuse2:
+                protocol: fuse2
+                container: worker
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+        - environment: test
+          volumeMounts:
+            - name: delft3d-preprocess-storage-test
+              path: /mnt/azure-storage/simulation
+              blobfuse2:
+                protocol: fuse2
+                container: simulation
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+            - name: delft3d-preprocess-worker-storage-test
+              path: /mnt/azure-storage/worker
+              blobfuse2:
+                protocol: fuse2
+                container: worker
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+        - environment: prod
+          volumeMounts:
+            - name: delft3d-preprocess-storage-prod
+              path: /mnt/azure-storage/simulation
+              blobfuse2:
+                protocol: fuse2
+                container: simulation
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+            - name: delft3d-preprocess-worker-storage-prod
+              path: /mnt/azure-storage/worker
+              blobfuse2:
+                protocol: fuse2
+                container: worker
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+
     - name: pepm-nrresqml
       image: ghcr.io/equinor/pepm-worker-api/resqml-converter:latest
       schedulerPort: 8090
@@ -195,7 +281,6 @@ spec:
                 useAdls: true
                 streaming:
                   enabled: false
-        
         - environment: test
           volumeMounts:
             - name: pepm-nrresqml-model-storage-test
