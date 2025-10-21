@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/equinor/pepm-ui/compare/v1.12.1...v1.13.0) (2025-10-21)
+
+
+### ✨ Features
+
+* added new job to radix config ([#499](https://github.com/equinor/pepm-ui/issues/499)) ([21ec65b](https://github.com/equinor/pepm-ui/commit/21ec65b8fdc664dbf24c51239b5be5409786db74))
+
 ## [1.12.1](https://github.com/equinor/pepm-ui/compare/v1.12.0...v1.12.1) (2025-09-01)
 
 
