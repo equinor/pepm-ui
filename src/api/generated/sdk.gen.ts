@@ -127,6 +127,9 @@ import type {
   PostApiV1JobsComputeThumbnailGenData,
   PostApiV1JobsComputeThumbnailGenResponse,
   PostApiV1JobsComputeThumbnailGenError,
+  PostApiV1JobsComputeDelft3dPreprocessData,
+  PostApiV1JobsComputeDelft3dPreprocessResponse,
+  PostApiV1JobsComputeDelft3dPreprocessError,
   GetApiV1MetadataSmdaMetadataData,
   GetApiV1MetadataSmdaMetadataResponse,
   GetApiV1MetadataSmdaMetadataError,
@@ -1197,6 +1200,34 @@ export const postApiV1JobsComputeThumbnailGen = <
       },
     ],
     url: '/api/v1/jobs/compute/thumbnail-gen',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json-patch+json',
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Preprocess Delft3D simulation parameters. This is a testing stub endpoint.
+ */
+export const postApiV1JobsComputeDelft3dPreprocess = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostApiV1JobsComputeDelft3dPreprocessData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    PostApiV1JobsComputeDelft3dPreprocessResponse,
+    PostApiV1JobsComputeDelft3dPreprocessError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: 'bearer',
+        type: 'http',
+      },
+    ],
+    url: '/api/v1/jobs/compute/delft3d-preprocess',
     ...options,
     headers: {
       'Content-Type': 'application/json-patch+json',

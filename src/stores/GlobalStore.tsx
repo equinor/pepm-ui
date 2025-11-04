@@ -14,6 +14,7 @@ import {
   GeologicalGroupDto,
   GeologicalStandardDto,
   GetObjectResultsDto,
+  GetOutcropsDto,
   GetVariogramResultsDto,
   ImageMetadataDto,
   JobStatus,
@@ -63,7 +64,7 @@ type IPepmContext = {
   analogueModelImageMetadata?: ImageMetadataDto;
   computeCases: ComputeCaseDto[];
   modelAreaTypes: ModelAreaTypeDto[];
-  outcrops: OutcropDto[];
+  outcrops: GetOutcropsDto[];
   countries: CountryDto[];
   fields: FieldDto[];
   stratigraphicColumns: StratColumnDto[];
@@ -100,7 +101,7 @@ type IPepmContextActions = {
   setComputeCases: (computeCases: ComputeCaseDto[]) => void;
   setComputeCasesDefault: () => void;
   setModelAreaTypes: (modelAreaTypes: ModelAreaTypeDto[]) => void;
-  setOutcrops: (outcrops: OutcropDto[]) => void;
+  setOutcrops: (outcrops: GetOutcropsDto[]) => void;
   setCountries: (countries: CountryDto[]) => void;
   setFields: (fields: FieldDto[]) => void;
   setStratigraphicColumns: (fields: StratColumnDto[]) => void;
@@ -254,7 +255,7 @@ export const usePepmContextStore = create<IPepmContext & IPepmContextActions>()(
         set((state) => {
           state.modelAreaTypes = modelAreaTypes;
         }),
-      setOutcrops: (outcrops: OutcropDto[]) =>
+      setOutcrops: (outcrops: GetOutcropsDto[]) =>
         set((state) => {
           state.outcrops = outcrops;
         }),
