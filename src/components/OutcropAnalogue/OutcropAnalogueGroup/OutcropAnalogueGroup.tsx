@@ -133,7 +133,7 @@ export const OutcropAnalogueGroup = () => {
                 {row.region?.location ? (
                   <>
                     <Table.Cell>{row.region.location.country}</Table.Cell>
-                    <Table.Cell>{row.region.location.locationName}</Table.Cell>
+                    <Table.Cell>{row.region.location.location}</Table.Cell>
                   </>
                 ) : (
                   <>
