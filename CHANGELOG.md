@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.1](https://github.com/equinor/pepm-ui/compare/v1.13.0...v1.13.1) (2025-11-05)
+
+
+### 🐛 Bug Fixes
+
+* updated schema and outcrop models ([#501](https://github.com/equinor/pepm-ui/issues/501)) ([2392bcb](https://github.com/equinor/pepm-ui/commit/2392bcb047dd6c58a8a5a0672eccea3f6279c1c4))
+
 ## [1.13.0](https://github.com/equinor/pepm-ui/compare/v1.12.1...v1.13.0) (2025-10-21)
 
 
