@@ -2,7 +2,7 @@
 import { Button, Dialog, Icon, Table } from '@equinor/eds-core-react';
 import { delete_to_trash as deleteIcon } from '@equinor/eds-icons';
 import { useState } from 'react';
-import { AddAnalogueModelOutcropForm, RegionDto } from '../../../api/generated';
+import { AddAnalogueModelOutcropForm } from '../../../api/generated';
 import { useOutcropAnalouge } from '../../../hooks/useOutcropAnalogue';
 import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
 import { OutcropSelect } from '../OutcropSelect/OutcropSelect';
@@ -14,8 +14,14 @@ export interface OutcropType {
   outcropId?: string;
   name?: string;
   outcropCategory?: string;
-  region?: RegionDto;
-  basins?: Array<string>;
+  region?: {
+    name?: string | null;
+    location?: {
+      country?: string | null;
+      locationName?: string | null;
+    };
+  };
+  basin?: string | null;
 }
 
 const defaultOutcropData: OutcropType = {
@@ -23,7 +29,7 @@ const defaultOutcropData: OutcropType = {
   name: undefined,
   outcropCategory: undefined,
   region: undefined,
-  basins: [],
+  basin: undefined,
 };
 
 export type OutcropErrorType = {
@@ -124,13 +130,10 @@ export const OutcropAnalogueGroup = () => {
                 <Table.Cell>
                   <Styled.StratColCell>{row.name}</Styled.StratColCell>
                 </Table.Cell>
-                {row.region?.locations &&
-                row.region?.locations?.length !== 0 ? (
+                {row.region?.location ? (
                   <>
-                    <Table.Cell>{row.region.locations[0].country}</Table.Cell>
-                    <Table.Cell>
-                      {row.region.locations[0].locationName}
-                    </Table.Cell>
+                    <Table.Cell>{row.region.location.country}</Table.Cell>
+                    <Table.Cell>{row.region.location.location}</Table.Cell>
                   </>
                 ) : (
                   <>
@@ -140,9 +143,7 @@ export const OutcropAnalogueGroup = () => {
                 )}
                 <Table.Cell>{row.region?.name}</Table.Cell>
                 <Table.Cell>
-                  <Styled.StratColCell>
-                    {row.basins?.map((item) => item)}
-                  </Styled.StratColCell>
+                  <Styled.StratColCell>{row.basin?.name}</Styled.StratColCell>
                 </Table.Cell>
                 <Table.Cell>
                   <Styled.StratColCell>
