@@ -164,11 +164,10 @@ spec:
       timeLimitSeconds: 1728000
       resources:
         requests:
-          memory: "6Gi"
-          cpu: "2000m"
-        limits:
           memory: "8Gi"
           cpu: "4000m"
+        limits:
+          memory: "16Gi"
       payload:
         path: /app/args
       variables:
