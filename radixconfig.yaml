@@ -159,7 +159,7 @@ spec:
                   envVar: AzureAdPeacock__ResourceId     
   jobs:
     - name: delft3d-simulation
-      image: ghcr.io/equinor/gt-post:latest
+      image: ghcr.io/equinor/delft3d4-pepm:latest
       schedulerPort: 8090
       timeLimitSeconds: 1728000
       resources:
