@@ -17,9 +17,16 @@ const tabs: Tab[] = [
 export const Navigation = () => {
   const navigate = useNavigate();
 
-  const active = tabs.find(
-    (tab) => `/${tab.path}` === window.location.pathname,
-  );
+  const active: Tab = (() => {
+    const pathname = window.location.pathname;
+    const tab = tabs.find((tab) => `/${tab.path}` === pathname);
+    if (tab) {
+      return tab;
+    }
+
+    // Default to 'Models' tab if no match found
+    return tabs[1];
+  })();
 
   function clickTab(tab: number) {
     navigate(tabs[tab].path);
