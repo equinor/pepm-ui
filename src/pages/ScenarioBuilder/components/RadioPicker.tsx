@@ -10,10 +10,18 @@ export const RadioPicker = ({ optionsList }: Props) => {
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     updateChecked(event.target.value);
   };
+
+  function capitalizeFirstLetter(str: string): string {
+    if (!str) {
+      return ''; // Handle empty or null strings
+    }
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
   const buttonList = optionsList.map((o) => (
     <Radio
       key={o.value}
-      label={o.text}
+      label={capitalizeFirstLetter(o.text)}
       name="group"
       value={o.value}
       checked={checked === o.value}

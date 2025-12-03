@@ -28,61 +28,51 @@ export const ValueInput = ({ variable, onSubmit }: Props) => {
     },
   });
 
-  const makeDigitPattern = (min?: number, max?: number) => {
-    if (min != null && max != null) return new RegExp(`^\\d{${min},${max}}$`);
-    if (min != null) return new RegExp(`^\\d{${min},}$`);
-    if (max != null) return new RegExp(`^\\d{0,${max}}$`);
-    return /^\d+$/; // default: one or more digits
-  };
-
-  // Tip: avoid /g (global) flag — it makes .test() stateful and causes flaky validation.
-  const buildDigitLengthRules = (v?: validators) => {
-    const { min, max } = v ?? {};
-    const message =
-      min != null && max != null
-        ? `Enter ${min}-${max} digits`
-        : min != null
-        ? `Enter at least ${min} digits`
-        : max != null
-        ? `Enter at most ${max} digits`
-        : 'Digits only';
-
-    return {
-      required: 'Required',
-      pattern: {
-        value: makeDigitPattern(min, max),
-        message,
-      },
-    } as const;
-  };
-
   return (
-    <form onSubmit={handleSubmit((data) => onSubmit(data.data))}>
+    <form
+      onSubmit={handleSubmit((data) => onSubmit(data.data))}
+      style={{ display: 'flex', flexDirection: 'row', gap: '1rem' }}
+    >
       <Controller
         name="data"
         control={control}
-        rules={buildDigitLengthRules(variable.validators)}
+        rules={{
+          required: 'Enter value within range',
+          min: {
+            value: variable.validators.min ?? Number.NEGATIVE_INFINITY,
+            message:
+              variable.validators.min != null
+                ? `Enter value of at least ${variable.validators.min}`
+                : '',
+          },
+          max: {
+            value: variable.validators.max ?? Number.POSITIVE_INFINITY,
+            message:
+              variable.validators.max != null
+                ? `Enter value of at most ${variable.validators.max}`
+                : '',
+          },
+        }}
         render={({ field: { ref, ...props }, fieldState: { error } }) => (
           <TextField
             {...props}
             id={props.name}
-            label="Digits only"
             inputRef={ref}
             inputIcon={
               error ? <Icon data={error_filled} title="error" /> : undefined
             }
             helperText={error?.message}
             variant={error ? 'error' : undefined}
+            style={{
+              minWidth: '60px',
+              maxWidth: '140px',
+              alignContent: 'center',
+            }}
           />
         )}
       />
-      <Button
-        type="submit"
-        style={{
-          marginTop: '14px',
-        }}
-      >
-        Submit
+      <Button type="submit" variant="outlined">
+        Add
       </Button>
     </form>
   );

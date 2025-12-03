@@ -37,7 +37,7 @@ export const TableRow = ({ variable }: Props) => {
         <Table.Cell>{currentValue}</Table.Cell>
         <Table.Cell>{variable.units}</Table.Cell>
         <Table.Cell>
-          {variable.validators.min}/{variable.validators.max}
+          {variable.validators.min} / {variable.validators.max}
         </Table.Cell>
         <Table.Cell>
           {<ValueInput variable={variable} onSubmit={setCurrentValue} />}
