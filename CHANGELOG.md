@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.14.0](https://github.com/equinor/pepm-ui/compare/v1.13.1...v1.14.0) (2025-12-04)
+
+
+### 🧹 Chores
+
+* upped even more resources for simulation job ([4f93190](https://github.com/equinor/pepm-ui/commit/4f931902dfa2bd8ee65df6c2cda4ae862b421aed))
+* upped resources for simulation job ([333083c](https://github.com/equinor/pepm-ui/commit/333083c0c1d4d460e4efa5ffdd12f47dfc4a3f9b))
+
+
+### ✨ Features
+
+* added simulation job to radix, tweaked cpu and memory requests for cost reduction ([#507](https://github.com/equinor/pepm-ui/issues/507)) ([2e5697d](https://github.com/equinor/pepm-ui/commit/2e5697de0a81727080ca28ed2a48e01946d1775b))
+
+
+### 🐛 Bug Fixes
+
+* adjusted timelimit for simulation job to be 20 days ([eab6073](https://github.com/equinor/pepm-ui/commit/eab6073713f22d27df9c01d30596fa55eda1495b))
+* fixed incorrect docker image ([aa458ad](https://github.com/equinor/pepm-ui/commit/aa458ada93b95699952ea6e4ae73c87ae5365b2c))
+* update the variogram icon ([#509](https://github.com/equinor/pepm-ui/issues/509)) ([a49df3b](https://github.com/equinor/pepm-ui/commit/a49df3b9af126c0666988819110b5aab9821a5f7))
+* upped cpu resource for the simulation job ([379696b](https://github.com/equinor/pepm-ui/commit/379696bf7f53bb7c9f9a432d3640b50c1cbceac8))
+
 ## [1.13.1](https://github.com/equinor/pepm-ui/compare/v1.13.0...v1.13.1) (2025-11-05)
 
 
