@@ -1,15 +1,13 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
-import jsonData from '../templates/default_template.json';
-
-export type Template = typeof jsonData;
+import { ScenarioTemplateList } from '../../../api';
 
 type IScenarioStore = {
-  templates: Template[];
+  templates: ScenarioTemplateList[];
 };
 
 type IScenarioStoreActions = {
-  setTemplates: (templates: Template[]) => void;
+  setTemplates: (templates: ScenarioTemplateList[]) => void;
 };
 
 export const useScenarioStore = create<

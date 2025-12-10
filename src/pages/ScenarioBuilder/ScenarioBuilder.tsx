@@ -7,7 +7,6 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { ChangeEvent, useEffect, useState } from 'react';
-import jsonData from './templates/default_template.json';
 import { RadioPicker } from './components/RadioPicker';
 import { TableRow } from './components/TableRow';
 import {
@@ -16,33 +15,30 @@ import {
   Wrapper,
 } from './ScenarioBuilder.styled';
 import TemplateDetailsDialog from './components/TemplateDetailsDialog';
+import { useFetchScenarioTemplates } from '../../hooks/useFetchScenarioTemplates';
+import { useScenarioStore } from './stores/ScenarioStore';
+import { ScenarioTemplateList } from '../../api';
 
 export const ScenarioBuilder = () => {
-  const [templates, setTemplates] = useState<typeof jsonData>([]);
-  // const { templates, setTemplates } = useScenarioStore();
+  const templatesData = useFetchScenarioTemplates();
+  const { templates, setTemplates } = useScenarioStore();
 
-  const [loading, setLoading] = useState(true);
   const [selectedTemplate, setSelectedTemplate] =
-    useState<(typeof jsonData)[0]>();
-  const [selectedId, setSelectedId] = useState<number>();
+    useState<ScenarioTemplateList>();
+  const [selectedName, setSelectedName] = useState<string>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  // Dummy loading, should be done through API later on
   useEffect(() => {
-    const filteredTemplates = jsonData.filter((t) => t.fields.name !== 'MAIN');
-    setTemplates(filteredTemplates);
-    setLoading(false);
-    setSelectedTemplate(filteredTemplates[0]);
-    setSelectedId(filteredTemplates[0].pk);
-  }, [loading]);
+    if (templatesData) setTemplates(templatesData.data?.data?.data || []);
+  }, [templatesData, setTemplates]);
 
   const selectOnChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const id = templates.find((t) => t.fields.name === event.target.value)?.pk;
-    if (id) setSelectedId(id);
+    const name = templates.find((t) => t.name === event.target.value)?.name;
+    if (name) setSelectedName(name);
   };
 
   const buttonOnConfirm = () => {
-    setSelectedTemplate(templates.find((t) => t.pk === selectedId));
+    setSelectedTemplate(templates.find((t) => t.name === selectedName));
   };
 
   // const onCreateModel = () => {
@@ -79,12 +75,12 @@ export const ScenarioBuilder = () => {
             style={{ maxWidth: '390px' }}
           >
             {templates &&
-              templates.map((t) => <option key={t.pk}>{t.fields.name}</option>)}
+              templates.map((t) => <option key={t.name}>{t.name}</option>)}
           </NativeSelect>
           {selectedTemplate &&
             TemplateDetailsDialog({
-              tooltipTitle: selectedTemplate.fields.name,
-              description: 'selectedTemplate.fields.description',
+              tooltipTitle: selectedTemplate.name,
+              description: selectedTemplate.description,
               picture: 'selectedTemplate.fields.picture',
               setIsOpen: setIsOpen,
               isOpen: isOpen,
@@ -115,7 +111,7 @@ export const ScenarioBuilder = () => {
         />
         <Typography variant="h2">Simulation parameters</Typography>
         {selectedTemplate &&
-          selectedTemplate.fields.sections.map((s) => {
+          JSON.parse(selectedTemplate.jsonData).map((s: any) => {
             if (s.name !== 'Scenario' && s.name !== 'Sediment composition')
               return (
                 <Wrapper>
@@ -154,7 +150,7 @@ export const ScenarioBuilder = () => {
                       </Table.Row>
                     </Table.Head>
                     <Table.Body>
-                      {s.variables.map((v) => {
+                      {s.variables.map((v: any) => {
                         const variable = v as variable;
                         return (
                           <TableRow key={v.id} variable={variable}></TableRow>
