@@ -1018,6 +1018,169 @@ export const DeleteStratigraphicGroupCommandResponseSchema = {
   additionalProperties: false,
 } as const;
 
+export const Delft3dPreprocessCommandSchema = {
+  type: 'object',
+  properties: {
+    simulationId: {
+      type: 'string',
+      nullable: true,
+    },
+    runId: {
+      type: 'string',
+      nullable: true,
+    },
+    iniParameters: {
+      type: 'object',
+      additionalProperties: {
+        $ref: '#/components/schemas/IniParameter',
+      },
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const Delft3dPreprocessCommandResponseSchema = {
+  required: ['data'],
+  type: 'object',
+  properties: {
+    success: {
+      type: 'boolean',
+    },
+    count: {
+      type: 'integer',
+      format: 'int32',
+      nullable: true,
+    },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
+    validationErrors: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+      nullable: true,
+    },
+    data: {
+      $ref: '#/components/schemas/Delft3dPreprocessDto',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const Delft3dPreprocessDtoSchema = {
+  type: 'object',
+  properties: {
+    success: {
+      type: 'boolean',
+    },
+    jobName: {
+      type: 'string',
+      nullable: true,
+    },
+    status: {
+      type: 'string',
+      nullable: true,
+    },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
+    statusCode: {
+      type: 'integer',
+      format: 'int32',
+      nullable: true,
+    },
+    details: {
+      type: 'string',
+      nullable: true,
+    },
+    error: {
+      type: 'string',
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const Delft3dSimulationCommandSchema = {
+  type: 'object',
+  properties: {
+    simulationId: {
+      type: 'string',
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const Delft3dSimulationCommandResponseSchema = {
+  required: ['data'],
+  type: 'object',
+  properties: {
+    success: {
+      type: 'boolean',
+    },
+    count: {
+      type: 'integer',
+      format: 'int32',
+      nullable: true,
+    },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
+    validationErrors: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+      nullable: true,
+    },
+    data: {
+      $ref: '#/components/schemas/Delft3dSimulationDto',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const Delft3dSimulationDtoSchema = {
+  type: 'object',
+  properties: {
+    success: {
+      type: 'boolean',
+    },
+    jobName: {
+      type: 'string',
+      nullable: true,
+    },
+    status: {
+      type: 'string',
+      nullable: true,
+    },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
+    statusCode: {
+      type: 'integer',
+      format: 'int32',
+      nullable: true,
+    },
+    details: {
+      type: 'string',
+      nullable: true,
+    },
+    error: {
+      type: 'string',
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
 export const ErrorResponseSchema = {
   required: ['data'],
   type: 'object',
@@ -1691,7 +1854,14 @@ export const GetOutcropsCommandResponseSchema = {
 } as const;
 
 export const GetOutcropsDtoSchema = {
-  required: ['basins', 'name', 'outcropCategory', 'outcropId', 'region'],
+  required: [
+    'description',
+    'location',
+    'name',
+    'outcropCategory',
+    'outcropId',
+    'outcropType',
+  ],
   type: 'object',
   properties: {
     outcropId: {
@@ -1702,35 +1872,41 @@ export const GetOutcropsDtoSchema = {
       minLength: 1,
       type: 'string',
     },
+    location: {
+      minLength: 1,
+      type: 'string',
+    },
     outcropCategory: {
       minLength: 1,
       type: 'string',
     },
-    basins: {
-      type: 'array',
-      items: {
-        type: 'string',
-      },
+    outcropType: {
+      minLength: 1,
+      type: 'string',
+    },
+    description: {
+      minLength: 1,
+      type: 'string',
+    },
+    isVerified: {
+      type: 'boolean',
+      nullable: true,
     },
     region: {
       $ref: '#/components/schemas/GetOutcropsRegionDto',
+    },
+    basin: {
+      type: 'string',
+      nullable: true,
     },
   },
   additionalProperties: false,
 } as const;
 
 export const GetOutcropsLocationDtoSchema = {
-  required: ['country', 'locationId', 'locationName', 'regionId'],
+  required: ['country', 'locationName'],
   type: 'object',
   properties: {
-    locationId: {
-      type: 'string',
-      format: 'uuid',
-    },
-    regionId: {
-      type: 'string',
-      format: 'uuid',
-    },
     locationName: {
       minLength: 1,
       type: 'string',
@@ -1744,21 +1920,51 @@ export const GetOutcropsLocationDtoSchema = {
 } as const;
 
 export const GetOutcropsRegionDtoSchema = {
-  required: ['locations', 'name', 'regionId'],
+  required: ['dataSource', 'name'],
   type: 'object',
   properties: {
-    regionId: {
-      type: 'string',
-      format: 'uuid',
-    },
     name: {
       minLength: 1,
       type: 'string',
     },
-    locations: {
+    dataSource: {
+      minLength: 1,
+      type: 'string',
+    },
+    location: {
+      $ref: '#/components/schemas/GetOutcropsLocationDto',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const GetScenarioTemplateListQueryResponseSchema = {
+  required: ['data'],
+  type: 'object',
+  properties: {
+    success: {
+      type: 'boolean',
+    },
+    count: {
+      type: 'integer',
+      format: 'int32',
+      nullable: true,
+    },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
+    validationErrors: {
       type: 'array',
       items: {
-        $ref: '#/components/schemas/GetOutcropsLocationDto',
+        type: 'string',
+      },
+      nullable: true,
+    },
+    data: {
+      type: 'array',
+      items: {
+        $ref: '#/components/schemas/ScenarioTemplateList',
       },
     },
   },
@@ -2006,6 +2212,24 @@ export const ImageMetadataDtoSchema = {
   additionalProperties: false,
 } as const;
 
+export const IniParameterSchema = {
+  type: 'object',
+  properties: {
+    name: {
+      type: 'string',
+      nullable: true,
+    },
+    value: {
+      nullable: true,
+    },
+    description: {
+      type: 'string',
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
 export const InputValueTypeSchema = {
   enum: [
     'Indicator',
@@ -2095,7 +2319,16 @@ export const JobStatusSchema = {
 } as const;
 
 export const JobTypeSchema = {
-  enum: ['Nrresqml', 'Nrchannel', 'Nrvariogram', 'NrthumbnailGen'],
+  enum: [
+    'Nrresqml',
+    'Nrchannel',
+    'Nrvariogram',
+    'NrthumbnailGen',
+    'Delft3dPreprocess',
+    'Delft3dSimulation',
+    'Delft3dProcess',
+    'Delft3dPostprocess',
+  ],
   type: 'string',
 } as const;
 
@@ -2461,30 +2694,6 @@ export const ListStratUnitsQueryResponseSchema = {
   additionalProperties: false,
 } as const;
 
-export const LocationDtoSchema = {
-  required: ['country', 'locationId', 'locationName', 'regionId'],
-  type: 'object',
-  properties: {
-    locationId: {
-      type: 'string',
-      format: 'uuid',
-    },
-    regionId: {
-      type: 'string',
-      format: 'uuid',
-    },
-    locationName: {
-      minLength: 1,
-      type: 'string',
-    },
-    country: {
-      minLength: 1,
-      type: 'string',
-    },
-  },
-  additionalProperties: false,
-} as const;
-
 export const LogFileResponseSchema = {
   type: 'object',
   properties: {
@@ -2744,8 +2953,30 @@ export const OperationTypeSchema = {
   type: 'string',
 } as const;
 
+export const OutcropBasinDtoSchema = {
+  type: 'object',
+  properties: {
+    name: {
+      type: 'string',
+      nullable: true,
+    },
+    basinType: {
+      type: 'string',
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
 export const OutcropDtoSchema = {
-  required: ['basins', 'name', 'outcropCategory', 'outcropId', 'region'],
+  required: [
+    'description',
+    'location',
+    'name',
+    'outcropCategory',
+    'outcropId',
+    'outcropType',
+  ],
   type: 'object',
   properties: {
     outcropId: {
@@ -2756,18 +2987,60 @@ export const OutcropDtoSchema = {
       minLength: 1,
       type: 'string',
     },
+    location: {
+      minLength: 1,
+      type: 'string',
+    },
     outcropCategory: {
       minLength: 1,
       type: 'string',
     },
-    basins: {
-      type: 'array',
-      items: {
-        type: 'string',
-      },
+    outcropType: {
+      minLength: 1,
+      type: 'string',
+    },
+    description: {
+      minLength: 1,
+      type: 'string',
+    },
+    isVerified: {
+      type: 'boolean',
+      nullable: true,
     },
     region: {
-      $ref: '#/components/schemas/RegionDto',
+      $ref: '#/components/schemas/OutcropRegionDto',
+    },
+    basin: {
+      $ref: '#/components/schemas/OutcropBasinDto',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const OutcropLocationDtoSchema = {
+  type: 'object',
+  properties: {
+    country: {
+      type: 'string',
+      nullable: true,
+    },
+    location: {
+      type: 'string',
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const OutcropRegionDtoSchema = {
+  type: 'object',
+  properties: {
+    name: {
+      type: 'string',
+      nullable: true,
+    },
+    location: {
+      $ref: '#/components/schemas/OutcropLocationDto',
     },
   },
   additionalProperties: false,
@@ -3079,11 +3352,16 @@ export const RadixJobDtoSchema = {
   additionalProperties: false,
 } as const;
 
-export const RegionDtoSchema = {
-  required: ['locations', 'name', 'regionId'],
+export const ResultStatusSchema = {
+  enum: ['Draft', 'Publish'],
+  type: 'string',
+} as const;
+
+export const ScenarioTemplateListSchema = {
+  required: ['active', 'description', 'jsonData', 'name', 'scenarioTemplateId'],
   type: 'object',
   properties: {
-    regionId: {
+    scenarioTemplateId: {
       type: 'string',
       format: 'uuid',
     },
@@ -3091,19 +3369,19 @@ export const RegionDtoSchema = {
       minLength: 1,
       type: 'string',
     },
-    locations: {
-      type: 'array',
-      items: {
-        $ref: '#/components/schemas/LocationDto',
-      },
+    description: {
+      minLength: 1,
+      type: 'string',
+    },
+    jsonData: {
+      minLength: 1,
+      type: 'string',
+    },
+    active: {
+      type: 'boolean',
     },
   },
   additionalProperties: false,
-} as const;
-
-export const ResultStatusSchema = {
-  enum: ['Draft', 'Publish'],
-  type: 'string',
 } as const;
 
 export const StratColumnDtoSchema = {

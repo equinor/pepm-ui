@@ -127,6 +127,12 @@ import type {
   PostApiV1JobsComputeThumbnailGenData,
   PostApiV1JobsComputeThumbnailGenResponse,
   PostApiV1JobsComputeThumbnailGenError,
+  PostApiV1JobsComputeDelft3dPreprocessData,
+  PostApiV1JobsComputeDelft3dPreprocessResponse,
+  PostApiV1JobsComputeDelft3dPreprocessError,
+  PostApiV1JobsComputeDelft3dSimulationData,
+  PostApiV1JobsComputeDelft3dSimulationResponse,
+  PostApiV1JobsComputeDelft3dSimulationError,
   GetApiV1MetadataSmdaMetadataData,
   GetApiV1MetadataSmdaMetadataResponse,
   GetApiV1MetadataSmdaMetadataError,
@@ -163,6 +169,9 @@ import type {
   PutApiV1AnalogueModelsByIdComputecasesByComputeCaseIdResultsData,
   PutApiV1AnalogueModelsByIdComputecasesByComputeCaseIdResultsResponse,
   PutApiV1AnalogueModelsByIdComputecasesByComputeCaseIdResultsError,
+  GetApiV1ScenariotemplatesData,
+  GetApiV1ScenariotemplatesResponse,
+  GetApiV1ScenariotemplatesError,
   GetApiV1UploadsData,
   GetApiV1UploadsResponse,
   GetApiV1UploadsError,
@@ -1205,6 +1214,62 @@ export const postApiV1JobsComputeThumbnailGen = <
   });
 };
 
+/**
+ * Preprocess Delft3D simulation parameters. This is a testing stub endpoint.
+ */
+export const postApiV1JobsComputeDelft3dPreprocess = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostApiV1JobsComputeDelft3dPreprocessData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    PostApiV1JobsComputeDelft3dPreprocessResponse,
+    PostApiV1JobsComputeDelft3dPreprocessError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: 'bearer',
+        type: 'http',
+      },
+    ],
+    url: '/api/v1/jobs/compute/delft3d-preprocess',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json-patch+json',
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Start Delft3D simulation job.
+ */
+export const postApiV1JobsComputeDelft3dSimulation = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostApiV1JobsComputeDelft3dSimulationData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    PostApiV1JobsComputeDelft3dSimulationResponse,
+    PostApiV1JobsComputeDelft3dSimulationError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: 'bearer',
+        type: 'http',
+      },
+    ],
+    url: '/api/v1/jobs/compute/delft3d-simulation',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json-patch+json',
+      ...options?.headers,
+    },
+  });
+};
+
 export const getApiV1MetadataSmdaMetadata = <
   ThrowOnError extends boolean = false,
 >(
@@ -1482,6 +1547,25 @@ export const putApiV1AnalogueModelsByIdComputecasesByComputeCaseIdResults = <
       'Content-Type': 'application/json-patch+json',
       ...options?.headers,
     },
+  });
+};
+
+export const getApiV1Scenariotemplates = <ThrowOnError extends boolean = false>(
+  options?: Options<GetApiV1ScenariotemplatesData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetApiV1ScenariotemplatesResponse,
+    GetApiV1ScenariotemplatesError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: 'bearer',
+        type: 'http',
+      },
+    ],
+    url: '/api/v1/scenariotemplates',
+    ...options,
   });
 };
 

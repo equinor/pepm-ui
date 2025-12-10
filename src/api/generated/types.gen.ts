@@ -310,6 +310,54 @@ export type DeleteStratigraphicGroupCommandResponse = {
   data: string;
 };
 
+export type Delft3dPreprocessCommand = {
+  simulationId?: string | null;
+  runId?: string | null;
+  iniParameters?: {
+    [key: string]: IniParameter;
+  } | null;
+};
+
+export type Delft3dPreprocessCommandResponse = {
+  success?: boolean;
+  count?: number | null;
+  message?: string | null;
+  validationErrors?: Array<string> | null;
+  data: Delft3dPreprocessDto;
+};
+
+export type Delft3dPreprocessDto = {
+  success?: boolean;
+  jobName?: string | null;
+  status?: string | null;
+  message?: string | null;
+  statusCode?: number | null;
+  details?: string | null;
+  error?: string | null;
+};
+
+export type Delft3dSimulationCommand = {
+  simulationId?: string | null;
+};
+
+export type Delft3dSimulationCommandResponse = {
+  success?: boolean;
+  count?: number | null;
+  message?: string | null;
+  validationErrors?: Array<string> | null;
+  data: Delft3dSimulationDto;
+};
+
+export type Delft3dSimulationDto = {
+  success?: boolean;
+  jobName?: string | null;
+  status?: string | null;
+  message?: string | null;
+  statusCode?: number | null;
+  details?: string | null;
+  error?: string | null;
+};
+
 export type ErrorResponse = {
   success?: boolean;
   count?: number | null;
@@ -507,22 +555,32 @@ export type GetOutcropsCommandResponse = {
 export type GetOutcropsDto = {
   outcropId: string;
   name: string;
+  location: string;
   outcropCategory: string;
-  basins: Array<string>;
-  region: GetOutcropsRegionDto;
+  outcropType: string;
+  description: string;
+  isVerified?: boolean | null;
+  region?: GetOutcropsRegionDto;
+  basin?: string | null;
 };
 
 export type GetOutcropsLocationDto = {
-  locationId: string;
-  regionId: string;
   locationName: string;
   country: string;
 };
 
 export type GetOutcropsRegionDto = {
-  regionId: string;
   name: string;
-  locations: Array<GetOutcropsLocationDto>;
+  dataSource: string;
+  location?: GetOutcropsLocationDto;
+};
+
+export type GetScenarioTemplateListQueryResponse = {
+  success?: boolean;
+  count?: number | null;
+  message?: string | null;
+  validationErrors?: Array<string> | null;
+  data: Array<ScenarioTemplateList>;
 };
 
 export type GetUploadDetailQueryResponse = {
@@ -585,6 +643,12 @@ export type ImageMetadataDto = {
   };
 };
 
+export type IniParameter = {
+  name?: string | null;
+  value?: unknown;
+  description?: string | null;
+};
+
 export type InputValueType =
   | 'Indicator'
   | 'NetToGross'
@@ -643,13 +707,21 @@ export type JobType =
   | 'Nrresqml'
   | 'Nrchannel'
   | 'Nrvariogram'
-  | 'NrthumbnailGen';
+  | 'NrthumbnailGen'
+  | 'Delft3dPreprocess'
+  | 'Delft3dSimulation'
+  | 'Delft3dProcess'
+  | 'Delft3dPostprocess';
 
 export const JobType = {
   NRRESQML: 'Nrresqml',
   NRCHANNEL: 'Nrchannel',
   NRVARIOGRAM: 'Nrvariogram',
   NRTHUMBNAIL_GEN: 'NrthumbnailGen',
+  DELFT3D_PREPROCESS: 'Delft3dPreprocess',
+  DELFT3D_SIMULATION: 'Delft3dSimulation',
+  DELFT3D_PROCESS: 'Delft3dProcess',
+  DELFT3D_POSTPROCESS: 'Delft3dPostprocess',
 } as const;
 
 export type ListAllQueryResponse = {
@@ -740,13 +812,6 @@ export type ListStratUnitsQueryResponse = {
   data: Array<StratUnitDto>;
 };
 
-export type LocationDto = {
-  locationId: string;
-  regionId: string;
-  locationName: string;
-  country: string;
-};
-
 export type LogFileResponse = {
   originalFileName?: string | null;
   stream?: string | null;
@@ -832,12 +897,31 @@ export const OperationType = {
   INVALID: 'Invalid',
 } as const;
 
+export type OutcropBasinDto = {
+  name?: string | null;
+  basinType?: string | null;
+};
+
 export type OutcropDto = {
   outcropId: string;
   name: string;
+  location: string;
   outcropCategory: string;
-  basins: Array<string>;
-  region: RegionDto;
+  outcropType: string;
+  description: string;
+  isVerified?: boolean | null;
+  region?: OutcropRegionDto;
+  basin?: OutcropBasinDto;
+};
+
+export type OutcropLocationDto = {
+  country?: string | null;
+  location?: string | null;
+};
+
+export type OutcropRegionDto = {
+  name?: string | null;
+  location?: OutcropLocationDto;
 };
 
 export type PatchAnalogueModelCommandResponse = {
@@ -935,18 +1019,20 @@ export type RadixJobDto = {
   status?: string | null;
 };
 
-export type RegionDto = {
-  regionId: string;
-  name: string;
-  locations: Array<LocationDto>;
-};
-
 export type ResultStatus = 'Draft' | 'Publish';
 
 export const ResultStatus = {
   DRAFT: 'Draft',
   PUBLISH: 'Publish',
 } as const;
+
+export type ScenarioTemplateList = {
+  scenarioTemplateId: string;
+  name: string;
+  description: string;
+  jsonData: string;
+  active: boolean;
+};
 
 export type StratColumnDto = {
   stratColumnId: string;
@@ -2585,6 +2671,68 @@ export type PostApiV1JobsComputeThumbnailGenResponses = {
 export type PostApiV1JobsComputeThumbnailGenResponse =
   PostApiV1JobsComputeThumbnailGenResponses[keyof PostApiV1JobsComputeThumbnailGenResponses];
 
+export type PostApiV1JobsComputeDelft3dPreprocessData = {
+  body?: Delft3dPreprocessCommand;
+  path?: never;
+  query?: never;
+  url: '/api/v1/jobs/compute/delft3d-preprocess';
+};
+
+export type PostApiV1JobsComputeDelft3dPreprocessErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorResponse;
+  /**
+   * Forbidden
+   */
+  403: ErrorResponse;
+};
+
+export type PostApiV1JobsComputeDelft3dPreprocessError =
+  PostApiV1JobsComputeDelft3dPreprocessErrors[keyof PostApiV1JobsComputeDelft3dPreprocessErrors];
+
+export type PostApiV1JobsComputeDelft3dPreprocessResponses = {
+  /**
+   * Success
+   */
+  200: Delft3dPreprocessCommandResponse;
+};
+
+export type PostApiV1JobsComputeDelft3dPreprocessResponse =
+  PostApiV1JobsComputeDelft3dPreprocessResponses[keyof PostApiV1JobsComputeDelft3dPreprocessResponses];
+
+export type PostApiV1JobsComputeDelft3dSimulationData = {
+  body?: Delft3dSimulationCommand;
+  path?: never;
+  query?: never;
+  url: '/api/v1/jobs/compute/delft3d-simulation';
+};
+
+export type PostApiV1JobsComputeDelft3dSimulationErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorResponse;
+  /**
+   * Forbidden
+   */
+  403: ErrorResponse;
+};
+
+export type PostApiV1JobsComputeDelft3dSimulationError =
+  PostApiV1JobsComputeDelft3dSimulationErrors[keyof PostApiV1JobsComputeDelft3dSimulationErrors];
+
+export type PostApiV1JobsComputeDelft3dSimulationResponses = {
+  /**
+   * Success
+   */
+  200: Delft3dSimulationCommandResponse;
+};
+
+export type PostApiV1JobsComputeDelft3dSimulationResponse =
+  PostApiV1JobsComputeDelft3dSimulationResponses[keyof PostApiV1JobsComputeDelft3dSimulationResponses];
+
 export type GetApiV1MetadataSmdaMetadataData = {
   body?: never;
   path?: never;
@@ -2985,6 +3133,37 @@ export type PutApiV1AnalogueModelsByIdComputecasesByComputeCaseIdResultsResponse
 
 export type PutApiV1AnalogueModelsByIdComputecasesByComputeCaseIdResultsResponse =
   PutApiV1AnalogueModelsByIdComputecasesByComputeCaseIdResultsResponses[keyof PutApiV1AnalogueModelsByIdComputecasesByComputeCaseIdResultsResponses];
+
+export type GetApiV1ScenariotemplatesData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: '/api/v1/scenariotemplates';
+};
+
+export type GetApiV1ScenariotemplatesErrors = {
+  /**
+   * Forbidden
+   */
+  403: ErrorResponse;
+  /**
+   * Not Found
+   */
+  404: ErrorResponse;
+};
+
+export type GetApiV1ScenariotemplatesError =
+  GetApiV1ScenariotemplatesErrors[keyof GetApiV1ScenariotemplatesErrors];
+
+export type GetApiV1ScenariotemplatesResponses = {
+  /**
+   * Success
+   */
+  200: GetScenarioTemplateListQueryResponse;
+};
+
+export type GetApiV1ScenariotemplatesResponse =
+  GetApiV1ScenariotemplatesResponses[keyof GetApiV1ScenariotemplatesResponses];
 
 export type GetApiV1UploadsData = {
   body?: never;
