@@ -1,6 +1,9 @@
-import { Table } from '@equinor/eds-core-react';
+/* eslint-disable camelcase */
+import { Table, Typography } from '@equinor/eds-core-react';
 import { useState } from 'react';
 import { ValueInput } from './ValueInput';
+import TooltipPopover from './TooltipPopover';
+// import { tokens } from '@equinor/eds-tokens';
 
 interface Props {
   variable: variable;
@@ -33,14 +36,24 @@ export const TableRow = ({ variable }: Props) => {
   if (isInput(variable))
     return (
       <Table.Row key={variable.id}>
-        <Table.Cell>{variable.name}</Table.Cell>
-        <Table.Cell>{currentValue}</Table.Cell>
-        <Table.Cell>{variable.units}</Table.Cell>
         <Table.Cell>
-          {variable.validators.min} / {variable.validators.max}
+          {variable.name}{' '}
+          {
+            <Typography variant="meta">
+              {variable.validators.min} - {variable.validators.max}
+            </Typography>
+          }
         </Table.Cell>
         <Table.Cell>
           {<ValueInput variable={variable} onSubmit={setCurrentValue} />}
+        </Table.Cell>
+        <Table.Cell>{variable.units}</Table.Cell>
+        <Table.Cell>
+          {TooltipPopover({
+            tooltipTitle: variable.name,
+            description:
+              'Add superlong description here just to see how it behaves when i hit da buttooooon',
+          })}
         </Table.Cell>
       </Table.Row>
     );

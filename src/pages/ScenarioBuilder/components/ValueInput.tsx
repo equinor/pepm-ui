@@ -1,4 +1,4 @@
-import { Button, Icon, TextField } from '@equinor/eds-core-react';
+import { Icon, TextField } from '@equinor/eds-core-react';
 import { error_filled } from '@equinor/eds-icons';
 import { Controller, useForm } from 'react-hook-form';
 /* eslint-disable camelcase */
@@ -30,7 +30,7 @@ export const ValueInput = ({ variable, onSubmit }: Props) => {
 
   return (
     <form
-      onSubmit={handleSubmit((data) => onSubmit(data.data))}
+      onChange={handleSubmit((data) => onSubmit(data.data))}
       style={{ display: 'flex', flexDirection: 'row', gap: '1rem' }}
     >
       <Controller
@@ -71,9 +71,6 @@ export const ValueInput = ({ variable, onSubmit }: Props) => {
           />
         )}
       />
-      <Button type="submit" variant="outlined">
-        Add
-      </Button>
     </form>
   );
 };
