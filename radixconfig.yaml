@@ -44,7 +44,7 @@ spec:
           port: 5002
         - name: channest
           port: 5003
-        - name: delft3d-job-monitoring
+        - name: delft3d
           port: 5004
       environmentConfig:
         - environment: dev
