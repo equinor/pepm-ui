@@ -175,7 +175,7 @@ spec:
         WORK_DIR: "/mnt/azure-storage/worker"
         ARGS_FOLDER: "/app/args"
       notifications:
-        webhook: http://api:5002/api/webhooks/delft3d-simulation/status
+        webhook: http://api:5004/api/webhooks/delft3d/job-status
       environmentConfig:
         - environment: dev
           volumeMounts:
@@ -184,16 +184,6 @@ spec:
               blobfuse2:
                 protocol: fuse2
                 container: simulation
-                uid: 1000
-                accessMode: ReadWriteMany
-                useAdls: true
-                streaming:
-                  enabled: false
-            - name: delft3d-simulation-worker-storage-dev
-              path: /mnt/azure-storage/worker
-              blobfuse2:
-                protocol: fuse2
-                container: worker
                 uid: 1000
                 accessMode: ReadWriteMany
                 useAdls: true
@@ -211,16 +201,6 @@ spec:
                 useAdls: true
                 streaming:
                   enabled: false
-            - name: delft3d-simulation-worker-storage-test
-              path: /mnt/azure-storage/worker
-              blobfuse2:
-                protocol: fuse2
-                container: worker
-                uid: 1000
-                accessMode: ReadWriteMany
-                useAdls: true
-                streaming:
-                  enabled: false
         - environment: prod
           volumeMounts:
             - name: delft3d-simulation-storage-prod
@@ -228,16 +208,6 @@ spec:
               blobfuse2:
                 protocol: fuse2
                 container: simulation
-                uid: 1000
-                accessMode: ReadWriteMany
-                useAdls: true
-                streaming:
-                  enabled: false
-            - name: delft3d-simulation-worker-storage-prod
-              path: /mnt/azure-storage/worker
-              blobfuse2:
-                protocol: fuse2
-                container: worker
                 uid: 1000
                 accessMode: ReadWriteMany
                 useAdls: true
@@ -261,7 +231,7 @@ spec:
         WORK_DIR: "/mnt/azure-storage/worker"
         ARGS_FOLDER: "/app/args"
       notifications:
-        webhook: http://api:5002/api/webhooks/delft3d-preprocess/status
+        webhook: http://api:5004/api/webhooks/delft3d/job-status
       environmentConfig:
         - environment: dev
           volumeMounts:
@@ -324,6 +294,116 @@ spec:
               blobfuse2:
                 protocol: fuse2
                 container: worker
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+
+    - name: delft3d-processing
+      image: ghcr.io/equinor/gt-post:latest
+      schedulerPort: 8090
+      resources:
+        requests:
+          memory: "256Mi"
+          cpu: "500m"
+        limits:
+          cpu: "1000m"
+      payload:
+        path: /app/args
+      variables:
+        JOB_MODE: "process"
+        MAIN_DIR: "/mnt/azure-storage/simulation"
+        ARGS_FOLDER: "/app/args"
+      notifications:
+        webhook: http://api:5004/api/webhooks/delft3d/job-status
+      environmentConfig:
+        - environment: dev
+          volumeMounts:
+            - name: delft3d-process-storage-dev
+              path: /mnt/azure-storage/simulation
+              blobfuse2:
+                protocol: fuse2
+                container: simulation
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+        - environment: test
+          volumeMounts:
+            - name: delft3d-process-storage-test
+              path: /mnt/azure-storage/simulation
+              blobfuse2:
+                protocol: fuse2
+                container: simulation
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+        - environment: prod
+          volumeMounts:
+            - name: delft3d-process-storage-prod
+              path: /mnt/azure-storage/simulation
+              blobfuse2:
+                protocol: fuse2
+                container: simulation
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+
+    - name: delft3d-postprocessing
+      image: ghcr.io/equinor/gt-post:latest
+      schedulerPort: 8090
+      resources:
+        requests:
+          memory: "256Mi"
+          cpu: "500m"
+        limits:
+          cpu: "1000m"
+      payload:
+        path: /app/args
+      variables:
+        JOB_MODE: "postprocess"
+        MAIN_DIR: "/mnt/azure-storage/simulation"
+        ARGS_FOLDER: "/app/args"
+      notifications:
+        webhook: http://api:5004/api/webhooks/delft3d/job-status
+      environmentConfig:
+        - environment: dev
+          volumeMounts:
+            - name: delft3d-postprocess-storage-dev
+              path: /mnt/azure-storage/simulation
+              blobfuse2:
+                protocol: fuse2
+                container: simulation
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+        - environment: test
+          volumeMounts:
+            - name: delft3d-postprocess-storage-test
+              path: /mnt/azure-storage/simulation
+              blobfuse2:
+                protocol: fuse2
+                container: simulation
+                uid: 1000
+                accessMode: ReadWriteMany
+                useAdls: true
+                streaming:
+                  enabled: false
+        - environment: prod
+          volumeMounts:
+            - name: delft3d-postprocess-storage-prod
+              path: /mnt/azure-storage/simulation
+              blobfuse2:
+                protocol: fuse2
+                container: simulation
                 uid: 1000
                 accessMode: ReadWriteMany
                 useAdls: true
@@ -416,10 +496,6 @@ spec:
                 useAdls: true
                 streaming:
                   enabled: false
-
-        
-
-
     - name: pepm-nrchannest
       image: ghcr.io/equinor/pepm-worker-api/channel-estimation:latest
       schedulerPort: 8090
@@ -511,7 +587,6 @@ spec:
                 useAdls: true
                 streaming:
                   enabled: false
-
     - name: pepm-nrvargrest
       image: ghcr.io/equinor/pepm-worker-api/variogram-estimation:latest
       schedulerPort: 8090
