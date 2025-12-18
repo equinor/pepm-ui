@@ -307,7 +307,7 @@ spec:
       schedulerPort: 8090
       resources:
         requests:
-          memory: "256Mi"
+          memory: "1Gi"
           cpu: "500m"
         limits:
           cpu: "1000m"
@@ -362,7 +362,7 @@ spec:
       schedulerPort: 8090
       resources:
         requests:
-          memory: "256Mi"
+          memory: "1Gi"
           cpu: "500m"
         limits:
           cpu: "1000m"
