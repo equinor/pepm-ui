@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { Table, Typography } from '@equinor/eds-core-react';
 import { useState } from 'react';
-import { ValueInput } from './ValueInput';
+import { ValueInputAllowedValues, ValueInputMinMax } from './ValueInput';
 import TooltipPopover from './TooltipPopover';
 // import { tokens } from '@equinor/eds-tokens';
 
@@ -14,12 +14,14 @@ type variable = {
   validators: {
     max: number;
     min: number;
+    allowedValues: number[];
   };
   units: string;
   type: string;
   id: string;
   default: number;
   factor: boolean;
+  description: string;
 };
 
 export const TableRow = ({ variable }: Props) => {
@@ -28,6 +30,11 @@ export const TableRow = ({ variable }: Props) => {
   };
 
   const [currentValue, setCurrentValue] = useState<string | number>();
+  // const [currentId, setCurrentId] = useState<string | number>();
+
+  // if (currentId === undefined || currentId === null) {
+  //   setCurrentId(variable.id);
+  // }
 
   if (currentValue === undefined || currentValue === null) {
     setCurrentValue(variable.default);
@@ -38,21 +45,38 @@ export const TableRow = ({ variable }: Props) => {
       <Table.Row key={variable.id}>
         <Table.Cell>
           {variable.name}{' '}
-          {
+          {variable.validators.min !== undefined &&
+            variable.validators.max !== undefined && (
+              <Typography variant="meta">
+                {variable.validators.min} - {variable.validators.max}
+              </Typography>
+            )}
+          {variable.validators.allowedValues !== undefined && (
             <Typography variant="meta">
-              {variable.validators.min} - {variable.validators.max}
+              {variable.validators.allowedValues.join(' or ')}
             </Typography>
-          }
+          )}
         </Table.Cell>
         <Table.Cell>
-          {<ValueInput variable={variable} onSubmit={setCurrentValue} />}
+          {variable.validators.min !== undefined &&
+            variable.validators.max !== undefined && (
+              <ValueInputMinMax
+                variable={variable}
+                onSubmit={setCurrentValue}
+              />
+            )}
+          {variable.validators.allowedValues !== undefined && (
+            <ValueInputAllowedValues
+              variable={variable}
+              onSubmit={setCurrentValue}
+            />
+          )}
         </Table.Cell>
         <Table.Cell>{variable.units}</Table.Cell>
         <Table.Cell>
           {TooltipPopover({
             tooltipTitle: variable.name,
-            description:
-              'Add superlong description here just to see how it behaves when i hit da buttooooon',
+            description: variable.description || 'No description available.',
           })}
         </Table.Cell>
       </Table.Row>

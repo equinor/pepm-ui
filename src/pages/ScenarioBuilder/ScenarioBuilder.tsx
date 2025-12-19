@@ -17,20 +17,26 @@ import {
 import TemplateDetailsDialog from './components/TemplateDetailsDialog';
 import { useFetchScenarioTemplates } from '../../hooks/useFetchScenarioTemplates';
 import { useScenarioStore } from './stores/ScenarioStore';
-import { ScenarioTemplateList } from '../../api';
+import ResetParamsDialog from './components/ResetParamsDialog';
+import DuplicateModelDialog from './components/DuplicateModelDialog';
 
 export const ScenarioBuilder = () => {
   const templatesData = useFetchScenarioTemplates();
-  const { templates, setTemplates } = useScenarioStore();
+  const { templates, setTemplates, setCurrentTemplate, currentTemplate } =
+    useScenarioStore();
 
-  const [selectedTemplate, setSelectedTemplate] =
-    useState<ScenarioTemplateList>();
   const [selectedName, setSelectedName] = useState<string>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpenCreate, setIsOpenCreate] = useState<boolean>(false);
+  const [isOpenReset, setIsOpenReset] = useState<boolean>(false);
 
   useEffect(() => {
-    if (templatesData) setTemplates(templatesData.data?.data?.data || []);
-  }, [templatesData, setTemplates]);
+    if (templatesData?.data?.data?.data) {
+      setTemplates(templatesData.data.data.data);
+      if (selectedName === undefined)
+        setSelectedName(templatesData.data.data.data[0].name);
+    }
+  }, [templatesData, setTemplates, selectedName]);
 
   const selectOnChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const name = templates.find((t) => t.name === event.target.value)?.name;
@@ -38,10 +44,15 @@ export const ScenarioBuilder = () => {
   };
 
   const buttonOnConfirm = () => {
-    setSelectedTemplate(templates.find((t) => t.name === selectedName));
+    setIsOpenReset(true);
+    const template = templates.find((t) => t.name === selectedName);
+    if (template) {
+      setCurrentTemplate(template);
+    }
   };
 
   // const onCreateModel = () => {
+  // setIsOpenCreate(true);
 
   // };
 
@@ -50,12 +61,14 @@ export const ScenarioBuilder = () => {
     validators: {
       max: number;
       min: number;
+      allowedValues: number[];
     };
     units: string;
     type: string;
     id: string;
     default: number;
     factor: boolean;
+    description: string;
   };
 
   return (
@@ -75,13 +88,15 @@ export const ScenarioBuilder = () => {
             style={{ maxWidth: '390px' }}
           >
             {templates &&
-              templates.map((t) => <option key={t.name}>{t.name}</option>)}
+              templates.map((t) => (
+                <option key={t.scenarioTemplateId}>{t.name}</option>
+              ))}
           </NativeSelect>
-          {selectedTemplate &&
+          {currentTemplate &&
             TemplateDetailsDialog({
-              tooltipTitle: selectedTemplate.name,
-              description: selectedTemplate.description,
-              picture: 'selectedTemplate.fields.picture',
+              tooltipTitle: currentTemplate.name,
+              description: currentTemplate.description,
+              picture: 'currentTemplate.fields.picture',
               setIsOpen: setIsOpen,
               isOpen: isOpen,
             })}
@@ -103,87 +118,108 @@ export const ScenarioBuilder = () => {
         >
           Load template
         </Button>
-        <Divider
-          style={{
-            width: '100%',
-          }}
-          variant="small"
-        />
-        <Typography variant="h2">Simulation parameters</Typography>
-        {selectedTemplate &&
-          JSON.parse(selectedTemplate.jsonData).map((s: any) => {
-            if (s.name !== 'Scenario' && s.name !== 'Sediment composition')
-              return (
-                <Wrapper>
-                  <Table
-                    key={s.name}
-                    style={{
-                      marginBottom: '16px',
-                      minWidth: '600px',
-                      width: '30%',
-                    }}
-                  >
-                    <Table.Caption>
-                      <Typography
-                        style={{
-                          marginBottom: '10px',
-                        }}
-                        variant="body_short_bold"
-                      >
-                        {s.name}
-                      </Typography>
-                    </Table.Caption>
-                    <Table.Head>
-                      <Table.Row>
-                        <Table.Cell style={{ width: '440px' }}>
-                          Parameter name
-                          <Typography
-                            variant="meta"
-                            style={{ marginLeft: '8px' }}
-                          >
-                            {``}(min - max range)
-                          </Typography>
-                        </Table.Cell>
-                        <Table.Cell>Value</Table.Cell>
-                        <Table.Cell>Unit</Table.Cell>
-                        <Table.Cell></Table.Cell>
-                      </Table.Row>
-                    </Table.Head>
-                    <Table.Body>
-                      {s.variables.map((v: any) => {
-                        const variable = v as variable;
-                        return (
-                          <TableRow key={v.id} variable={variable}></TableRow>
-                        );
-                      })}
-                    </Table.Body>
-                  </Table>
-                </Wrapper>
-              );
-            else if (s.name === 'Sediment composition') {
-              const variable = s.variables[0] as {
-                id: string;
-                options: {
-                  text: string;
-                  value: string;
-                }[];
-              };
-              return (
-                <div key={s.name}>
-                  <Typography
-                    variant="body_short_bold"
-                    style={{
-                      marginBottom: '10px',
-                    }}
-                  >
-                    {s.name}
-                  </Typography>
-                  <RadioPicker optionsList={variable.options}></RadioPicker>
-                </div>
-              );
-            }
-          })}
-        <Button style={{ width: '120px' }}>Create model</Button>
+        {currentTemplate && (
+          <ResetParamsDialog isOpen={isOpenReset} setIsOpen={setIsOpenReset} />
+        )}
+
+        {currentTemplate && (
+          <>
+            <Divider
+              style={{
+                width: '100%',
+              }}
+              variant="small"
+            />
+            <Typography variant="h2">Simulation parameters</Typography>
+          </>
+        )}
+        {currentTemplate &&
+          JSON.parse(currentTemplate.jsonData)['fields']['sections'].map(
+            (s: any) => {
+              if (s.name !== 'Scenario' && s.name !== 'Sediment composition')
+                return (
+                  <Wrapper>
+                    <Table
+                      key={s.id + s.name}
+                      style={{
+                        marginBottom: '16px',
+                        minWidth: '600px',
+                        width: '30%',
+                      }}
+                    >
+                      <Table.Caption>
+                        <Typography
+                          style={{
+                            marginBottom: '10px',
+                          }}
+                          variant="body_short_bold"
+                        >
+                          {s.name}
+                        </Typography>
+                      </Table.Caption>
+                      <Table.Head>
+                        <Table.Row>
+                          <Table.Cell style={{ width: '440px' }}>
+                            Parameter name
+                            <Typography
+                              variant="meta"
+                              style={{ marginLeft: '8px' }}
+                            >
+                              {``}(min - max range)
+                            </Typography>
+                          </Table.Cell>
+                          <Table.Cell>Value</Table.Cell>
+                          <Table.Cell>Unit</Table.Cell>
+                          <Table.Cell></Table.Cell>
+                        </Table.Row>
+                      </Table.Head>
+                      <Table.Body>
+                        {s.variables.map((v: any) => {
+                          const variable = v as variable;
+                          return (
+                            <TableRow
+                              key={s.id + v.id}
+                              variable={variable}
+                            ></TableRow>
+                          );
+                        })}
+                      </Table.Body>
+                    </Table>
+                  </Wrapper>
+                );
+              else if (s.name === 'Sediment composition') {
+                const variable = s.variables[0] as {
+                  id: string;
+                  options: {
+                    text: string;
+                    value: string;
+                  }[];
+                };
+                return (
+                  <div key={'radio' + s.name}>
+                    <Typography
+                      variant="body_short_bold"
+                      style={{
+                        marginBottom: '10px',
+                      }}
+                    >
+                      {s.name}
+                    </Typography>
+                    <RadioPicker optionsList={variable.options}></RadioPicker>
+                  </div>
+                );
+              }
+            },
+          )}
+        {currentTemplate && (
+          <Button style={{ width: '120px' }}>Create model</Button>
+        )}
+        {currentTemplate && (
+          <DuplicateModelDialog
+            isOpen={isOpenCreate}
+            setIsOpen={setIsOpenCreate}
+          />
+        )}
       </ScenarioBuilderWrapper>
     </>
   );

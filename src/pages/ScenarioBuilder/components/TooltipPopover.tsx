@@ -62,7 +62,6 @@ const TooltipPopover = (props: {
         onClose={closePopover}
         open={isOpen}
         placement={'right'}
-        withinPortal
       >
         <Popover.Header style={{ marginBottom: '-0.9rem' }}>
           {popoverTitle()}

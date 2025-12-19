@@ -1,6 +1,6 @@
 /* eslint-disable max-lines-per-function */
 import { Autocomplete, AutocompleteChanges } from '@equinor/eds-core-react';
-import { OutcropDto } from '../../../api/generated';
+import { GetOutcropsDto } from '../../../api/generated';
 import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
 import { sortList } from '../../../utils/SortList';
 import {
@@ -19,11 +19,11 @@ export const OutcropSelect = ({
   setOutcropObject: React.Dispatch<React.SetStateAction<OutcropType>>;
 }) => {
   const { outcrops, analogueModel } = usePepmContextStore();
-  const oc: OutcropDto[] = [...outcrops];
+  const oc: GetOutcropsDto[] = [...outcrops];
 
   if (outcrops.length === 0) return <p>Loading .....</p>;
 
-  const filterDisabled = (option: OutcropDto) => {
+  const filterDisabled = (option: GetOutcropsDto) => {
     const caseExists = analogueModel.outcrops.filter(
       (outcrop) => outcrop.outcropId === option.outcropId,
     );
@@ -35,7 +35,7 @@ export const OutcropSelect = ({
         label="Analogue"
         options={sortList(oc)}
         optionLabel={(option) => option.name}
-        onOptionsChange={(e: AutocompleteChanges<OutcropDto>) => {
+        onOptionsChange={(e: AutocompleteChanges<GetOutcropsDto>) => {
           const copyObject: OutcropType = {
             name: e.selectedItems[0] ? e.selectedItems[0].name : undefined,
             outcropCategory: e.selectedItems[0]
@@ -45,14 +45,8 @@ export const OutcropSelect = ({
               ? e.selectedItems[0].outcropId
               : undefined,
             region: e.selectedItems[0] ? e.selectedItems[0].region : undefined,
-            basins: [],
+            basin: e.selectedItems[0] ? e.selectedItems[0].basin : undefined,
           };
-          copyObject.basins = [];
-          e.selectedItems[0] &&
-            e.selectedItems[0].basins.map(
-              (item) =>
-                copyObject.basins !== undefined && copyObject.basins.push(item),
-            );
 
           setOutcropObject(copyObject);
         }}
@@ -61,20 +55,21 @@ export const OutcropSelect = ({
         variant={error.Analogue ? 'error' : undefined}
         helperText={error.Analogue ? error.Analogue : undefined}
       />
-      {outcropObject.region?.locations &&
-      outcropObject.region?.locations?.length !== 0 ? (
+      {outcropObject.region?.location ? (
         <>
+          {console.log(typeof outcropObject)}
+          {console.log(outcropObject)}
           <Autocomplete
             label="Country"
-            selectedOptions={[outcropObject.region?.locations[0].country]}
+            selectedOptions={[outcropObject.region?.location?.country]}
             initialSelectedOptions={
               outcropObject.region
-                ? [outcropObject.region.locations[0].country]
+                ? [outcropObject.region.location?.country]
                 : ['']
             }
             options={
-              outcropObject.region !== undefined
-                ? [outcropObject.region.locations[0].country]
+              outcropObject.region
+                ? [outcropObject.region.location?.country]
                 : ['']
             }
             noOptionsText="No options"
@@ -83,15 +78,15 @@ export const OutcropSelect = ({
 
           <Autocomplete
             label="Location"
-            selectedOptions={[outcropObject.region?.locations[0].locationName]}
+            selectedOptions={[outcropObject.region?.location?.locationName]}
             initialSelectedOptions={
               outcropObject.region
-                ? [outcropObject.region?.locations[0].locationName]
+                ? [outcropObject.region?.location?.locationName]
                 : ['']
             }
             options={
-              outcropObject.region !== undefined
-                ? [outcropObject.region?.locations[0].locationName]
+              outcropObject.region
+                ? [outcropObject.region?.location?.locationName]
                 : ['']
             }
             noOptionsText="No options"
@@ -119,13 +114,11 @@ export const OutcropSelect = ({
 
       <Autocomplete
         label="Basin"
-        selectedOptions={outcropObject.basins}
+        selectedOptions={[outcropObject?.basin]}
         initialSelectedOptions={
-          outcropObject.basins ? outcropObject.basins : ['']
+          outcropObject.basin ? [outcropObject.basin] : ['']
         }
-        options={
-          outcropObject.basins !== undefined ? outcropObject.basins : ['']
-        }
+        options={outcropObject.basin ? [outcropObject.basin] : ['']}
         noOptionsText="No options"
         readOnly
       />
