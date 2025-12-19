@@ -307,10 +307,11 @@ spec:
       schedulerPort: 8090
       resources:
         requests:
-          memory: "1Gi"
+          memory: "4Gi"
           cpu: "500m"
         limits:
           cpu: "1000m"
+          memory: "12Gi"
       payload:
         path: /app/args
       variables:
@@ -362,10 +363,11 @@ spec:
       schedulerPort: 8090
       resources:
         requests:
-          memory: "1Gi"
+          memory: "4Gi"
           cpu: "500m"
         limits:
           cpu: "1000m"
+          memory: "12Gi"
       payload:
         path: /app/args
       variables:
