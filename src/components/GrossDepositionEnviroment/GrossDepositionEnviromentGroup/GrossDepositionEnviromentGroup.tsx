@@ -114,10 +114,10 @@ export const GrossDepositionEnviromentGroup = () => {
                       row.grossDepEnv.identifier}
                   </Table.Cell>
                   <Table.Cell>
-                    {row.grossDepEnv.equinorCode + ' ' + row.depEnv.identifier}
+                    {row.depEnv.equinorCode + ' ' + row.depEnv.identifier}
                   </Table.Cell>
                   <Table.Cell>
-                    {row.grossDepEnv.equinorCode + ' ' + row.subenv.identifier}
+                    {row.subenv.equinorCode + ' ' + row.subenv.identifier}
                   </Table.Cell>
                 </Table.Row>
               ))}
