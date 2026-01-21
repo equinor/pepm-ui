@@ -1,9 +1,15 @@
 /* eslint-disable max-lines */
-/* eslint-disable max-lines-per-function */
-import { Button, Dialog, Snackbar, Typography } from '@equinor/eds-core-react';
+import {
+  Button,
+  Dialog,
+  Snackbar,
+  Tabs,
+  Typography,
+} from '@equinor/eds-core-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ModelTable } from '../../features/ModelTable/ModelTable';
+import { SimulationTable } from '../../features/SimulationTable/SimulationTable';
 import * as Styled from './Browse.styled';
 import { useIsOwnerOrAdmin } from '../../hooks/useIsOwnerOrAdmin';
 import {
@@ -19,6 +25,7 @@ export const Browse = () => {
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const [uploadStatus, setUploadStatus] = useState<string>();
   const [isOpen, setIsOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
     if (analogueModel !== analogueModelDefault) {
@@ -41,30 +48,42 @@ export const Browse = () => {
     setIsOpen(false);
   };
 
+  const handleTabChange = (index: number) => {
+    setActiveTab(index);
+  };
+
   return (
     <>
       <Styled.BrowseWrapper>
-        <Typography variant="h3" as="h1">
-          Browse all models
-        </Typography>
-        {isOwnerOrAdmin ? (
-          <div className="actions">
-            <Button disabled={!isOwnerOrAdmin} onClick={navigateAddModel}>
-              Add new model
-            </Button>
-            <Button onClick={() => setIsOpen(!isOpen)} download>
+        <Tabs activeTab={activeTab} onChange={handleTabChange}>
+          <Tabs.List>
+            <Tabs.Tab>Models</Tabs.Tab>
+            <Tabs.Tab>Simulations</Tabs.Tab>
+          </Tabs.List>
+          {isOwnerOrAdmin && activeTab === 0 && (
+            <div className="actions">
+              <Button disabled={!isOwnerOrAdmin} onClick={navigateAddModel}>
+                Add new model
+              </Button>
+              <Button onClick={() => setIsOpen(!isOpen)} download>
+                {exportModels.length === 0
+                  ? 'Export all to Excel...'
+                  : 'Export to Excel...'}
+              </Button>
               {exportModels.length === 0
-                ? 'Export all to Excel...'
-                : 'Export to Excel...'}
-            </Button>
-            {exportModels.length === 0
-              ? ''
-              : exportModels.length + '   selected'}
-          </div>
-        ) : (
-          <></>
-        )}
-        <ModelTable />
+                ? ''
+                : exportModels.length + '   selected'}
+            </div>
+          )}
+          <Tabs.Panels>
+            <Tabs.Panel>
+              <ModelTable />
+            </Tabs.Panel>
+            <Tabs.Panel>
+              <SimulationTable jobs={[]} isLoading={false} />
+            </Tabs.Panel>
+          </Tabs.Panels>
+        </Tabs>
       </Styled.BrowseWrapper>
       <Snackbar
         open={!!uploadStatus}
