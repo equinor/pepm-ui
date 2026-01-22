@@ -2048,6 +2048,10 @@ export const GetOutcropsCommandResponseSchema = {
         $ref: '#/components/schemas/GetOutcropsDto',
       },
     },
+    basin: {
+      type: 'string',
+      nullable: true,
+    },
   },
   additionalProperties: false,
 } as const;
@@ -3414,6 +3418,21 @@ export const OrchestrationStatusSummaryDtoSchema = {
       nullable: true,
     },
     last_error_message: {
+      type: 'string',
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const OutcropBasinDtoSchema = {
+  type: 'object',
+  properties: {
+    name: {
+      type: 'string',
+      nullable: true,
+    },
+    basinType: {
       type: 'string',
       nullable: true,
     },

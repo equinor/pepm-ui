@@ -1,5 +1,53 @@
 # Changelog
 
+## [1.14.0](https://github.com/equinor/pepm-ui/compare/v1.13.1...v1.14.0) (2026-01-21)
+
+
+### 🧹 Chores
+
+* upped even more resources for simulation job ([4f93190](https://github.com/equinor/pepm-ui/commit/4f931902dfa2bd8ee65df6c2cda4ae862b421aed))
+* upped resources for simulation job ([333083c](https://github.com/equinor/pepm-ui/commit/333083c0c1d4d460e4efa5ffdd12f47dfc4a3f9b))
+
+
+### ✨ Features
+
+* added process and postprocess jobs to radixconfig.yml ([33aa0b2](https://github.com/equinor/pepm-ui/commit/33aa0b23d9ac79b91482ed7138c0771b8593c9f7))
+* added simulation job to radix, tweaked cpu and memory requests for cost reduction ([#507](https://github.com/equinor/pepm-ui/issues/507)) ([2e5697d](https://github.com/equinor/pepm-ui/commit/2e5697de0a81727080ca28ed2a48e01946d1775b))
+
+
+### 🐛 Bug Fixes
+
+* added port 5004 to api component in radixconfig.yaml ([80b52cc](https://github.com/equinor/pepm-ui/commit/80b52ccef87d93bfcc899272c98a3313e396f283))
+* adjusted timelimit for simulation job to be 20 days ([eab6073](https://github.com/equinor/pepm-ui/commit/eab6073713f22d27df9c01d30596fa55eda1495b))
+* fixed incorrect docker image ([aa458ad](https://github.com/equinor/pepm-ui/commit/aa458ada93b95699952ea6e4ae73c87ae5365b2c))
+* fixed the bugs regarding GDE, Analogue outcrops and result view ([#512](https://github.com/equinor/pepm-ui/issues/512)) ([18d39e1](https://github.com/equinor/pepm-ui/commit/18d39e19fb5ae731e49ca8c877bd2a94eb6698f3))
+* shortened the name of the port ([32ee3f8](https://github.com/equinor/pepm-ui/commit/32ee3f8515bb5d394aa2be19839024b1e66b6deb))
+* update the variogram icon ([#509](https://github.com/equinor/pepm-ui/issues/509)) ([a49df3b](https://github.com/equinor/pepm-ui/commit/a49df3b9af126c0666988819110b5aab9821a5f7))
+* upped cpu resource for the simulation job ([379696b](https://github.com/equinor/pepm-ui/commit/379696bf7f53bb7c9f9a432d3640b50c1cbceac8))
+* upped memory for process and postprocess ([ae6733a](https://github.com/equinor/pepm-ui/commit/ae6733ab50ee096bfc5dd570151ea00390ae82b6))
+* upped memory for process and postprocess ([16de3cf](https://github.com/equinor/pepm-ui/commit/16de3cf5387873f55b48bdcfee21cbaec5e422e7))
+
+## [1.13.1](https://github.com/equinor/pepm-ui/compare/v1.13.0...v1.13.1) (2025-11-05)
+
+
+### 🐛 Bug Fixes
+
+* updated schema and outcrop models ([#501](https://github.com/equinor/pepm-ui/issues/501)) ([2392bcb](https://github.com/equinor/pepm-ui/commit/2392bcb047dd6c58a8a5a0672eccea3f6279c1c4))
+
+## [1.13.0](https://github.com/equinor/pepm-ui/compare/v1.12.1...v1.13.0) (2025-10-21)
+
+
+### ✨ Features
+
+* added new job to radix config ([#499](https://github.com/equinor/pepm-ui/issues/499)) ([21ec65b](https://github.com/equinor/pepm-ui/commit/21ec65b8fdc664dbf24c51239b5be5409786db74))
+
+## [1.12.1](https://github.com/equinor/pepm-ui/compare/v1.12.0...v1.12.1) (2025-09-01)
+
+
+### 🐛 Bug Fixes
+
+* updated formatting for log file ([#495](https://github.com/equinor/pepm-ui/issues/495)) ([21ed4f5](https://github.com/equinor/pepm-ui/commit/21ed4f5f82051f14ff8c0603d74f95915f906e67))
+
 ## [1.12.0](https://github.com/equinor/pepm-ui/compare/v1.11.0...v1.12.0) (2025-08-22)
 
 
