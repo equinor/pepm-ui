@@ -1010,11 +1010,6 @@ export type OutcropBasinDto = {
   basinType?: string | null;
 };
 
-export type OutcropBasinDto = {
-  name?: string | null;
-  basinType?: string | null;
-};
-
 export type OutcropDto = {
   outcropId: string;
   name: string;
