@@ -5,6 +5,7 @@ import { ScenarioTemplateList } from '../../../api';
 type IScenarioStore = {
   templates: ScenarioTemplateList[];
   currentTemplate?: ScenarioTemplateList;
+  description: string;
   parameters?: ScenarioTemplateParameters;
 };
 
@@ -66,6 +67,7 @@ type IScenarioStoreActions = {
     key: keyof ScenarioTemplateParameters,
     value: number | string,
   ) => void;
+  setDescription: (description: string) => void;
 };
 
 export const useScenarioStore = create<
@@ -74,10 +76,15 @@ export const useScenarioStore = create<
   immer((set) => ({
     templates: [],
     currentTemplate: undefined,
+    description: '',
     parameters: defaultParameters,
     setTemplates: (templates) =>
       set((state) => {
         state.templates = templates;
+      }),
+    setDescription: (description) =>
+      set((state) => {
+        state.description = description;
       }),
     setCurrentTemplate: (template) =>
       set((state) => {

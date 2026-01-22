@@ -1,5 +1,11 @@
 /* eslint-disable camelcase */
-import { Button, Dialog, Icon, Typography } from '@equinor/eds-core-react';
+import {
+  Button,
+  Dialog,
+  Divider,
+  Icon,
+  Typography,
+} from '@equinor/eds-core-react';
 import { external_link } from '@equinor/eds-icons';
 
 const TemplateDetailsDialog = (props: {
@@ -49,7 +55,7 @@ const TemplateDetailsDialog = (props: {
       <Dialog
         onClose={closeDialog}
         open={props.isOpen}
-        style={{ width: '100%' }}
+        style={{ maxWidth: '1000px', width: '100%' }}
       >
         <Dialog.Header style={{ marginBottom: '-0.9rem' }}>
           {dialogTitle()}
@@ -58,6 +64,7 @@ const TemplateDetailsDialog = (props: {
           <Typography style={{ margin: '1rem' }}>
             {props.description}
           </Typography>
+          <Divider style={{ width: '1px', height: 'auto', margin: '0 1rem' }} />
           <img
             src={props.picture}
             alt="Template details"

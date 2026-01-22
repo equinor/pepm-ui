@@ -3,6 +3,7 @@ import {
   Button,
   Divider,
   NativeSelect,
+  Snackbar,
   Table,
   Typography,
 } from '@equinor/eds-core-react';
@@ -19,16 +20,31 @@ import { useFetchScenarioTemplates } from '../../hooks/useFetchScenarioTemplates
 import { useScenarioStore } from './stores/ScenarioStore';
 import ResetParamsDialog from './components/ResetParamsDialog';
 import DuplicateModelDialog from './components/DuplicateModelDialog';
+import {
+  postApiV1Scenarios,
+  postApiV1ScenariosByScenarioIdStartOrchestration,
+} from '../../api/generated';
 
 export const ScenarioBuilder = () => {
   const templatesData = useFetchScenarioTemplates();
-  const { templates, setTemplates, setCurrentTemplate, currentTemplate } =
-    useScenarioStore();
+  const {
+    templates,
+    setTemplates,
+    setCurrentTemplate,
+    currentTemplate,
+    parameters,
+    description,
+    setDescription,
+  } = useScenarioStore();
 
   const [selectedName, setSelectedName] = useState<string>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpenCreate, setIsOpenCreate] = useState<boolean>(false);
   const [isOpenReset, setIsOpenReset] = useState<boolean>(false);
+  const [templateError, setTemplateError] = useState<string>();
+  const [descriptionError, setDescriptionError] = useState<string>();
+  const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
+  const [duplicateId, setDuplicateId] = useState<string>();
 
   useEffect(() => {
     if (templatesData?.data?.data?.data) {
@@ -40,7 +56,10 @@ export const ScenarioBuilder = () => {
 
   const selectOnChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const name = templates.find((t) => t.name === event.target.value)?.name;
-    if (name) setSelectedName(name);
+    if (name) {
+      setSelectedName(name);
+      setTemplateError(undefined);
+    }
   };
 
   const updateTemplate = () => {
@@ -51,14 +70,72 @@ export const ScenarioBuilder = () => {
   };
 
   const buttonOnConfirm = () => {
-    if (currentTemplate) setIsOpenReset(true);
-    // cancel - set template name back to previous
+    let hasError = false;
+
+    if (!selectedName) {
+      setTemplateError('You must select a template');
+      hasError = true;
+    } else {
+      setTemplateError(undefined);
+    }
+
+    if (!description) {
+      setDescriptionError('You must add a description');
+      hasError = true;
+    } else {
+      setDescriptionError(undefined);
+    }
+
+    if (hasError) return;
+
+    if (currentTemplate) {
+      setIsOpenReset(true);
+    } else {
+      updateTemplate();
+    }
   };
 
-  // const onCreateModel = () => {
-  // setIsOpenCreate(true);
+  const onSimulationStart = async () => {
+    if (!currentTemplate || !parameters) return;
 
-  // };
+    try {
+      // Create scenario with data from ScenarioStore
+      const createResponse = await postApiV1Scenarios({
+        body: {
+          name: parameters.template.value || currentTemplate.name,
+          description: description || '',
+          json_scenario_data: JSON.stringify(parameters),
+          scenario_template_id: currentTemplate.scenarioTemplateId,
+        },
+      });
+
+      // Check for 409 Conflict (duplicate) in error response
+      if (createResponse.error) {
+        const errorData = createResponse.error as any;
+        if (errorData?.data?.scenario_id) {
+          setDuplicateId(errorData.data.scenario_id);
+          setIsOpenCreate(true);
+          return;
+        }
+        console.error('Failed to create scenario:', createResponse.error);
+        return;
+      }
+
+      if (
+        createResponse.data?.success &&
+        createResponse.data.data.scenario_id
+      ) {
+        // If successful, start the orchestration
+        const scenarioId = createResponse.data.data.scenario_id;
+        await postApiV1ScenariosByScenarioIdStartOrchestration({
+          path: { scenarioId },
+        });
+        setShowSnackbar(true);
+      }
+    } catch (error: any) {
+      console.error('Failed to start simulation:', error);
+    }
+  };
 
   type variable = {
     name: string;
@@ -85,17 +162,25 @@ export const ScenarioBuilder = () => {
           </Typography>
         </Typography>
         <div style={{ display: 'flex', alignItems: 'end', gap: '1rem' }}>
-          <NativeSelect
-            label="Template"
-            id="native-select"
-            onChange={selectOnChange}
-            style={{ maxWidth: '390px' }}
-          >
-            {templates &&
-              templates.map((t) => (
-                <option key={t.scenarioTemplateId}>{t.name}</option>
-              ))}
-          </NativeSelect>
+          <div>
+            <NativeSelect
+              label="Template"
+              id="native-select"
+              onChange={selectOnChange}
+              required
+              style={{ maxWidth: '390px' }}
+            >
+              {templates &&
+                templates.map((t) => (
+                  <option key={t.scenarioTemplateId}>{t.name}</option>
+                ))}
+            </NativeSelect>
+            {templateError && (
+              <Typography variant="caption" style={{ color: 'red' }}>
+                {templateError}
+              </Typography>
+            )}
+          </div>
           {currentTemplate &&
             TemplateDetailsDialog({
               tooltipTitle: currentTemplate.name,
@@ -109,10 +194,17 @@ export const ScenarioBuilder = () => {
         <TextInput
           id={'Description'}
           label="Description"
+          required
           multiline
           rows={4}
           rowsMax={8}
-          // value={data.data as string}
+          value={description}
+          onChange={(e: { target: { value: string } }) => {
+            setDescription(e.target.value);
+            setDescriptionError(undefined);
+          }}
+          variant={descriptionError ? 'error' : undefined}
+          helperText={descriptionError}
         />
 
         <Button
@@ -222,15 +314,36 @@ export const ScenarioBuilder = () => {
             },
           )}
         {currentTemplate && (
-          <Button style={{ width: '120px' }}>Create model</Button>
+          <Button onClick={onSimulationStart} style={{ width: '140px' }}>
+            Start simulation
+          </Button>
         )}
         {currentTemplate && (
           <DuplicateModelDialog
             isOpen={isOpenCreate}
             setIsOpen={setIsOpenCreate}
+            duplicateId={duplicateId}
           />
         )}
       </ScenarioBuilderWrapper>
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={5000}
+        onClose={() => setShowSnackbar(false)}
+      >
+        Simulation scheduled for processing
+        <Snackbar.Action>
+          <Button
+            variant="ghost"
+            onClick={() => {
+              // TODO: Navigate to queue page
+              setShowSnackbar(false);
+            }}
+          >
+            GO TO QUEUE
+          </Button>
+        </Snackbar.Action>
+      </Snackbar>
     </>
   );
 };

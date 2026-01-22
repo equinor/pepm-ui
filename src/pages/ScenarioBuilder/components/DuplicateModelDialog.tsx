@@ -1,11 +1,21 @@
 /* eslint-disable camelcase */
 import { Button, Dialog, Typography } from '@equinor/eds-core-react';
+import { useNavigate } from 'react-router-dom';
 
 const DuplicateModelDialog = (props: {
   setIsOpen: (value: boolean) => void;
   isOpen: boolean;
+  duplicateId?: string;
 }) => {
+  const navigate = useNavigate();
   const closeDialog = () => props.setIsOpen(false);
+
+  const openDuplicateModel = () => {
+    if (props.duplicateId) {
+      navigate(`/model/${props.duplicateId}/details`);
+    }
+    closeDialog();
+  };
 
   return (
     <Dialog
@@ -40,7 +50,8 @@ const DuplicateModelDialog = (props: {
       <div>
         <Button
           variant="outlined"
-          onClick={closeDialog}
+          onClick={openDuplicateModel}
+          disabled={!props.duplicateId}
           style={{ marginLeft: '1rem', marginBottom: '1rem' }}
         >
           Open duplicate model

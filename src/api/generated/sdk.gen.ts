@@ -82,6 +82,24 @@ import type {
   GetApiV1ByAnalogueModelIdComputeSettingsData,
   GetApiV1ByAnalogueModelIdComputeSettingsResponse,
   GetApiV1ByAnalogueModelIdComputeSettingsError,
+  PostApiV1Delft3dOrchestrationsData,
+  PostApiV1Delft3dOrchestrationsResponse,
+  PostApiV1Delft3dOrchestrationsError,
+  GetApiV1Delft3dOrchestrationsByOrchestrationIdData,
+  GetApiV1Delft3dOrchestrationsByOrchestrationIdResponse,
+  GetApiV1Delft3dOrchestrationsByOrchestrationIdError,
+  PostApiV1Delft3dOrchestrationsByOrchestrationIdProgressData,
+  PostApiV1Delft3dOrchestrationsByOrchestrationIdProgressResponse,
+  PostApiV1Delft3dOrchestrationsByOrchestrationIdProgressError,
+  PostApiV1Delft3dOrchestrationsByOrchestrationIdCancelData,
+  PostApiV1Delft3dOrchestrationsByOrchestrationIdCancelResponse,
+  PostApiV1Delft3dOrchestrationsByOrchestrationIdCancelError,
+  GetApiV1Delft3dOrchestrationsByOrchestrationIdJobExecutionsData,
+  GetApiV1Delft3dOrchestrationsByOrchestrationIdJobExecutionsResponse,
+  GetApiV1Delft3dOrchestrationsByOrchestrationIdJobExecutionsError,
+  GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressData,
+  GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressResponse,
+  GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressError,
   GetApiV1DownloadsByIdResqmlData,
   GetApiV1DownloadsByIdResqmlResponse,
   GetApiV1DownloadsByIdResqmlError,
@@ -169,6 +187,18 @@ import type {
   PutApiV1AnalogueModelsByIdComputecasesByComputeCaseIdResultsData,
   PutApiV1AnalogueModelsByIdComputecasesByComputeCaseIdResultsResponse,
   PutApiV1AnalogueModelsByIdComputecasesByComputeCaseIdResultsError,
+  GetApiV1ScenariosData,
+  GetApiV1ScenariosResponse,
+  GetApiV1ScenariosError,
+  PostApiV1ScenariosData,
+  PostApiV1ScenariosResponse,
+  PostApiV1ScenariosError,
+  GetApiV1ScenariosByScenarioIdData,
+  GetApiV1ScenariosByScenarioIdResponse,
+  GetApiV1ScenariosByScenarioIdError,
+  PostApiV1ScenariosByScenarioIdStartOrchestrationData,
+  PostApiV1ScenariosByScenarioIdStartOrchestrationResponse,
+  PostApiV1ScenariosByScenarioIdStartOrchestrationError,
   GetApiV1ScenariotemplatesData,
   GetApiV1ScenariotemplatesResponse,
   GetApiV1ScenariotemplatesError,
@@ -205,11 +235,23 @@ import type {
   PostApiWebhooksVargrestStatusData,
   PostApiWebhooksVargrestStatusResponse,
   PostApiWebhooksVargrestStatusError,
+  PostApiWebhooksDelft3dJobStatusData,
+  PostApiWebhooksDelft3dJobStatusResponse,
+  PostApiWebhooksDelft3dJobStatusError,
 } from './types.gen';
 import { client as _heyApiClient } from './client.gen';
 import {
   getApiV1AnalogueModelsByIdResponseTransformer,
+  postApiV1Delft3dOrchestrationsResponseTransformer,
+  getApiV1Delft3dOrchestrationsByOrchestrationIdResponseTransformer,
+  postApiV1Delft3dOrchestrationsByOrchestrationIdCancelResponseTransformer,
+  getApiV1Delft3dOrchestrationsByOrchestrationIdJobExecutionsResponseTransformer,
+  getApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressResponseTransformer,
   getApiV1JobsResponseTransformer,
+  getApiV1ScenariosResponseTransformer,
+  postApiV1ScenariosResponseTransformer,
+  getApiV1ScenariosByScenarioIdResponseTransformer,
+  postApiV1ScenariosByScenarioIdStartOrchestrationResponseTransformer,
   postApiV1UploadsModelsManifestResponseTransformer,
 } from './transformers.gen';
 
@@ -866,6 +908,185 @@ export const getApiV1ByAnalogueModelIdComputeSettings = <
     ...options,
   });
 };
+
+/**
+ * Start a new Delft3D orchestration workflow.
+ * Creates the orchestration and triggers the Preprocess phase.
+ */
+export const postApiV1Delft3dOrchestrations = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostApiV1Delft3dOrchestrationsData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    PostApiV1Delft3dOrchestrationsResponse,
+    PostApiV1Delft3dOrchestrationsError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: 'bearer',
+        type: 'http',
+      },
+    ],
+    responseTransformer: postApiV1Delft3dOrchestrationsResponseTransformer,
+    url: '/api/v1/delft3d-orchestrations',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json-patch+json',
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Get the current status of an orchestration, including job executions and simulation progress.
+ */
+export const getApiV1Delft3dOrchestrationsByOrchestrationId = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<
+    GetApiV1Delft3dOrchestrationsByOrchestrationIdData,
+    ThrowOnError
+  >,
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetApiV1Delft3dOrchestrationsByOrchestrationIdResponse,
+    GetApiV1Delft3dOrchestrationsByOrchestrationIdError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: 'bearer',
+        type: 'http',
+      },
+    ],
+    responseTransformer:
+      getApiV1Delft3dOrchestrationsByOrchestrationIdResponseTransformer,
+    url: '/api/v1/delft3d-orchestrations/{orchestrationId}',
+    ...options,
+  });
+};
+
+/**
+ * Report simulation progress. Called by the running simulation job to update progress state.
+ * This endpoint determines if a Process job should be scheduled based on timestep thresholds.
+ */
+export const postApiV1Delft3dOrchestrationsByOrchestrationIdProgress = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<
+    PostApiV1Delft3dOrchestrationsByOrchestrationIdProgressData,
+    ThrowOnError
+  >,
+) => {
+  return (options.client ?? _heyApiClient).post<
+    PostApiV1Delft3dOrchestrationsByOrchestrationIdProgressResponse,
+    PostApiV1Delft3dOrchestrationsByOrchestrationIdProgressError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: 'bearer',
+        type: 'http',
+      },
+    ],
+    url: '/api/v1/delft3d-orchestrations/{orchestrationId}/progress',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json-patch+json',
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Cancel a running orchestration. Stops all running jobs and sets the orchestration to Cancelled state.
+ */
+export const postApiV1Delft3dOrchestrationsByOrchestrationIdCancel = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<
+    PostApiV1Delft3dOrchestrationsByOrchestrationIdCancelData,
+    ThrowOnError
+  >,
+) => {
+  return (options.client ?? _heyApiClient).post<
+    PostApiV1Delft3dOrchestrationsByOrchestrationIdCancelResponse,
+    PostApiV1Delft3dOrchestrationsByOrchestrationIdCancelError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: 'bearer',
+        type: 'http',
+      },
+    ],
+    responseTransformer:
+      postApiV1Delft3dOrchestrationsByOrchestrationIdCancelResponseTransformer,
+    url: '/api/v1/delft3d-orchestrations/{orchestrationId}/cancel',
+    ...options,
+  });
+};
+
+/**
+ * Get all job executions for an orchestration.
+ * Returns detailed information about each job that has been executed.
+ */
+export const getApiV1Delft3dOrchestrationsByOrchestrationIdJobExecutions = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<
+    GetApiV1Delft3dOrchestrationsByOrchestrationIdJobExecutionsData,
+    ThrowOnError
+  >,
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetApiV1Delft3dOrchestrationsByOrchestrationIdJobExecutionsResponse,
+    GetApiV1Delft3dOrchestrationsByOrchestrationIdJobExecutionsError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: 'bearer',
+        type: 'http',
+      },
+    ],
+    responseTransformer:
+      getApiV1Delft3dOrchestrationsByOrchestrationIdJobExecutionsResponseTransformer,
+    url: '/api/v1/delft3d-orchestrations/{orchestrationId}/job-executions',
+    ...options,
+  });
+};
+
+/**
+ * Get simulation progress for an orchestration.
+ * Returns detailed progress information for the simulation phase.
+ */
+export const getApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgress =
+  <ThrowOnError extends boolean = false>(
+    options: Options<
+      GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressData,
+      ThrowOnError
+    >,
+  ) => {
+    return (options.client ?? _heyApiClient).get<
+      GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressResponse,
+      GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressError,
+      ThrowOnError
+    >({
+      security: [
+        {
+          scheme: 'bearer',
+          type: 'http',
+        },
+      ],
+      responseTransformer:
+        getApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressResponseTransformer,
+      url: '/api/v1/delft3d-orchestrations/{orchestrationId}/simulation-progress',
+      ...options,
+    });
+  };
 
 export const getApiV1DownloadsByIdResqml = <
   ThrowOnError extends boolean = false,
@@ -1550,6 +1771,112 @@ export const putApiV1AnalogueModelsByIdComputecasesByComputeCaseIdResults = <
   });
 };
 
+/**
+ * Get all scenarios with basic orchestration status.
+ */
+export const getApiV1Scenarios = <ThrowOnError extends boolean = false>(
+  options?: Options<GetApiV1ScenariosData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetApiV1ScenariosResponse,
+    GetApiV1ScenariosError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: 'bearer',
+        type: 'http',
+      },
+    ],
+    responseTransformer: getApiV1ScenariosResponseTransformer,
+    url: '/api/v1/scenarios',
+    ...options,
+  });
+};
+
+/**
+ * Create a new scenario with JSON configuration.
+ * The scenario is created without starting an orchestration.
+ */
+export const postApiV1Scenarios = <ThrowOnError extends boolean = false>(
+  options?: Options<PostApiV1ScenariosData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    PostApiV1ScenariosResponse,
+    PostApiV1ScenariosError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: 'bearer',
+        type: 'http',
+      },
+    ],
+    responseTransformer: postApiV1ScenariosResponseTransformer,
+    url: '/api/v1/scenarios',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json-patch+json',
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Get a scenario by ID with details including orchestration status.
+ */
+export const getApiV1ScenariosByScenarioId = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<GetApiV1ScenariosByScenarioIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetApiV1ScenariosByScenarioIdResponse,
+    GetApiV1ScenariosByScenarioIdError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: 'bearer',
+        type: 'http',
+      },
+    ],
+    responseTransformer: getApiV1ScenariosByScenarioIdResponseTransformer,
+    url: '/api/v1/scenarios/{scenarioId}',
+    ...options,
+  });
+};
+
+/**
+ * Start an orchestration for an existing scenario.
+ * Creates a new Delft3D orchestration using the scenario's JSON configuration.
+ */
+export const postApiV1ScenariosByScenarioIdStartOrchestration = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<
+    PostApiV1ScenariosByScenarioIdStartOrchestrationData,
+    ThrowOnError
+  >,
+) => {
+  return (options.client ?? _heyApiClient).post<
+    PostApiV1ScenariosByScenarioIdStartOrchestrationResponse,
+    PostApiV1ScenariosByScenarioIdStartOrchestrationError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: 'bearer',
+        type: 'http',
+      },
+    ],
+    responseTransformer:
+      postApiV1ScenariosByScenarioIdStartOrchestrationResponseTransformer,
+    url: '/api/v1/scenarios/{scenarioId}/start-orchestration',
+    ...options,
+  });
+};
+
 export const getApiV1Scenariotemplates = <ThrowOnError extends boolean = false>(
   options?: Options<GetApiV1ScenariotemplatesData, ThrowOnError>,
 ) => {
@@ -1838,6 +2165,37 @@ export const postApiWebhooksVargrestStatus = <
       },
     ],
     url: '/api/webhooks/vargrest/status',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json-patch+json',
+      ...options?.headers,
+    },
+  });
+};
+
+/**
+ * Webhook endpoint for Delft3D job status updates from Radix.
+ * Receives batch event notifications when job status changes.
+ * See: https://www.radix.equinor.com/guides/jobs/notifications/#radix-batch-event
+ */
+export const postApiWebhooksDelft3dJobStatus = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostApiWebhooksDelft3dJobStatusData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).post<
+    PostApiWebhooksDelft3dJobStatusResponse,
+    PostApiWebhooksDelft3dJobStatusError,
+    ThrowOnError
+  >({
+    responseType: 'text',
+    security: [
+      {
+        scheme: 'bearer',
+        type: 'http',
+      },
+    ],
+    url: '/api/webhooks/delft3d/job-status',
     ...options,
     headers: {
       'Content-Type': 'application/json-patch+json',
