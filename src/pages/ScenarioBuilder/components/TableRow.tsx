@@ -1,9 +1,7 @@
 /* eslint-disable camelcase */
 import { Table, Typography } from '@equinor/eds-core-react';
-import { useState } from 'react';
 import { ValueInputAllowedValues, ValueInputMinMax } from './ValueInput';
 import TooltipPopover from './TooltipPopover';
-// import { tokens } from '@equinor/eds-tokens';
 
 interface Props {
   variable: variable;
@@ -29,17 +27,6 @@ export const TableRow = ({ variable }: Props) => {
     return ['numeric', 'text', 'semver'].includes(v.type) || v.factor;
   };
 
-  const [currentValue, setCurrentValue] = useState<string | number>();
-  // const [currentId, setCurrentId] = useState<string | number>();
-
-  // if (currentId === undefined || currentId === null) {
-  //   setCurrentId(variable.id);
-  // }
-
-  if (currentValue === undefined || currentValue === null) {
-    setCurrentValue(variable.default);
-  }
-
   if (isInput(variable))
     return (
       <Table.Row key={variable.id}>
@@ -60,16 +47,10 @@ export const TableRow = ({ variable }: Props) => {
         <Table.Cell>
           {variable.validators.min !== undefined &&
             variable.validators.max !== undefined && (
-              <ValueInputMinMax
-                variable={variable}
-                onSubmit={setCurrentValue}
-              />
+              <ValueInputMinMax variable={variable} />
             )}
           {variable.validators.allowedValues !== undefined && (
-            <ValueInputAllowedValues
-              variable={variable}
-              onSubmit={setCurrentValue}
-            />
+            <ValueInputAllowedValues variable={variable} />
           )}
         </Table.Cell>
         <Table.Cell>{variable.units}</Table.Cell>

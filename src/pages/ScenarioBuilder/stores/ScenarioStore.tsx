@@ -82,6 +82,8 @@ export const useScenarioStore = create<
     setCurrentTemplate: (template) =>
       set((state) => {
         state.currentTemplate = template;
+        state.parameters =
+          parseTemplateJsonData(template.jsonData) || defaultParameters;
       }),
     setParameters: (parameters) =>
       set((state) => {
@@ -91,9 +93,14 @@ export const useScenarioStore = create<
       set((state) => {
         if (state.parameters && key in state.parameters) {
           // Update the value property of the parameter object
-          (
-            state.parameters[key] as ParameterValue | StringParameterValue
-          ).value = value as never;
+          if (key === 'composition') {
+            (state.parameters[key] as StringParameterValue).value =
+              value as string;
+            return;
+          } else {
+            (state.parameters[key] as ParameterValue).value = value as number;
+            return;
+          }
         }
       }),
   })),

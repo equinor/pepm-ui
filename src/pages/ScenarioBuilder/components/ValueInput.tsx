@@ -1,7 +1,11 @@
 import { Icon, TextField } from '@equinor/eds-core-react';
 import { error_filled } from '@equinor/eds-icons';
+import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useScenarioStore } from '../stores/ScenarioStore';
+import {
+  ScenarioTemplateParameters,
+  useScenarioStore,
+} from '../stores/ScenarioStore';
 /* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 Icon.add({ error_filled });
@@ -22,24 +26,26 @@ type variable = {
   factor: boolean;
 };
 
-export const ValueInputMinMax = ({ variable, onSubmit }: Props) => {
+export const ValueInputMinMax = ({ variable }: Props) => {
   const updateParameter = useScenarioStore((state) => state.updateParameter);
-  const { parameters } = useScenarioStore();
-  const { handleSubmit, control } = useForm({
+  const { currentTemplate } = useScenarioStore();
+  const { handleSubmit, control, reset } = useForm({
     defaultValues: {
       data: variable.default,
     },
   });
 
+  // Reset form when variable.default changes (e.g., when a new template is loaded)
+  useEffect(() => {
+    reset({ data: variable.default });
+  }, [variable.default, reset, currentTemplate]);
+
   const handleFormSubmit = (data: { data: number }) => {
     // Update the store with the parameter value
-    updateParameter(variable.id as any, data.data);
-    console.log(variable.id as any, data.data);
-    console.log(parameters);
-    // Call optional onSubmit callback
-    if (onSubmit) {
-      onSubmit(data.data);
-    }
+    updateParameter(
+      variable.id as keyof ScenarioTemplateParameters,
+      data.data as number,
+    );
   };
 
   return (
@@ -89,22 +95,26 @@ export const ValueInputMinMax = ({ variable, onSubmit }: Props) => {
   );
 };
 
-export const ValueInputAllowedValues = ({ variable, onSubmit }: Props) => {
+export const ValueInputAllowedValues = ({ variable }: Props) => {
   const updateParameter = useScenarioStore((state) => state.updateParameter);
-  const { handleSubmit, control } = useForm({
+  const { currentTemplate } = useScenarioStore();
+  const { handleSubmit, control, reset } = useForm({
     defaultValues: {
       data: variable.default,
     },
   });
 
+  // Reset form when variable.default changes (e.g., when a new template is loaded)
+  useEffect(() => {
+    reset({ data: variable.default });
+  }, [variable.default, reset, currentTemplate]);
+
   const handleFormSubmit = (data: { data: number }) => {
     // Update the store with the parameter value
-    updateParameter(variable.id as any, data.data);
-
-    // Call optional onSubmit callback
-    if (onSubmit) {
-      onSubmit(data.data);
-    }
+    updateParameter(
+      variable.id as keyof ScenarioTemplateParameters,
+      data.data as number,
+    );
   };
 
   return (

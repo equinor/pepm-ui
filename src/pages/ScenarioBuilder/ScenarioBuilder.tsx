@@ -43,12 +43,16 @@ export const ScenarioBuilder = () => {
     if (name) setSelectedName(name);
   };
 
-  const buttonOnConfirm = () => {
-    setIsOpenReset(true);
+  const updateTemplate = () => {
     const template = templates.find((t) => t.name === selectedName);
     if (template) {
       setCurrentTemplate(template);
     }
+  };
+
+  const buttonOnConfirm = () => {
+    if (currentTemplate) setIsOpenReset(true);
+    // cancel - set template name back to previous
   };
 
   // const onCreateModel = () => {
@@ -119,7 +123,11 @@ export const ScenarioBuilder = () => {
           Load template
         </Button>
         {currentTemplate && (
-          <ResetParamsDialog isOpen={isOpenReset} setIsOpen={setIsOpenReset} />
+          <ResetParamsDialog
+            isOpen={isOpenReset}
+            setIsOpen={setIsOpenReset}
+            updateTemplate={updateTemplate}
+          />
         )}
 
         {currentTemplate && (
@@ -144,7 +152,7 @@ export const ScenarioBuilder = () => {
                       style={{
                         marginBottom: '16px',
                         minWidth: '600px',
-                        width: '30%',
+                        width: '35%',
                       }}
                     >
                       <Table.Caption>
@@ -168,7 +176,9 @@ export const ScenarioBuilder = () => {
                               {``}(min - max range)
                             </Typography>
                           </Table.Cell>
-                          <Table.Cell>Value</Table.Cell>
+                          <Table.Cell style={{ width: '140px' }}>
+                            Value
+                          </Table.Cell>
                           <Table.Cell>Unit</Table.Cell>
                           <Table.Cell></Table.Cell>
                         </Table.Row>
