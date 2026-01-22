@@ -2,10 +2,7 @@
 import { Button, Dialog, Icon, Table } from '@equinor/eds-core-react';
 import { delete_to_trash as deleteIcon } from '@equinor/eds-icons';
 import { useState } from 'react';
-import {
-  AddAnalogueModelOutcropForm,
-  GetOutcropsRegionDto,
-} from '../../../api/generated';
+import { AddAnalogueModelOutcropForm } from '../../../api/generated';
 import { useOutcropAnalouge } from '../../../hooks/useOutcropAnalogue';
 import * as StyledDialog from '../../../styles/addRowDialog/AddRowDialog.styled';
 import { OutcropSelect } from '../OutcropSelect/OutcropSelect';
@@ -17,7 +14,13 @@ export interface OutcropType {
   outcropId?: string;
   name?: string;
   outcropCategory?: string;
-  region?: GetOutcropsRegionDto;
+  region?: {
+    name?: string | null;
+    location?: {
+      country?: string | null;
+      locationName?: string | null;
+    };
+  };
   basin?: string | null;
 }
 

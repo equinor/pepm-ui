@@ -57,19 +57,21 @@ export const OutcropSelect = ({
       />
       {outcropObject.region?.location ? (
         <>
-          {console.log(typeof outcropObject)}
-          {console.log(outcropObject)}
           <Autocomplete
             label="Country"
-            selectedOptions={[outcropObject.region?.location?.country]}
+            selectedOptions={
+              outcropObject.region.location.country
+                ? [outcropObject.region.location.country]
+                : []
+            }
             initialSelectedOptions={
-              outcropObject.region
-                ? [outcropObject.region.location?.country]
+              outcropObject.region.location.country
+                ? [outcropObject.region.location.country]
                 : ['']
             }
             options={
-              outcropObject.region
-                ? [outcropObject.region.location?.country]
+              outcropObject.region.location.country
+                ? [outcropObject.region.location.country]
                 : ['']
             }
             noOptionsText="No options"
@@ -78,15 +80,19 @@ export const OutcropSelect = ({
 
           <Autocomplete
             label="Location"
-            selectedOptions={[outcropObject.region?.location?.locationName]}
+            selectedOptions={
+              outcropObject.region.location.locationName
+                ? [outcropObject.region.location.locationName]
+                : []
+            }
             initialSelectedOptions={
-              outcropObject.region
-                ? [outcropObject.region?.location?.locationName]
+              outcropObject.region.location.locationName
+                ? [outcropObject.region.location.locationName]
                 : ['']
             }
             options={
-              outcropObject.region
-                ? [outcropObject.region?.location?.locationName]
+              outcropObject.region.location.locationName
+                ? [outcropObject.region.location.locationName]
                 : ['']
             }
             noOptionsText="No options"
@@ -114,11 +120,13 @@ export const OutcropSelect = ({
 
       <Autocomplete
         label="Basin"
-        selectedOptions={[outcropObject?.basin]}
+        selectedOptions={outcropObject.basin ? [outcropObject.basin] : []}
         initialSelectedOptions={
           outcropObject.basin ? [outcropObject.basin] : ['']
         }
-        options={outcropObject.basin ? [outcropObject.basin] : ['']}
+        options={
+          outcropObject.basin !== undefined ? [outcropObject.basin] : ['']
+        }
         noOptionsText="No options"
         readOnly
       />
