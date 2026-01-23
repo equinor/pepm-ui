@@ -2,7 +2,16 @@
 
 import type {
   GetApiV1AnalogueModelsByIdResponse,
+  PostApiV1Delft3dOrchestrationsResponse,
+  GetApiV1Delft3dOrchestrationsByOrchestrationIdResponse,
+  PostApiV1Delft3dOrchestrationsByOrchestrationIdCancelResponse,
+  GetApiV1Delft3dOrchestrationsByOrchestrationIdJobExecutionsResponse,
+  GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressResponse,
   GetApiV1JobsResponse,
+  GetApiV1ScenariosResponse,
+  PostApiV1ScenariosResponse,
+  GetApiV1ScenariosByScenarioIdResponse,
+  PostApiV1ScenariosByScenarioIdStartOrchestrationResponse,
   PostApiV1UploadsModelsManifestResponse,
 } from './types.gen';
 
@@ -28,6 +37,163 @@ export const getApiV1AnalogueModelsByIdResponseTransformer = async (
   return data;
 };
 
+const startOrchestrationDtoSchemaResponseTransformer = (data: any) => {
+  if (data.created_at) {
+    data.created_at = new Date(data.created_at);
+  }
+  return data;
+};
+
+const startOrchestrationCommandResponseSchemaResponseTransformer = (
+  data: any,
+) => {
+  data.data = startOrchestrationDtoSchemaResponseTransformer(data.data);
+  return data;
+};
+
+export const postApiV1Delft3dOrchestrationsResponseTransformer = async (
+  data: any,
+): Promise<PostApiV1Delft3dOrchestrationsResponse> => {
+  data = startOrchestrationCommandResponseSchemaResponseTransformer(data);
+  return data;
+};
+
+const jobExecutionSummaryDtoSchemaResponseTransformer = (data: any) => {
+  if (data.created_at) {
+    data.created_at = new Date(data.created_at);
+  }
+  if (data.ended_at) {
+    data.ended_at = new Date(data.ended_at);
+  }
+  return data;
+};
+
+const simulationProgressSummaryDtoSchemaResponseTransformer = (data: any) => {
+  if (data.total_timesteps) {
+    data.total_timesteps = BigInt(data.total_timesteps.toString());
+  }
+  return data;
+};
+
+const orchestrationStatusDtoSchemaResponseTransformer = (data: any) => {
+  if (data.last_error_occurred_at) {
+    data.last_error_occurred_at = new Date(data.last_error_occurred_at);
+  }
+  if (data.created_at) {
+    data.created_at = new Date(data.created_at);
+  }
+  if (data.completed_at) {
+    data.completed_at = new Date(data.completed_at);
+  }
+  if (data.last_modified_at) {
+    data.last_modified_at = new Date(data.last_modified_at);
+  }
+  if (data.job_executions) {
+    data.job_executions = data.job_executions.map((item: any) => {
+      return jobExecutionSummaryDtoSchemaResponseTransformer(item);
+    });
+  }
+  if (data.simulation_progress) {
+    data.simulation_progress =
+      simulationProgressSummaryDtoSchemaResponseTransformer(
+        data.simulation_progress,
+      );
+  }
+  return data;
+};
+
+const getOrchestrationStatusQueryResponseSchemaResponseTransformer = (
+  data: any,
+) => {
+  data.data = orchestrationStatusDtoSchemaResponseTransformer(data.data);
+  return data;
+};
+
+export const getApiV1Delft3dOrchestrationsByOrchestrationIdResponseTransformer =
+  async (
+    data: any,
+  ): Promise<GetApiV1Delft3dOrchestrationsByOrchestrationIdResponse> => {
+    data = getOrchestrationStatusQueryResponseSchemaResponseTransformer(data);
+    return data;
+  };
+
+const cancelOrchestrationDtoSchemaResponseTransformer = (data: any) => {
+  if (data.cancelled_at) {
+    data.cancelled_at = new Date(data.cancelled_at);
+  }
+  return data;
+};
+
+const cancelOrchestrationCommandResponseSchemaResponseTransformer = (
+  data: any,
+) => {
+  data.data = cancelOrchestrationDtoSchemaResponseTransformer(data.data);
+  return data;
+};
+
+export const postApiV1Delft3dOrchestrationsByOrchestrationIdCancelResponseTransformer =
+  async (
+    data: any,
+  ): Promise<PostApiV1Delft3dOrchestrationsByOrchestrationIdCancelResponse> => {
+    data = cancelOrchestrationCommandResponseSchemaResponseTransformer(data);
+    return data;
+  };
+
+const jobExecutionDtoSchemaResponseTransformer = (data: any) => {
+  if (data.created_at) {
+    data.created_at = new Date(data.created_at);
+  }
+  if (data.ended_at) {
+    data.ended_at = new Date(data.ended_at);
+  }
+  return data;
+};
+
+const getJobExecutionsQueryResponseSchemaResponseTransformer = (data: any) => {
+  data.data = data.data.map((item: any) => {
+    return jobExecutionDtoSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+export const getApiV1Delft3dOrchestrationsByOrchestrationIdJobExecutionsResponseTransformer =
+  async (
+    data: any,
+  ): Promise<GetApiV1Delft3dOrchestrationsByOrchestrationIdJobExecutionsResponse> => {
+    data = getJobExecutionsQueryResponseSchemaResponseTransformer(data);
+    return data;
+  };
+
+const simulationProgressDtoSchemaResponseTransformer = (data: any) => {
+  if (data.total_timesteps) {
+    data.total_timesteps = BigInt(data.total_timesteps.toString());
+  }
+  if (data.timesteps_per_output_interval) {
+    data.timesteps_per_output_interval = BigInt(
+      data.timesteps_per_output_interval.toString(),
+    );
+  }
+  if (data.last_updated_at) {
+    data.last_updated_at = new Date(data.last_updated_at);
+  }
+  return data;
+};
+
+const getSimulationProgressQueryResponseSchemaResponseTransformer = (
+  data: any,
+) => {
+  data.data = simulationProgressDtoSchemaResponseTransformer(data.data);
+  return data;
+};
+
+export const getApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressResponseTransformer =
+  async (
+    data: any,
+  ): Promise<GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressResponse> => {
+    data = getSimulationProgressQueryResponseSchemaResponseTransformer(data);
+    return data;
+  };
+
 const jobListSchemaResponseTransformer = (data: any) => {
   data.updated = new Date(data.updated);
   return data;
@@ -46,6 +212,104 @@ export const getApiV1JobsResponseTransformer = async (
   data = getJobListQueryResponseSchemaResponseTransformer(data);
   return data;
 };
+
+const scenarioListItemDtoSchemaResponseTransformer = (data: any) => {
+  if (data.created_at) {
+    data.created_at = new Date(data.created_at);
+  }
+  return data;
+};
+
+const getScenarioListQueryResponseSchemaResponseTransformer = (data: any) => {
+  data.data = data.data.map((item: any) => {
+    return scenarioListItemDtoSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+export const getApiV1ScenariosResponseTransformer = async (
+  data: any,
+): Promise<GetApiV1ScenariosResponse> => {
+  data = getScenarioListQueryResponseSchemaResponseTransformer(data);
+  return data;
+};
+
+const createScenarioDtoSchemaResponseTransformer = (data: any) => {
+  if (data.created_at) {
+    data.created_at = new Date(data.created_at);
+  }
+  return data;
+};
+
+const createScenarioCommandResponseSchemaResponseTransformer = (data: any) => {
+  data.data = createScenarioDtoSchemaResponseTransformer(data.data);
+  return data;
+};
+
+export const postApiV1ScenariosResponseTransformer = async (
+  data: any,
+): Promise<PostApiV1ScenariosResponse> => {
+  data = createScenarioCommandResponseSchemaResponseTransformer(data);
+  return data;
+};
+
+const orchestrationStatusSummaryDtoSchemaResponseTransformer = (data: any) => {
+  if (data.completed_at) {
+    data.completed_at = new Date(data.completed_at);
+  }
+  return data;
+};
+
+const scenarioDtoSchemaResponseTransformer = (data: any) => {
+  if (data.orchestration_status) {
+    data.orchestration_status =
+      orchestrationStatusSummaryDtoSchemaResponseTransformer(
+        data.orchestration_status,
+      );
+  }
+  if (data.created_at) {
+    data.created_at = new Date(data.created_at);
+  }
+  if (data.last_modified_at) {
+    data.last_modified_at = new Date(data.last_modified_at);
+  }
+  return data;
+};
+
+const getScenarioQueryResponseSchemaResponseTransformer = (data: any) => {
+  data.data = scenarioDtoSchemaResponseTransformer(data.data);
+  return data;
+};
+
+export const getApiV1ScenariosByScenarioIdResponseTransformer = async (
+  data: any,
+): Promise<GetApiV1ScenariosByScenarioIdResponse> => {
+  data = getScenarioQueryResponseSchemaResponseTransformer(data);
+  return data;
+};
+
+const startScenarioOrchestrationDtoSchemaResponseTransformer = (data: any) => {
+  if (data.created_at) {
+    data.created_at = new Date(data.created_at);
+  }
+  return data;
+};
+
+const startScenarioOrchestrationCommandResponseSchemaResponseTransformer = (
+  data: any,
+) => {
+  data.data = startScenarioOrchestrationDtoSchemaResponseTransformer(data.data);
+  return data;
+};
+
+export const postApiV1ScenariosByScenarioIdStartOrchestrationResponseTransformer =
+  async (
+    data: any,
+  ): Promise<PostApiV1ScenariosByScenarioIdStartOrchestrationResponse> => {
+    data =
+      startScenarioOrchestrationCommandResponseSchemaResponseTransformer(data);
+    return data;
+  };
 
 const prepareChunkedUploadDtoSchemaResponseTransformer = (data: any) => {
   data.fileSize = BigInt(data.fileSize.toString());
