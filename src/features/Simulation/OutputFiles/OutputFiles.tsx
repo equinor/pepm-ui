@@ -1,5 +1,5 @@
 /* eslint-disable max-lines-per-function */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Button,
   CircularProgress,
@@ -15,18 +15,15 @@ import {
 import { useFetchOrchestrationResults } from '../../../hooks/useFetchOrchestrationResults';
 import { downloadOrchestrationFile } from '../../../utils/downloadOrchestrationFile';
 import * as Styled from './OutputFiles.styled';
+import { useErrorStore } from '../../../stores/ErrorStore';
 
 Icon.add({ externalLink, download, close });
 
 interface OutputFilesProps {
   orchestrationId?: string | null;
-  onOpenFileServer: () => void;
 }
 
-export const OutputFiles = ({
-  orchestrationId,
-  onOpenFileServer,
-}: OutputFilesProps) => {
+export const OutputFiles = ({ orchestrationId }: OutputFilesProps) => {
   const {
     data: results,
     isLoading,
@@ -36,6 +33,13 @@ export const OutputFiles = ({
     new Set(),
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { addError } = useErrorStore();
+
+  useEffect(() => {
+    if (isError) {
+      addError('Failed to load orchestration files.');
+    }
+  }, [isError, addError]);
 
   const handleDownload = async (fileName: string) => {
     if (!orchestrationId || !fileName) return;
@@ -45,7 +49,7 @@ export const OutputFiles = ({
     try {
       await downloadOrchestrationFile(orchestrationId, fileName);
     } catch (error) {
-      // You could add a toast notification here
+      addError(`Failed to download file: ${fileName}`);
     } finally {
       setDownloadingFiles((prev) => {
         const newSet = new Set(prev);
@@ -98,14 +102,6 @@ export const OutputFiles = ({
               <CircularProgress size={24} />
               <Typography variant="body_short">Loading files...</Typography>
             </Styled.EmptyState>
-          )}
-
-          {isError && (
-            <Styled.ErrorMessage>
-              <Typography variant="body_short">
-                Failed to load orchestration files
-              </Typography>
-            </Styled.ErrorMessage>
           )}
 
           {!isLoading &&

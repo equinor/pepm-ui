@@ -4,7 +4,6 @@ import {
   Divider,
   NativeSelect,
   Snackbar,
-  Table,
   Typography,
 } from '@equinor/eds-core-react';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -15,7 +14,7 @@ import {
   TextInput,
   Wrapper,
 } from './ScenarioBuilder.styled';
-import TemplateDetailsDialog from './components/TemplateDetailsDialog';
+import TemplateDetailsDialog from '../../components/TemplateDetailsDialog';
 import { useFetchScenarioTemplates } from '../../hooks/useFetchScenarioTemplates';
 import { useScenarioStore } from './stores/ScenarioStore';
 import ResetParamsDialog from './components/ResetParamsDialog';
@@ -24,6 +23,7 @@ import {
   postApiV1Scenarios,
   postApiV1ScenariosByScenarioIdStartOrchestration,
 } from '../../api/generated';
+import ParametersTable from '../../components/ParametersTable';
 
 export const ScenarioBuilder = () => {
   const templatesData = useFetchScenarioTemplates();
@@ -238,55 +238,24 @@ export const ScenarioBuilder = () => {
             (s: any) => {
               if (s.name !== 'Scenario' && s.name !== 'Sediment composition')
                 return (
-                  <Wrapper>
-                    <Table
-                      key={s.id + s.name}
+                  <Wrapper key={s.id + s.name}>
+                    <ParametersTable
+                      sectionName={s.name}
                       style={{
-                        marginBottom: '16px',
                         minWidth: '600px',
                         width: '35%',
                       }}
                     >
-                      <Table.Caption>
-                        <Typography
-                          style={{
-                            marginBottom: '10px',
-                          }}
-                          variant="body_short_bold"
-                        >
-                          {s.name}
-                        </Typography>
-                      </Table.Caption>
-                      <Table.Head>
-                        <Table.Row>
-                          <Table.Cell style={{ width: '440px' }}>
-                            Parameter name
-                            <Typography
-                              variant="meta"
-                              style={{ marginLeft: '8px' }}
-                            >
-                              {``}(min - max range)
-                            </Typography>
-                          </Table.Cell>
-                          <Table.Cell style={{ width: '140px' }}>
-                            Value
-                          </Table.Cell>
-                          <Table.Cell>Unit</Table.Cell>
-                          <Table.Cell></Table.Cell>
-                        </Table.Row>
-                      </Table.Head>
-                      <Table.Body>
-                        {s.variables.map((v: any) => {
-                          const variable = v as variable;
-                          return (
-                            <TableRow
-                              key={s.id + v.id}
-                              variable={variable}
-                            ></TableRow>
-                          );
-                        })}
-                      </Table.Body>
-                    </Table>
+                      {s.variables.map((v: any) => {
+                        const variable = v as variable;
+                        return (
+                          <TableRow
+                            key={s.id + v.id}
+                            variable={variable}
+                          ></TableRow>
+                        );
+                      })}
+                    </ParametersTable>
                   </Wrapper>
                 );
               else if (s.name === 'Sediment composition') {

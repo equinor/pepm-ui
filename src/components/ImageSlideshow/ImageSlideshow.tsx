@@ -14,6 +14,7 @@ import {
 import axios from 'axios';
 import { client } from '../../api/generated/client.gen';
 import * as Styled from './ImageSlideshow.styled';
+import { useErrorStore } from '../../stores/ErrorStore';
 
 Icon.add({
   chevron_left,
@@ -43,6 +44,7 @@ export const ImageSlideshow = ({
   const [sliderValue, setSliderValue] = useState(1);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const isUserDragging = useRef(false);
+  const { addError } = useErrorStore();
 
   // Memoize step numbers and labels to avoid recalculating on every render
   const stepData = useMemo(() => {
@@ -107,6 +109,7 @@ export const ImageSlideshow = ({
           }
         } catch (error) {
           imageUrls[i] = null;
+          addError(`Failed to load image: ${images[i]}`);
         }
 
         setLoadingProgress(Math.round(((i + 1) / images.length) * 100));

@@ -7,6 +7,9 @@ export const StyledSidebar = styled(SideBar)`
   min-height: 100vh;
   align-self: stretch;
   overflow: hidden;
+  position: sticky;
+  top: 0;
+  height: 100vh;
 
   /* Override any internal EDS scrolling */
   & > div {

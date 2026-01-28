@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { Table, Typography } from '@equinor/eds-core-react';
 import { ValueInputAllowedValues, ValueInputMinMax } from './ValueInput';
-import TooltipPopover from './TooltipPopover';
+import TooltipPopover from '../../../components/TooltipPopover';
 
 interface Props {
   variable: variable;

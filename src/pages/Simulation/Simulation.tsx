@@ -1,4 +1,5 @@
 /* eslint-disable max-lines-per-function */
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Icon } from '@equinor/eds-core-react';
 import { refresh } from '@equinor/eds-icons';
@@ -10,6 +11,7 @@ import { SimulationSidebar } from '../../features/Simulation/SimulationSidebar/S
 import { SimulationProgress } from '../../features/Simulation/SimulationProgress/SimulationProgress';
 import { OutputFiles } from '../../features/Simulation/OutputFiles/OutputFiles';
 import { GeneratedImages } from '../../features/Simulation/GeneratedImages/GeneratedImages';
+import { InputParameters } from '../../features/Simulation/InputParameters';
 import * as Styled from './Simulation.styled';
 
 Icon.add({ refresh });
@@ -17,6 +19,9 @@ Icon.add({ refresh });
 export const Simulation = () => {
   const { simulationId } = useParams<{ simulationId: string }>();
   const navigate = useNavigate();
+  const [activeSection, setActiveSection] = useState<'progress' | 'parameters'>(
+    'progress',
+  );
 
   const { data: scenario, isLoading: scenarioLoading } =
     useFetchScenario(simulationId);
@@ -36,10 +41,6 @@ export const Simulation = () => {
 
   const handleStopSimulation = () => {
     // TODO: Implement stop orchestration logic
-  };
-
-  const handleOpenFileServer = () => {
-    // TODO: Implement file server opening logic
   };
 
   if (scenarioLoading) {
@@ -68,33 +69,39 @@ export const Simulation = () => {
     <Styled.PageContainer>
       <SimulationSidebar
         onBackToQueue={handleBackToQueue}
-        activeSection="progress"
+        activeSection={activeSection}
+        onNavigate={setActiveSection}
       />
 
       <Styled.MainContent>
-        <Styled.ContentGrid>
-          <SimulationProgress
-            percentComplete={percentComplete}
-            stepsGenerated={currentStep}
-            totalSteps={totalSteps}
-            timeRemaining={timeRemaining}
-            isProcessing={isProcessing}
-            status={status}
-            onStop={handleStopSimulation}
-          />
-
-          <OutputFiles
-            orchestrationId={orchestration?.delft_orchestration_id}
-            onOpenFileServer={handleOpenFileServer}
-          />
-
-          <Styled.FullWidthRow>
-            <GeneratedImages
-              images={categorizedImages}
-              orchestrationId={scenario?.orchestration_id ?? undefined}
+        {activeSection === 'progress' && (
+          <Styled.ContentGrid>
+            <SimulationProgress
+              percentComplete={percentComplete}
+              stepsGenerated={currentStep}
+              totalSteps={totalSteps}
+              timeRemaining={timeRemaining}
+              isProcessing={isProcessing}
+              status={status}
+              onStop={handleStopSimulation}
             />
-          </Styled.FullWidthRow>
-        </Styled.ContentGrid>
+
+            <OutputFiles
+              orchestrationId={orchestration?.delft_orchestration_id}
+            />
+
+            <Styled.FullWidthRow>
+              <GeneratedImages
+                images={categorizedImages}
+                orchestrationId={scenario?.orchestration_id ?? undefined}
+              />
+            </Styled.FullWidthRow>
+          </Styled.ContentGrid>
+        )}
+
+        {activeSection === 'parameters' && (
+          <InputParameters scenario={scenario} />
+        )}
       </Styled.MainContent>
     </Styled.PageContainer>
   );
