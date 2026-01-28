@@ -11,7 +11,6 @@ export const LogSideSheet = ({
   computeCaseId: string;
 }) => {
   const { data } = useFetchLog(computeCaseId);
-  console.log('Log data:', data?.data);
 
   return (
     <StyledSideSheet

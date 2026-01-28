@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import { Button, Dialog, Typography } from '@equinor/eds-core-react';
 import * as Styled from './JobInspectionDialog.styled';
 

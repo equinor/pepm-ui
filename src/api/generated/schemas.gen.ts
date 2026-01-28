@@ -4,9 +4,15 @@ export const AddAnalogueModelAreaCommandFormSchema = {
   required: ['coordinates', 'modelAreaTypeId'],
   type: 'object',
   properties: {
-    expand: {
+    modelAreaTypeId: {
       type: 'string',
-      nullable: true,
+      format: 'uuid',
+    },
+    coordinates: {
+      type: 'array',
+      items: {
+        $ref: '#/components/schemas/CoordinateDto',
+      },
     },
     isProcessed: {
       type: 'boolean',
@@ -32,15 +38,9 @@ export const AddAnalogueModelAreaCommandFormSchema = {
       type: 'string',
       nullable: true,
     },
-    modelAreaTypeId: {
+    expand: {
       type: 'string',
-      format: 'uuid',
-    },
-    coordinates: {
-      type: 'array',
-      items: {
-        $ref: '#/components/schemas/CoordinateDto',
-      },
+      nullable: true,
     },
   },
   additionalProperties: false,
@@ -314,22 +314,6 @@ export const AnalogueModelDetailSchema = {
   ],
   type: 'object',
   properties: {
-    createdBy: {
-      type: 'string',
-      nullable: true,
-    },
-    createdDate: {
-      type: 'string',
-      format: 'date-time',
-    },
-    lastModifiedBy: {
-      type: 'string',
-      nullable: true,
-    },
-    lastModifiedDate: {
-      type: 'string',
-      format: 'date-time',
-    },
     analogueModelId: {
       type: 'string',
       format: 'uuid',
@@ -387,6 +371,22 @@ export const AnalogueModelDetailSchema = {
     iniParameters: {
       $ref: '#/components/schemas/AnalogueModelConfigurationDto',
     },
+    createdBy: {
+      type: 'string',
+      nullable: true,
+    },
+    createdDate: {
+      type: 'string',
+      format: 'date-time',
+    },
+    lastModifiedBy: {
+      type: 'string',
+      nullable: true,
+    },
+    lastModifiedDate: {
+      type: 'string',
+      format: 'date-time',
+    },
   },
   additionalProperties: false,
 } as const;
@@ -427,6 +427,27 @@ export const AnalogueModelListSchema = {
   ],
   type: 'object',
   properties: {
+    analogueModelId: {
+      type: 'string',
+      format: 'uuid',
+    },
+    name: {
+      minLength: 1,
+      type: 'string',
+    },
+    description: {
+      minLength: 1,
+      type: 'string',
+    },
+    isProcessed: {
+      type: 'boolean',
+    },
+    sourceType: {
+      $ref: '#/components/schemas/AnalogueModelSourceType',
+    },
+    processingStatus: {
+      $ref: '#/components/schemas/JobStatus',
+    },
     uploads: {
       type: 'array',
       items: {
@@ -460,27 +481,6 @@ export const AnalogueModelListSchema = {
     iniParameters: {
       $ref: '#/components/schemas/AnalogueModelConfigurationDto',
     },
-    analogueModelId: {
-      type: 'string',
-      format: 'uuid',
-    },
-    name: {
-      minLength: 1,
-      type: 'string',
-    },
-    description: {
-      minLength: 1,
-      type: 'string',
-    },
-    isProcessed: {
-      type: 'boolean',
-    },
-    sourceType: {
-      $ref: '#/components/schemas/AnalogueModelSourceType',
-    },
-    processingStatus: {
-      $ref: '#/components/schemas/JobStatus',
-    },
   },
   additionalProperties: false,
 } as const;
@@ -507,6 +507,58 @@ export const CancelJobDtoSchema = {
     },
     jobType: {
       $ref: '#/components/schemas/JobType',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const CancelOrchestrationCommandResponseSchema = {
+  required: ['data'],
+  type: 'object',
+  properties: {
+    success: {
+      type: 'boolean',
+    },
+    count: {
+      type: 'integer',
+      format: 'int32',
+      nullable: true,
+    },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
+    validationErrors: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+      nullable: true,
+    },
+    data: {
+      $ref: '#/components/schemas/CancelOrchestrationDto',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const CancelOrchestrationDtoSchema = {
+  type: 'object',
+  properties: {
+    delft_orchestration_id: {
+      type: 'string',
+      format: 'uuid',
+    },
+    cancelled: {
+      type: 'boolean',
+    },
+    previous_phase: {
+      type: 'string',
+      nullable: true,
+    },
+    cancelled_at: {
+      type: 'string',
+      format: 'date-time',
     },
   },
   additionalProperties: false,
@@ -925,6 +977,90 @@ export const CreateComputeCaseCommandResponseSchema = {
   additionalProperties: false,
 } as const;
 
+export const CreateScenarioCommandSchema = {
+  required: ['json_scenario_data', 'scenario_template_id'],
+  type: 'object',
+  properties: {
+    name: {
+      type: 'string',
+      nullable: true,
+    },
+    description: {
+      type: 'string',
+      nullable: true,
+    },
+    json_scenario_data: {
+      minLength: 1,
+      type: 'string',
+    },
+    scenario_template_id: {
+      type: 'string',
+      format: 'uuid',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const CreateScenarioCommandResponseSchema = {
+  required: ['data'],
+  type: 'object',
+  properties: {
+    success: {
+      type: 'boolean',
+    },
+    count: {
+      type: 'integer',
+      format: 'int32',
+      nullable: true,
+    },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
+    validationErrors: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+      nullable: true,
+    },
+    data: {
+      $ref: '#/components/schemas/CreateScenarioDto',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const CreateScenarioDtoSchema = {
+  type: 'object',
+  properties: {
+    scenario_id: {
+      type: 'string',
+      format: 'uuid',
+    },
+    name: {
+      type: 'string',
+      nullable: true,
+    },
+    description: {
+      type: 'string',
+      nullable: true,
+    },
+    scenario_template_id: {
+      type: 'string',
+      format: 'uuid',
+    },
+    created_at: {
+      type: 'string',
+      format: 'date-time',
+    },
+    is_duplicate: {
+      type: 'boolean',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
 export const DeleteGeologicalGroupCommandResponseSchema = {
   required: ['data'],
   type: 'object',
@@ -1021,8 +1157,20 @@ export const DeleteStratigraphicGroupCommandResponseSchema = {
 export const Delft3dPreprocessCommandSchema = {
   type: 'object',
   properties: {
-    payload: {
-      $ref: '#/components/schemas/Delft3dPreprocessPayload',
+    simulation_id: {
+      type: 'string',
+      nullable: true,
+    },
+    run_id: {
+      type: 'string',
+      nullable: true,
+    },
+    ini_parameters: {
+      type: 'object',
+      additionalProperties: {
+        $ref: '#/components/schemas/IniParameter',
+      },
+      nullable: true,
     },
   },
   additionalProperties: false,
@@ -1093,22 +1241,76 @@ export const Delft3dPreprocessDtoSchema = {
   additionalProperties: false,
 } as const;
 
-export const Delft3dPreprocessPayloadSchema = {
+export const Delft3dSimulationCommandSchema = {
   type: 'object',
   properties: {
     simulation_id: {
       type: 'string',
       nullable: true,
     },
-    run_id: {
+  },
+  additionalProperties: false,
+} as const;
+
+export const Delft3dSimulationCommandResponseSchema = {
+  required: ['data'],
+  type: 'object',
+  properties: {
+    success: {
+      type: 'boolean',
+    },
+    count: {
+      type: 'integer',
+      format: 'int32',
+      nullable: true,
+    },
+    message: {
       type: 'string',
       nullable: true,
     },
-    ini_parameters: {
-      type: 'object',
-      additionalProperties: {
-        $ref: '#/components/schemas/IniParameter',
+    validationErrors: {
+      type: 'array',
+      items: {
+        type: 'string',
       },
+      nullable: true,
+    },
+    data: {
+      $ref: '#/components/schemas/Delft3dSimulationDto',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const Delft3dSimulationDtoSchema = {
+  type: 'object',
+  properties: {
+    success: {
+      type: 'boolean',
+    },
+    jobName: {
+      type: 'string',
+      nullable: true,
+    },
+    status: {
+      type: 'string',
+      nullable: true,
+    },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
+    statusCode: {
+      type: 'integer',
+      format: 'int32',
+      nullable: true,
+    },
+    details: {
+      type: 'string',
+      nullable: true,
+    },
+    error: {
+      type: 'string',
       nullable: true,
     },
   },
@@ -1611,6 +1813,39 @@ export const GetJobDetailQueryResponseSchema = {
   additionalProperties: false,
 } as const;
 
+export const GetJobExecutionsQueryResponseSchema = {
+  required: ['data'],
+  type: 'object',
+  properties: {
+    success: {
+      type: 'boolean',
+    },
+    count: {
+      type: 'integer',
+      format: 'int32',
+      nullable: true,
+    },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
+    validationErrors: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+      nullable: true,
+    },
+    data: {
+      type: 'array',
+      items: {
+        $ref: '#/components/schemas/JobExecutionDto',
+      },
+    },
+  },
+  additionalProperties: false,
+} as const;
+
 export const GetJobListQueryResponseSchema = {
   required: ['data'],
   type: 'object',
@@ -1754,6 +1989,69 @@ export const GetObjectResultsFileDtoSchema = {
   additionalProperties: false,
 } as const;
 
+export const GetOrchestrationFilesQueryResponseSchema = {
+  required: ['data'],
+  type: 'object',
+  properties: {
+    success: {
+      type: 'boolean',
+    },
+    count: {
+      type: 'integer',
+      format: 'int32',
+      nullable: true,
+    },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
+    validationErrors: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+      nullable: true,
+    },
+    data: {
+      type: 'array',
+      items: {
+        $ref: '#/components/schemas/OrchestrationFileDto',
+      },
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const GetOrchestrationStatusQueryResponseSchema = {
+  required: ['data'],
+  type: 'object',
+  properties: {
+    success: {
+      type: 'boolean',
+    },
+    count: {
+      type: 'integer',
+      format: 'int32',
+      nullable: true,
+    },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
+    validationErrors: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+      nullable: true,
+    },
+    data: {
+      $ref: '#/components/schemas/OrchestrationStatusDto',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
 export const GetOutcropsCommandResponseSchema = {
   required: ['data'],
   type: 'object',
@@ -1867,6 +2165,132 @@ export const GetOutcropsRegionDtoSchema = {
     },
     location: {
       $ref: '#/components/schemas/GetOutcropsLocationDto',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const GetScenarioListQueryResponseSchema = {
+  required: ['data'],
+  type: 'object',
+  properties: {
+    success: {
+      type: 'boolean',
+    },
+    count: {
+      type: 'integer',
+      format: 'int32',
+      nullable: true,
+    },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
+    validationErrors: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+      nullable: true,
+    },
+    data: {
+      type: 'array',
+      items: {
+        $ref: '#/components/schemas/ScenarioListItemDto',
+      },
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const GetScenarioQueryResponseSchema = {
+  required: ['data'],
+  type: 'object',
+  properties: {
+    success: {
+      type: 'boolean',
+    },
+    count: {
+      type: 'integer',
+      format: 'int32',
+      nullable: true,
+    },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
+    validationErrors: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+      nullable: true,
+    },
+    data: {
+      $ref: '#/components/schemas/ScenarioDto',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const GetScenarioTemplateListQueryResponseSchema = {
+  required: ['data'],
+  type: 'object',
+  properties: {
+    success: {
+      type: 'boolean',
+    },
+    count: {
+      type: 'integer',
+      format: 'int32',
+      nullable: true,
+    },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
+    validationErrors: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+      nullable: true,
+    },
+    data: {
+      type: 'array',
+      items: {
+        $ref: '#/components/schemas/ScenarioTemplateList',
+      },
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const GetSimulationProgressQueryResponseSchema = {
+  required: ['data'],
+  type: 'object',
+  properties: {
+    success: {
+      type: 'boolean',
+    },
+    count: {
+      type: 'integer',
+      format: 'int32',
+      nullable: true,
+    },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
+    validationErrors: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+      nullable: true,
+    },
+    data: {
+      $ref: '#/components/schemas/SimulationProgressDto',
     },
   },
   additionalProperties: false,
@@ -2163,6 +2587,107 @@ export const JobDetailSchema = {
   additionalProperties: false,
 } as const;
 
+export const JobExecutionDtoSchema = {
+  type: 'object',
+  properties: {
+    delft_job_execution_id: {
+      type: 'string',
+      format: 'uuid',
+    },
+    delft_orchestration_id: {
+      type: 'string',
+      format: 'uuid',
+    },
+    job_type: {
+      type: 'string',
+      nullable: true,
+    },
+    job_name: {
+      type: 'string',
+      nullable: true,
+    },
+    radix_job_id: {
+      type: 'string',
+      nullable: true,
+    },
+    schedule_number: {
+      type: 'integer',
+      format: 'int32',
+    },
+    payload: {
+      type: 'string',
+      nullable: true,
+    },
+    status: {
+      type: 'string',
+      nullable: true,
+    },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
+    log_url: {
+      type: 'string',
+      nullable: true,
+    },
+    created_at: {
+      type: 'string',
+      format: 'date-time',
+    },
+    ended_at: {
+      type: 'string',
+      format: 'date-time',
+      nullable: true,
+    },
+    duration_seconds: {
+      type: 'number',
+      format: 'double',
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const JobExecutionSummaryDtoSchema = {
+  type: 'object',
+  properties: {
+    delft_job_execution_id: {
+      type: 'string',
+      format: 'uuid',
+    },
+    job_type: {
+      type: 'string',
+      nullable: true,
+    },
+    job_name: {
+      type: 'string',
+      nullable: true,
+    },
+    schedule_number: {
+      type: 'integer',
+      format: 'int32',
+    },
+    status: {
+      type: 'string',
+      nullable: true,
+    },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
+    created_at: {
+      type: 'string',
+      format: 'date-time',
+    },
+    ended_at: {
+      type: 'string',
+      format: 'date-time',
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
 export const JobListSchema = {
   required: ['jobId', 'jobStatus', 'jobType', 'name', 'updated'],
   type: 'object',
@@ -2226,6 +2751,9 @@ export const JobTypeSchema = {
     'Nrvariogram',
     'NrthumbnailGen',
     'Delft3dPreprocess',
+    'Delft3dSimulation',
+    'Delft3dProcess',
+    'Delft3dPostprocess',
   ],
   type: 'string',
 } as const;
@@ -2778,6 +3306,14 @@ export const ObjectHeightDtoSchema = {
   ],
   type: 'object',
   properties: {
+    modeSd: {
+      type: 'number',
+      format: 'double',
+    },
+    modeMean: {
+      type: 'number',
+      format: 'double',
+    },
     mean: {
       type: 'number',
       format: 'double',
@@ -2809,14 +3345,6 @@ export const ObjectHeightDtoSchema = {
     percentiles: {
       $ref: '#/components/schemas/PercentilesDto',
     },
-    modeSd: {
-      type: 'number',
-      format: 'double',
-    },
-    modeMean: {
-      type: 'number',
-      format: 'double',
-    },
   },
   additionalProperties: false,
 } as const;
@@ -2824,8 +3352,8 @@ export const ObjectHeightDtoSchema = {
 export const OperationSchema = {
   type: 'object',
   properties: {
-    operationType: {
-      $ref: '#/components/schemas/OperationType',
+    value: {
+      nullable: true,
     },
     path: {
       type: 'string',
@@ -2839,16 +3367,115 @@ export const OperationSchema = {
       type: 'string',
       nullable: true,
     },
-    value: {
+  },
+  additionalProperties: false,
+} as const;
+
+export const OrchestrationFileDtoSchema = {
+  type: 'object',
+  properties: {
+    name: {
+      type: 'string',
+      nullable: true,
+    },
+    size_bytes: {
+      type: 'integer',
+      format: 'int64',
+    },
+    last_modified: {
+      type: 'string',
+      format: 'date-time',
+      nullable: true,
+    },
+    content_type: {
+      type: 'string',
       nullable: true,
     },
   },
   additionalProperties: false,
 } as const;
 
-export const OperationTypeSchema = {
-  enum: ['Add', 'Remove', 'Replace', 'Move', 'Copy', 'Test', 'Invalid'],
-  type: 'string',
+export const OrchestrationStatusDtoSchema = {
+  type: 'object',
+  properties: {
+    delft_orchestration_id: {
+      type: 'string',
+      format: 'uuid',
+    },
+    current_phase: {
+      type: 'string',
+      nullable: true,
+    },
+    phase_status: {
+      type: 'string',
+      nullable: true,
+    },
+    process_jobs_created: {
+      type: 'integer',
+      format: 'int32',
+    },
+    last_process_job_timestep: {
+      type: 'integer',
+      format: 'int32',
+    },
+    last_error_message: {
+      type: 'string',
+      nullable: true,
+    },
+    last_error_occurred_at: {
+      type: 'string',
+      format: 'date-time',
+      nullable: true,
+    },
+    created_at: {
+      type: 'string',
+      format: 'date-time',
+    },
+    completed_at: {
+      type: 'string',
+      format: 'date-time',
+      nullable: true,
+    },
+    last_modified_at: {
+      type: 'string',
+      format: 'date-time',
+    },
+    job_executions: {
+      type: 'array',
+      items: {
+        $ref: '#/components/schemas/JobExecutionSummaryDto',
+      },
+      nullable: true,
+    },
+    simulation_progress: {
+      $ref: '#/components/schemas/SimulationProgressSummaryDto',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const OrchestrationStatusSummaryDtoSchema = {
+  type: 'object',
+  properties: {
+    current_phase: {
+      type: 'string',
+      nullable: true,
+    },
+    phase_status: {
+      type: 'string',
+      nullable: true,
+    },
+    completed_at: {
+      type: 'string',
+      format: 'date-time',
+      nullable: true,
+    },
+    last_error_message: {
+      type: 'string',
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
 } as const;
 
 export const OutcropBasinDtoSchema = {
@@ -3250,9 +3877,505 @@ export const RadixJobDtoSchema = {
   additionalProperties: false,
 } as const;
 
+export const RadixJobStatusSchema = {
+  type: 'object',
+  properties: {
+    jobId: {
+      type: 'string',
+      nullable: true,
+    },
+    batchName: {
+      type: 'string',
+      nullable: true,
+    },
+    name: {
+      type: 'string',
+      nullable: true,
+    },
+    created: {
+      type: 'string',
+      format: 'date-time',
+      nullable: true,
+    },
+    started: {
+      type: 'string',
+      format: 'date-time',
+      nullable: true,
+    },
+    ended: {
+      type: 'string',
+      format: 'date-time',
+      nullable: true,
+    },
+    status: {
+      type: 'string',
+      nullable: true,
+    },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
+    updated: {
+      type: 'string',
+      format: 'date-time',
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const ReportProgressCommandSchema = {
+  required: ['orchestrationId', 'timeStepsLeft'],
+  type: 'object',
+  properties: {
+    orchestrationId: {
+      type: 'string',
+      format: 'uuid',
+    },
+    timeStepsLeft: {
+      type: 'integer',
+      format: 'int32',
+    },
+    timeLeftEstimate: {
+      type: 'string',
+      nullable: true,
+    },
+    logLine: {
+      type: 'string',
+      nullable: true,
+    },
+    percentageCompleted: {
+      type: 'number',
+      format: 'double',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const ReportProgressCommandResponseSchema = {
+  required: ['data'],
+  type: 'object',
+  properties: {
+    success: {
+      type: 'boolean',
+    },
+    count: {
+      type: 'integer',
+      format: 'int32',
+      nullable: true,
+    },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
+    validationErrors: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+      nullable: true,
+    },
+    data: {
+      $ref: '#/components/schemas/ReportProgressDto',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const ReportProgressDtoSchema = {
+  type: 'object',
+  properties: {
+    acknowledged: {
+      type: 'boolean',
+    },
+    orchestration_id: {
+      type: 'string',
+      format: 'uuid',
+    },
+    current_timestep: {
+      type: 'integer',
+      format: 'int32',
+    },
+    percentage_completed: {
+      type: 'number',
+      format: 'double',
+    },
+    should_create_process_job: {
+      type: 'boolean',
+    },
+    next_process_job_timestep: {
+      type: 'integer',
+      format: 'int32',
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
 export const ResultStatusSchema = {
   enum: ['Draft', 'Publish'],
   type: 'string',
+} as const;
+
+export const ScenarioDtoSchema = {
+  type: 'object',
+  properties: {
+    scenario_id: {
+      type: 'string',
+      format: 'uuid',
+    },
+    name: {
+      type: 'string',
+      nullable: true,
+    },
+    description: {
+      type: 'string',
+      nullable: true,
+    },
+    json_scenario_data: {
+      type: 'string',
+      nullable: true,
+    },
+    scenario_template_id: {
+      type: 'string',
+      format: 'uuid',
+    },
+    scenario_template_name: {
+      type: 'string',
+      nullable: true,
+    },
+    analogue_model_id: {
+      type: 'string',
+      format: 'uuid',
+      nullable: true,
+    },
+    analogue_model_name: {
+      type: 'string',
+      nullable: true,
+    },
+    orchestration_id: {
+      type: 'string',
+      format: 'uuid',
+      nullable: true,
+    },
+    orchestration_status: {
+      $ref: '#/components/schemas/OrchestrationStatusSummaryDto',
+    },
+    created_at: {
+      type: 'string',
+      format: 'date-time',
+    },
+    created_by: {
+      type: 'string',
+      nullable: true,
+    },
+    last_modified_at: {
+      type: 'string',
+      format: 'date-time',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const ScenarioListItemDtoSchema = {
+  type: 'object',
+  properties: {
+    scenario_id: {
+      type: 'string',
+      format: 'uuid',
+    },
+    name: {
+      type: 'string',
+      nullable: true,
+    },
+    description: {
+      type: 'string',
+      nullable: true,
+    },
+    scenario_template_id: {
+      type: 'string',
+      format: 'uuid',
+    },
+    scenario_template_name: {
+      type: 'string',
+      nullable: true,
+    },
+    json_scenario_data: {
+      type: 'string',
+      nullable: true,
+    },
+    analogue_model_id: {
+      type: 'string',
+      format: 'uuid',
+      nullable: true,
+    },
+    orchestration_id: {
+      type: 'string',
+      format: 'uuid',
+      nullable: true,
+    },
+    orchestration_phase: {
+      type: 'string',
+      nullable: true,
+    },
+    orchestration_status: {
+      type: 'string',
+      nullable: true,
+    },
+    created_at: {
+      type: 'string',
+      format: 'date-time',
+    },
+    created_by: {
+      type: 'string',
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const ScenarioTemplateListSchema = {
+  required: ['active', 'description', 'jsonData', 'name', 'scenarioTemplateId'],
+  type: 'object',
+  properties: {
+    scenarioTemplateId: {
+      type: 'string',
+      format: 'uuid',
+    },
+    name: {
+      minLength: 1,
+      type: 'string',
+    },
+    description: {
+      minLength: 1,
+      type: 'string',
+    },
+    jsonData: {
+      minLength: 1,
+      type: 'string',
+    },
+    active: {
+      type: 'boolean',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const SimulationProgressDtoSchema = {
+  type: 'object',
+  properties: {
+    delft_simulation_progress_id: {
+      type: 'string',
+      format: 'uuid',
+    },
+    delft_orchestration_id: {
+      type: 'string',
+      format: 'uuid',
+    },
+    delft_job_execution_id: {
+      type: 'string',
+      format: 'uuid',
+    },
+    current_timestep: {
+      type: 'integer',
+      format: 'int32',
+    },
+    total_timesteps: {
+      type: 'integer',
+      format: 'int64',
+    },
+    timesteps_remaining: {
+      type: 'integer',
+      format: 'int32',
+    },
+    timesteps_per_output_interval: {
+      type: 'integer',
+      format: 'int64',
+    },
+    percentage_completed: {
+      type: 'number',
+      format: 'double',
+    },
+    estimated_time_remaining: {
+      type: 'string',
+      nullable: true,
+    },
+    last_log_line: {
+      type: 'string',
+      nullable: true,
+    },
+    last_updated_at: {
+      type: 'string',
+      format: 'date-time',
+    },
+    process_jobs_created: {
+      type: 'integer',
+      format: 'int32',
+    },
+    last_process_job_timestep: {
+      type: 'integer',
+      format: 'int32',
+    },
+    next_process_job_timestep: {
+      type: 'integer',
+      format: 'int32',
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const SimulationProgressSummaryDtoSchema = {
+  type: 'object',
+  properties: {
+    current_timestep: {
+      type: 'integer',
+      format: 'int32',
+    },
+    total_timesteps: {
+      type: 'integer',
+      format: 'int64',
+    },
+    timesteps_remaining: {
+      type: 'integer',
+      format: 'int32',
+    },
+    percentage_completed: {
+      type: 'number',
+      format: 'double',
+    },
+    estimated_time_remaining: {
+      type: 'string',
+      nullable: true,
+    },
+    last_log_line: {
+      type: 'string',
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const StartOrchestrationCommandSchema = {
+  required: ['input_configuration'],
+  type: 'object',
+  properties: {
+    input_configuration: {
+      minLength: 1,
+      type: 'string',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const StartOrchestrationCommandResponseSchema = {
+  required: ['data'],
+  type: 'object',
+  properties: {
+    success: {
+      type: 'boolean',
+    },
+    count: {
+      type: 'integer',
+      format: 'int32',
+      nullable: true,
+    },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
+    validationErrors: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+      nullable: true,
+    },
+    data: {
+      $ref: '#/components/schemas/StartOrchestrationDto',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const StartOrchestrationDtoSchema = {
+  type: 'object',
+  properties: {
+    orchestration_id: {
+      type: 'string',
+      format: 'uuid',
+    },
+    current_phase: {
+      type: 'string',
+      nullable: true,
+    },
+    phase_status: {
+      type: 'string',
+      nullable: true,
+    },
+    created_at: {
+      type: 'string',
+      format: 'date-time',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const StartScenarioOrchestrationCommandResponseSchema = {
+  required: ['data'],
+  type: 'object',
+  properties: {
+    success: {
+      type: 'boolean',
+    },
+    count: {
+      type: 'integer',
+      format: 'int32',
+      nullable: true,
+    },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
+    validationErrors: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+      nullable: true,
+    },
+    data: {
+      $ref: '#/components/schemas/StartScenarioOrchestrationDto',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const StartScenarioOrchestrationDtoSchema = {
+  type: 'object',
+  properties: {
+    scenario_id: {
+      type: 'string',
+      format: 'uuid',
+    },
+    orchestration_id: {
+      type: 'string',
+      format: 'uuid',
+    },
+    current_phase: {
+      type: 'string',
+      nullable: true,
+    },
+    phase_status: {
+      type: 'string',
+      nullable: true,
+    },
+    created_at: {
+      type: 'string',
+      format: 'date-time',
+    },
+  },
+  additionalProperties: false,
 } as const;
 
 export const StratColumnDtoSchema = {
@@ -3465,9 +4588,17 @@ export const UpdateComputeCaseCommandFormSchema = {
   required: ['inputSettings'],
   type: 'object',
   properties: {
-    expand: {
+    modelAreaId: {
       type: 'string',
+      format: 'uuid',
       nullable: true,
+    },
+    inputSettings: {
+      type: 'array',
+      items: {
+        type: 'string',
+        format: 'uuid',
+      },
     },
     isProcessed: {
       type: 'boolean',
@@ -3493,17 +4624,125 @@ export const UpdateComputeCaseCommandFormSchema = {
       type: 'string',
       nullable: true,
     },
-    modelAreaId: {
+    expand: {
+      type: 'string',
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const UpdateDelft3dJobStatusCommandSchema = {
+  required: ['name', 'status'],
+  type: 'object',
+  properties: {
+    name: {
+      minLength: 1,
+      type: 'string',
+    },
+    batchId: {
+      type: 'string',
+      nullable: true,
+    },
+    created: {
+      type: 'string',
+      format: 'date-time',
+      nullable: true,
+    },
+    started: {
+      type: 'string',
+      format: 'date-time',
+      nullable: true,
+    },
+    ended: {
+      type: 'string',
+      format: 'date-time',
+      nullable: true,
+    },
+    status: {
+      minLength: 1,
+      type: 'string',
+    },
+    updated: {
+      type: 'string',
+      format: 'date-time',
+      nullable: true,
+    },
+    event: {
+      type: 'string',
+      nullable: true,
+    },
+    batchType: {
+      type: 'string',
+      nullable: true,
+    },
+    jobStatuses: {
+      type: 'array',
+      items: {
+        $ref: '#/components/schemas/RadixJobStatus',
+      },
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const UpdateDelft3dJobStatusCommandResponseSchema = {
+  required: ['data'],
+  type: 'object',
+  properties: {
+    success: {
+      type: 'boolean',
+    },
+    count: {
+      type: 'integer',
+      format: 'int32',
+      nullable: true,
+    },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
+    validationErrors: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+      nullable: true,
+    },
+    data: {
+      $ref: '#/components/schemas/UpdateDelft3dJobStatusDto',
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const UpdateDelft3dJobStatusDtoSchema = {
+  type: 'object',
+  properties: {
+    receipt_id: {
+      type: 'string',
+      format: 'uuid',
+    },
+    acknowledged: {
+      type: 'boolean',
+    },
+    orchestration_id: {
       type: 'string',
       format: 'uuid',
       nullable: true,
     },
-    inputSettings: {
-      type: 'array',
-      items: {
-        type: 'string',
-        format: 'uuid',
-      },
+    job_type: {
+      type: 'string',
+      nullable: true,
+    },
+    previous_status: {
+      type: 'string',
+      nullable: true,
+    },
+    new_status: {
+      type: 'string',
+      nullable: true,
     },
   },
   additionalProperties: false,

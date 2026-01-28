@@ -1,4 +1,5 @@
 /* eslint-disable max-lines */
+/* eslint-disable max-lines-per-function */
 import {
   Button,
   Dialog,
@@ -7,7 +8,7 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ModelTable } from '../../features/ModelTable/ModelTable';
 import { SimulationTable } from '../../features/SimulationTable/SimulationTable';
 import * as Styled from './Browse.styled';
@@ -25,7 +26,11 @@ export const Browse = () => {
   const isOwnerOrAdmin = useIsOwnerOrAdmin();
   const [uploadStatus, setUploadStatus] = useState<string>();
   const [isOpen, setIsOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tabParam = searchParams.get('tab');
+  const [activeTab, setActiveTab] = useState(
+    tabParam === 'simulations' ? 1 : 0,
+  );
 
   useEffect(() => {
     if (analogueModel !== analogueModelDefault) {
@@ -50,6 +55,7 @@ export const Browse = () => {
 
   const handleTabChange = (index: number) => {
     setActiveTab(index);
+    setSearchParams(index === 1 ? { tab: 'simulations' } : {});
   };
 
   return (
@@ -80,7 +86,7 @@ export const Browse = () => {
               <ModelTable />
             </Tabs.Panel>
             <Tabs.Panel>
-              <SimulationTable jobs={[]} isLoading={false} />
+              <SimulationTable />
             </Tabs.Panel>
           </Tabs.Panels>
         </Tabs>

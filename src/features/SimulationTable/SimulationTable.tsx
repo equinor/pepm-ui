@@ -1,51 +1,140 @@
 /* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable max-lines */
+/* eslint-disable max-lines-per-function */
 import { useRef, useState } from 'react';
-import {
-  Button,
-  Checkbox,
-  EdsProvider,
-  Icon,
-  Typography,
-} from '@equinor/eds-core-react';
-import { more_vertical } from '@equinor/eds-icons';
+import { useNavigate } from 'react-router-dom';
+import { Button, Checkbox, EdsProvider, Icon } from '@equinor/eds-core-react';
+import { view_column } from '@equinor/eds-icons';
 import { EdsDataGrid } from '@equinor/eds-data-grid-react';
 import type { VisibilityState } from '@tanstack/react-table';
-import {
-  JobInspectionDialog,
-  SimulationJob,
-} from '../../components/JobInspectionDialog';
+import { useFetchScenarios } from '../../hooks/useFetchScenarios';
+import { ProgressCell } from './ProgressCell';
 import * as Styled from './SimulationTable.styled';
 
-interface SimulationTableProps {
-  jobs: SimulationJob[];
-  isLoading?: boolean;
-}
+// Helper function to parse JSON scenario data
+const parseScenarioData = (jsonData: string | null | undefined) => {
+  if (!jsonData) {
+    return {
+      template: '-',
+      basinSlope: '-',
+      composition: '-',
+      riverLength: '-',
+      simStopTime: '-',
+      channelWidth: '-',
+      subsidenceSea: '-',
+      waveDirection: '-',
+      waveHeightFin: '-',
+      waveHeightIni: '-',
+      outputInterval: '-',
+      subsidenceLand: '-',
+      tidalAmplitude: '-',
+      riverDischargeFin: '-',
+      riverDischargeIni: '-',
+    };
+  }
 
-export const SimulationTable = ({
-  jobs,
-  isLoading = false,
-}: SimulationTableProps) => {
-  const [selectedJob, setSelectedJob] = useState<SimulationJob | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  try {
+    const data = JSON.parse(jsonData);
+    return {
+      template: data.template?.value || '-',
+      basinSlope:
+        data.basinslope?.value !== undefined ? data.basinslope.value : '-',
+      composition: data.composition?.value || '-',
+      riverLength:
+        data.riverlength?.value !== undefined ? data.riverlength.value : '-',
+      simStopTime:
+        data.simstoptime?.value !== undefined ? data.simstoptime.value : '-',
+      channelWidth:
+        data.channelwidth?.value !== undefined ? data.channelwidth.value : '-',
+      subsidenceSea:
+        data.subsidencesea?.value !== undefined
+          ? data.subsidencesea.value
+          : '-',
+      waveDirection:
+        data.wavedirection?.value !== undefined
+          ? data.wavedirection.value
+          : '-',
+      waveHeightFin:
+        data.waveheightfin?.value !== undefined
+          ? data.waveheightfin.value
+          : '-',
+      waveHeightIni:
+        data.waveheightini?.value !== undefined
+          ? data.waveheightini.value
+          : '-',
+      outputInterval:
+        data.outputinterval?.value !== undefined
+          ? data.outputinterval.value
+          : '-',
+      subsidenceLand:
+        data.subsidenceland?.value !== undefined
+          ? data.subsidenceland.value
+          : '-',
+      tidalAmplitude:
+        data.tidalamplitude?.value !== undefined
+          ? data.tidalamplitude.value
+          : '-',
+      riverDischargeFin:
+        data.riverdischargefin?.value !== undefined
+          ? data.riverdischargefin.value
+          : '-',
+      riverDischargeIni:
+        data.riverdischargeini?.value !== undefined
+          ? data.riverdischargeini.value
+          : '-',
+    };
+  } catch {
+    return {
+      template: '-',
+      basinSlope: '-',
+      composition: '-',
+      riverLength: '-',
+      simStopTime: '-',
+      channelWidth: '-',
+      subsidenceSea: '-',
+      waveDirection: '-',
+      waveHeightFin: '-',
+      waveHeightIni: '-',
+      outputInterval: '-',
+      subsidenceLand: '-',
+      tidalAmplitude: '-',
+      riverDischargeFin: '-',
+      riverDischargeIni: '-',
+    };
+  }
+};
+
+export const SimulationTable = () => {
+  const navigate = useNavigate();
+  const { data: scenarios = [], isLoading } = useFetchScenarios();
+
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    jobId: true,
-    name: true,
-    status: true,
-    createdDate: true,
-    completedDate: true,
-    progress: true,
+    template: true,
+    basinSlope: true,
+    composition: true,
+    riverLength: false,
+    simStopTime: false,
+    channelWidth: false,
+    subsidenceSea: false,
+    waveDirection: false,
+    waveHeightFin: false,
+    waveHeightIni: false,
+    outputInterval: false,
+    subsidenceLand: false,
+    tidalAmplitude: false,
+    riverDischargeFin: false,
+    riverDischargeIni: false,
+    orchestration_status: true,
+    created_at: true,
   });
   const [isSideSheetOpen, setIsSideSheetOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
 
-  const handleOpenModal = (job: SimulationJob) => {
-    setSelectedJob(job);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedJob(null);
+  const handleNavigateToSimulation = (scenarioId: string | undefined) => {
+    if (scenarioId) {
+      navigate(`/simulations/${scenarioId}`);
+    }
   };
 
   const toggleColumn = (columnId: string) => {
@@ -55,80 +144,188 @@ export const SimulationTable = ({
     }));
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <p>Loading scenarios...</p>;
 
   return (
     <>
       <Styled.Table>
-        <Styled.Buttons
-          style={{ marginBottom: '16px', justifyContent: 'flex-end' }}
-        >
+        <Styled.ColumnsButton>
           <Button
             ref={anchorRef}
-            variant="ghost_icon"
+            variant="outlined"
             onClick={() => setIsSideSheetOpen(!isSideSheetOpen)}
             aria-label="Toggle columns"
           >
-            <Icon data={more_vertical} />
+            Toggle columns&nbsp;
+            <Icon data={view_column} />
           </Button>
-        </Styled.Buttons>
+        </Styled.ColumnsButton>
         <EdsDataGrid
           enableSorting
-          emptyMessage="No simulation jobs found"
+          emptyMessage="No scenarios found"
           columnResizeMode="onChange"
-          rows={jobs}
+          rows={scenarios}
           scrollbarHorizontal
           stickyHeader
-          width="min(calc(100vw - 64px), 1400px)"
+          width="100%"
           columnVisibility={columnVisibility}
           columns={[
             {
-              accessorKey: 'jobId',
-              header: 'Job ID',
-              id: 'jobId',
+              header: 'Template',
+              id: 'template',
+              size: 180,
+              cell: ({ row }) => {
+                const jsonData = (row.original as any).json_scenario_data;
+                return parseScenarioData(jsonData).template;
+              },
+            },
+            {
+              header: 'Basin slope',
+              id: 'basinSlope',
+              size: 120,
+              cell: ({ row }) => {
+                const jsonData = (row.original as any).json_scenario_data;
+                return parseScenarioData(jsonData).basinSlope;
+              },
+            },
+            {
+              header: 'Sediment classes',
+              id: 'composition',
               size: 150,
+              cell: ({ row }) => {
+                const jsonData = (row.original as any).json_scenario_data;
+                return parseScenarioData(jsonData).composition;
+              },
             },
             {
-              accessorKey: 'name',
-              header: 'Job Name',
-              id: 'name',
-              size: 200,
+              header: 'River length',
+              id: 'riverLength',
+              size: 130,
+              cell: ({ row }) => {
+                const jsonData = (row.original as any).json_scenario_data;
+                return parseScenarioData(jsonData).riverLength;
+              },
             },
             {
-              accessorKey: 'status',
+              header: 'Simulation time',
+              id: 'simStopTime',
+              size: 140,
+              cell: ({ row }) => {
+                const jsonData = (row.original as any).json_scenario_data;
+                return parseScenarioData(jsonData).simStopTime;
+              },
+            },
+            {
+              header: 'Channel width',
+              id: 'channelWidth',
+              size: 130,
+              cell: ({ row }) => {
+                const jsonData = (row.original as any).json_scenario_data;
+                return parseScenarioData(jsonData).channelWidth;
+              },
+            },
+            {
+              header: 'Subsidence at seaward',
+              id: 'subsidenceSea',
+              size: 180,
+              cell: ({ row }) => {
+                const jsonData = (row.original as any).json_scenario_data;
+                return parseScenarioData(jsonData).subsidenceSea;
+              },
+            },
+            {
+              header: 'Wave direction',
+              id: 'waveDirection',
+              size: 130,
+              cell: ({ row }) => {
+                const jsonData = (row.original as any).json_scenario_data;
+                return parseScenarioData(jsonData).waveDirection;
+              },
+            },
+            {
+              header: 'Final wave height',
+              id: 'waveHeightFin',
+              size: 150,
+              cell: ({ row }) => {
+                const jsonData = (row.original as any).json_scenario_data;
+                return parseScenarioData(jsonData).waveHeightFin;
+              },
+            },
+            {
+              header: 'Initial wave height',
+              id: 'waveHeightIni',
+              size: 150,
+              cell: ({ row }) => {
+                const jsonData = (row.original as any).json_scenario_data;
+                return parseScenarioData(jsonData).waveHeightIni;
+              },
+            },
+            {
+              header: 'Output interval',
+              id: 'outputInterval',
+              size: 140,
+              cell: ({ row }) => {
+                const jsonData = (row.original as any).json_scenario_data;
+                return parseScenarioData(jsonData).outputInterval;
+              },
+            },
+            {
+              header: 'Subsidence at landward',
+              id: 'subsidenceLand',
+              size: 180,
+              cell: ({ row }) => {
+                const jsonData = (row.original as any).json_scenario_data;
+                return parseScenarioData(jsonData).subsidenceLand;
+              },
+            },
+            {
+              header: 'Tidal amplitude',
+              id: 'tidalAmplitude',
+              size: 140,
+              cell: ({ row }) => {
+                const jsonData = (row.original as any).json_scenario_data;
+                return parseScenarioData(jsonData).tidalAmplitude;
+              },
+            },
+            {
+              header: 'Final river discharge',
+              id: 'riverDischargeFin',
+              size: 170,
+              cell: ({ row }) => {
+                const jsonData = (row.original as any).json_scenario_data;
+                return parseScenarioData(jsonData).riverDischargeFin;
+              },
+            },
+            {
+              header: 'Initial river discharge',
+              id: 'riverDischargeIni',
+              size: 180,
+              cell: ({ row }) => {
+                const jsonData = (row.original as any).json_scenario_data;
+                return parseScenarioData(jsonData).riverDischargeIni;
+              },
+            },
+            {
+              accessorKey: 'orchestration_status',
               header: 'Status',
-              id: 'status',
+              id: 'orchestration_status',
               size: 120,
             },
             {
-              accessorKey: 'createdDate',
+              accessorKey: 'created_at',
               header: 'Created',
-              id: 'createdDate',
-              size: 150,
+              id: 'created_at',
+              size: 180,
               cell: ({ row }) =>
-                row.original.createdDate
-                  ? new Date(row.original.createdDate).toLocaleString()
+                row.original.created_at
+                  ? new Date(row.original.created_at).toLocaleString()
                   : '-',
             },
             {
-              accessorKey: 'completedDate',
-              header: 'Completed',
-              id: 'completedDate',
+              accessorKey: 'created_by',
+              header: 'Created By',
+              id: 'created_by',
               size: 150,
-              cell: ({ row }) =>
-                row.original.completedDate
-                  ? new Date(row.original.completedDate).toLocaleString()
-                  : '-',
-            },
-            {
-              accessorKey: 'progress',
-              header: 'Progress',
-              id: 'progress',
-              size: 100,
-              cell: ({ row }) =>
-                row.original.progress !== undefined
-                  ? `${row.original.progress}%`
-                  : '-',
             },
             {
               header: 'Actions',
@@ -136,79 +333,128 @@ export const SimulationTable = ({
               enableColumnFilter: false,
               enableResizing: false,
               enableSorting: false,
-              maxSize: 120,
-              cell: ({ row }) => (
-                <Styled.Buttons>
-                  <Button
-                    variant="outlined"
-                    onClick={() => handleOpenModal(row.original)}
-                  >
-                    Inspect
-                  </Button>
-                </Styled.Buttons>
-              ),
+              minSize: 280,
+              cell: ({ row }) => {
+                const scenario = row.original as any;
+                const isRunning = scenario.orchestration_status === 'Running';
+
+                return (
+                  <Styled.ActionButtons>
+                    <ProgressCell
+                      orchestrationId={scenario.orchestration_id}
+                      isRunning={isRunning}
+                    />
+                    <Button
+                      variant="outlined"
+                      onClick={() =>
+                        handleNavigateToSimulation(scenario.scenario_id)
+                      }
+                    >
+                      View
+                    </Button>
+                  </Styled.ActionButtons>
+                );
+              },
             },
           ]}
         />
       </Styled.Table>
-
-      <JobInspectionDialog
-        isOpen={isModalOpen}
-        job={selectedJob}
-        onClose={handleCloseModal}
-      />
 
       <Styled.StyledSideSheet
         open={isSideSheetOpen}
         onClose={() => setIsSideSheetOpen(false)}
         title="Toggle Columns"
       >
-        <div style={{ padding: '16px' }}>
-          <Typography
-            variant="overline"
-            style={{
-              fontWeight: 'bold',
-              display: 'block',
-              marginBottom: '8px',
-            }}
-          >
-            Input Parameters
-          </Typography>
+        <Styled.SideSheetContent>
+          <Styled.SideSheetTitle variant="overline">
+            Columns
+          </Styled.SideSheetTitle>
           <EdsProvider density="compact">
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <Styled.CheckboxColumn>
+              <Checkbox label="Template" checked={true} disabled />
               <Checkbox
-                label="Job ID"
-                checked={columnVisibility.jobId}
-                onChange={() => toggleColumn('jobId')}
+                label="Basin slope"
+                checked={columnVisibility.basinSlope}
+                onChange={() => toggleColumn('basinSlope')}
               />
               <Checkbox
-                label="Job Name"
-                checked={columnVisibility.name}
-                onChange={() => toggleColumn('name')}
+                label="Sediment classes"
+                checked={columnVisibility.composition}
+                onChange={() => toggleColumn('composition')}
+              />
+              <Checkbox
+                label="River length"
+                checked={columnVisibility.riverLength}
+                onChange={() => toggleColumn('riverLength')}
+              />
+              <Checkbox
+                label="Simulation time"
+                checked={columnVisibility.simStopTime}
+                onChange={() => toggleColumn('simStopTime')}
+              />
+              <Checkbox
+                label="Channel width"
+                checked={columnVisibility.channelWidth}
+                onChange={() => toggleColumn('channelWidth')}
+              />
+              <Checkbox
+                label="Subsidence at seaward"
+                checked={columnVisibility.subsidenceSea}
+                onChange={() => toggleColumn('subsidenceSea')}
+              />
+              <Checkbox
+                label="Wave direction"
+                checked={columnVisibility.waveDirection}
+                onChange={() => toggleColumn('waveDirection')}
+              />
+              <Checkbox
+                label="Final wave height"
+                checked={columnVisibility.waveHeightFin}
+                onChange={() => toggleColumn('waveHeightFin')}
+              />
+              <Checkbox
+                label="Initial wave height"
+                checked={columnVisibility.waveHeightIni}
+                onChange={() => toggleColumn('waveHeightIni')}
+              />
+              <Checkbox
+                label="Output interval"
+                checked={columnVisibility.outputInterval}
+                onChange={() => toggleColumn('outputInterval')}
+              />
+              <Checkbox
+                label="Subsidence at landward"
+                checked={columnVisibility.subsidenceLand}
+                onChange={() => toggleColumn('subsidenceLand')}
+              />
+              <Checkbox
+                label="Tidal amplitude"
+                checked={columnVisibility.tidalAmplitude}
+                onChange={() => toggleColumn('tidalAmplitude')}
+              />
+              <Checkbox
+                label="Final river discharge"
+                checked={columnVisibility.riverDischargeFin}
+                onChange={() => toggleColumn('riverDischargeFin')}
+              />
+              <Checkbox
+                label="Initial river discharge"
+                checked={columnVisibility.riverDischargeIni}
+                onChange={() => toggleColumn('riverDischargeIni')}
               />
               <Checkbox
                 label="Status"
-                checked={columnVisibility.status}
-                onChange={() => toggleColumn('status')}
+                checked={columnVisibility.orchestration_status}
+                onChange={() => toggleColumn('orchestration_status')}
               />
               <Checkbox
                 label="Created"
-                checked={columnVisibility.createdDate}
-                onChange={() => toggleColumn('createdDate')}
+                checked={columnVisibility.created_at}
+                onChange={() => toggleColumn('created_at')}
               />
-              <Checkbox
-                label="Completed"
-                checked={columnVisibility.completedDate}
-                onChange={() => toggleColumn('completedDate')}
-              />
-              <Checkbox
-                label="Progress"
-                checked={columnVisibility.progress}
-                onChange={() => toggleColumn('progress')}
-              />
-            </div>
+            </Styled.CheckboxColumn>
           </EdsProvider>
-        </div>
+        </Styled.SideSheetContent>
       </Styled.StyledSideSheet>
     </>
   );
