@@ -7,10 +7,7 @@ import type {
   PostApiV1Delft3dOrchestrationsByOrchestrationIdCancelResponse,
   GetApiV1Delft3dOrchestrationsByOrchestrationIdJobExecutionsResponse,
   GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressResponse,
-<<<<<<< HEAD
   GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsResponse,
-=======
->>>>>>> main
   GetApiV1JobsResponse,
   GetApiV1ScenariosResponse,
   PostApiV1ScenariosResponse,
@@ -198,7 +195,6 @@ export const getApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressRes
     return data;
   };
 
-<<<<<<< HEAD
 const orchestrationFileDtoSchemaResponseTransformer = (data: any) => {
   if (data.size_bytes) {
     data.size_bytes = BigInt(data.size_bytes.toString());
@@ -226,8 +222,6 @@ export const getApiV1Delft3dOrchestrationsByOrchestrationIdResultsResponseTransf
     return data;
   };
 
-=======
->>>>>>> main
 const jobListSchemaResponseTransformer = (data: any) => {
   data.updated = new Date(data.updated);
   return data;
