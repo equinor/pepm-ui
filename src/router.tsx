@@ -11,6 +11,7 @@ import { ComputeVariogram } from './pages/ModelPages/Compute/ComputeVariogram/Co
 import { Model } from './pages/ModelPages/Model/Model';
 import { ObjectResult } from './pages/ModelPages/Results/ObjectResult/ObjectResult';
 import { VariogramResults } from './pages/ModelPages/Results/VariogramResults/VariogramResults';
+import { Simulation } from './pages/Simulation/Simulation';
 import { ScenarioBuilder } from './pages/ScenarioBuilder/ScenarioBuilder';
 
 const router = createBrowserRouter([
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: 'add-model',
         element: <AddModel />,
+      },
+      {
+        path: 'simulations/:simulationId',
+        element: <Simulation />,
       },
       {
         path: 'scenario-builder',

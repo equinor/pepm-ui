@@ -591,6 +591,14 @@ export type GetObjectResultsFileDto = {
   objectResultFileId: string;
 };
 
+export type GetOrchestrationFilesQueryResponse = {
+  success?: boolean;
+  count?: number | null;
+  message?: string | null;
+  validationErrors?: Array<string> | null;
+  data: Array<OrchestrationFileDto>;
+};
+
 export type GetOrchestrationStatusQueryResponse = {
   success?: boolean;
   count?: number | null;
@@ -981,6 +989,13 @@ export type Operation = {
   path?: string | null;
   op?: string | null;
   from?: string | null;
+};
+
+export type OrchestrationFileDto = {
+  name?: string | null;
+  size_bytes?: bigint;
+  last_modified?: Date | null;
+  content_type?: string | null;
 };
 
 export type OrchestrationStatusDto = {
@@ -2679,6 +2694,87 @@ export type GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressResp
 
 export type GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressResponse =
   GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressResponses[keyof GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressResponses];
+
+export type GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsData = {
+  body?: never;
+  path: {
+    /**
+     * The orchestration ID
+     */
+    orchestrationId: string;
+  };
+  query?: never;
+  url: '/api/v1/delft3d-orchestrations/{orchestrationId}/results';
+};
+
+export type GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsErrors = {
+  /**
+   * Forbidden
+   */
+  403: ErrorResponse;
+  /**
+   * Not Found
+   */
+  404: ErrorResponse;
+};
+
+export type GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsError =
+  GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsErrors[keyof GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsErrors];
+
+export type GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsResponses = {
+  /**
+   * Success
+   */
+  200: GetOrchestrationFilesQueryResponse;
+};
+
+export type GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsResponse =
+  GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsResponses[keyof GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsResponses];
+
+export type GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsDownloadData =
+  {
+    body?: never;
+    path: {
+      /**
+       * The orchestration ID
+       */
+      orchestrationId: string;
+    };
+    query?: {
+      /**
+       * The filename to download (query parameter)
+       */
+      file?: string;
+    };
+    url: '/api/v1/delft3d-orchestrations/{orchestrationId}/results/download';
+  };
+
+export type GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsDownloadErrors =
+  {
+    /**
+     * Bad Request
+     */
+    400: ErrorResponse;
+    /**
+     * Forbidden
+     */
+    403: ErrorResponse;
+    /**
+     * Not Found
+     */
+    404: ErrorResponse;
+  };
+
+export type GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsDownloadError =
+  GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsDownloadErrors[keyof GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsDownloadErrors];
+
+export type GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsDownloadResponses =
+  {
+    /**
+     * Success
+     */
+    200: unknown;
+  };
 
 export type GetApiV1DownloadsByIdResqmlData = {
   body?: never;

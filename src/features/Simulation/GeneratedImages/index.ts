@@ -1,0 +1,1 @@
+export { GeneratedImages } from './GeneratedImages';

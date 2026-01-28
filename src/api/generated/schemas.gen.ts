@@ -1989,6 +1989,39 @@ export const GetObjectResultsFileDtoSchema = {
   additionalProperties: false,
 } as const;
 
+export const GetOrchestrationFilesQueryResponseSchema = {
+  required: ['data'],
+  type: 'object',
+  properties: {
+    success: {
+      type: 'boolean',
+    },
+    count: {
+      type: 'integer',
+      format: 'int32',
+      nullable: true,
+    },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
+    validationErrors: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+      nullable: true,
+    },
+    data: {
+      type: 'array',
+      items: {
+        $ref: '#/components/schemas/OrchestrationFileDto',
+      },
+    },
+  },
+  additionalProperties: false,
+} as const;
+
 export const GetOrchestrationStatusQueryResponseSchema = {
   required: ['data'],
   type: 'object',
@@ -3331,6 +3364,30 @@ export const OperationSchema = {
       nullable: true,
     },
     from: {
+      type: 'string',
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const OrchestrationFileDtoSchema = {
+  type: 'object',
+  properties: {
+    name: {
+      type: 'string',
+      nullable: true,
+    },
+    size_bytes: {
+      type: 'integer',
+      format: 'int64',
+    },
+    last_modified: {
+      type: 'string',
+      format: 'date-time',
+      nullable: true,
+    },
+    content_type: {
       type: 'string',
       nullable: true,
     },

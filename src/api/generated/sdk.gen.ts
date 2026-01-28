@@ -100,6 +100,11 @@ import type {
   GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressData,
   GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressResponse,
   GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressError,
+  GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsData,
+  GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsResponse,
+  GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsError,
+  GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsDownloadData,
+  GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsDownloadError,
   GetApiV1DownloadsByIdResqmlData,
   GetApiV1DownloadsByIdResqmlResponse,
   GetApiV1DownloadsByIdResqmlError,
@@ -247,6 +252,7 @@ import {
   postApiV1Delft3dOrchestrationsByOrchestrationIdCancelResponseTransformer,
   getApiV1Delft3dOrchestrationsByOrchestrationIdJobExecutionsResponseTransformer,
   getApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressResponseTransformer,
+  getApiV1Delft3dOrchestrationsByOrchestrationIdResultsResponseTransformer,
   getApiV1JobsResponseTransformer,
   getApiV1ScenariosResponseTransformer,
   postApiV1ScenariosResponseTransformer,
@@ -1087,6 +1093,64 @@ export const getApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgress =
       ...options,
     });
   };
+
+/**
+ * Get all output files from an orchestration's simulation folder.
+ * Returns a list of files available for download from the completed orchestration.
+ */
+export const getApiV1Delft3dOrchestrationsByOrchestrationIdResults = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<
+    GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsData,
+    ThrowOnError
+  >,
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsResponse,
+    GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: 'bearer',
+        type: 'http',
+      },
+    ],
+    responseTransformer:
+      getApiV1Delft3dOrchestrationsByOrchestrationIdResultsResponseTransformer,
+    url: '/api/v1/delft3d-orchestrations/{orchestrationId}/results',
+    ...options,
+  });
+};
+
+/**
+ * Download a specific file from an orchestration's output folder.
+ * Returns the file as a binary stream with appropriate content type.
+ */
+export const getApiV1Delft3dOrchestrationsByOrchestrationIdResultsDownload = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<
+    GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsDownloadData,
+    ThrowOnError
+  >,
+) => {
+  return (options.client ?? _heyApiClient).get<
+    unknown,
+    GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsDownloadError,
+    ThrowOnError
+  >({
+    security: [
+      {
+        scheme: 'bearer',
+        type: 'http',
+      },
+    ],
+    url: '/api/v1/delft3d-orchestrations/{orchestrationId}/results/download',
+    ...options,
+  });
+};
 
 export const getApiV1DownloadsByIdResqml = <
   ThrowOnError extends boolean = false,

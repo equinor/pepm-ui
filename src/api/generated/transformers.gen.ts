@@ -7,6 +7,7 @@ import type {
   PostApiV1Delft3dOrchestrationsByOrchestrationIdCancelResponse,
   GetApiV1Delft3dOrchestrationsByOrchestrationIdJobExecutionsResponse,
   GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressResponse,
+  GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsResponse,
   GetApiV1JobsResponse,
   GetApiV1ScenariosResponse,
   PostApiV1ScenariosResponse,
@@ -191,6 +192,33 @@ export const getApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressRes
     data: any,
   ): Promise<GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressResponse> => {
     data = getSimulationProgressQueryResponseSchemaResponseTransformer(data);
+    return data;
+  };
+
+const orchestrationFileDtoSchemaResponseTransformer = (data: any) => {
+  if (data.size_bytes) {
+    data.size_bytes = BigInt(data.size_bytes.toString());
+  }
+  if (data.last_modified) {
+    data.last_modified = new Date(data.last_modified);
+  }
+  return data;
+};
+
+const getOrchestrationFilesQueryResponseSchemaResponseTransformer = (
+  data: any,
+) => {
+  data.data = data.data.map((item: any) => {
+    return orchestrationFileDtoSchemaResponseTransformer(item);
+  });
+  return data;
+};
+
+export const getApiV1Delft3dOrchestrationsByOrchestrationIdResultsResponseTransformer =
+  async (
+    data: any,
+  ): Promise<GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsResponse> => {
+    data = getOrchestrationFilesQueryResponseSchemaResponseTransformer(data);
     return data;
   };
 
