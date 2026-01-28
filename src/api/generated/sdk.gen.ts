@@ -100,11 +100,14 @@ import type {
   GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressData,
   GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressResponse,
   GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressError,
+<<<<<<< HEAD
   GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsData,
   GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsResponse,
   GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsError,
   GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsDownloadData,
   GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsDownloadError,
+=======
+>>>>>>> main
   GetApiV1DownloadsByIdResqmlData,
   GetApiV1DownloadsByIdResqmlResponse,
   GetApiV1DownloadsByIdResqmlError,
@@ -252,7 +255,10 @@ import {
   postApiV1Delft3dOrchestrationsByOrchestrationIdCancelResponseTransformer,
   getApiV1Delft3dOrchestrationsByOrchestrationIdJobExecutionsResponseTransformer,
   getApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressResponseTransformer,
+<<<<<<< HEAD
   getApiV1Delft3dOrchestrationsByOrchestrationIdResultsResponseTransformer,
+=======
+>>>>>>> main
   getApiV1JobsResponseTransformer,
   getApiV1ScenariosResponseTransformer,
   postApiV1ScenariosResponseTransformer,
@@ -1094,6 +1100,7 @@ export const getApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgress =
     });
   };
 
+<<<<<<< HEAD
 /**
  * Get all output files from an orchestration's simulation folder.
  * Returns a list of files available for download from the completed orchestration.
@@ -1152,6 +1159,8 @@ export const getApiV1Delft3dOrchestrationsByOrchestrationIdResultsDownload = <
   });
 };
 
+=======
+>>>>>>> main
 export const getApiV1DownloadsByIdResqml = <
   ThrowOnError extends boolean = false,
 >(

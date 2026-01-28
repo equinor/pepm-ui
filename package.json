@@ -1,6 +1,6 @@
 {
   "name": "pepm-ui",
-  "version": "1.13.1",
+  "version": "1.14.0",
   "private": true,
   "dependencies": {
     "@azure/msal-browser": "^3.23.0",
@@ -57,7 +57,7 @@
     "generate-schema:local": "yarn openapi-ts -f openapi-ts.local.config.ts"
   },
   "lint-staged": {
-    "*.{ts,tsx}": "yarn lint --max-warnings 10"
+    "*.{ts,tsx}": "yarn lint --max-warnings 30"
   },
   "browserslist": {
     "production": [

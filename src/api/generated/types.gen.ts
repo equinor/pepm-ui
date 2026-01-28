@@ -591,6 +591,7 @@ export type GetObjectResultsFileDto = {
   objectResultFileId: string;
 };
 
+<<<<<<< HEAD
 export type GetOrchestrationFilesQueryResponse = {
   success?: boolean;
   count?: number | null;
@@ -599,6 +600,8 @@ export type GetOrchestrationFilesQueryResponse = {
   data: Array<OrchestrationFileDto>;
 };
 
+=======
+>>>>>>> main
 export type GetOrchestrationStatusQueryResponse = {
   success?: boolean;
   count?: number | null;
@@ -991,6 +994,7 @@ export type Operation = {
   from?: string | null;
 };
 
+<<<<<<< HEAD
 export type OrchestrationFileDto = {
   name?: string | null;
   size_bytes?: bigint;
@@ -1013,6 +1017,23 @@ export type OrchestrationStatusDto = {
   simulation_progress?: SimulationProgressSummaryDto;
 };
 
+=======
+export type OrchestrationStatusDto = {
+  delft_orchestration_id?: string;
+  current_phase?: string | null;
+  phase_status?: string | null;
+  process_jobs_created?: number;
+  last_process_job_timestep?: number;
+  last_error_message?: string | null;
+  last_error_occurred_at?: Date | null;
+  created_at?: Date;
+  completed_at?: Date | null;
+  last_modified_at?: Date;
+  job_executions?: Array<JobExecutionSummaryDto> | null;
+  simulation_progress?: SimulationProgressSummaryDto;
+};
+
+>>>>>>> main
 export type OrchestrationStatusSummaryDto = {
   current_phase?: string | null;
   phase_status?: string | null;
@@ -2695,6 +2716,7 @@ export type GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressResp
 export type GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressResponse =
   GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressResponses[keyof GetApiV1Delft3dOrchestrationsByOrchestrationIdSimulationProgressResponses];
 
+<<<<<<< HEAD
 export type GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsData = {
   body?: never;
   path: {
@@ -2776,6 +2798,8 @@ export type GetApiV1Delft3dOrchestrationsByOrchestrationIdResultsDownloadRespons
     200: unknown;
   };
 
+=======
+>>>>>>> main
 export type GetApiV1DownloadsByIdResqmlData = {
   body?: never;
   path: {

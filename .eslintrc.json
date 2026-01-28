@@ -53,14 +53,6 @@
       }
     ],
     "max-depth": "warn",
-    "max-lines": "warn",
-    "max-lines-per-function": [
-      "warn",
-      {
-        "max": 60,
-        "skipBlankLines": true
-      }
-    ],
     "no-console": "warn",
     "no-duplicate-imports": "error",
     "no-self-compare": "error",

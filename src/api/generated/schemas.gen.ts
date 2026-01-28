@@ -3391,6 +3391,50 @@ export const OrchestrationFileDtoSchema = {
       type: 'string',
       nullable: true,
     },
+    phase_status: {
+      type: 'string',
+      nullable: true,
+    },
+    process_jobs_created: {
+      type: 'integer',
+      format: 'int32',
+    },
+    last_process_job_timestep: {
+      type: 'integer',
+      format: 'int32',
+    },
+    last_error_message: {
+      type: 'string',
+      nullable: true,
+    },
+    last_error_occurred_at: {
+      type: 'string',
+      format: 'date-time',
+      nullable: true,
+    },
+    created_at: {
+      type: 'string',
+      format: 'date-time',
+    },
+    completed_at: {
+      type: 'string',
+      format: 'date-time',
+      nullable: true,
+    },
+    last_modified_at: {
+      type: 'string',
+      format: 'date-time',
+    },
+    job_executions: {
+      type: 'array',
+      items: {
+        $ref: '#/components/schemas/JobExecutionSummaryDto',
+      },
+      nullable: true,
+    },
+    simulation_progress: {
+      $ref: '#/components/schemas/SimulationProgressSummaryDto',
+    },
   },
   additionalProperties: false,
 } as const;
