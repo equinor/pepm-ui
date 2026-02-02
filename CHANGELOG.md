@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.15.0](https://github.com/equinor/pepm-ui/compare/v1.14.0...v1.15.0) (2026-02-02)
+
+
+### ✨ Features
+
+* added input parameters to simulation page ([#515](https://github.com/equinor/pepm-ui/issues/515)) ([5cc9753](https://github.com/equinor/pepm-ui/commit/5cc97534826574cc911a7935547017d7cdda6d1a))
+* improved image viewer in orxhestration view ([#516](https://github.com/equinor/pepm-ui/issues/516)) ([a37dcbe](https://github.com/equinor/pepm-ui/commit/a37dcbeb3684b93484d01b7e8eea0bd3560476e1))
+* scenario builder ([#510](https://github.com/equinor/pepm-ui/issues/510)) ([104d68c](https://github.com/equinor/pepm-ui/commit/104d68cf1ed5113a90482239f6d1acd52d7c9036))
+* simulation view ([#514](https://github.com/equinor/pepm-ui/issues/514)) ([17f536c](https://github.com/equinor/pepm-ui/commit/17f536ccada092605034ead1efeb018fb907938c))
+
 ## [1.14.0](https://github.com/equinor/pepm-ui/compare/v1.13.1...v1.14.0) (2026-01-21)
 
 
