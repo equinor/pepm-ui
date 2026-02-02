@@ -88,17 +88,17 @@ export const GeneratedImages = ({
                       orchestrationId={orchestrationId || ''}
                     />
                   ) : (
-                    <Styled.ImageGrid>
+                    <Styled.ImageGridCentered>
                       {tab.data.map((filename, imgIndex) => (
-                        <Styled.ImageWrapper key={imgIndex}>
+                        <Styled.ImageWrapperCentered key={imgIndex}>
                           <StaticImage
                             filename={filename}
                             orchestrationId={orchestrationId || ''}
                             alt={`${tab.label} ${imgIndex + 1}`}
                           />
-                        </Styled.ImageWrapper>
+                        </Styled.ImageWrapperCentered>
                       ))}
-                    </Styled.ImageGrid>
+                    </Styled.ImageGridCentered>
                   )}
                 </Styled.ImagePanel>
               </Panel>

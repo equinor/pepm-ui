@@ -31,8 +31,12 @@ export const Simulation = () => {
   const { data: progress } = useFetchOrchestrationProgress(
     scenario?.orchestration_id,
   );
+
+  const isProcessing = orchestration?.phase_status === 'Running';
+
   const { data: categorizedImages } = useFetchCategorizedImages(
     scenario?.orchestration_id,
+    isProcessing,
   );
 
   const handleBackToQueue = () => {
@@ -56,7 +60,6 @@ export const Simulation = () => {
   const currentStep = progress?.current_timestep ?? 0;
   const totalSteps = Number(progress?.total_timesteps ?? 0);
   const timeRemaining = progress?.estimated_time_remaining ?? '-';
-  const isProcessing = orchestration?.phase_status === 'Running';
 
   // Determine status based on orchestration state
   const status: 'not-started' | 'running' | 'completed' = !orchestration
