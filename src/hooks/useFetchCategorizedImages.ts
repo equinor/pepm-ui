@@ -14,9 +14,12 @@ export interface CategorizedImages {
 
 /**
  * Hook to fetch and categorize orchestration result images by their naming patterns
+ * @param orchestrationId - The orchestration ID
+ * @param isRunning - Whether the orchestration is currently running (enables polling)
  */
 export const useFetchCategorizedImages = (
   orchestrationId: string | null | undefined,
+  isRunning = false,
 ) => {
   const { instance, accounts } = useMsal();
   const token = useAccessToken(instance, accounts[0]);
@@ -77,6 +80,6 @@ export const useFetchCategorizedImages = (
       return categorized;
     },
     enabled: !!token && !!orchestrationId,
-    refetchInterval: 10000, // Refetch every 10 seconds to catch new images during simulation
+    refetchInterval: isRunning ? 10000 : false, // Only poll when simulation is running
   });
 };

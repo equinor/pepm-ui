@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { Button, Icon, Slider, Typography } from '@equinor/eds-core-react';
 /* eslint-disable camelcase */
 /* eslint-disable max-lines */
@@ -11,10 +18,8 @@ import {
   pause_circle,
   play_circle,
 } from '@equinor/eds-icons';
-import axios from 'axios';
-import { client } from '../../api/generated/client.gen';
 import * as Styled from './ImageSlideshow.styled';
-import { useErrorStore } from '../../stores/ErrorStore';
+import { useFetchImages } from '../../hooks/useFetchImages';
 
 Icon.add({
   chevron_left,
@@ -38,99 +43,84 @@ export const ImageSlideshow = ({
 }: ImageSlideshowProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [preloadedImages, setPreloadedImages] = useState<(string | null)[]>([]);
-  const [isLoadingImages, setIsLoadingImages] = useState(true);
-  const [loadingProgress, setLoadingProgress] = useState(0);
-  const [sliderValue, setSliderValue] = useState(1);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const isUserDragging = useRef(false);
-  const { addError } = useErrorStore();
+  const blobUrlCache = useRef<Map<string, string>>(new Map());
 
-  // Memoize step numbers and labels to avoid recalculating on every render
-  const stepData = useMemo(() => {
-    return images.map((filename, index) => {
-      const dayMatch = filename.match(/day[_\s]?(\d+)/i);
-      if (dayMatch) {
-        const num = parseInt(dayMatch[1], 10);
-        return { label: `Day ${num}`, value: num };
+  // Derived value - no need for separate state
+  const sliderValue = currentIndex + 1;
+
+  // Get step label from filename (e.g., "file_001.png" → "Step 1")
+  const getStepLabel = (filename: string, fallbackIndex: number): string => {
+    const match = filename.match(/_(\d+)(?:\.[^.]+)?$/);
+    return match
+      ? `Step ${parseInt(match[1], 10)}`
+      : `Frame ${fallbackIndex + 1}`;
+  };
+
+  const currentStepLabel = images[currentIndex]
+    ? getStepLabel(images[currentIndex], currentIndex)
+    : '';
+
+  // Preload current image + nearby images for smooth navigation
+  const imagesToLoad = useMemo(() => {
+    const start = Math.max(0, currentIndex - 1);
+    const end = Math.min(images.length, currentIndex + 7);
+    return Array.from({ length: end - start }, (_, i) => start + i);
+  }, [currentIndex, images.length]);
+
+  // Fetch images lazily using custom hook
+  const imageQueries = useFetchImages({
+    orchestrationId,
+    imagesToLoad,
+    imageFilenames: images,
+  });
+
+  // Helper to get or create blob URL from query data
+  // Uses React Query's cached data directly - no effect synchronization needed
+  const getBlobUrl = useCallback(
+    (filename: string, blob: Blob | null | undefined): string | null => {
+      if (!blob) return null;
+
+      // Return cached URL if available
+      const cached = blobUrlCache.current.get(filename);
+      if (cached) return cached;
+
+      // Create and cache new blob URL
+      const url = URL.createObjectURL(blob);
+      blobUrlCache.current.set(filename, url);
+      return url;
+    },
+    [],
+  );
+
+  // Get current image URL from React Query cache
+  const currentQueryIndex = imagesToLoad.indexOf(currentIndex);
+  const currentQuery =
+    currentQueryIndex >= 0 ? imageQueries[currentQueryIndex] : null;
+  const currentFilename = images[currentIndex];
+  const currentImageUrl =
+    currentFilename && currentQuery?.data
+      ? getBlobUrl(currentFilename, currentQuery.data)
+      : null;
+
+  // Pre-cache blob URLs for nearby images
+  useEffect(() => {
+    imageQueries.forEach((query, queryIndex) => {
+      const filename = images[imagesToLoad[queryIndex]];
+      if (filename && query.data && !blobUrlCache.current.has(filename)) {
+        blobUrlCache.current.set(filename, URL.createObjectURL(query.data));
       }
-      const stepMatch = filename.match(/(?:step|timestep)[_\s]?(\d+)/i);
-      if (stepMatch) {
-        const num = parseInt(stepMatch[1], 10);
-        return { label: `Step ${num}`, value: num };
-      }
-      return { label: `Frame ${index + 1}`, value: index + 1 };
     });
-  }, [images]);
+  }, [imageQueries, imagesToLoad, images]);
 
-  const stepValues = useMemo(() => stepData.map((d) => d.value), [stepData]);
-  const minStep = useMemo(() => Math.min(...stepValues), [stepValues]);
-  const maxStep = useMemo(() => Math.max(...stepValues), [stepValues]);
-
-  const currentStepLabel = stepData[currentIndex]?.label || '';
-  const currentStepValue = stepData[currentIndex]?.value || minStep;
-
-  // Sync slider value with current step value when not dragging
+  // Cleanup blob URLs when orchestrationId changes or on unmount
   useEffect(() => {
-    if (!isUserDragging.current) {
-      setSliderValue(currentStepValue);
-    }
-  }, [currentStepValue]);
-
-  // Preload all images on mount
-  useEffect(() => {
-    const fetchAllImages = async () => {
-      if (images.length === 0) return;
-
-      if (currentIndex !== 0) {
-        setCurrentIndex(0);
-      }
-      setIsLoadingImages(true);
-      const imageUrls: (string | null)[] = [];
-
-      for (let i = 0; i < images.length; i++) {
-        try {
-          const response = await axios.get(
-            `/api/v1/delft3d-orchestrations/${orchestrationId}/results/download`,
-            {
-              params: { file: images[i] },
-              headers: { Authorization: `Bearer ${client.getConfig().auth}` },
-              responseType: 'blob',
-              baseURL: client.getConfig().baseURL,
-            },
-          );
-
-          if (response.data) {
-            const blob = new Blob([response.data]);
-            const url = window.URL.createObjectURL(blob);
-            imageUrls[i] = url;
-          } else {
-            imageUrls[i] = null;
-          }
-        } catch (error) {
-          imageUrls[i] = null;
-          addError(`Failed to load image: ${images[i]}`);
-        }
-
-        setLoadingProgress(Math.round(((i + 1) / images.length) * 100));
-      }
-
-      setPreloadedImages(imageUrls);
-      setIsLoadingImages(false);
-    };
-
-    fetchAllImages();
-
-    // Cleanup all blob URLs on unmount
+    const cache = blobUrlCache.current;
     return () => {
-      preloadedImages.forEach((url) => {
-        if (url) {
-          URL.revokeObjectURL(url);
-        }
-      });
+      cache.forEach((url) => URL.revokeObjectURL(url));
+      cache.clear();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [images, orchestrationId]);
+  }, [orchestrationId]);
 
   useEffect(() => {
     if (isPlaying && images.length > 1) {
@@ -143,7 +133,7 @@ export const ImageSlideshow = ({
           }
           return nextIndex;
         });
-      }, 350);
+      }, 100);
 
       return () => {
         if (intervalRef.current) {
@@ -151,11 +141,6 @@ export const ImageSlideshow = ({
         }
       };
     }
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
   }, [isPlaying, images.length]);
 
   const goToFirst = useCallback(() => {
@@ -186,27 +171,12 @@ export const ImageSlideshow = ({
   }, [images.length]);
 
   const handleSliderChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const value = Number(event.target.value);
-      setSliderValue(value);
-      isUserDragging.current = true;
-
-      // Find the closest index for this step value
-      const closestIndex = stepValues.reduce((closest, stepVal, idx) => {
-        const currentDiff = Math.abs(stepValues[closest] - value);
-        const newDiff = Math.abs(stepVal - value);
-        return newDiff < currentDiff ? idx : closest;
-      }, 0);
-
-      setCurrentIndex(closestIndex);
+    (_event: ChangeEvent<HTMLInputElement>, newValue: number[]) => {
+      setCurrentIndex(newValue[0] - 1); // Convert 1-indexed slider to 0-indexed
       setIsPlaying(false);
     },
-    [stepValues],
+    [],
   );
-
-  const handleSliderMouseUp = useCallback(() => {
-    isUserDragging.current = false;
-  }, []);
 
   if (images.length === 0) {
     return (
@@ -218,24 +188,23 @@ export const ImageSlideshow = ({
     );
   }
 
-  const currentImageUrl = preloadedImages[currentIndex];
+  // Check if current image is loading (currentQuery already defined above)
+  const isLoadingCurrentImage = currentQuery?.isLoading ?? false;
 
   return (
     <Styled.Container>
       {title && <Typography variant="h6">{title}</Typography>}
 
       <Styled.ImageContainer>
-        {isLoadingImages && (
+        {isLoadingCurrentImage && (
           <div style={{ textAlign: 'center' }}>
-            <Typography variant="body_short">
-              Loading images... {loadingProgress}%
-            </Typography>
+            <Typography variant="body_short">Loading image...</Typography>
           </div>
         )}
-        {!isLoadingImages && currentImageUrl && (
+        {!isLoadingCurrentImage && currentImageUrl && (
           <img src={currentImageUrl} alt={`${currentStepLabel}`} />
         )}
-        {!isLoadingImages && !currentImageUrl && (
+        {!isLoadingCurrentImage && !currentImageUrl && (
           <Typography variant="caption" color="textTertiary">
             Failed to load image
           </Typography>
@@ -249,12 +218,10 @@ export const ImageSlideshow = ({
           </Styled.StepLabel>
           <Slider
             value={sliderValue}
-            max={maxStep}
-            min={minStep}
+            max={images.length}
+            min={1}
             step={1}
             onChange={handleSliderChange}
-            onMouseUp={handleSliderMouseUp}
-            onTouchEnd={handleSliderMouseUp}
             aria-label="Image index slider"
           />
           <Styled.FrameInfo variant="caption">
@@ -266,7 +233,7 @@ export const ImageSlideshow = ({
           <Button
             variant="ghost_icon"
             onClick={goToFirst}
-            disabled={currentIndex === 0 || isPlaying || isLoadingImages}
+            disabled={currentIndex === 0 || isPlaying || isLoadingCurrentImage}
             title="Go to first"
           >
             <Icon name="first_page" size={32} />
@@ -274,7 +241,7 @@ export const ImageSlideshow = ({
           <Button
             variant="ghost_icon"
             onClick={goToPrevious}
-            disabled={isPlaying || isLoadingImages}
+            disabled={isPlaying || isLoadingCurrentImage}
             title="Previous frame"
           >
             <Icon name="chevron_left" size={32} />
@@ -282,7 +249,7 @@ export const ImageSlideshow = ({
           <Button
             variant="ghost_icon"
             onClick={togglePlayPause}
-            disabled={isLoadingImages}
+            disabled={isLoadingCurrentImage}
             title={isPlaying ? 'Pause' : 'Play'}
           >
             <Icon name={isPlaying ? 'pause_circle' : 'play_circle'} size={32} />
@@ -290,7 +257,7 @@ export const ImageSlideshow = ({
           <Button
             variant="ghost_icon"
             onClick={goToNext}
-            disabled={isPlaying || isLoadingImages}
+            disabled={isPlaying || isLoadingCurrentImage}
             title="Next frame"
           >
             <Icon name="chevron_right" size={32} />
@@ -299,7 +266,9 @@ export const ImageSlideshow = ({
             variant="ghost_icon"
             onClick={goToLast}
             disabled={
-              currentIndex === images.length - 1 || isPlaying || isLoadingImages
+              currentIndex === images.length - 1 ||
+              isPlaying ||
+              isLoadingCurrentImage
             }
             title="Go to last"
           >

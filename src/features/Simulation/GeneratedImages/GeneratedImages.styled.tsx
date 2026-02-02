@@ -76,8 +76,27 @@ export const ImageGrid = styled.div`
   gap: ${spacings.MEDIUM};
 `;
 
+export const ImageGridCentered = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: ${spacings.LARGE};
+`;
+
 export const ImageWrapper = styled.div`
   width: 100%;
+
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+export const ImageWrapperCentered = styled.div`
+  width: 100%;
+  max-width: 1400px;
 
   img {
     width: 100%;
