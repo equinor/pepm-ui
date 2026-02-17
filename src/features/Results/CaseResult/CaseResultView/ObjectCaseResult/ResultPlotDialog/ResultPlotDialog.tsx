@@ -26,6 +26,16 @@ export const ResultPlotDialog = ({
   const [precentilesMinMax, setPrecentilesMinMax] =
     useState<ExtendedPrecetile>();
 
+  // Trigger chart resize after dialog opens
+  useEffect(() => {
+    if (open) {
+      const timer = setTimeout(() => {
+        window.dispatchEvent(new Event('resize'));
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [open]);
+
   useEffect(() => {
     if (selectedValue === 'height') {
       setPrecentilesMinMax({
