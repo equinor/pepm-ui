@@ -11,7 +11,8 @@ export const Content = styled(Dialog.Content)`
 
 export const GraphDialog = styled(Dialog)`
   min-height: 400px;
-  width: 700px;
+  min-width: 700px;
+  width: fit-content;
 `;
 
 export const RadioGroup = styled.div`

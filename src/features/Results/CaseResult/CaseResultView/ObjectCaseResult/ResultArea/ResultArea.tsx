@@ -8,7 +8,7 @@ import {
   Switch,
   Typography,
 } from '@equinor/eds-core-react';
-import { multiline_chart as lineChart } from '@equinor/eds-icons';
+import { timeline as timelineChart } from '@equinor/eds-icons';
 import { ChangeEvent, useState } from 'react';
 import { ResultPlotDialog } from '../ResultPlotDialog/ResultPlotDialog';
 import * as Styled from './ResultArea.styled';
@@ -115,7 +115,10 @@ export const ResultArea = ({
           />
           <div className="actions">
             <Button variant="outlined" onClick={toggleOpen}>
-              <Icon data={lineChart} title={'Open plot for case results.'} />
+              <Icon
+                data={timelineChart}
+                title={'Open plot for case results.'}
+              />
               Show plot
             </Button>
 
