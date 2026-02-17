@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.16.0](https://github.com/equinor/pepm-ui/compare/v1.15.0...v1.16.0) (2026-02-17)
+
+
+### ✨ Features
+
+* added extra filtering on tables and added toggle columns to model table ([#521](https://github.com/equinor/pepm-ui/issues/521)) ([1bf217f](https://github.com/equinor/pepm-ui/commit/1bf217f3bbedffb1766a028f98559902592ad864))
+* Added some changes after user feedback ([#517](https://github.com/equinor/pepm-ui/issues/517)) ([10ecc15](https://github.com/equinor/pepm-ui/commit/10ecc15aea0cbcb5d88ea966d430ed38897b5ab4))
+
+
+### 🐛 Bug Fixes
+
+* Added minWidth to result plot ([#519](https://github.com/equinor/pepm-ui/issues/519)) ([fa335f7](https://github.com/equinor/pepm-ui/commit/fa335f7e6ef5447dd3e33701b85653a128d24a91))
+
 ## [1.15.0](https://github.com/equinor/pepm-ui/compare/v1.14.0...v1.15.0) (2026-02-02)
 
 
