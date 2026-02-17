@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
-import { useRef, useState } from 'react';
+import { CSSProperties, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Checkbox, EdsProvider, Icon } from '@equinor/eds-core-react';
 import { view_column } from '@equinor/eds-icons';
@@ -144,6 +144,8 @@ export const SimulationTable = () => {
     }));
   };
 
+  const headerStyle = (): CSSProperties => ({ verticalAlign: 'middle' });
+
   if (isLoading) return <p>Loading scenarios...</p>;
 
   return (
@@ -162,11 +164,13 @@ export const SimulationTable = () => {
         </Styled.ColumnsButton>
         <EdsDataGrid
           enableSorting
+          enableColumnFiltering
           emptyMessage="No scenarios found"
           columnResizeMode="onChange"
           rows={scenarios}
           scrollbarHorizontal
           stickyHeader
+          headerStyle={headerStyle}
           width="100%"
           columnVisibility={columnVisibility}
           columns={[
@@ -174,147 +178,119 @@ export const SimulationTable = () => {
               header: 'Template',
               id: 'template',
               size: 180,
-              cell: ({ row }) => {
-                const jsonData = (row.original as any).json_scenario_data;
-                return parseScenarioData(jsonData).template;
-              },
+              accessorFn: (row: any) =>
+                parseScenarioData(row.json_scenario_data).template,
             },
             {
               header: 'Basin slope',
               id: 'basinSlope',
               size: 120,
-              cell: ({ row }) => {
-                const jsonData = (row.original as any).json_scenario_data;
-                return parseScenarioData(jsonData).basinSlope;
-              },
+              accessorFn: (row: any) =>
+                parseScenarioData(row.json_scenario_data).basinSlope,
             },
             {
               header: 'Sediment classes',
               id: 'composition',
               size: 150,
-              cell: ({ row }) => {
-                const jsonData = (row.original as any).json_scenario_data;
-                return parseScenarioData(jsonData).composition;
-              },
+              accessorFn: (row: any) =>
+                parseScenarioData(row.json_scenario_data).composition,
             },
             {
               header: 'River length',
               id: 'riverLength',
               size: 130,
-              cell: ({ row }) => {
-                const jsonData = (row.original as any).json_scenario_data;
-                return parseScenarioData(jsonData).riverLength;
-              },
+              accessorFn: (row: any) =>
+                parseScenarioData(row.json_scenario_data).riverLength,
             },
             {
               header: 'Simulation time',
               id: 'simStopTime',
               size: 140,
-              cell: ({ row }) => {
-                const jsonData = (row.original as any).json_scenario_data;
-                return parseScenarioData(jsonData).simStopTime;
-              },
+              accessorFn: (row: any) =>
+                parseScenarioData(row.json_scenario_data).simStopTime,
             },
             {
               header: 'Channel width',
               id: 'channelWidth',
               size: 130,
-              cell: ({ row }) => {
-                const jsonData = (row.original as any).json_scenario_data;
-                return parseScenarioData(jsonData).channelWidth;
-              },
+              accessorFn: (row: any) =>
+                parseScenarioData(row.json_scenario_data).channelWidth,
             },
             {
               header: 'Subsidence at seaward',
               id: 'subsidenceSea',
               size: 180,
-              cell: ({ row }) => {
-                const jsonData = (row.original as any).json_scenario_data;
-                return parseScenarioData(jsonData).subsidenceSea;
-              },
+              accessorFn: (row: any) =>
+                parseScenarioData(row.json_scenario_data).subsidenceSea,
             },
             {
               header: 'Wave direction',
               id: 'waveDirection',
               size: 130,
-              cell: ({ row }) => {
-                const jsonData = (row.original as any).json_scenario_data;
-                return parseScenarioData(jsonData).waveDirection;
-              },
+              accessorFn: (row: any) =>
+                parseScenarioData(row.json_scenario_data).waveDirection,
             },
             {
               header: 'Final wave height',
               id: 'waveHeightFin',
               size: 150,
-              cell: ({ row }) => {
-                const jsonData = (row.original as any).json_scenario_data;
-                return parseScenarioData(jsonData).waveHeightFin;
-              },
+              accessorFn: (row: any) =>
+                parseScenarioData(row.json_scenario_data).waveHeightFin,
             },
             {
               header: 'Initial wave height',
               id: 'waveHeightIni',
               size: 150,
-              cell: ({ row }) => {
-                const jsonData = (row.original as any).json_scenario_data;
-                return parseScenarioData(jsonData).waveHeightIni;
-              },
+              accessorFn: (row: any) =>
+                parseScenarioData(row.json_scenario_data).waveHeightIni,
             },
             {
               header: 'Output interval',
               id: 'outputInterval',
               size: 140,
-              cell: ({ row }) => {
-                const jsonData = (row.original as any).json_scenario_data;
-                return parseScenarioData(jsonData).outputInterval;
-              },
+              accessorFn: (row: any) =>
+                parseScenarioData(row.json_scenario_data).outputInterval,
             },
             {
               header: 'Subsidence at landward',
               id: 'subsidenceLand',
               size: 180,
-              cell: ({ row }) => {
-                const jsonData = (row.original as any).json_scenario_data;
-                return parseScenarioData(jsonData).subsidenceLand;
-              },
+              accessorFn: (row: any) =>
+                parseScenarioData(row.json_scenario_data).subsidenceLand,
             },
             {
               header: 'Tidal amplitude',
               id: 'tidalAmplitude',
               size: 140,
-              cell: ({ row }) => {
-                const jsonData = (row.original as any).json_scenario_data;
-                return parseScenarioData(jsonData).tidalAmplitude;
-              },
+              accessorFn: (row: any) =>
+                parseScenarioData(row.json_scenario_data).tidalAmplitude,
             },
             {
               header: 'Final river discharge',
               id: 'riverDischargeFin',
               size: 170,
-              cell: ({ row }) => {
-                const jsonData = (row.original as any).json_scenario_data;
-                return parseScenarioData(jsonData).riverDischargeFin;
-              },
+              accessorFn: (row: any) =>
+                parseScenarioData(row.json_scenario_data).riverDischargeFin,
             },
             {
               header: 'Initial river discharge',
               id: 'riverDischargeIni',
               size: 180,
-              cell: ({ row }) => {
-                const jsonData = (row.original as any).json_scenario_data;
-                return parseScenarioData(jsonData).riverDischargeIni;
-              },
+              accessorFn: (row: any) =>
+                parseScenarioData(row.json_scenario_data).riverDischargeIni,
             },
             {
               accessorKey: 'orchestration_status',
               header: 'Status',
               id: 'orchestration_status',
+              enableColumnFilter: false,
               size: 120,
             },
             {
               accessorKey: 'created_at',
               header: 'Created',
               id: 'created_at',
+              enableColumnFilter: false,
               size: 180,
               cell: ({ row }) =>
                 row.original.created_at
@@ -325,6 +301,7 @@ export const SimulationTable = () => {
               accessorKey: 'created_by',
               header: 'Created By',
               id: 'created_by',
+              enableColumnFilter: false,
               size: 150,
             },
             {

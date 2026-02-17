@@ -1,6 +1,7 @@
 /* eslint-disable max-lines */
 /* eslint-disable no-empty-pattern */
 /* eslint-disable max-lines-per-function */
+/* eslint-disable camelcase */
 import { ChangeEvent, CSSProperties, useEffect, useState } from 'react';
 import { useMsal } from '@azure/msal-react';
 import {
@@ -8,16 +9,21 @@ import {
   AutocompleteChanges,
   Button,
   Checkbox,
+  EdsProvider,
+  Icon,
   Typography,
 } from '@equinor/eds-core-react';
+import { view_column } from '@equinor/eds-icons';
 import {
   EdsDataGrid,
   FilterWrapper,
   HeaderContext,
 } from '@equinor/eds-data-grid-react';
+import type { VisibilityState } from '@tanstack/react-table';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import {
+  AnalogueModelConfigurationDto,
   AnalogueModelList,
   getApiV1AnalogueModels,
   StratigraphicGroupDto,
@@ -35,6 +41,48 @@ export enum ModelStatus {
   FAILED_UPLOADING = 'Uploading failed',
   FAILED_TRANSFORMING = 'Transforming failed',
 }
+
+const parseModelConfiguration = (
+  configuration: AnalogueModelConfigurationDto | undefined,
+) => {
+  if (!configuration) {
+    return {
+      template: '-',
+      basinSlope: '-',
+      composition: '-',
+      riverLength: '-',
+      simStopTime: '-',
+      channelWidth: '-',
+      subsidenceSea: '-',
+      waveDirection: '-',
+      waveHeightFin: '-',
+      waveHeightIni: '-',
+      outputInterval: '-',
+      subsidenceLand: '-',
+      tidalAmplitude: '-',
+      riverDischargeFin: '-',
+      riverDischargeIni: '-',
+    };
+  }
+
+  return {
+    template: configuration.template?.value ?? '-',
+    basinSlope: configuration.basinSlope?.value ?? '-',
+    composition: configuration.composition?.value ?? '-',
+    riverLength: configuration.riverLength?.value ?? '-',
+    simStopTime: configuration.simStopTime?.value ?? '-',
+    channelWidth: configuration.channelWidth?.value ?? '-',
+    subsidenceSea: configuration.subsidenceSea?.value ?? '-',
+    waveDirection: configuration.waveDirection?.value ?? '-',
+    waveHeightFin: configuration.waveHeightFin?.value ?? '-',
+    waveHeightIni: configuration.waveHeightIni?.value ?? '-',
+    outputInterval: configuration.outputInterval?.value ?? '-',
+    subsidenceLand: configuration.subsidenceLand?.value ?? '-',
+    tidalAmplitude: configuration.tidalAmplitude?.value ?? '-',
+    riverDischargeFin: configuration.riverDischargeFin?.value ?? '-',
+    riverDischargeIni: configuration.riverDischargeIni?.value ?? '-',
+  };
+};
 
 export const ModelTable = () => {
   const {
@@ -55,13 +103,39 @@ export const ModelTable = () => {
   const { instance, accounts } = useMsal();
   const token = useAccessToken(instance, accounts[0]);
   const navigate = useNavigate();
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    name: true,
+    template: true,
+    basinSlope: true,
+    composition: true,
+    riverLength: false,
+    simStopTime: false,
+    channelWidth: false,
+    subsidenceSea: false,
+    waveDirection: false,
+    waveHeightFin: false,
+    waveHeightIni: false,
+    outputInterval: false,
+    subsidenceLand: false,
+    tidalAmplitude: false,
+    riverDischargeFin: false,
+    riverDischargeIni: false,
+    outcrops: true,
+    country: true,
+    field: true,
+    stratigraphicColumn: true,
+    group: true,
+    isProcessed: true,
+  });
+  const [isSideSheetOpen, setIsSideSheetOpen] = useState(false);
 
   const { isLoading, data } = useQuery({
     queryKey: ['analogue-models'],
     queryFn: () =>
       getApiV1AnalogueModels({
         query: {
-          expand: 'outcrops, stratigraphicgroups, fileuploads, modelareas',
+          expand:
+            'outcrops, stratigraphicgroups, fileuploads, modelareas, inifile',
         },
       }),
     enabled: !!token,
@@ -159,6 +233,13 @@ export const ModelTable = () => {
     else deleteExportModel(modelId);
   };
 
+  const toggleColumn = (columnId: string) => {
+    setColumnVisibility((prev) => ({
+      ...prev,
+      [columnId]: !prev[columnId],
+    }));
+  };
+
   /* Make sure the header row in EdsDataGrid is vertically middle-aligned when filter icons are shown */
   const headerStyle = (): CSSProperties => ({ verticalAlign: 'middle' });
 
@@ -244,12 +325,23 @@ export const ModelTable = () => {
 
   return (
     <Styled.Table>
+      <Styled.ColumnsButton>
+        <Button
+          variant="outlined"
+          onClick={() => setIsSideSheetOpen(!isSideSheetOpen)}
+          aria-label="Toggle columns"
+        >
+          Toggle columns&nbsp;
+          <Icon data={view_column} />
+        </Button>
+      </Styled.ColumnsButton>
       <EdsDataGrid
         enableSorting
         enableColumnFiltering
         emptyMessage="Empty :("
         columnResizeMode="onChange"
         rows={data.data.data}
+        columnVisibility={columnVisibility}
         columnPinState={{
           right: ['navigate'],
         }}
@@ -286,6 +378,111 @@ export const ModelTable = () => {
             ),
           },
           { accessorKey: 'name', header: 'Model name', id: 'name', size: 200 },
+          {
+            header: 'Template',
+            id: 'template',
+            size: 180,
+            accessorFn: (row) =>
+              parseModelConfiguration(row.iniParameters).template,
+          },
+          {
+            header: 'Basin slope',
+            id: 'basinSlope',
+            size: 120,
+            accessorFn: (row) =>
+              parseModelConfiguration(row.iniParameters).basinSlope,
+          },
+          {
+            header: 'Sediment classes',
+            id: 'composition',
+            size: 150,
+            accessorFn: (row) =>
+              parseModelConfiguration(row.iniParameters).composition,
+          },
+          {
+            header: 'River length',
+            id: 'riverLength',
+            size: 130,
+            accessorFn: (row) =>
+              parseModelConfiguration(row.iniParameters).riverLength,
+          },
+          {
+            header: 'Simulation time',
+            id: 'simStopTime',
+            size: 140,
+            accessorFn: (row) =>
+              parseModelConfiguration(row.iniParameters).simStopTime,
+          },
+          {
+            header: 'Channel width',
+            id: 'channelWidth',
+            size: 130,
+            accessorFn: (row) =>
+              parseModelConfiguration(row.iniParameters).channelWidth,
+          },
+          {
+            header: 'Subsidence at seaward',
+            id: 'subsidenceSea',
+            size: 180,
+            accessorFn: (row) =>
+              parseModelConfiguration(row.iniParameters).subsidenceSea,
+          },
+          {
+            header: 'Wave direction',
+            id: 'waveDirection',
+            size: 130,
+            accessorFn: (row) =>
+              parseModelConfiguration(row.iniParameters).waveDirection,
+          },
+          {
+            header: 'Final wave height',
+            id: 'waveHeightFin',
+            size: 150,
+            accessorFn: (row) =>
+              parseModelConfiguration(row.iniParameters).waveHeightFin,
+          },
+          {
+            header: 'Initial wave height',
+            id: 'waveHeightIni',
+            size: 150,
+            accessorFn: (row) =>
+              parseModelConfiguration(row.iniParameters).waveHeightIni,
+          },
+          {
+            header: 'Output interval',
+            id: 'outputInterval',
+            size: 140,
+            accessorFn: (row) =>
+              parseModelConfiguration(row.iniParameters).outputInterval,
+          },
+          {
+            header: 'Subsidence at landward',
+            id: 'subsidenceLand',
+            size: 180,
+            accessorFn: (row) =>
+              parseModelConfiguration(row.iniParameters).subsidenceLand,
+          },
+          {
+            header: 'Tidal amplitude',
+            id: 'tidalAmplitude',
+            size: 140,
+            accessorFn: (row) =>
+              parseModelConfiguration(row.iniParameters).tidalAmplitude,
+          },
+          {
+            header: 'Final river discharge',
+            id: 'riverDischargeFin',
+            size: 170,
+            accessorFn: (row) =>
+              parseModelConfiguration(row.iniParameters).riverDischargeFin,
+          },
+          {
+            header: 'Initial river discharge',
+            id: 'riverDischargeIni',
+            size: 180,
+            accessorFn: (row) =>
+              parseModelConfiguration(row.iniParameters).riverDischargeIni,
+          },
           {
             id: 'outcrops',
             header: (header) =>
@@ -424,6 +621,128 @@ export const ModelTable = () => {
           },
         ]}
       />
+
+      <Styled.StyledSideSheet
+        open={isSideSheetOpen}
+        onClose={() => setIsSideSheetOpen(false)}
+        title="Toggle Columns"
+      >
+        <Styled.SideSheetContent>
+          <Styled.SideSheetTitle variant="overline">
+            Columns
+          </Styled.SideSheetTitle>
+          <EdsProvider density="compact">
+            <Styled.CheckboxColumn>
+              <Checkbox
+                label="Model name"
+                checked={columnVisibility.name}
+                onChange={() => toggleColumn('name')}
+              />
+              <Checkbox label="Template" checked={true} disabled />
+              <Checkbox
+                label="Basin slope"
+                checked={columnVisibility.basinSlope}
+                onChange={() => toggleColumn('basinSlope')}
+              />
+              <Checkbox
+                label="Sediment classes"
+                checked={columnVisibility.composition}
+                onChange={() => toggleColumn('composition')}
+              />
+              <Checkbox
+                label="River length"
+                checked={columnVisibility.riverLength}
+                onChange={() => toggleColumn('riverLength')}
+              />
+              <Checkbox
+                label="Simulation time"
+                checked={columnVisibility.simStopTime}
+                onChange={() => toggleColumn('simStopTime')}
+              />
+              <Checkbox
+                label="Channel width"
+                checked={columnVisibility.channelWidth}
+                onChange={() => toggleColumn('channelWidth')}
+              />
+              <Checkbox
+                label="Subsidence at seaward"
+                checked={columnVisibility.subsidenceSea}
+                onChange={() => toggleColumn('subsidenceSea')}
+              />
+              <Checkbox
+                label="Wave direction"
+                checked={columnVisibility.waveDirection}
+                onChange={() => toggleColumn('waveDirection')}
+              />
+              <Checkbox
+                label="Final wave height"
+                checked={columnVisibility.waveHeightFin}
+                onChange={() => toggleColumn('waveHeightFin')}
+              />
+              <Checkbox
+                label="Initial wave height"
+                checked={columnVisibility.waveHeightIni}
+                onChange={() => toggleColumn('waveHeightIni')}
+              />
+              <Checkbox
+                label="Output interval"
+                checked={columnVisibility.outputInterval}
+                onChange={() => toggleColumn('outputInterval')}
+              />
+              <Checkbox
+                label="Subsidence at landward"
+                checked={columnVisibility.subsidenceLand}
+                onChange={() => toggleColumn('subsidenceLand')}
+              />
+              <Checkbox
+                label="Tidal amplitude"
+                checked={columnVisibility.tidalAmplitude}
+                onChange={() => toggleColumn('tidalAmplitude')}
+              />
+              <Checkbox
+                label="Final river discharge"
+                checked={columnVisibility.riverDischargeFin}
+                onChange={() => toggleColumn('riverDischargeFin')}
+              />
+              <Checkbox
+                label="Initial river discharge"
+                checked={columnVisibility.riverDischargeIni}
+                onChange={() => toggleColumn('riverDischargeIni')}
+              />
+              <Checkbox
+                label="Outcrop"
+                checked={columnVisibility.outcrops}
+                onChange={() => toggleColumn('outcrops')}
+              />
+              <Checkbox
+                label="Country"
+                checked={columnVisibility.country}
+                onChange={() => toggleColumn('country')}
+              />
+              <Checkbox
+                label="Field"
+                checked={columnVisibility.field}
+                onChange={() => toggleColumn('field')}
+              />
+              <Checkbox
+                label="Stratigraphic column"
+                checked={columnVisibility.stratigraphicColumn}
+                onChange={() => toggleColumn('stratigraphicColumn')}
+              />
+              <Checkbox
+                label="Level 1 (group)"
+                checked={columnVisibility.group}
+                onChange={() => toggleColumn('group')}
+              />
+              <Checkbox
+                label="Status"
+                checked={columnVisibility.isProcessed}
+                onChange={() => toggleColumn('isProcessed')}
+              />
+            </Styled.CheckboxColumn>
+          </EdsProvider>
+        </Styled.SideSheetContent>
+      </Styled.StyledSideSheet>
     </Styled.Table>
   );
 };

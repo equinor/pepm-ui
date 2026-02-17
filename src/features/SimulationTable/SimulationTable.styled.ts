@@ -56,8 +56,13 @@ export const ColumnsButton = styled.div`
 `;
 
 export const StyledSideSheet = styled(SideSheet)`
-  height: 100vh !important;
   top: ${spacings.XXXX_LARGE} !important;
   bottom: ${spacings.XXXX_LARGE} !important;
-  max-height: 86vh !important;
+  height: calc(
+    100dvh - ${spacings.XXXX_LARGE} - ${spacings.XXXX_LARGE}
+  ) !important;
+  max-height: calc(
+    100dvh - ${spacings.XXXX_LARGE} - ${spacings.XXXX_LARGE}
+  ) !important;
+  overflow-y: auto !important;
 `;
