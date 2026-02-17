@@ -6,11 +6,13 @@ export const Content = styled(Dialog.Content)`
   display: flex;
   flex-direction: column;
   row-gap: ${spacings.MEDIUM};
+  width: 100%;
 `;
 
 export const GraphDialog = styled(Dialog)`
   min-height: 400px;
   min-width: 700px;
+  width: fit-content;
 `;
 
 export const RadioGroup = styled.div`

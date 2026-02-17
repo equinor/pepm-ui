@@ -291,7 +291,6 @@ export const AreaCoordinates = ({
           {activeArea.name !== '' && (
             <Styled.CoordinateFields>
               <Styled.CoordinateGroup>
-                <Typography variant="h6">Top Left Corner</Typography>
                 <Styled.CoordinateInputs>
                   <CoordinateInput
                     label="X start"
@@ -303,26 +302,25 @@ export const AreaCoordinates = ({
                     edit={edit}
                   />
                   <CoordinateInput
-                    label="Y start"
-                    error={errors.y0 ? true : false}
-                    areaCoordinate={areaCoordinate}
-                    setCoordinates={setCoordinates}
-                    position={0}
-                    axis="y"
-                    edit={edit}
-                  />
-                </Styled.CoordinateInputs>
-              </Styled.CoordinateGroup>
-              <Styled.CoordinateGroup>
-                <Typography variant="h6">Bottom Right Corner</Typography>
-                <Styled.CoordinateInputs>
-                  <CoordinateInput
                     label="X end"
                     error={errors.x1 ? true : false}
                     areaCoordinate={areaCoordinate}
                     setCoordinates={setCoordinates}
                     position={1}
                     axis="x"
+                    edit={edit}
+                  />
+                </Styled.CoordinateInputs>
+              </Styled.CoordinateGroup>
+              <Styled.CoordinateGroup>
+                <Styled.CoordinateInputs>
+                  <CoordinateInput
+                    label="Y start"
+                    error={errors.y0 ? true : false}
+                    areaCoordinate={areaCoordinate}
+                    setCoordinates={setCoordinates}
+                    position={0}
+                    axis="y"
                     edit={edit}
                   />
                   <CoordinateInput
