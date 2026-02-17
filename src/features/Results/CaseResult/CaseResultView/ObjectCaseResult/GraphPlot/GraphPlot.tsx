@@ -52,7 +52,7 @@ export const GraphPlot = ({
     <div style={{ minWidth: '500px', width: '100%', overflowX: 'auto' }}>
       <ReactECharts
         option={option}
-        style={{ width: '100%', height: '350px' }}
+        style={{ minWidth: '500px', width: '100%', height: '350px' }}
       />
     </div>
   );
